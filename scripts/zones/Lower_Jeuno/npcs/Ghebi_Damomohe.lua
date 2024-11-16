@@ -13,6 +13,10 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
+    print(player:hasKeyItem(xi.ki.TENSHODO_APPLICATION_FORM))
+    if (player:hasKeyItem(xi.ki.TENSHODO_APPLICATION_FORM)) then
+        player:startEvent(107)
+    end
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)
@@ -28,6 +32,19 @@ entity.onEventFinish = function(player, csid, option, npc)
         }
 
         xi.shop.general(player, stock, xi.fameArea.NORG)
+    elseif csid == 106 and option == 2 then
+        if (player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.TENSHODO_MEMBERSHIP) < xi.questStatus.QUEST_ACCEPTED) then
+            player:addQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.TENSHODO_MEMBERSHIP)
+        end
+    elseif csid == 107 then
+        if npcUtil.completeQuest(player, xi.questLog.JEUNO, xi.quest.id.jeuno.TENSHODO_MEMBERSHIP, { item=548, title=xi.title.TENSHODO_MEMBER, ki=xi.ki.TENSHODO_MEMBERS_CARD }) then
+            player:delKeyItem(xi.ki.TENSHODO_APPLICATION_FORM)
+        end
+    elseif csid == 108 then
+        if npcUtil.completeQuest(player, xi.questLog.JEUNO, xi.quest.id.jeuno.TENSHODO_MEMBERSHIP, { item=548, title=tpz.title.TENSHODO_MEMBER, ki=xi.ki.TENSHODO_MEMBERS_CARD }) then
+            player:confirmTrade()
+            player:delKeyItem(xi.ki.TENSHODO_APPLICATION_FORM)
+        end
     end
 end
 
