@@ -311,4 +311,7 @@ xi.settings.main =
     -- システム
     DISABLE_INACTIVITY_WATCHDOG = false, -- true/false。有効にすると、メインループがティックされていないことを検出するウォッチドッグがプロセスを強制終了できなくなります。
     INACTIVITY_WATCHDOG_PERIOD  = 2000,  -- 非アクティブウォッチドッグが、ターゲットプロセスを強制終了する前に、メインループのティック間で待機する時間（ミリ秒）。
+
+    -- 暗黒ジョブ取得クエスト
+    CHAOSBRINGER_KILLS          = 100,   -- カオスブリンガーでエネミーのとどめを刺す数
 }
