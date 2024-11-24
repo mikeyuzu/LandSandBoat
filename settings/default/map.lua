@@ -290,4 +290,8 @@ xi.settings.map =
     -- サポートジョブにも経験値を獲得できるようにする
     -- 1.0でメインジョブと同じ値の経験値を得る
     SUPPORT_JOB_EXP_RATE = 0.0,
+
+    -- 印章のドロップ率とリキャスト時間
+    SEAL_DROP_RATE = 20,
+    SEAL_RECAST_TIME = 300,
 }
