@@ -654,7 +654,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Coeurl_CoP',161,483); -- charged_whisker
 INSERT INTO `mob_skill_lists` VALUES ('Coeurl_WoTG',162,652); -- blaster
 INSERT INTO `mob_skill_lists` VALUES ('Coeurl_WoTG',162,653); -- chaotic_eye
 INSERT INTO `mob_skill_lists` VALUES ('Coeurl_WoTG',162,483); -- charged_whisker
--- 163: free
+INSERT INTO `mob_skill_lists` VALUES ('RavenousCrawler',163,344); -- Sticky Thread
 INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1828);
 INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1829);
 INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1830);
@@ -1028,7 +1028,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,998);
 INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,999);
 INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,1000);
 INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,1001);
--- 238: free
+INSERT INTO `mob_skill_lists` VALUES ('Eldritch_Edge',238,397); -- Flurry of rage
 INSERT INTO `mob_skill_lists` VALUES ('Thunderclaw_Thuban',239,378); -- thunderbolt
 INSERT INTO `mob_skill_lists` VALUES ('Tauri',240,498);
 INSERT INTO `mob_skill_lists` VALUES ('Tauri',240,499);
@@ -1081,7 +1081,8 @@ INSERT INTO `mob_skill_lists` VALUES ('ArmoredTroll',247,1896);
 INSERT INTO `mob_skill_lists` VALUES ('ArmoredTroll',247,1897);
 INSERT INTO `mob_skill_lists` VALUES ('ArmoredTroll',247,1898);
 INSERT INTO `mob_skill_lists` VALUES ('ArmoredTroll',247,1899);
--- 248 to 249: free
+INSERT INTO `mob_skill_lists` VALUES ('Pyuu_the_Spatemaker',248,770); -- Jumping Thrust
+INSERT INTO `mob_skill_lists` VALUES ('Bayawak',249,367); -- Fireball
 INSERT INTO `mob_skill_lists` VALUES ('Uragnite_shell',250,1571); -- gas_shell
 INSERT INTO `mob_skill_lists` VALUES ('Uragnite_shell',250,1572); -- venom_shell
 INSERT INTO `mob_skill_lists` VALUES ('Uragnite',251,1573); -- palsynyxis
@@ -3930,7 +3931,24 @@ INSERT INTO `mob_skill_lists` VALUES ('Avatar_Ifrit_WTB',2013,844); -- Waking th
 INSERT INTO `mob_skill_lists` VALUES ('Avatar_Ifrit_WTB',2013,845); -- Waking the Beast, fire iv
 INSERT INTO `mob_skill_lists` VALUES ('Avatar_Ifrit_WTB',2013,847); -- Waking the Beast, meteor_strike
 
--- Next available ID: 2014
+INSERT INTO `mob_skill_lists` VALUES ('Colo-Colo',2014,392); -- ultrasonics
+INSERT INTO `mob_skill_lists` VALUES ('Colo-Colo',2014,394); -- blood_drain
+INSERT INTO `mob_skill_lists` VALUES ('Colo-Colo',2014,1155); -- subsonics
+INSERT INTO `mob_skill_lists` VALUES ('Colo-Colo',2014,1156); -- marrow_drain
+
+INSERT INTO `mob_skill_lists` VALUES ('Furies',2015,395); -- jetstream
+INSERT INTO `mob_skill_lists` VALUES ('Furies',2015,393); -- sonic_boom
+INSERT INTO `mob_skill_lists` VALUES ('Furies',2015,1157); -- slipstream
+INSERT INTO `mob_skill_lists` VALUES ('Furies',2015,1158); -- turbulence
+
+INSERT INTO `mob_skill_lists` VALUES ('Mind_Hoarder',2016,524); -- mind_drain
+
+INSERT INTO `mob_skill_lists` VALUES ('Unfettered_Twitherym',2017,2950); -- tempestuous_upheaval
+INSERT INTO `mob_skill_lists` VALUES ('Unfettered_Twitherym',2017,2952); -- blackout
+
+INSERT INTO `mob_skill_lists` VALUES ('Unfettered_Twitherym_low_50',2018,2953); -- smouldering_swarm
+
+-- Next available ID: 2019
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section

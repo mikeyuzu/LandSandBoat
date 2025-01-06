@@ -1,9 +1,9 @@
 -----------------------------------
--- マップサーバー設定
+-- MAP SERVER SETTINGS
 -----------------------------------
--- 全ての設定は `xi.settings` オブジェクトに紐付けられています。これはグローバルに公開され、C++とあらゆるスクリプトからアクセスできます。
+-- All settings are attached to the `xi.settings` object. This is published globally, and be accessed from C++ and any script.
 --
--- このファイルは主にゲームの管理とマップ実行ファイルの設定に関するものです。
+-- This file is concerned mainly with game administration and configuring the map executable
 -----------------------------------
 
 xi          = xi or {}
@@ -12,289 +12,285 @@ xi.settings = xi.settings or {}
 xi.settings.map =
 {
     -- --------------------------------
-    -- パケット設定
+    -- Packet settings
     -- --------------------------------
 
-    MAX_TIME_LASTUPDATE = 60, -- 最終更新からの最大時間（秒）
+    MAX_TIME_LASTUPDATE = 60,
 
     -- --------------------------------
-    -- SQL設定
+    -- SQL settings
     -- --------------------------------
 
-    -- serverutils::PersistServerVar() が書き込まれたサーバー変数の検証を再試行する最大試行回数。
+    -- Used by serverutils::PersistServerVar() for the maximum attempts to retry verification
+    -- of a written Server Variable.
     SETVAR_RETRY_MAX = 3,
 
     -- --------------------------------
-    -- ゲーム設定
+    -- Game settings
     -- --------------------------------
 
-    -- PacketGuard は、プレイヤーの現在の状態の許可リストにないパケットをブロックして報告します。
+    -- PacketGuard will block and report any packets that aren't in the allow-list for a
+    -- player's current state.
     PACKETGUARD_ENABLED = true,
 
-    -- lightluggage を検出するために使用する 0x3A パケットの最小数 (無効にする場合は 0 を設定)
+    -- Minimal number of 0x3A packets which uses for detect lightluggage (set 0 for disable)
     LIGHTLUGGAGE_BLOCK = 4,
 
-    -- アイテムのごみ箱を有効または無効にする (false に設定すると、アイテムはすぐにドロップされます)
+    -- Enable or disable Recycle Bin (Set to false for items to be dropped immediately)
     ENABLE_ITEM_RECYCLE_BIN = true,
 
-    -- 競売手数料構造、デフォルトはリテール版と同じです。
-    AH_BASE_FEE_SINGLE = 1,     -- 単品出品の基本手数料
-    AH_BASE_FEE_STACKS = 4,     -- 複数出品の基本手数料
-    AH_TAX_RATE_SINGLE = 1.0,   -- 単品出品の税率
-    AH_TAX_RATE_STACKS = 0.5,   -- 複数出品の税率
-    AH_MAX_FEE         = 10000, -- 最大手数料
+    -- AH fee structure, defaults are retail.
+    AH_BASE_FEE_SINGLE = 1,
+    AH_BASE_FEE_STACKS = 4,
+    AH_TAX_RATE_SINGLE = 1.0,
+    AH_TAX_RATE_STACKS = 0.5,
+    AH_MAX_FEE         = 10000,
 
-    -- プレイヤーごとの最大出品数、0 = 無制限。(デフォルト 7)
-    -- 注：7 を超える設定では、すべての状況下で動作するためにクライアント側のプラグインが必要になる場合があります。
-    -- その場合は、ah_pagination モジュールを使用することを検討してください。
+    -- Max open listings per player, 0 = no limit. (Default 7)
+    -- Note = Settings over 7 may need client-side plugin to work under all circumstances.
+    -- If this is the case, consider using the ah_pagination module
     AH_LIST_LIMIT = 7,
 
-
-    -- ヘイトテーブル上の特定のエンティティの総ヘイト上限。
-    -- 30,000 は現在のリテール版の上限に近い値と考えられています。
-    -- これは、タンクが時間をかけてヘイトを維持する能力に直接影響します。
-    -- 値が低いほど、ダメージディーラーは早く上限に到達し、モンスターのターゲットが跳ね返ります。
+    -- The total enmity cap for a given entity on the enmity table.
+    -- 30,000 is believed to be approximately current retail cap.
+    -- This directly affects a tank's ability to hold enmity over time.
+    -- The lower the value, the faster damage dealers will reach the cap and the mob will bounce.
     ENMITY_CAP = 30000,
 
-    -- その他の経験値関連設定
-    EXP_RATE                = 1.0, -- 経験値倍率
-    EXP_LOSS_RATE           = 1.0, -- 経験値喪失倍率
-    EXP_PARTY_GAP_PENALTIES = true, -- パーティレベル差ペナルティ有効化
+    -- Misc EXP related settings
+    EXP_RATE                = 1.0,
+    EXP_LOSS_RATE           = 1.0,
+    EXP_PARTY_GAP_PENALTIES = true,
 
-
-    -- パーティメンバーのレベル差が、最高レベルのパーティメンバーとのレベル差がこの値を超えると、経験値が無効になります。
-    -- 0 に設定すると、パーティメンバー間のレベル差に関係なく、経験値の無効化は行われません。
-    -- 10 に設定すると、レベル 75 のパーティメンバーがいるパーティでレベル 65 以下の場合、経験値は得られません。
+    -- A party member's experience points are nullified if the level difference with the highest-level party member exceeds this value.
+    -- When set to 0, there is no nullification of EXP regardless of how wide the gap is between party members.
+    -- When set to 10, if you are level 65 or below in a party with a level 75, you will receive no EXP.
     EXP_PARTY_GAP_NO_EXP = 0,
 
-    -- キャパシティポイント設定
-    CAPACITY_RATE = 1.0, -- キャパシティポイント倍率
+    -- Capacity Point Settings
+    CAPACITY_RATE = 1.0,
 
-    -- ヴァナ・ディール時間のエポック (886/1/1 火曜日) を決定します
-    -- 現在のタイムスタンプ - vanadiel_time_epoch = ヴァナ・ディール時間
-    -- 0 はデフォルトで SE のエポック 1009810800 (日本時間 2002/1/1 午前 0 時) に設定されます
-    -- 安全な範囲は 1 - 現在のタイムスタンプです
+    -- Determines Vana'diel time epoch (886/1/1 Firesday)
+    -- current timestamp - vanadiel_time_epoch = vana'diel time
+    -- 0 defaults to SE epoch 1009810800 (JP midnight 1/1/2002)
+    -- safe range is 1 - current timestamp
     VANADIEL_TIME_EPOCH = 0,
 
-    -- 古い名声計算には .25 を使用します
-    FAME_MULTIPLIER = 1.00, -- 名声倍率
+    -- For old fame calculation use .25
+    FAME_MULTIPLIER = 1.00,
 
-    -- 死亡時に通常失われる経験値の保持率。0 は完全喪失、1 は喪失なしを意味します。
+    -- Percentage of experience normally lost to keep upon death. 0 means full loss, where 1 means no loss.
     EXP_RETAIN = 0,
 
-    -- 経験値を失うことができる最低レベル
+    -- Minimum level at which experience points can be lost
     EXP_LOSS_LEVEL = 31,
 
-    -- プレイヤーが死亡したときに、コンクエストで地域支配力が失われる最低レベル
-    -- レベル 5 以下は支配力を失いません: http://wiki.ffo.jp/html/498.html
+    -- Minimum level at which regional influence is lost in conquest when a player dies
+    -- Level 5 and below don't lose influence: http://wiki.ffo.jp/html/498.html
     MINIMUM_LEVEL_CONQUEST_INFUENCE_LOSS = 6,
 
-    -- レベル同期を有効/無効にする
+    -- Enable/disable Level Sync
     LEVEL_SYNC_ENABLE = true,
 
-    -- レベルキャップ/同期効果がプレイヤーに適用されているときに、より高いレベルの装備を装備する機能を無効にします。
+    -- Disables ability to equip higher level gear when level cap/sync effect is on player.
     DISABLE_GEAR_SCALING = false,
 
-    -- ウェポンスキルポイントベース (スキルチェイン前) の潜在能力解放 - 整数のみ。リテール版は 1 です。
+    -- Weaponskill point base (before skillchain) for breaking latent - whole numbers only. retail is 1.
     WS_POINTS_BASE = 1,
 
-    -- スキルチェイン要素ごとのウェポンスキルポイント - 整数のみ、リテール版は 1 です。
-    -- (ティア 3 のスキルチェインには 4 つの要素があり、WS 自体で 1 つ加えて、トドメを刺した人に 5 ポイントが与えられます)。
+    -- Weaponskill points per skillchain element - whole numbers only, retail is 1
+    -- (tier 3 sc's have 4 elements, plus 1 for the ws itself, giving 5 points to the closer).
     WS_POINTS_SKILLCHAIN = 1,
 
-    -- 獣使いと狩人以外のジョブがワイドスキャンを使用できるようにする/できないようにする
+    -- Enable/disable jobs other than BST and RNG having widescan
     ALL_JOBS_WIDESCAN = true,
 
-    -- プレイヤースピードに適用する係数。0 がリテール版の正確なデフォルト値です。負の数はそれを減少させます。
-    SPEED_MOD = 0,
+    -- Base player movement speed
+    BASE_SPEED = 50,
 
-    -- マウントスピードに適用する係数。0 がリテール版の正確なデフォルト値です。負の数はそれを減少させます。
-    -- リテール版は、実際の 2 倍の速度でマウントスピードを扱っていることに注意してください。
-    MOUNT_SPEED_MOD = 0,
+    -- Player movement speed limit
+    SPEED_LIMIT = 80,
 
-    -- これは整数パーセントです。敵対しているモンスターのスピードに適用する係数 (つまり、戦闘中です)。0 がリテール版の正確なデフォルト値です。負の数はすべてのモンスターのスピードを減少させます。
-    MOB_SPEED_MOD = 0,
+    -- Mount speed, expressed as player speed. Can surpass speed limit.
+    MOUNT_SPEED = 80,
 
-    -- スキルアップ率の計算式における定数乗数を操作して、スキルアップ率に大きな影響を与えることができます。
-    SKILLUP_CHANCE_MULTIPLIER = 1.0, -- スキルアップ確率倍率
-    CRAFT_CHANCE_MULTIPLIER   = 1.0, -- 生産スキルアップ確率倍率
+    -- Player animation speed divisor
+    -- Raising this increases the players movement animation speed
+    ANIMATION_SPEED_DIVISOR = 1.0,
 
-    -- スキルアップ量の倍率。1 より大きい値を使用すると 0.5 の上限を超え、上限は 0.9 になります (最大値の場合は 5 に設定)
-    SKILLUP_AMOUNT_MULTIPLIER = 1, -- スキルアップ量倍率
-    CRAFT_AMOUNT_MULTIPLIER   = 1, -- 生産スキルアップ量倍率
+    -- Multiplier for speed of engaged mobs when their target is out of range.
+    -- The default for almost all mobs on retail is 2.5x their normal speed.
+    MOB_RUN_SPEED_MULTIPLIER = 2.5,
 
-    -- ガーデニング係数。変更がリテール版の動作と一致することを検証できる証拠がない限り、デフォルト値を変更しないでください。俗説はオプションにする必要があります。
-    GARDEN_DAY_MATTERS       = false, -- 曜日が影響するかどうか
-    GARDEN_MOONPHASE_MATTERS = false, -- 月齢が影響するかどうか
-    GARDEN_POT_MATTERS       = false, -- 植木鉢が影響するかどうか
-    GARDEN_MH_AURA_MATTERS   = false, -- モグハウスのオーラが影響するかどうか
+    -- Allows you to manipulate the constant multiplier in the skill-up rate formulas, having a potent effect on skill-up rates.
+    SKILLUP_CHANCE_MULTIPLIER = 1.0,
+    CRAFT_CHANCE_MULTIPLIER   = 1.0,
 
-    -- 現在のリテール版のスキルアップ率とマージンを使用する (リテール版 = 高いスキルアップ率; 合成レシピレベルより 10 レベル以下でスキルアップ)
+    -- Multiplier for skillup amounts. Using anything above 1 will break the 0.5 cap, the cap will become 0.9 (For maximum, set to 5)
+    SKILLUP_AMOUNT_MULTIPLIER = 1,
+    CRAFT_AMOUNT_MULTIPLIER   = 1,
+
+    -- Gardening Factors. DO NOT change defaults without verifiable proof that your change IS how retail does it. Myths need to be optional.
+    GARDEN_DAY_MATTERS       = false,
+    GARDEN_MOONPHASE_MATTERS = false,
+    GARDEN_POT_MATTERS       = false,
+    GARDEN_MH_AURA_MATTERS   = false,
+
+    -- Use current retail skill up rates and margins (Retail = High Skill-Up rate; Skill-Up when at or under 10 levels above synth recipe level.)
     CRAFT_MODERN_SYSTEM = true,
 
-    -- 特殊化ポイントがカウントされ始める生産レベル制限。(リテール版 = 700; レベル 75 時代: 600)
+    -- Craft level limit from witch specialization points beginning to count. (Retail = 700; Level 75 era:600)
     CRAFT_COMMON_CAP = 700,
 
-    -- 上記で定義されたレベルを超えて生産スキルに許可されるポイント数。ポイントはすべての生産スキルで共有されます。(リテール版 = 400; すべてのスキルが最大 = 3200 に達する可能性があります)
+    -- Amount of points allowed in crafts over the level defined above. Points are shared across all crafting skills. (Retail = 400; All skills can go to max = 3200)
     CRAFT_SPECIALIZATION_POINTS = 400,
 
-    -- 高品質率に適用される倍率
+    -- Multiplier applied to high quality chance
     CRAFT_HQ_CHANCE_MULTIPLIER = 1.0,
 
-    -- 釣りを有効にする。 0 = 無効。 1 = 有効。有効にする場合は自己責任で。
+    -- Enable/disable all fishing, including quests. ENABLE AT YOUR OWN RISK.
     FISHING_ENABLE = false,
 
-    -- 釣りをするために必要なキャラクターの最低レベルを設定します。
+    -- Sets the minimum level a character must be to fish.
     FISHING_MIN_LEVEL = 1,
 
-    -- 釣りのスキルアップ確率の倍率。デフォルト = 1.0、非常に難しい。
+    -- Multiplier for fishing skill-up chance. Default = 1.0, very hard.
     FISHING_SKILL_MULTIPLIER = 1.0,
 
-    -- 血盟儀式によるスキルアップを有効/無効にする
+    -- Enable/disable skill-ups from bloodpacts
     SKILLUP_BLOODPACT = true,
 
-    -- モンスター、ペット (魅了されたペットを含む)、フェロー、フェイス、プレイヤーの TP 獲得率を調整します。
-    -- 倍率として機能するため、デフォルトは 1 です。
-    MOB_TP_MULTIPLIER    = 1.0, -- モンスターのTP倍率
-    PET_TP_MULTIPLIER    = 1.0, -- ペットのTP倍率
-    PLAYER_TP_MULTIPLIER = 1.0, -- プレイヤーのTP倍率
-    TRUST_TP_MULTIPLIER  = 1.0, -- フェイスのTP倍率
-    FELLOW_TP_MULTIPLIER = 1.0, -- フェローのTP倍率
+    -- Adjust rate of TP gain for mobs, pets (includes charmed pets), fellows, trusts and players.
+    -- Acts as a multiplier, so default is 1.
+    MOB_TP_MULTIPLIER    = 1.0,
+    PET_TP_MULTIPLIER    = 1.0,
+    PLAYER_TP_MULTIPLIER = 1.0,
+    TRUST_TP_MULTIPLIER  = 1.0,
+    FELLOW_TP_MULTIPLIER = 1.0,
 
-    -- NM、通常のモンスター、プレイヤー、フェイス/フェローの最大 HP プールを調整します。倍率として機能するため、デフォルトは 1 です。
-    NM_HP_MULTIPLIER        = 1.0, -- NMのHP倍率
-    MOB_HP_MULTIPLIER       = 1.0, -- 通常モンスターのHP倍率
-    PLAYER_HP_MULTIPLIER    = 1.0, -- プレイヤーのHP倍率
-    ALTER_EGO_HP_MULTIPLIER = 1.0, -- フェイス/フェローのHP倍率
+    -- Adjust max HP pool for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1.
+    NM_HP_MULTIPLIER        = 1.0,
+    MOB_HP_MULTIPLIER       = 1.0,
+    PLAYER_HP_MULTIPLIER    = 1.0,
+    ALTER_EGO_HP_MULTIPLIER = 1.0,
 
-    -- NM、通常のモンスター、プレイヤー、フェイス/フェローの最大 MP プールを調整します。倍率として機能するため、デフォルトは 1 です。
-    NM_MP_MULTIPLIER        = 1.0, -- NMのMP倍率
-    MOB_MP_MULTIPLIER       = 1.0, -- 通常モンスターのMP倍率
-    PLAYER_MP_MULTIPLIER    = 1.0, -- プレイヤーのMP倍率
-    ALTER_EGO_MP_MULTIPLIER = 1.0, -- フェイス/フェローのMP倍率
+    -- Adjust max MP pool for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1.
+    NM_MP_MULTIPLIER        = 1.0,
+    MOB_MP_MULTIPLIER       = 1.0,
+    PLAYER_MP_MULTIPLIER    = 1.0,
+    ALTER_EGO_MP_MULTIPLIER = 1.0,
 
-    -- サブジョブがメインジョブに提供する MP の割合を設定します。リテール版は半分で、これは除数として機能するため、デフォルトは 2 です。
+    -- Sets the fraction of MP a subjob provides to the main job. Retail is half and this acts as a divisor so default is 2
     SJ_MP_DIVISOR = 2.0,
 
-    -- サブジョブとメインジョブの比率を変更します
-    -- 0 = サブジョブなし
-    -- 1 = 1/2 (デフォルト、75/37、99/49)
-    -- 2 = 2/3 (75/50、99/66)
-    -- 3 = 等しい (75/75、99/99)
+    -- Modify ratio of subjob-to-mainjob
+    -- 0            = no subjobs
+    -- 1            = 1/2   (default, 75/37, 99/49)
+    -- 2            = 2/3   (75/50, 99/66)
+    -- 3            = equal (75/75, 99/99)
     SUBJOB_RATIO = 1,
 
-    -- 比率調整でモンスターのサブジョブも調整しますか? 1 = true / 0 = false
+    -- Also adjust monsters subjob in ratio adjustments? 1 = true / 0 = false
     INCLUDE_MOB_SJ = false,
 
-    -- NM、通常のモンスター、プレイヤー、フェイス/フェローの基本ステータス (STR/VIT など) を調整します。倍率として機能するため、デフォルトは 1 です。
-    NM_STAT_MULTIPLIER        = 1.0, -- NMのステータス倍率
-    MOB_STAT_MULTIPLIER       = 1.0, -- 通常モンスターのステータス倍率
-    PLAYER_STAT_MULTIPLIER    = 1.0, -- プレイヤーのステータス倍率
-    ALTER_EGO_STAT_MULTIPLIER = 1.0, -- フェイス/フェローのステータス倍率
+    -- Adjust base stats (str/vit/etc.) for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1.
+    NM_STAT_MULTIPLIER        = 1.0,
+    MOB_STAT_MULTIPLIER       = 1.0,
+    PLAYER_STAT_MULTIPLIER    = 1.0,
+    ALTER_EGO_STAT_MULTIPLIER = 1.0,
 
+    -- Adjust skill caps for trusts/fellows. Acts as a multiplier, so default is 1.
+    ALTER_EGO_SKILL_MULTIPLIER = 1.0,
 
-    -- フェイス/フェローのスキルキャップを調整します。倍率として機能するため、デフォルトは 1 です。
-    ALTER_EGO_SKILL_MULTIPLIER = 1.0, -- フェイス/フェローのスキル倍率
+    -- Adjust the recast time for abilities. Acts as a multiplier, so default is 1
+    ABILITY_RECAST_MULTIPLIER = 1.0,
 
-    -- アビリティの再詠唱時間を調整します。倍率として機能するため、デフォルトは 1 です。
-    ABILITY_RECAST_MULTIPLIER = 1.0, -- アビリティ再詠唱時間倍率
-
-    -- 共有血盟タイマーを有効/無効にする
+    -- Enable/disable shared blood pact timer
     BLOOD_PACT_SHARED_TIMER = false,
 
-    -- モンスターのドロップ率を調整します。倍率として機能するため、デフォルトは 1 です。
+    -- Adjust mob drop rate. Acts as a multiplier, so default is 1.
     DROP_RATE_MULTIPLIER = 1.0,
 
-    -- モンスターが自然にドロップするギルの倍率。all_mobs_gil_bonus によるボーナスギルには適用されません。デフォルトは 1.0 です。
+    -- Multiplier for gil naturally dropped by mobs. Does not apply to the bonus gil from all_mobs_gil_bonus. Default is 1.0.
     MOB_GIL_MULTIPLIER = 1.0,
 
-    -- すべてのモンスターは、通常は 0 をドロップする場合でも、モンスターレベルごとにこの量のギルを追加でドロップします。
+    -- All mobs drop this much extra gil per mob LV even if they normally drop zero.
     ALL_MOBS_GIL_BONUS = 0,
 
-    -- ドロップできる最大ボーナスギル。デフォルトは 9999 ギルです。
+    -- Maximum total bonus gil that can be dropped. Default 9999 gil.
     MAX_GIL_BONUS = 9999,
 
-    -- モンスターが消滅する代わりに、元の場所に戻ることを許可します
+    -- Allow mobs to walk back home instead of despawning
     MOB_NO_DESPAWN = false,
 
-    -- モンスターが消滅するまでの時間を秒単位で追加します。基本時間は 25 秒なので、ここに 5 を設定すると合計 30 秒になります。
+    -- Adds extra time to mob despawn in seconds. Base time is 25s, so a setting of 5 here would be a total of 30 seconds.
     MOB_ADDITIONAL_TIME_TO_DEAGGRO = 0,
 
-    -- 行動が発生しなくても、パリィ、ブロック、ガードがスキルアップすることを許可します。
-    -- これは以前の時代には起こりませんでした。
-    PARRY_OLD_SKILLUP_STYLE = false, -- 旧パリィスキルアップ方式
-    BLOCK_OLD_SKILLUP_STYLE = false, -- 旧ブロックスキルアップ方式
-    GUARD_OLD_SKILLUP_STYLE = false, -- 旧ガードスキルアップ方式
+    -- Allows parry, block, and guard to skill up regardless of the action occuring.
+    -- This did not happen in previous eras
+    PARRY_OLD_SKILLUP_STYLE = false,
+    BLOCK_OLD_SKILLUP_STYLE = false,
+    GUARD_OLD_SKILLUP_STYLE = false,
 
-    -- すべての戦場のレベルキャップをグローバルにこのレベル数だけ調整します。
+    -- Globally adjusts ALL battlefield level caps by this many levels.
     BATTLE_CAP_TWEAK = 0,
 
-    -- データベースに格納されているミッション戦場のレベルキャップを有効/無効にします。
+    -- Enable/disable level cap of mission battlefields stored in database.
     LV_CAP_MISSION_BCNM = false,
 
-    -- プレイヤーが実験的なものとしてフラグが立てられている BCNM に入場することを許可します
+    -- Allow players to enter BCNMs which are flagged as experimental
     BCNM_ENABLE_EXPERIMENTAL = true,
 
-    -- プレイヤーが保持できる最大メリットポイント
-    -- 10 クラシック
-    -- 30 アビセア
+    -- Max allowed merits points players can hold
+    -- 10 classic
+    -- 30 abyssea
     MAX_MERIT_POINTS = 30,
 
-    -- シャウトコマンドの使用間の最小時間 (秒単位)。
+    -- Minimum time between uses of yell command (in seconds).
     YELL_COOLDOWN = 30,
 
-    -- プレイヤーが隠れている GM に tell を送信するのを防ぎます。他の GM からは tell を受信できます。
+    -- Prevent players from sending tells to hidden GMs. You will still receive them from other GMs.
     BLOCK_TELL_TO_HIDDEN_GM = false,
 
-    -- パケットインジェクションを使用して、戦闘状態ではないときにプレイヤーが WS を実行するのを防ぎます。
+    -- Prevent players from performing WS while unengaged using packet injection.
     PREVENT_UNENGAGED_WS = false,
 
-    -- コマンド監査 [ログ記録] これより低い権限のコマンドはログに記録されません。
-    -- 0 の場合、ログはまったく記録されません。GM 以外に与えられたコマンドはログに記録されません。
+    -- Command Audit [logging] commands with lower permission than this will not be logged.
+    -- Zero for no logging at all. Commands given to non GMs are not logged.
     AUDIT_GM_CMD = false,
 
-    -- Todo = アンチチートメッセージを含むその他のログ記録
+    -- Todo = other logging including anti-cheat messages
 
-    -- チャット監査 [ログ記録] 設定
-    AUDIT_CHAT      = false, -- 通常チャットログ
-    AUDIT_SAY       = false, -- sayログ
-    AUDIT_SHOUT     = false, -- shoutログ
-    AUDIT_TELL      = false, -- tellログ
-    AUDIT_YELL      = false, -- yellログ
-    AUDIT_LINKSHELL = false, -- リンクシェルログ
-    AUDIT_UNITY     = false, -- ユニティチャットログ
-    AUDIT_PARTY     = false, -- パーティチャットログ
+    -- Chat Audit[logging] settings
+    AUDIT_CHAT      = false,
+    AUDIT_SAY       = false,
+    AUDIT_SHOUT     = false,
+    AUDIT_TELL      = false,
+    AUDIT_YELL      = false,
+    AUDIT_LINKSHELL = false,
+    AUDIT_UNITY     = false,
+    AUDIT_PARTY     = false,
 
-
-    -- 回復ティック間の秒数。デフォルトは 10 です。
+    -- Seconds between healing ticks. Default is 10
     HEALING_TICK_DELAY = 10,
 
-    -- サーバー側のアンチチート対策を有効にするには、1 に設定します
+    -- Set to 1 to enable server side anti-cheating measurements
     ANTICHEAT_ENABLED = true,
 
-    -- 違反者の自動投獄を完全に無効にするには、1 に設定します
+    -- Set to 1 to completely disable auto-jailing offenders
     ANTICHEAT_JAIL_DISABLE = false,
 
-    -- ゾーン移動を通して壺ペットを維持する機能を有効/無効にします
+    -- Enable/disable keeping jug pets through zoning
     KEEP_JUGPET_THROUGH_ZONING = false,
 
-    -- レベル同期またはゾーンレベル制限よりも低い最小レベルを持つ壺ペットを消滅させます。
-    -- たとえば、召喚の最小レベルが 23 のときに、レベル 20 キャップのゾーンで Courier Carrie を消滅させます。
-    -- デフォルト値の false はリテール版に忠実ですが、サボテンダーペットから 1000 本針を低レベルで使用するなどのバランス上の懸念事項があります。
+    -- Despawn jug pets that have a minimum level below level sync or zone level restriction.
+    -- Such as despawning Courier Carrie in a level 20 cap when their minimum level to summon is 23.
+    -- While the default value of false is retail accurate, there are some balance concerns such as using 1000 needles at low levels from the cactuar pet.
     DESPAWN_JUGPETS_BELOW_MINIMUM_LEVEL = false,
 
-    -- Lua エラーが発生した後、GM レベルがこの数値以上の場合に、スタックトレースをクライアントに送信します。
-    -- 最大 GM レベルは 5 なので、これを 6 に設定すると、全員に対して無効になります。0 に設定すると、全員に対して有効になります。
+    -- Send stack traces to the client after caught Lua errors if
+    -- their GM level is the same or higher than this number.
+    -- The max GM level is 5, so setting this to 6 disables it
+    -- for everone. Setting it to 0 enables for everyone.
     REPORT_LUA_ERRORS_TO_PLAYER_LEVEL = 6,
-
-    -- サポートジョブにも経験値を獲得できるようにする
-    -- 1.0でメインジョブと同じ値の経験値を得る
-    SUPPORT_JOB_EXP_RATE = 0.0,
-
-    -- 印章のドロップ率とリキャスト時間
-    SEAL_DROP_RATE = 20,
-    SEAL_RECAST_TIME = 300,
-
-    -- 怨みの炎を使っても消えたランタンにならないようにする
-    NOT_DISAPPEAR_LANTERN = false,
 }

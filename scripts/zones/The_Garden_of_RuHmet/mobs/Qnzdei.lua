@@ -13,8 +13,8 @@ local changeState = function(mob, idle)
         mob:setLocalVar('idle', idle)
 
         -- Calculate door id based off of mob id and door offset
-        local doorID = ID.npc.QNZDEI_DOOR_OFFSET + (mob:getID() - ID.mob.QNZDEI_OFFSET) / 4
-        local door = GetNPCByID(doorID)
+        local doorID = math.floor(ID.npc.QNZDEI_DOOR_OFFSET + (mob:getID() - ID.mob.QNZDEI_OFFSET) / 4)
+        local door   = GetNPCByID(doorID)
 
         if door then
             local doorIdle = door:getLocalVar('idle')
@@ -47,7 +47,7 @@ entity.onMobSpawn = function(mob)
 
     -- Qn'Zdei randomly spin at speeds 4, 8, 16, 64 and can be reversed (negative)
     mob:setLocalVar('spinSpeed', utils.randomEntry(spinSpeeds))
-    if math.random(1, 2) == 1 then
+    if math.random(1, 100) <= 50 then
         mob:setLocalVar('reversed', 1)
     end
 end
