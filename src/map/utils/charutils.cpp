@@ -5054,7 +5054,7 @@ namespace charutils
                             PChar->jobs.exp[sjob] = GetExpNEXTLevel(PChar->jobs.job[sjob]) - 1;
                             if (PChar->PParty && PChar->PParty->GetSyncTarget() == PChar)
                             {
-                                PChar->PParty->SetSyncTarget(nullptr, 556);
+                                PChar->PParty->SetSyncTarget(nullptr, MsgStd::LevelSyncRemoveIneligibleExp);
                             }
                         }
                         else
