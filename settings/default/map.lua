@@ -290,6 +290,10 @@ xi.settings.map =
     -- 最大 GM レベルは 5 なので、これを 6 に設定すると、全員に対して無効になります。0 に設定すると、全員に対して有効になります。
     REPORT_LUA_ERRORS_TO_PLAYER_LEVEL = 6,
 
+    -- サポートジョブにも経験値を獲得できるようにする
+    -- 1.0でメインジョブと同じ値の経験値を得る
+    SUPPORT_JOB_EXP_RATE = 0.0,
+
     -- 印章のドロップ率とリキャスト時間
     SEAL_DROP_RATE = 20,
     SEAL_RECAST_TIME = 300,

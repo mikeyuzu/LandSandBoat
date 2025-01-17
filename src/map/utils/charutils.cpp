@@ -5048,6 +5048,94 @@ namespace charutils
 
         PChar->PAI->EventHandler.triggerListener("EXPERIENCE_POINTS", CLuaBaseEntity(PChar), CLuaBaseEntity(PMob), exp);
 
+        auto support_job_exp_rate = settings::get<float>("map.SUPPORT_JOB_EXP_RATE");
+        if (support_job_exp_rate > 0.0f)
+        {
+            auto sjob = PChar->GetSJob();
+            if (sjob != JOB_NON)
+            {
+                // サポートジョブにも経験値を付与する
+                // 限界レベル未満、もしくは限界レベルでかつ、経験値がカンストしていない
+                if (PChar->jobs.job[sjob] < PChar->jobs.genkai || (PChar->jobs.job[sjob] >= PChar->jobs.genkai && PChar->jobs.exp[sjob] < GetExpNEXTLevel(PChar->jobs.job[sjob] - 1)))
+                {
+                    auto sjob_exp = exp * support_job_exp_rate;
+                    PChar->jobs.exp[sjob] += sjob_exp;
+
+                    // レベルが上ったか確認
+                    if (PChar->jobs.exp[sjob] >= GetExpNEXTLevel(PChar->jobs.job[sjob]))
+                    {
+                        // 限界レベルの場合
+                        if (PChar->jobs.job[sjob] >= PChar->jobs.genkai)
+                        {
+                            // 経験値をカンストさせる
+                            PChar->jobs.exp[sjob] = GetExpNEXTLevel(PChar->jobs.job[sjob]) - 1;
+                            if (PChar->PParty && PChar->PParty->GetSyncTarget() == PChar)
+                            {
+                                PChar->PParty->SetSyncTarget(nullptr, MsgStd::LevelSyncRemoveIneligibleExp);
+                            }
+                        }
+                        else
+                        {
+                            PChar->jobs.exp[sjob] -= GetExpNEXTLevel(PChar->jobs.job[sjob]);
+                            // レベルが2つ以上上がらないように経験値を調整する
+                            if (PChar->jobs.exp[sjob] >= GetExpNEXTLevel(PChar->jobs.job[sjob] + 1))
+                            {
+                                PChar->jobs.exp[sjob] = GetExpNEXTLevel(PChar->jobs.job[sjob] + 1) - 1;
+                            }
+                            PChar->jobs.job[sjob] += 1;
+                            PChar->SetSLevel(PChar->jobs.job[sjob]);
+
+                            BuildingCharSkillsTable(PChar);
+                            CalculateStats(PChar);
+                            BuildingCharAbilityTable(PChar);
+                            BuildingCharTraitsTable(PChar);
+                            BuildingCharWeaponSkills(PChar);
+                            if (PChar->PAutomaton != nullptr && PChar->PAutomaton != PChar->PPet)
+                            {
+                                puppetutils::LoadAutomatonStats(PChar);
+                            }
+                            PChar->PLatentEffectContainer->CheckLatentsJobLevel();
+
+                            if (PChar->PParty != nullptr)
+                            {
+                                if (PChar->PParty->GetSyncTarget() == PChar)
+                                {
+                                    PChar->PParty->RefreshSync();
+                                }
+                                PChar->PParty->ReloadParty();
+                            }
+
+                            PChar->UpdateHealth();
+
+                            PChar->health.hp = PChar->GetMaxHP();
+                            PChar->health.mp = PChar->GetMaxMP();
+
+                            SaveCharStats(PChar);
+                            SaveCharJob(PChar, PChar->GetSJob());
+                            SaveCharExp(PChar, PChar->GetSJob());
+
+                            PChar->pushPacket<CCharJobsPacket>(PChar);
+                            PChar->pushPacket<CCharUpdatePacket>(PChar);
+                            PChar->pushPacket<CCharSkillsPacket>(PChar);
+                            PChar->pushPacket<CCharRecastPacket>(PChar);
+                            PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+                            PChar->pushPacket<CMenuMeritPacket>(PChar);
+                            PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
+                            PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
+                            PChar->pushPacket<CCharSyncPacket>(PChar);
+
+                            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageCombatPacket>(PChar, PMob, PChar->jobs.job[sjob], 0, 9));
+                            PChar->pushPacket<CCharStatsPacket>(PChar);
+
+                            luautils::OnPlayerLevelUp(PChar);
+                            roeutils::event(ROE_EVENT::ROE_LEVELUP, PChar, RoeDatagramList{});
+                            PChar->updatemask |= UPDATE_HP;
+                        }
+                    }
+                }
+            }
+        }
+
         // Player levels up
         if ((currentExp + exp) >= GetExpNEXTLevel(PChar->jobs.job[PChar->GetMJob()]) && !onLimitMode)
         {
