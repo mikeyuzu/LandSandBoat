@@ -1,9 +1,9 @@
 -----------------------------------
--- MAIN SETTINGS
+-- メイン設定
 -----------------------------------
--- All settings are attached to the `xi.settings` object. This is published globally, and be accessed from C++ and any script.
+-- 全ての設定は `xi.settings` オブジェクトに紐付けられています。これはグローバルに公開され、C++とあらゆるスクリプトからアクセスできます。
 --
--- This file is concerned mainly with content, balance, and gameplay tweaking.
+-- このファイルは主にコンテンツ、バランス、およびゲームプレイの調整に関するものです。
 -----------------------------------
 
 xi = xi or {}
@@ -11,141 +11,141 @@ xi.settings = xi.settings or {}
 
 xi.settings.main =
 {
-    -- Server name (not longer than 15 characters)
+    -- サーバー名 (15文字以内)
     SERVER_NAME = "Nameless",
 
     SERVER_MESSAGE =
         "Please visit https://github.com/LandSandBoat/server for the latest information on the project.\n" ..
         "Thank you, and we hope you enjoy sailing the sands!",
 
-    -- Setting to lock content more accurately to the expansions defined below.
-    -- This generally results in a more accurate presentation of your selected expansions,
-    -- as well as a less confusing player experience for things that are disabled (things that are disabled are not loaded).
-    -- This feature correlates to the content_tag column in the SQL files.
+    -- 下記で定義された拡張コンテンツをより正確にロックするための設定。
+    -- これにより、選択した拡張コンテンツがより正確に表現され、
+    -- 無効になっているもの（ロードされていないもの）に関してプレイヤーが混乱することが少なくなります。
+    -- この機能は、SQLファイルの content_tag 列に対応しています。
     RESTRICT_CONTENT = 0,
 
-    -- Enable Expansion (1 = Enabled, 0 = Disabled)
-    ENABLE_COP       = 1,
-    ENABLE_TOAU      = 1,
-    ENABLE_WOTG      = 1,
-    ENABLE_ACP       = 1,
-    ENABLE_AMK       = 1,
-    ENABLE_ASA       = 1,
-    ENABLE_ABYSSEA   = 1,
-    ENABLE_SOA       = 1,
-    ENABLE_ROV       = 1,
-    ENABLE_TVR       = 1,
-    ENABLE_VOIDWATCH = 1, -- Not an expansion, but has its own storyline. (Not Implemented)
+    -- 拡張コンテンツを有効にする (1 = 有効, 0 = 無効)
+    ENABLE_COP       = 1,  -- プロマシアの呪縛
+    ENABLE_TOAU      = 1,  -- アトルガンの秘宝
+    ENABLE_WOTG      = 1,  -- アルタナの神兵
+    ENABLE_ACP       = 1,  -- 追加シナリオ「石を見る夢」
+    ENABLE_AMK       = 1,  -- 追加シナリオ「戦慄！モグ祭りの夜」
+    ENABLE_ASA       = 1,  -- 追加シナリオ「シャントット帝国の陰謀」
+    ENABLE_ABYSSEA   = 1,  -- アビセア
+    ENABLE_SOA       = 1,  -- アドゥリンの魔境
+    ENABLE_ROV       = 1,  -- 星唄ミッション
+    ENABLE_TVR       = 1,  -- 触世のエンブリオ
+    ENABLE_VOIDWATCH = 1,  -- 拡張コンテンツではありませんが、独自のストーリーがあります。(未実装)
 
-    -- FIELDS OF VALOR/Grounds of Valor settings
-    ENABLE_FIELD_MANUALS  = 1, -- Enables Fields of Valor
-    ENABLE_GROUNDS_TOMES  = 1, -- Enables Grounds of Valor
-    ENABLE_SURVIVAL_GUIDE = 1, -- Enables Survival Guides (Not Implemented)
-    REGIME_WAIT           = 1, -- Make people wait till 00:00 game time as in retail. If it's 0, there is no wait time.
-    FOV_REWARD_ALLIANCE   = 0, -- Allow Fields of Valor rewards while being a member of an alliance. (default retail behavior: 0)
-    GOV_REWARD_ALLIANCE   = 1, -- Allow Grounds of Valor rewards while being a member of an alliance. (default retail behavior: 1)
+    -- フィールド・オブ・ヴァラー/グラウンド・オブ・ヴァラー設定
+    ENABLE_FIELD_MANUALS  = 1, -- フィールド・オブ・ヴァラーを有効にする
+    ENABLE_GROUNDS_TOMES  = 1, -- グラウンド・オブ・ヴァラーを有効にする
+    ENABLE_SURVIVAL_GUIDE = 1, -- サバイバルガイドを有効にする (未実装)
+    REGIME_WAIT           = 1, -- 公式と同様に、ゲーム内時間0:00まで待機させる。0の場合は待機時間なし。
+    FOV_REWARD_ALLIANCE   = 0, -- アライアンスに所属している間もフィールド・オブ・ヴァラーを許可する。(公式のデフォルト動作: 0)
+    GOV_REWARD_ALLIANCE   = 1, -- アライアンスに所属している間もグラウンド・オブ・ヴァラーを許可する。(公式のデフォルト動作: 1)
 
-    -- Daily points / Gobbie mystery box.
-    ENABLE_DAILY_TALLY = 1,  -- Allows acquisition of daily points for gobbie mystery box.
-    DAILY_TALLY_AMOUNT = 10,
-    DAILY_TALLY_LIMIT  = 50000,
-    GOBBIE_BOX_MIN_AGE = 45, -- Minimum character age in days before a character can sign up for Gobbie Mystery Box
+    -- デイリーポイント / ゴブリンの不思議箱
+    ENABLE_DAILY_TALLY = 1,  -- ゴブリンの不思議箱のデイリーポイント取得を許可する。
+    DAILY_TALLY_AMOUNT = 10, -- 1日あたりに取得できるデイリーポイント数
+    DAILY_TALLY_LIMIT  = 50000, -- デイリーポイントの上限
+    GOBBIE_BOX_MIN_AGE = 45, -- ゴブリンの不思議箱に登録できるようになるまでのキャラクター作成日数の下限
 
-    -- Records of Eminence
-    ENABLE_ROE            = 1, -- Enable Records of Eminence
-    ENABLE_ROE_TIMED      = 1, -- Enable 4-hour timed records
-    ENABLE_EXCHANGE_LIMIT = 1, -- Enable Maximum limit of sparks spent per Week (default retail behavior: 1)
+    -- エミネンスレコード
+    ENABLE_ROE            = 1, -- エミネンスレコードを有効にする
+    ENABLE_ROE_TIMED      = 1, -- 4時間制のレコードを有効にする
+    ENABLE_EXCHANGE_LIMIT = 1, -- 1週間あたりの功績ポイント/ワークスポイントの使用上限を有効にする (リテール版のデフォルト動作: 1)
 
-    WEEKLY_EXCHANGE_LIMIT = 100000, -- Maximum amount of sparks/accolades that can be spent per week (default retail value: 100000)
+    WEEKLY_EXCHANGE_LIMIT = 100000, -- 1週間あたりに使用できる功績ポイント/ワークスポイントの上限 (リテール版のデフォルト値: 100000)
 
-    -- Currency Caps (Change at your own risk!)
-    CAP_CURRENCY_ACCOLADES = 99999,
-    CAP_CURRENCY_BALLISTA  = 2000,
-    CAP_CURRENCY_SPARKS    = 99999,
-    CAP_CURRENCY_VALOR     = 50000,
+    -- 通貨上限 (変更は自己責任で！)
+    CAP_CURRENCY_ACCOLADES = 99999, -- ワークスポイントの上限
+    CAP_CURRENCY_BALLISTA  = 2000,  -- バリスタポイントの上限
+    CAP_CURRENCY_SPARKS    = 99999, -- エミネンスポイントの上限
+    CAP_CURRENCY_VALOR     = 50000, -- ベイラーポイントの上限
 
-    -- Magian Trials
+    -- メイジャンの試練
     ENABLE_MAGIAN_TRIALS = 1,
 
-    -- VoidWalker
+    -- ボイドウォーカー
     ENABLE_VOIDWALKER = 1,
 
-    -- Monstrosity (Heavily in development, use at your own risk!)
-    ENABLE_MONSTROSITY               = 0,
-    MONSTROSITY_INFAMY_RATIO         = 0.1, -- (float) The ratio of exp gained to infamy gained on defeating a mob.
-    MONSTROSITY_INFAMY_MESSAGING     = 0,   -- Show a message when you gain infamy.
-    MONSTROSITY_TELEPORT_TO_FERETORY = 0,   -- Return to Feretory instead of the zone where you entered Feretory when Relinquishing or after death.
-    MONSTROSITY_TRIGGER_NPCS         = 0,   -- Allow Monipulators to trigger NPCs outside of the Feretory.
-    MONSTROSITY_DONT_WIPE_BUFFS      = 0,   -- If set, buffs won't be wiped when changing species in the Feretory.
+    -- モンストロス・プレッジ (開発中のため、使用は自己責任で！)
+    ENABLE_MONSTROSITY               = 0,   -- モンストロス・プレッジを有効にする
+    MONSTROSITY_INFAMY_RATIO         = 0.1, -- (float) モンスターを倒したときに得られる経験値と悪名の比率。
+    MONSTROSITY_INFAMY_MESSAGING     = 0,   -- 悪名を得たときにメッセージを表示する。
+    MONSTROSITY_TELEPORT_TO_FERETORY = 0,   -- 変身解除または死亡時に、フェレトリーに入ったゾーンではなく、フェレトリーに戻る。
+    MONSTROSITY_TRIGGER_NPCS         = 0,   -- モニピュレーターがフェレトリーの外のNPCをトリガーすることを許可する。
+    MONSTROSITY_DONT_WIPE_BUFFS      = 0,   -- 設定されている場合、フェレトリーで種族を変更してもバフは消去されない。
 
-    -- Monstrosity PVP Mode
-    -- 0: Retail (fully restricted): Monipulators and Players must both be flagged for Beligerency before they can fight
-    -- 1: (partially restricted): Players do not need to be flagged to fight, but Monipulators do.
-    -- 2: (open): Belligerency is not needed for Players and Monipulators to fight.
+    -- モンストロス・プレッジPvPモード
+    -- 0: リテール版 (完全制限): モニピュレーターとプレイヤーは戦闘前に互いに戦闘態勢を取る必要がある
+    -- 1: (部分制限): プレイヤーは戦闘態勢を取る必要がないが、モニピュレーターは必要。
+    -- 2: (オープン): プレイヤーとモニピュレーターは戦闘態勢を取る必要がない。
     MONSTROSITY_PVP_MODE        = 0,
-    MONSTROSITY_PVP_ZONE_BYPASS = 0, -- Show the full zone teleport menu from Feretory while Belligerency is flagged.
+    MONSTROSITY_PVP_ZONE_BYPASS = 0, -- 戦闘態勢中にフェレトリーから完全なゾーンテレポメニューを表示する。
 
-    -- TREASURE CASKETS
-    -- Retail droprate = 0.1 (10%) with no other effects active
-    -- Set to 0 to disable caskets.
-    -- max is clamped to 1.0 (100%)
+    -- トレジャーキャスケット
+    -- リテール版のドロップ率 = 0.1 (10%)、他の効果はなし
+    -- 0に設定するとカスクは無効になります。
+    -- 最大値は1.0 (100%)に制限されています。
     CASKET_DROP_RATE = 0.1,
 
-    -- Abyssea lights
-    -- certain mobs that reduces the drop rate automatically depending on the light.
-    -- pearl light is a dramaticly lower drop rate.
-    -- min is 0 max is 100 (1 = 1%)
+    -- アビセアの光
+    -- 光の量に応じてドロップ率が自動的に低下する特定のモンスターがいます。
+    -- 真珠の光はドロップ率が劇的に低くなります。
+    -- 最小値は0、最大値は100 (1 = 1%)
     ABYSSEA_LIGHTS_DROP_RATE = 80,
 
-    -- This bonus will be added to players lights apon entering abyssea, it is mainly used during events
-    -- recomended amount 0 - 100, some lights will cap at 255 while others are less, these are capped automatically
+    -- アビセアに入場したプレイヤーの光に追加されるボーナス。主にイベント中に使用されます。
+    -- 推奨値は0～100。一部の光は255で上限に達しますが、それ以外の光はもっと低い値で上限に達します。上限は自動的に適用されます。
     ABYSSEA_BONUSLIGHT_AMOUNT = 0,
 
-    -- CHARACTER CONFIG
-    INITIAL_LEVEL_CAP              = 50, -- The initial level cap for new players.  There seems to be a hardcap of 255.
-    MAX_LEVEL                      = 99, -- Level max of the server, lowers the attainable cap by disabling Limit Break quests.
-    NORMAL_MOB_MAX_LEVEL_RANGE_MIN = 0,  -- Lower Bound of Max Level Range for Normal Mobs (0 = Uncapped)
-    NORMAL_MOB_MAX_LEVEL_RANGE_MAX = 0,  -- Upper Bound of Max Level Range for Normal Mobs (0 = Uncapped)
-    START_GIL                      = 10, -- Amount of gil given to newly created characters.
-    START_INVENTORY                = 30, -- Starting inventory and satchel size.  Ignores values < 30.  Do not set above 80!
-    NEW_CHARACTER_CUTSCENE         = 1,  -- Set to 1 to enable opening cutscenes, 0 to disable.
-    SUBJOB_QUEST_LEVEL             = 18, -- Minimum level to accept either subjob quest.  Set to 0 to start the game with subjobs unlocked.
-    ADVANCED_JOB_LEVEL             = 30, -- Minimum level to accept advanced job quests.  Set to 0 to start the game with advanced jobs.
-    ALL_MAPS                       = 0,  -- Set to 1 to give starting characters all the maps.
-    UNLOCK_OUTPOST_WARPS           = 0,  -- Set to 1 to give starting characters all outpost warps.  2 to add Tu'Lia and Tavnazia.
+    -- キャラクター設定
+    INITIAL_LEVEL_CAP              = 50, -- 新規プレイヤーの初期レベルキャップ。255のハードキャップがあるようです。
+    MAX_LEVEL                      = 99, -- サーバーの最大レベル。限界突破クエストを無効にすることで到達可能な上限を下げます。
+    NORMAL_MOB_MAX_LEVEL_RANGE_MIN = 0,  -- 通常モンスターの最大レベル範囲の下限 (0 = 無制限)
+    NORMAL_MOB_MAX_LEVEL_RANGE_MAX = 0,  -- 通常モンスターの最大レベル範囲の上限 (0 = 無制限)
+    START_GIL                      = 10, -- 新規作成キャラクターに与えられるギル量。
+    START_INVENTORY                = 30, -- 開始時の所持品とサッチェルのサイズ。30未満の値は無視されます。80以上に設定しないでください！
+    NEW_CHARACTER_CUTSCENE         = 1,  -- 1に設定するとオープニングカットシーンが有効になり、0に設定すると無効になります。
+    SUBJOB_QUEST_LEVEL             = 18, -- サブジョブクエストを受注できる最低レベル。0に設定すると、ゲーム開始時にサブジョブがアンロックされます。
+    ADVANCED_JOB_LEVEL             = 30, -- 上位ジョブクエストを受注できる最低レベル。0に設定すると、ゲーム開始時に上位ジョブがアンロックされます。
+    ALL_MAPS                       = 0,  -- 1に設定すると、開始キャラクターにすべてのマップが与えられます。
+    UNLOCK_OUTPOST_WARPS           = 0,  -- 1に設定すると、開始キャラクターにすべての拠点ワープが与えられます。2に設定すると、Tu'LiaとTavnaziaが追加されます。
 
-    SHOP_PRICE      = 1.000, -- Multiplies prices in NPC shops.
-    GIL_RATE        = 1.000, -- Multiplies gil earned from quests.  Won't always display in game.
-    BAYLD_RATE      = 1.000, -- Multiples bayld earned from quests.
-    -- Note: EXP rates are also influenced by conf setting
-    EXP_RATE        = 1.000, -- Multiplies exp from script (except FoV/GoV).
-    CAPACITY_RATE   = 1.000, -- Multiplies capacy points gained.
-    BOOK_EXP_RATE   = 1.000, -- Multiplies exp from FoV/GoV book pages.
-    TABS_RATE       = 1.000, -- Multiplies tabs earned from fov.
-    ROE_EXP_RATE    = 1.000, -- Multiplies exp earned from records of eminence.
-    SPARKS_RATE     = 1.000, -- Multiplies sparks earned from records of eminence.
-    CURE_POWER      = 1.000, -- Multiplies amount healed from Healing Magic, including the relevant Blue Magic.
-    ELEMENTAL_POWER = 1.000, -- Multiplies damage dealt by Elemental and non-drain Dark Magic.
-    DIVINE_POWER    = 1.000, -- Multiplies damage dealt by Divine Magic.
-    NINJUTSU_POWER  = 1.000, -- Multiplies damage dealt by Ninjutsu Magic.
-    BLUE_POWER      = 1.000, -- Multiplies damage dealt by Blue Magic.
-    DARK_POWER      = 1.000, -- Multiplies amount drained by Dark Magic.
-    ITEM_POWER      = 1.000, -- Multiplies the effect of items such as Potions and Ethers.
-    WEAPON_SKILL_POWER  = 1.000, -- Multiplies damage dealt by Weapon Skills.
+    SHOP_PRICE      = 1.000, -- NPCショップの価格に倍率をかける。
+    GIL_RATE        = 1.000, -- クエストから得られるギルに倍率をかける。ゲーム内では常に表示されるとは限りません。
+    BAYLD_RATE      = 1.000, -- クエストから得られるベイldに倍率をかける。
+    -- 注：経験値レートはconf設定の影響も受けます。
+    EXP_RATE        = 1.000, -- スクリプトからの経験値に倍率をかける (勲章/練武訓練場を除く)。
+    CAPACITY_RATE   = 1.000, -- キャパシティポイントの獲得量に倍率をかける。
+    BOOK_EXP_RATE   = 1.000, -- 勲章/練武訓練場のブックページからの経験値に倍率をかける。
+    TABS_RATE       = 1.000, -- 勲章で得られるタブに倍率をかける。
+    ROE_EXP_RATE    = 1.000, -- レコード・オブ・エミネンスで得られる経験値に倍率をかける。
+    SPARKS_RATE     = 1.000, -- レコード・オブ・エミネンスで得られる功績ポイントに倍率をかける。
+    CURE_POWER      = 1.000, -- 回復魔法（関連する青魔法を含む）の回復量に倍率をかける。
+    ELEMENTAL_POWER = 1.000, -- 精霊魔法と吸収のない暗黒魔法のダメージに倍率をかける。
+    DIVINE_POWER    = 1.000, -- 神聖魔法のダメージに倍率をかける。
+    NINJUTSU_POWER  = 1.000, -- 忍術のダメージに倍率をかける。
+    BLUE_POWER      = 1.000, -- 青魔法のダメージに倍率をかける。
+    DARK_POWER      = 1.000, -- 暗黒魔法の吸収量に倍率をかける。
+    ITEM_POWER      = 1.000, -- ポーションやエーテルなどのアイテムの効果に倍率をかける。
+    WEAPON_SKILL_POWER  = 1.000, -- ウェポンスキルのダメージに倍率をかける。
 
-    USE_ADOULIN_WEAPON_SKILL_CHANGES = true,  -- true/false. Change to toggle new Adoulin weapon skill damage calculations
-    DISABLE_PARTY_EXP_PENALTY        = false, -- true/false.
-    ENABLE_IMMUNOBREAK               = true,  -- true/false. Allow/Disallow immunobreaks to happen.
+    USE_ADOULIN_WEAPON_SKILL_CHANGES = true,  -- true/false。アドゥリンの新しいウェポンスキルダメージ計算を切り替えます。
+    DISABLE_PARTY_EXP_PENALTY        = false, -- true/false。パーティ経験値ペナルティを無効にするかどうか。
+    ENABLE_IMMUNOBREAK               = true,  -- true/false。耐性突破を許可/禁止する。
 
-    -- TRUSTS
-    ENABLE_TRUST_CASTING           = 1,
-    ENABLE_TRUST_QUESTS            = 1,
-    ENABLE_TRUST_CUSTOM_ENGAGEMENT = 0,
+    -- フェイス
+    ENABLE_TRUST_CASTING           = 1, -- フェイスの魔法詠唱を許可する
+    ENABLE_TRUST_QUESTS            = 1, -- フェイス関連クエストを有効にする
+    ENABLE_TRUST_CUSTOM_ENGAGEMENT = 0, -- フェイスのカスタム戦闘開始条件を有効にする
 
-    ENABLE_TRUST_ALTER_EGO_EXTRAVAGANZA          = 0, -- 0 = disabled, 1 = summer/ny, 2 = spring/autumn, 3 = both
-    ENABLE_TRUST_ALTER_EGO_EXTRAVAGANZA_ANNOUNCE = 0, -- 0 = disabled, 1 = add announcement to player login
-    ENABLE_TRUST_ALTER_EGO_EXPO                  = 0, -- 0 = disabled, 1 = expo - HPP/MPP/Status Resistance, 2 = expo plus (not implemented)
-    ENABLE_TRUST_ALTER_EGO_EXPO_ANNOUNCE         = 0, -- 0 = disabled, 1 = add announcement to player login
+    ENABLE_TRUST_ALTER_EGO_EXTRAVAGANZA          = 0, -- 0 = 無効, 1 = 夏/新年, 2 = 春/秋, 3 = 両方
+    ENABLE_TRUST_ALTER_EGO_EXTRAVAGANZA_ANNOUNCE = 0, -- 0 = 無効, 1 = プレイヤーログイン時にアナウンスを追加
+    ENABLE_TRUST_ALTER_EGO_EXPO                  = 0, -- 0 = 無効, 1 = 通常エキスポ - HP/MP/状態異常耐性向上, 2 = 特別エキスポ (未実装)
+    ENABLE_TRUST_ALTER_EGO_EXPO_ANNOUNCE         = 0, -- 0 = 無効, 1 = プレイヤーログイン時にアナウンスを追加
 
     TRUST_ALTER_EGO_EXTRAVAGANZA_MESSAGE =
         "\n \n" .. -- The space between these newlines is intentional
@@ -157,157 +157,158 @@ xi.settings.main =
         "\129\153\129\154 The Alter Ego Expo Campaign is active! \129\154\129\153\n" ..
         "Trusts gain the benefits of Increased HP, MP, and Status Resistances!",
 
-    HARVESTING_BREAK_CHANCE = 33, -- % chance for the sickle to break during harvesting.  Set between 0 and 100.
-    EXCAVATION_BREAK_CHANCE = 33, -- % chance for the pickaxe to break during excavation.  Set between 0 and 100.
-    LOGGING_BREAK_CHANCE    = 33, -- % chance for the hatchet to break during logging.  Set between 0 and 100.
-    MINING_BREAK_CHANCE     = 33, -- % chance for the pickaxe to break during mining.  Set between 0 and 100.
-    HARVESTING_RATE         = 50, -- % chance to recieve an item from haresting.  Set between 0 and 100.
-    EXCAVATION_RATE         = 50, -- % chance to recieve an item from excavation.  Set between 0 and 100.
-    LOGGING_RATE            = 50, -- % chance to recieve an item from logging.  Set between 0 and 100.
-    MINING_RATE             = 50, -- % chance to recieve an item from mining.  Set between 0 and 100.
-    DIGGING_RATE            = 85, -- % chance to receive an item from chocbo digging during favorable weather.  Set between 0 and 100.
+    HARVESTING_BREAK_CHANCE = 33, -- 収穫中に草刈鎌が壊れる確率(%)。0～100の値を設定します。
+    EXCAVATION_BREAK_CHANCE = 33, -- 採掘中につるはしが壊れる確率(%)。0～100の値を設定します。
+    LOGGING_BREAK_CHANCE    = 33, -- 伐採中にまさかりが壊れる確率(%)。0～100の値を設定します。
+    MINING_BREAK_CHANCE     = 33, -- 鉱石採掘中につるはしが壊れる確率(%)。0～100の値を設定します。
+    HARVESTING_RATE         = 50, -- 収穫でアイテムを入手できる確率(%)。0～100の値を設定します。
+    EXCAVATION_RATE         = 50, -- 採掘でアイテムを入手できる確率(%)。0～100の値を設定します。
+    LOGGING_RATE            = 50, -- 伐採でアイテムを入手できる確率(%)。0～100の値を設定します。
+    MINING_RATE             = 50, -- 鉱石採掘でアイテムを入手できる確率(%)。0～100の値を設定します。
+    DIGGING_RATE            = 85, -- 好ましい天候時にチョコボ掘りでアイテムを入手できる確率(%)。0～100の値を設定します。
 
-    HEALING_TP_CHANGE       = -100, -- Change in TP for each healing tick. Default is -100
+    HEALING_TP_CHANGE       = -100, -- 回復ティックごとのTPの変化量。デフォルトは-100です。
 
-    -- SE implemented coffer/chest illusion time in order to prevent coffer farming. No-one in the same area can open a chest or coffer for loot (gil, gems & items)
-    -- till a random time between MIN_ILLSION_TIME and MAX_ILLUSION_TIME. During this time players can loot keyitem and item related to quests (AF, maps... etc.)
-    COFFER_MAX_ILLUSION_TIME = 3600,  -- 1 hour
-    COFFER_MIN_ILLUSION_TIME = 1800,  -- 30 minutes
-    CHEST_MAX_ILLUSION_TIME  = 3600,  -- 1 hour
-    CHEST_MIN_ILLUSION_TIME  = 1800,  -- 30 minutes
+    -- SEは、宝箱/木箱の採取を防止するために、宝箱/木箱のイリュージョン時間を実装しました。同じエリアにいる誰もが、MIN_ILLSION_TIMEとMAX_ILLUSION_TIMEの間のランダムな時間まで、宝箱または木箱からアイテム（ギル、宝石、アイテム）を略奪できません。
+    -- この間、プレイヤーはクエストに関連するキーアイテムとアイテム（アーティファクト、マップなど）を略奪できます。
+    COFFER_MAX_ILLUSION_TIME = 3600,  -- 1時間 (宝箱)
+    COFFER_MIN_ILLUSION_TIME = 1800,  -- 30分 (宝箱)
+    CHEST_MAX_ILLUSION_TIME  = 3600,  -- 1時間 (木箱)
+    CHEST_MIN_ILLUSION_TIME  = 1800,  -- 30分 (木箱)
 
-    -- Multiplier to NM lottery spawn chance. (Default 1.0) eg. 0 = disable lottery spawns. -1 for always 100% chance.
+
+    -- NM抽選ポップの発生確率に対する倍率。(デフォルト1.0) 例：0 = 抽選ポップを無効にする。-1 = 常に100%の確率。
     NM_LOTTERY_CHANCE = 1.0,
-    -- Multiplier to NM lottery cooldown time (Default 1.0) eg. 2.0 = twice as long. 0 = no cooldowns.
+    -- NM抽選クールダウン時間に対する倍率。(デフォルト1.0) 例：2.0 = 2倍の長さ。0 = クールダウンなし。
     NM_LOTTERY_COOLDOWN = 1.0,
 
-    -- GARRISON SETTINGS
-    ENABLE_GARRISON        = true,  -- If true, enables garrison functionality
-    GARRISON_LOCKOUT       = 1800,  -- Time in seconds before a new garrison can be started (default: 1800)
-    GARRISON_TIME_LIMIT    = 1800,  -- Time in seconds before lose ongoing garrison (default: 1800)
-    GARRISON_ONCE_PER_WEEK = true,  -- Set to false to bypass the limit of one garrison per Conquest Tally Week.
-    GARRISON_PARTY_LIMIT   = 18,    -- Set to max party members you want to do garrison (default: 18).
-    GARRISON_NATION_BYPASS = false, -- Set to true to bypass the nation requirement.
-    GARRISON_RANK          = 2,     -- Set to minumum Nation Rank to start Garrison (default: 2).
+    -- 拠点戦設定
+    ENABLE_GARRISON        = true,  -- trueの場合、拠点戦機能を有効にします。
+    GARRISON_LOCKOUT       = 1800,  -- 新しい拠点戦を開始できるまでの時間（秒）（デフォルト：1800）
+    GARRISON_TIME_LIMIT    = 1800,  -- 拠点戦が失敗するまでの制限時間（秒）（デフォルト：1800）
+    GARRISON_ONCE_PER_WEEK = true,  -- falseに設定すると、征服集計週あたりの拠点戦1回制限をバイパスします。
+    GARRISON_PARTY_LIMIT   = 18,    -- 拠点戦に参加できる最大パーティメンバー数に設定します（デフォルト：18）。
+    GARRISON_NATION_BYPASS = false, -- trueに設定すると、所属国要件をバイパスします。
+    GARRISON_RANK          = 2,     -- 拠点戦を開始するための最低所属国ランクに設定します（デフォルト：2）。
 
-    -- DYNAMIS SETTINGS
-    BETWEEN_2DYNA_WAIT_TIME     = 24,       -- Hours before player can re-enter Dynamis. Default is 1 Earthday (24 hours).
-    DYNA_MIDNIGHT_RESET         = true,     -- If true, makes the wait time count by number of server midnights instead of full 24 hour intervals
-    DYNA_LEVEL_MIN              = 65,       -- Level min for entering in Dynamis
-    TIMELESS_HOURGLASS_COST     = 500000,   -- Refund for the timeless hourglass for Dynamis.
-    PRISMATIC_HOURGLASS_COST    = 50000,    -- Cost of the prismatic hourglass for Dynamis.
-    CURRENCY_EXCHANGE_RATE      = 100,      -- X Tier 1 ancient currency -> 1 Tier 2, and so on. Certain values may conflict with shop items. Not designed to exceed 198.
-    ENABLE_EXCHANGE_100S_TO_1S  = false,    -- true/false. Allow exchange of 100s to 1s, like you can with 10Ks to 100s.
-    RELIC_2ND_UPGRADE_WAIT_TIME = 7200,     -- Wait time for 2nd relic upgrade (stage 2 -> stage 3) in seconds. 7200s = 2 hours.
-    RELIC_3RD_UPGRADE_WAIT_TIME = 3600,     -- Wait time for 3rd relic upgrade (stage 3 -> stage 4) in seconds. 3600s = 1 hour.
-    FREE_COP_DYNAMIS            = 0,        -- Authorize player to entering inside COP Dynamis without completing COP mission (1 = enable 0 = disable)
+    -- デュナミス設定
+    BETWEEN_2DYNA_WAIT_TIME     = 24,       -- プレイヤーがデュナミスに再入場できるまでの時間（時間）。デフォルトは1地球日（24時間）。
+    DYNA_MIDNIGHT_RESET         = true,     -- trueの場合、待機時間は24時間間隔ではなく、サーバーの深夜の数でカウントされます。
+    DYNA_LEVEL_MIN              = 65,       -- デュナミスに入場するための最低レベル。
+    TIMELESS_HOURGLASS_COST     = 500000,   -- デュナミスの永遠の砂時計の払い戻し額。
+    PRISMATIC_HOURGLASS_COST    = 50000,    -- デュナミスの七色の砂時計のコスト。
+    CURRENCY_EXCHANGE_RATE      = 100,      -- X枚のTier 1古代通貨 -> 1枚のTier 2、以下同様。特定の値はショップアイテムと競合する可能性があります。198を超えないように設計されています。
+    ENABLE_EXCHANGE_100S_TO_1S  = false,    -- true/false。1万枚を100枚に交換できるように、100枚を1枚に交換することを許可します。
+    RELIC_2ND_UPGRADE_WAIT_TIME = 7200,     -- レリックの2回目の強化（ステージ2 -> ステージ3）の待機時間（秒）。7200秒 = 2時間。
+    RELIC_3RD_UPGRADE_WAIT_TIME = 3600,     -- レリックの3回目の強化（ステージ3 -> ステージ4）の待機時間（秒）。3600秒 = 1時間。
+    FREE_COP_DYNAMIS            = 0,        -- ジラートミッションを完了せずにCOPダイナミスへの入場を許可する（1 = 有効、0 = 無効）。
 
-    -- LIMBUS SETTINGS
-    COSMO_CLEANSE_BASE_COST     = 15000,    -- Base gil cost for a Cosmo Cleanse from Sagheera
+    -- リンバス設定
+    COSMO_CLEANSE_BASE_COST     = 15000,    -- Sagheeraからのコスモクリーンズの基本ギルコスト。
 
-    -- QUEST/MISSION SPECIFIC SETTINGS
-    AF1_QUEST_LEVEL = 40,    -- Minimum level to start AF1 quest
-    AF2_QUEST_LEVEL = 50,    -- Minimum level to start AF2 quest
-    AF3_QUEST_LEVEL = 50,    -- Minimum level to start AF3 quest
-    OLDSCHOOL_G1    = false, -- Set to true to require farming Exoray Mold, Bombd Coal, and Ancient Papyrus drops instead of allowing key item method.
-    OLDSCHOOL_G2    = false, -- Set true to require the NMs for "Atop the Highest Mountains" be dead to get KI like before SE changed it.
-    FRIGICITE_TIME  = 30,    -- When OLDSCHOOL_G2 is enabled, this is the time (in seconds) you have from killing Boreal NMs to click the "???" target.
-    ASSAULT_MINIMUM = 1,     -- Minimum amount of people needed to start an assault mission. TOAU era is 3, Default is 1.
+    -- クエスト/ミッション固有の設定
+    AF1_QUEST_LEVEL = 40,    -- AF1クエストを開始するための最低レベル。
+    AF2_QUEST_LEVEL = 50,    -- AF2クエストを開始するための最低レベル。
+    AF3_QUEST_LEVEL = 50,    -- AF3クエストを開始するための最低レベル。
+    OLDSCHOOL_G1    = false, -- trueに設定すると、キーアイテム方式ではなく、エクソレイモールド、ボムドコール、古代パピルスのドロップ集めが必要になります。
+    OLDSCHOOL_G2    = false, -- trueに設定すると、「最高峰に挑みし者」のNMを倒すことでKIを入手する必要があります（SEが変更する前の仕様）。
+    FRIGICITE_TIME  = 30,    -- OLDSCHOOL_G2が有効な場合、これはボレアNMを倒してから「??？」ターゲットをクリックできるまでの時間（秒）です。
+    ASSAULT_MINIMUM = 1,     -- アサルトミッションを開始するために必要な最低人数。TOAU時代は3、デフォルトは1です。
 
-    -- SPELL SPECIFIC SETTINGS
-    DIA_OVERWRITE                   = 1,     -- Set to 1 to allow Bio to overwrite same tier Dia.  Default is 1.
-    BIO_OVERWRITE                   = 0,     -- Set to 1 to allow Dia to overwrite same tier Bio.  Default is 0.
-    STONESKIN_CAP                   = 350,   -- Soft cap for hp absorbed by stoneskin
-    BLINK_SHADOWS                   = 2,     -- Number of shadows supplied by Blink spell
-    SPIKE_EFFECT_DURATION           = 180,   -- the duration of RDM, BLM spikes effects (not Reprisal)
-    ELEMENTAL_DEBUFF_DURATION       = 120,   -- base duration of elemental debuffs
-    AQUAVEIL_COUNTER                = 1,     -- Base amount of hits Aquaveil absorbs to prevent spell interrupts. Retail is 1.
-    ABSORB_SPELL_AMOUNT             = 8,     -- how much of a stat gets absorbed by DRK absorb spells - expected to be a multiple of 8.
-    ABSORB_SPELL_TICK               = 9,     -- duration of 1 absorb spell tick
-    SNEAK_INVIS_DURATION_MULTIPLIER = 1,     -- multiplies duration of sneak, invis, deodorize to reduce player torture. 1 = retail behavior.
-    USE_OLD_CURE_FORMULA            = false, -- true/false. if true, uses older cure formula (3*MND + VIT + 3*(healing skill/5)) // cure 6 will use the newer formula
-    USE_OLD_MAGIC_DAMAGE            = false, -- true/false. if true, uses older magic damage formulas
+    -- 魔法固有の設定
+    DIA_OVERWRITE                   = 1,     -- 1に設定すると、バイオが同じ段階のディアを上書きできます。デフォルトは1です。
+    BIO_OVERWRITE                   = 0,     -- 1に設定すると、ディアが同じ段階のバイオを上書きできます。デフォルトは0です。
+    STONESKIN_CAP                   = 350,   -- ストンスキンで吸収されるHPのソフトキャップ。
+    BLINK_SHADOWS                   = 2,     -- ブリンク呪文によって提供される影の数。
+    SPIKE_EFFECT_DURATION           = 180,   -- 赤魔道士、黒魔道士のスパイク効果の持続時間（報復を除く）。
+    ELEMENTAL_DEBUFF_DURATION       = 120,   -- 属性弱体魔法の基本持続時間。
+    AQUAVEIL_COUNTER                = 1,     -- アクアベールが呪文詠唱の中断を防ぐために吸収するヒット数。リテール版は1です。
+    ABSORB_SPELL_AMOUNT             = 8,     -- 暗黒騎士の吸収魔法で吸収されるステータス量 - 8の倍数であることが想定されます。
+    ABSORB_SPELL_TICK               = 9,     -- 1回の吸収魔法ティックの持続時間。
+    SNEAK_INVIS_DURATION_MULTIPLIER = 1,     -- スニーク、インビジ、デオダライズの持続時間に倍率をかけ、プレイヤーの苦痛を軽減します。1 = リテール版の動作。
+    USE_OLD_CURE_FORMULA            = false, -- true/false。trueの場合、古いケアルの計算式を使用します (3*MND + VIT + 3*(回復魔法スキル/5)) // ケアルVIは新しい計算式を使用します。
+    USE_OLD_MAGIC_DAMAGE            = false, -- true/false。trueの場合、古い魔法ダメージ計算式を使用します。
 
-    -- CELEBRATIONS
-    EXPLORER_MOOGLE_LV              = 10, -- Enables Explorer Moogle teleports and sets required level. Zero to disable.
-    HALLOWEEN_2005                  = 0,  -- Set to 1 to Enable the 2005 version of Harvest Festival, will start on Oct. 20 and end Nov. 1.
-    HALLOWEEN_YEAR_ROUND            = 0,  -- Set to 1 to have Harvest Festival initialize outside of normal times.
-    EGG_HUNT                        =
+    -- 季節イベント
+    EXPLORER_MOOGLE_LV              = 10, -- 探検モーグリのテレポを有効にし、必要なレベルを設定します。ゼロに設定すると無効になります。
+    HALLOWEEN_2005                  = 0,  -- 1に設定すると、2005年版の収穫祭が有効になり、10月20日から11月1日まで開催されます。
+    HALLOWEEN_YEAR_ROUND            = 0,  -- 1に設定すると、収穫祭が通常の期間外でも開始されます。
+    EGG_HUNT                        = -- エッグハント
     {
-        START                       = { DAY = 6,  MONTH = 4 },
-        FINISH                      = { DAY = 17, MONTH = 4 },
+        START                       = { DAY = 6,  MONTH = 4 }, -- 開始日
+        FINISH                      = { DAY = 17, MONTH = 4 }, -- 終了日
 
-        -- Default era is 2005
-        ERA_2006 = false, -- Orphic Egg
-        ERA_2007 = false, -- Jeweled Egg and Egg Helm
-        ERA_2008 = false, -- Tier 2 nation eggs, allows trading Hard-Boiled Eggs
-        ERA_2009 = false, -- Egg Buffet set
-        -- 2009, 2010, 2011 and 2012 are identical
-        ERA_2013 = false, -- Prinseggstarta
-        ERA_2014 = false, -- Hatchling Shield, Copse Candy, Cracker
-        ERA_2015 = false, -- Rabbit Cap, show Rabbit Cap wearing NPCs
-        ERA_2018 = false, -- Allows trading Sairui-Ran x99 and Imperial Egg
-        ERA_2019 = false, -- Allows trading Apkallu Egg
+        -- デフォルト時代は2005年
+        ERA_2006 = false, -- オーフィックエッグ
+        ERA_2007 = false, -- ジュエルドエッグとエッグヘルム
+        ERA_2008 = false, -- Tier 2の国別エッグ、ゆで卵の交換を許可
+        ERA_2009 = false, -- エッグビュッフェセット
+        -- 2009年、2010年、2011年、2012年は同じです
+        ERA_2013 = false, -- プリンセグスタータ
+        ERA_2014 = false, -- ハッチリングシールド、コプスキャンディ、クラッカー
+        ERA_2015 = false, -- ラビットキャップ、ラビットキャップをかぶったNPCを表示
+        ERA_2018 = false, -- Sairui-Ran x99とインペリアルエッグのトレードを許可
+        ERA_2019 = false, -- Apkallu Eggのトレードを許可
 
-        -- Consolation prizes for repeating combinations where
-        -- the player has already received the relevant reward
+        -- プレイヤーがすでに該当の報酬を受け取っている場合の、
+        -- 組み合わせの繰り返しに対する残念賞
         MINOR_REWARDS = true,
 
-        -- Set custom combinations, eg. WORD = 12345
-        -- Where WORD  is an arrangement of lettered eggs
-        -- Where 12345 is the itemID for the reward
+        -- カスタムの組み合わせを設定します。例：WORD = 12345
+        -- WORDは文字付きエッグの配列です
+        -- 12345は報酬のアイテムIDです。
         BONUS_WORDS =
         {
             -- WORD = 12345,
         },
     },
 
-    -- Login Campaign (Set to 0 if you don't want to run a Login Campaign)
-    -- Please visit scripts/globals/events/login_campaign.lua for assigning the correct campaign dates.
+    -- ログインキャンペーン (ログインキャンペーンを実行したくない場合は0に設定)
+    -- 正しいキャンペーン日付を割り当てるには、scripts/globals/events/login_campaign.luaを参照してください.
     ENABLE_LOGIN_CAMPAIGN = 0,
 
-    -- FISH RANKING CONTEST
-    -- Set to false to require manual progression of contest
-    AUTO_FISHING_CONTEST = true,
-    MAX_FAKE_ENTRIES     = 15,
+    -- 釣りランキングコンテスト
+    -- falseに設定すると、コンテストの手動進行が必要になります。
+    AUTO_FISHING_CONTEST = true, -- 自動進行
+    MAX_FAKE_ENTRIES     = 15,  -- 架空のエントリーの最大数
 
-    -- NYZUL
-    RUNIC_DISK_SAVE      = true, -- Allow anyone participating in Nyzul to save progress. Set to false so only initiator can save progress.
-    ENABLE_NYZUL_CASKETS = true, -- Enable Treasure casket pops from NMs.
-    ENABLE_VIGIL_DROPS   = true, -- Enable Vigil Weapon drops from NMs.
-    ACTIVATE_LAMP_TIME   = 6000, -- Time in miliseconds for lamps to stay lit. TODO: Get retail confirmation.
+    -- ナイズル島踏査指令
+    RUNIC_DISK_SAVE      = true, -- ナイズル島踏査指令に参加している全員が進行状況を保存できるようにします。falseに設定すると、開始者のみが進行状況を保存できます。
+    ENABLE_NYZUL_CASKETS = true, -- NMからのトレジャーカスクのポップを有効にします。
+    ENABLE_VIGIL_DROPS   = true, -- NMからの守りの武器のドロップを有効にします。
+    ACTIVATE_LAMP_TIME   = 6000, -- ランプが点灯している時間（ミリ秒）。TODO: リテール版での確認が必要です。
 
-    -- CHOCOBO RAISING (HEAVILY-IN-DEVELOPMENT, USE AT YOUR OWN RISK)
-    -- GM command: `!chocoboraising`
-    ENABLE_CHOCOBO_RAISING              = false, -- true/false. Enable Chocobo Raising features.
-    DEBUG_CHOCOBO_RAISING               = false, -- true/false. Enable verbose debug logging for Chocobo Raising (visible by players).
-    CHOCOBO_RAISING_STAT_POS_MULTIPLIER = 1.0,   -- float. Multiplier for positive stat changes. Default 1.0.
-    CHOCOBO_RAISING_STAT_NEG_MULTIPLIER = 1.0,   -- float. Multiplier for negative stat changes. Default 1.0.
-    CHOCOBO_RAISING_GIL_MULTIPLIER      = 1.0,   -- float. Multiplier for gil recieved through chocobo actions (care plans, etc.). Default 1.0.
-    CHOCOBO_RAISING_DISABLE_RETIREMENT  = false, -- true/false.
-    CHOCOBO_RAISING_STAT_GROWTH_CAP     = 512,   -- int.
+    -- チョコボ育成 (開発中のため、使用は自己責任で！)
+    -- GMコマンド: `!chocoboraising`
+    ENABLE_CHOCOBO_RAISING              = false, -- true/false。チョコボ育成機能を有効にします。
+    DEBUG_CHOCOBO_RAISING               = false, -- true/false。チョコボ育成の詳細なデバッグログを有効にします（プレイヤーに見えます）。
+    CHOCOBO_RAISING_STAT_POS_MULTIPLIER = 1.0,   -- float。正のステータス変化の倍率。デフォルトは1.0です。
+    CHOCOBO_RAISING_STAT_NEG_MULTIPLIER = 1.0,   -- float。負のステータス変化の倍率。デフォルトは1.0です。
+    CHOCOBO_RAISING_GIL_MULTIPLIER      = 1.0,   -- float。チョコボのアクション（ケアプランなど）で得られるギルの倍率。デフォルトは1.0です。
+    CHOCOBO_RAISING_DISABLE_RETIREMENT  = false, -- true/false。引退を無効にするかどうか。
+    CHOCOBO_RAISING_STAT_GROWTH_CAP     = 512,   -- int。ステータス成長の上限。
 
-    -- SYNERGY (HEAVILY-IN-DEVELOPMENT, USE AT YOUR OWN RISK)
-    ENABLE_SYNERGY = false, -- true/false. Enable Synergy features.
+    -- 錬成 (開発中のため、使用は自己責任で！)
+    ENABLE_SYNERGY = false, -- true/false。錬成機能を有効にします。
 
-    -- MISC
-    RIVERNE_PORTERS              = 120,   -- Time in seconds that Unstable Displacements in Cape Riverne stay open after trading a scale.
-    LANTERNS_STAY_LIT            = 1200,  -- time in seconds that lanterns in the Den of Rancor stay lit.
-    ENABLE_COP_ZONE_CAP          = 0,     -- Enable or disable lvl cap
-    ALLOW_MULTIPLE_EXP_RINGS     = 0,     -- Set to 1 to remove ownership restrictions on the Chariot/Empress/Emperor Band trio.
-    BYPASS_EXP_RING_ONE_PER_WEEK = 0,     -- Set to 1 to bypass the limit of one ring per Conquest Tally Week.
-    NUMBER_OF_DM_EARRINGS        = 1,     -- Number of earrings players can simultaneously own from Divine Might before scripts start blocking them (Default: 1)
-    HOMEPOINT_TELEPORT           = 1,     -- Enables the homepoint teleport system
-    DIG_ABUNDANCE_BONUS          = 0,     -- Increase chance of digging up an item (450  = item digup chance +45)
-    DIG_FATIGUE                  = 100,   -- Allowed succesful digs per day. Set to 0 to disable Dig Fatigue
-    DIG_GRANT_BURROW             = 0,     -- Set to 1 to grant burrow ability
-    DIG_GRANT_BORE               = 0,     -- Set to 1 to grant bore ability
-    ENM_COOLDOWN                 = 120,   -- Number of hours before a player can obtain same KI for ENMs (default: 5 days)
-    FORCE_SPAWN_QM_RESET_TIME    = 300,   -- Number of seconds the ??? remains hidden for after the despawning of the mob it force spawns.
-    EQUIP_FROM_OTHER_CONTAINERS  = false, -- true/false. Allows equipping items from Mog Satchel, Sack, and Case. Only possible with the use of client addons.
-    REGIME_REWARD_THRESHOLD      = 15,    -- If the player is more than N levels below the minimum suggested range, do not award experience.
+    -- その他
+    RIVERNE_PORTERS              = 120,   -- リヴェーヌ岩塊群の不安定な転移が、鱗をトレードした後、開いたままになる時間（秒）。
+    LANTERNS_STAY_LIT            = 1200,  -- 怨念洞のランタンが点灯している時間（秒）。
+    ENABLE_COP_ZONE_CAP          = 0,     -- プロマシアの幻影エリアでレベルキャップを有効または無効にする。
+    ALLOW_MULTIPLE_EXP_RINGS     = 0,     -- 1に設定すると、チャリオットバンド/エンプレスバンド/エンペラーバンドトリオの所有権制限が解除されます。
+    BYPASS_EXP_RING_ONE_PER_WEEK = 0,     -- 1に設定すると、コンクエストあたりの指輪1個制限を解除します。
+    NUMBER_OF_DM_EARRINGS        = 1,     -- プレイヤーが同時に所有できる神威の耳飾りの数（デフォルト：1）。
+    HOMEPOINT_TELEPORT           = 1,     -- ホームポイントテレポシステムを有効にします。
+    DIG_ABUNDANCE_BONUS          = 0,     -- アイテムを掘り出す確率を上げます（450 = アイテム掘り出し確率+45）。
+    DIG_FATIGUE                  = 100,   -- 1日に許可される掘削成功回数。0に設定すると、掘削疲労を無効にします。
+    DIG_GRANT_BURROW             = 0,     -- 1に設定すると、チョコボの「穴掘り」アビリティが付与されます。
+    DIG_GRANT_BORE               = 0,     -- 1に設定すると、チョコボの「宝探し」アビリティが付与されます。
+    ENM_COOLDOWN                 = 120,   -- プレイヤーがENMの同じキーアイテムを再取得できるまでの時間（時間）（デフォルト：5日=120時間）。
+    FORCE_SPAWN_QM_RESET_TIME    = 300,   -- 強制ポップするモンスターが消滅した後、「??？」が隠されたままになる時間（秒）。
+    EQUIP_FROM_OTHER_CONTAINERS  = false, -- true/false。モグサッチェル、サック、ケースからのアイテムの装備を許可します。クライアントアドオンを使用した場合にのみ可能です。
+    REGIME_REWARD_THRESHOLD      = 15,    -- プレイヤーが推奨レベル範囲の最低レベルよりNレベル以上低い場合、経験値は付与されません。
 
-    -- SYSTEM
-    DISABLE_INACTIVITY_WATCHDOG = false, -- true/false. If this is enabled, the watchdog which detects if the main loop isn't being ticked will no longer be able to kill the process.
-    INACTIVITY_WATCHDOG_PERIOD  = 2000,  -- Time in milliseconds which the inactivity watchdog will wait between ticks of the main loop before potentially killing the target process.
+    -- システム
+    DISABLE_INACTIVITY_WATCHDOG = false, -- true/false。有効にすると、メインループがティックされていないことを検出するウォッチドッグがプロセスを強制終了できなくなります。
+    INACTIVITY_WATCHDOG_PERIOD  = 2000,  -- 非アクティブウォッチドッグが、ターゲットプロセスを強制終了する前に、メインループのティック間で待機する時間（ミリ秒）。
 }
