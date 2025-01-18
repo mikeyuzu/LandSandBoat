@@ -18,7 +18,11 @@ local denOfRancorGlobal =
         else
             if npcUtil.tradeHas(trade, xi.item.RANCOR_FLAME) then -- Rancor Flame
                 player:confirmTrade()
-                player:addItem(xi.item.UNLIT_LANTERN) -- return unlit lantern
+                if xi.settings.map.NOT_DISAPPEAR_LANTERN then
+                    player:addItem(xi.item.RANCOR_FLAME)
+                else
+                    player:addItem(xi.item.UNLIT_LANTERN) -- return unlit lantern
+                end
 
                 npc:openDoor(xi.settings.main.LANTERNS_STAY_LIT) -- light lantern
 
@@ -57,7 +61,11 @@ local denOfRancorGlobal =
         else
             if npcUtil.tradeHas(trade, xi.item.RANCOR_FLAME) then -- Rancor Flame
                 player:confirmTrade()
-                player:addItem(xi.item.UNLIT_LANTERN) -- return unlit lantern
+                if xi.settings.map.NOT_DISAPPEAR_LANTERN then
+                    player:addItem(xi.item.RANCOR_FLAME)
+                else
+                    player:addItem(xi.item.UNLIT_LANTERN) -- return unlit lantern
+                end
 
                 npc:openDoor(xi.settings.main.LANTERNS_STAY_LIT) -- light lantern
 

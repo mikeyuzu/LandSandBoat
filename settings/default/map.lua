@@ -297,4 +297,7 @@ xi.settings.map =
     -- 印章のドロップ率とリキャスト時間
     SEAL_DROP_RATE = 20,
     SEAL_RECAST_TIME = 300,
+
+    -- 怨みの炎を使っても消えたランタンにならないようにする
+    NOT_DISAPPEAR_LANTERN = false,
 }
