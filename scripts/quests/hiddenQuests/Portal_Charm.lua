@@ -28,7 +28,7 @@ quest.sections =
                         npcUtil.tradeHasExactly(trade, xi.item.ROLANBERRY) and
                         not player:hasKeyItem(xi.ki.PORTAL_CHARM)
                     then
-                        if player:hasCompletedMission(xi.mission.log_id.WINDURST, xi.mission.id.windurst.WRITTEN_IN_THE_STARS) then
+                        if player:hasCompletedMission(xi.mission.log_id.WINDURST, xi.mission.id.windurst.TO_EACH_HIS_OWN_RIGHT) then
                             return quest:progressEvent(291)
                         else
                             return quest:progressEvent(292)
@@ -38,7 +38,7 @@ quest.sections =
 
                 onTrigger = function(player, npc, trade)
                     if
-                        player:hasCompletedMission(xi.mission.log_id.WINDURST, xi.mission.id.windurst.WRITTEN_IN_THE_STARS) and
+                        player:hasCompletedMission(xi.mission.log_id.WINDURST, xi.mission.id.windurst.TO_EACH_HIS_OWN_RIGHT) and
                         quest:getVar(player, 'Prog') == 1
                     then
                         return quest:progressEvent(293)
