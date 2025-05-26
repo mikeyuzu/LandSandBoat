@@ -949,7 +949,7 @@ void CMobEntity::DropItems(CCharEntity* PChar)
     {
         // Check for seal drops
         // Only one type of seal can drop per mob
-        if (xirand::GetRandomNumber(100) < 20 && CanAddSpecial(RECAST_SEAL))
+        if (xirand::GetRandomNumber(100) < settings::get<int>("map.SEAL_DROP_RATE") && CanAddSpecial(RECAST_SEAL))
         {
             const auto seals = GetEligibleSeals();
             AddItemToPool(seals[xirand::GetRandomNumber(seals.size())]);

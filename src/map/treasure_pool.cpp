@@ -197,6 +197,19 @@ uint8 CTreasurePool::addItem(uint16 ItemID, CBaseEntity* PEntity)
         }
     }
 
+    switch (ItemID)
+    {
+        case 1126: // beastmen seal
+        case 1127: // kindred seal
+        case 2955: // kindred crest
+        case 2956: // high kindred crest
+            for (auto& member : members)
+            {
+                member->PRecastContainer->Add(RECAST_LOOT, 1, settings::get<int>("map.SEAL_RECAST_TIME"));
+            }
+            break;
+    }
+
     for (SlotID = 0; SlotID < 10; ++SlotID)
     {
         if (m_PoolItems[SlotID].ID == 0)

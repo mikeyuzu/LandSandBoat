@@ -160,6 +160,7 @@ src/common/stamp-h1
 # Misc, such as vim swap files
 *.sw?
 
+logmeshes/*.obj
 navmeshes/*.nav
 tags
 log/xi.leaks
@@ -256,3 +257,5 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+/settings/upd_db.sql
+/settings/custom_db.sql
