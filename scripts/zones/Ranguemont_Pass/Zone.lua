@@ -12,13 +12,14 @@ zoneObject.onInitialize = function(zone)
     local ph = GetMobByID(ID.mob.TAISAIJIN_PH[phIndex])
 
     if ph then
-        ph:setLocalVar('timeToGrow', os.time() + math.random(86400, 259200)) -- 1 to 3 days
+        --ph:setLocalVar('timeToGrow', os.time() + math.random(86400, 259200)) -- 1 to 3 days
+        ph:setLocalVar('timeToGrow', os.time() + math.random(60, 180)) -- 1 to 3 days
         ph:setLocalVar('phIndex', phIndex)
     end
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
