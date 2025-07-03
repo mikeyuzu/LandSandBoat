@@ -27,7 +27,13 @@ mission.sections =
 {
     {
         check = function(player, currentMission, missionStatus, vars)
+            local completedQuestSand = player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.CLAWS_OF_THE_GRIFFON)
+            local completedQuestBas  = player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.FIRES_OF_DISCONTENT)
+            local completedQuestWin  = player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.THE_TIGRESS_STRIKES)
             return currentMission == mission.missionId
+                and (completedQuestSand == xi.questStatus.QUEST_COMPLETED
+                    or completedQuestBas == xi.questStatus.QUEST_COMPLETED
+                    or completedQuestWin == xi.questStatus.QUEST_COMPLETED)
         end,
 
         [xi.zone.BATALLIA_DOWNS] =
