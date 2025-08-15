@@ -18,6 +18,9 @@ zones[xi.zone.GHOYUS_REVERIE] =
     },
     mob =
     {
+        MOB_OFFSET = GetFirstID('Zircon_Quadav'),
+        A_MANIFEST_PROBLEM_MOB_OFFSET = 17305647,
+        LAA_YAKU_THE_AUSTERE = 17305662
     },
     npc =
     {
