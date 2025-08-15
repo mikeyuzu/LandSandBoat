@@ -9174,6 +9174,13 @@ INSERT INTO `mob_groups` VALUES (20,5815,129,'Bloodwing_Maimer',0,128,0,0,0,75,7
 INSERT INTO `mob_groups` VALUES (21,5346,129,'Bloodwing_Deathrainer',0,128,0,0,0,75,75,0);
 INSERT INTO `mob_groups` VALUES (22,5786,129,'Excenmille',0,128,0,0,0,75,75,1);
 
+INSERT INTO `mob_groups` VALUES (100, 4444, 129, 'Yagudo_Priest', 0, 180, 0, 0, 0, 60, 60, 0);
+INSERT INTO `mob_groups` VALUES (101, 4456, 129, 'Yagudo_Theologist', 0, 180, 0, 0, 0, 60, 60, 0);
+INSERT INTO `mob_groups` VALUES (102, 4428, 129, 'Yagudo_Interrogator', 0, 180, 0, 0, 0, 60, 60, 0);
+INSERT INTO `mob_groups` VALUES (103, 4423, 129, 'Yagudo_Herald', 0, 180, 0, 0, 0, 60, 60, 0);
+INSERT INTO `mob_groups` VALUES (104, 4459, 129, 'Yagudo_Votary', 0, 180, 0, 0, 0, 60, 60, 0);
+INSERT INTO `mob_groups` VALUES (105, 2309, 129, 'Laa_Yaku_the_Austere', 0, 180, 0, 0, 0, 65, 65, 0);
+
 INSERT INTO `mob_groups` VALUES (6868,9,129,'2nd_Legion_Scout',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (6869,205,129,'Aquarian_Caster',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (6870,226,129,'Arch_Demon',0,128,0,0,0,0,0,0);

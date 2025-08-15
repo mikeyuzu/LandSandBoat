@@ -3054,6 +3054,7 @@ xi.item =
     HOMEMADE_SALISBURY_STEAK            = 5705,
     DISH_OF_HOMEMADE_CARBONARA          = 5706,
     HOMEMADE_OMELETTE                   = 5707,
+    MIHGO_MITHKABOB                     = 5708,
     BERRY_SNOW_CONE                     = 5710,
     PLATE_OF_CRAB_SUSHI                 = 5721,
     GOSHIKITENGE                        = 5725,

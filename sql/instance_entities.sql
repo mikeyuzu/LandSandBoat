@@ -2561,6 +2561,38 @@ INSERT INTO `instance_entities` VALUES (9300,17158397); -- csnpc
 INSERT INTO `instance_entities` VALUES (9300,17158398); -- csnpc
 
 -- ------------------------------------------------------------
+-- Ghoyus Reverie (Zone 129)
+-- ------------------------------------------------------------
+
+-- A Manifest Problem (12901)
+-- mobs
+INSERT INTO `instance_entities` VALUES (12901,17305647); -- Yagudo Priest
+INSERT INTO `instance_entities` VALUES (12901,17305648); -- Yagudo Priest
+INSERT INTO `instance_entities` VALUES (12901,17305649); -- Yagudo Priest
+INSERT INTO `instance_entities` VALUES (12901,17305650); -- Yagudo Theologist
+INSERT INTO `instance_entities` VALUES (12901,17305651); -- Yagudo Theologist
+INSERT INTO `instance_entities` VALUES (12901,17305652); -- Yagudo Theologist
+INSERT INTO `instance_entities` VALUES (12901,17305653); -- Yagudo Interrogator
+INSERT INTO `instance_entities` VALUES (12901,17305654); -- Yagudo Interrogator
+INSERT INTO `instance_entities` VALUES (12901,17305655); -- Yagudo Interrogator
+INSERT INTO `instance_entities` VALUES (12901,17305656); -- Yagudo Herald
+INSERT INTO `instance_entities` VALUES (12901,17305657); -- Yagudo Herald
+INSERT INTO `instance_entities` VALUES (12901,17305658); -- Yagudo Herald
+INSERT INTO `instance_entities` VALUES (12901,17305659); -- Yagudo Votary
+INSERT INTO `instance_entities` VALUES (12901,17305660); -- Yagudo Votary
+INSERT INTO `instance_entities` VALUES (12901,17305661); -- Yagudo Votary
+INSERT INTO `instance_entities` VALUES (12901,17305662); -- Laa Yaku the Austere
+-- npcs
+INSERT INTO `instance_entities` VALUES (12901,17305665); -- Onyx Mine
+INSERT INTO `instance_entities` VALUES (12901,17305876); -- 2nd Legion Scout
+INSERT INTO `instance_entities` VALUES (12901,17305901); -- blunk
+INSERT INTO `instance_entities` VALUES (12901,17305921); -- _3l1
+INSERT INTO `instance_entities` VALUES (12901,17305922); -- _3l2
+INSERT INTO `instance_entities` VALUES (12901,17305923); -- _3l3
+INSERT INTO `instance_entities` VALUES (12901,17305930); -- _3la
+INSERT INTO `instance_entities` VALUES (12901,17305933); -- _3ld
+
+-- ------------------------------------------------------------
 -- Rala Waterways (Zone 258)
 -- ------------------------------------------------------------
 
