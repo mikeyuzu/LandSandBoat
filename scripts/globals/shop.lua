@@ -89,7 +89,7 @@ xi.shop =
             if
                 (stockItem[3] == 1 and player:getNation() == nation and rank == 1) or
                 (stockItem[3] == 2 and rank <= 2) or
-                (stockItem[3] == 3)
+                (stockItem[3] == 3) or true
             then
                 table.insert(newStock, { stockItem[1], stockItem[2] })
             end
