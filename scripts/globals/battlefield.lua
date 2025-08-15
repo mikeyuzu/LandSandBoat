@@ -866,6 +866,7 @@ function Battlefield:onEntryEventUpdate(player, csid, option, npc)
         for _, member in pairs(alliance) do
             if
                 member:getZoneID() == zone and
+                member:getStatus() ~= xi.status.DISAPPEAR and
                 not member:hasStatusEffect(xi.effect.BATTLEFIELD) and
                 not member:getBattlefield()
             then
@@ -1438,7 +1439,7 @@ function BattlefieldMission:onEventFinishWin(player, csid, option, npc)
     end
 
     -- Only grant mission XP once per JP midnight
-    if self.grantXP and self:getVar(player, 'XP') <= os.time() then
+    if self.grantXP and self:getVar(player, 'XP') <= GetSystemTime() then
         self:setVar(player, 'XP', getMidnight())
         player:addExp(self.grantXP)
     end

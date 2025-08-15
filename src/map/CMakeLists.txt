@@ -1,5 +1,6 @@
 add_subdirectory(ai)
 add_subdirectory(entities)
+add_subdirectory(enums)
 add_subdirectory(items)
 add_subdirectory(los)
 add_subdirectory(lua)
@@ -11,6 +12,7 @@ set(SOURCES
     ${COMMON_SOURCES}
     ${AI_SOURCES}
     ${ENTITY_SOURCES}
+    ${ENUMS_SOURCES}
     ${ITEM_SOURCES}
     ${LOS_SOURCES}
     ${LUA_SOURCES}
@@ -21,6 +23,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/ability.h
     ${CMAKE_CURRENT_SOURCE_DIR}/alliance.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/alliance.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/aman.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/aman.h
     ${CMAKE_CURRENT_SOURCE_DIR}/attack.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/attack.h
     ${CMAKE_CURRENT_SOURCE_DIR}/attackround.cpp

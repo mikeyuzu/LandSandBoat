@@ -502,8 +502,6 @@ bool CStatusEffectContainer::AddStatusEffect(CStatusEffect* PStatusEffect, Effec
         // remove clean up other effects
         OverwriteStatusEffect(PStatusEffect);
 
-        PStatusEffect->SetOwner(m_POwner);
-
         SetEffectParams(PStatusEffect);
 
         // remove effects with same type
@@ -517,6 +515,9 @@ bool CStatusEffectContainer::AddStatusEffect(CStatusEffect* PStatusEffect, Effec
 
         luautils::OnEffectGain(m_POwner, PStatusEffect);
         m_POwner->PAI->EventHandler.triggerListener("EFFECT_GAIN", m_POwner, PStatusEffect);
+
+        // Set owner after triggering all "effect gain" lua actions, to ensure effect:addMod() doesn't double up mod powers on the entity
+        PStatusEffect->SetOwner(m_POwner);
 
         m_POwner->addModifiers(&PStatusEffect->modList);
 
@@ -781,11 +782,11 @@ void CStatusEffectContainer::ApplyStateAlteringEffects(CStatusEffect* StatusEffe
     }
 }
 
-void CStatusEffectContainer::DelStatusEffectsByIcon(uint16 IconID)
+void CStatusEffectContainer::DelStatusEffectsByIcon(const uint16 BuffNo)
 {
     for (CStatusEffect* PStatusEffect : m_StatusEffectSet)
     {
-        if (PStatusEffect->GetIcon() == IconID)
+        if (PStatusEffect->GetIcon() == BuffNo)
         {
             // This covers all effects that client can remove. Function not used for anything the server removes.
             if (!(PStatusEffect->HasEffectFlag(EFFECTFLAG_NO_CANCEL)))
@@ -1623,7 +1624,7 @@ void CStatusEffectContainer::LoadStatusEffects()
                         "flags, "
                         "timestamp "
                         "FROM char_effects "
-                        "WHERE charid = (?)";
+                        "WHERE charid = ?";
 
     auto rset = db::preparedStmt(Query, m_POwner->id);
 
@@ -2017,7 +2018,7 @@ void CStatusEffectContainer::TickEffects(timer::time_point tick)
         for (const auto& PStatusEffect : m_StatusEffectSet)
         {
             if (PStatusEffect->GetTickTime() != 0s &&
-                PStatusEffect->GetElapsedTickCount() <= (tick - PStatusEffect->GetStartTime()) / PStatusEffect->GetTickTime())
+                PStatusEffect->GetElapsedTickCount() < (tick - PStatusEffect->GetStartTime()) / PStatusEffect->GetTickTime())
             {
                 if (PStatusEffect->HasEffectFlag(EFFECTFLAG_AURA))
                 {
