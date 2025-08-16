@@ -51,6 +51,11 @@ xi.settings.main =
     DAILY_TALLY_LIMIT  = 50000, -- デイリーポイントの上限
     GOBBIE_BOX_MIN_AGE = 45, -- ゴブリンの不思議箱に登録できるようになるまでのキャラクター作成日数の下限
 
+    -- A.M.A.N.
+    ASSIST_CHANNEL_ENABLED            = true, -- Enable Assist Channel
+    ASSIST_CHANNEL_MEMBERSHIP_LENGTH  = 240,  -- How long returnees and new players will have access to the assist channel, in playtime hours.
+    ASSIST_CHANNEL_RETURNEE_LOGIN_GAP =  48,  -- How many days must have elapsed before returnees are added to the assist channel.
+
     -- エミネンスレコード
     ENABLE_ROE            = 1, -- エミネンスレコードを有効にする
     ENABLE_ROE_TIMED      = 1, -- 4時間制のレコードを有効にする
