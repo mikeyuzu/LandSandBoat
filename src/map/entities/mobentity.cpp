@@ -866,9 +866,16 @@ void CMobEntity::DropItems(CCharEntity* PChar)
     {
         const auto PParty = PChar->PParty;
 
+        auto SEAL_RECAST_TIME = settings::get<bool>("map.SEAL_RECAST_TIME");
+        auto specialDropCooldwn = SPECIAL_DROP_COOLDOWN;
+        if (SEAL_RECAST_TIME)
+        {
+            specialDropCooldwn = std::chrono::seconds(SEAL_RECAST_TIME);
+        }
+
         if (!PParty || !PChar->PTreasurePool)
         {
-            PChar->PRecastContainer->Add(RECAST_LOOT, id, SPECIAL_DROP_COOLDOWN);
+            PChar->PRecastContainer->Add(RECAST_LOOT, id, specialDropCooldwn);
             return;
         }
 
@@ -876,7 +883,7 @@ void CMobEntity::DropItems(CCharEntity* PChar)
         {
             if (member->PParty == PParty)
             {
-                member->PRecastContainer->Add(RECAST_LOOT, id, SPECIAL_DROP_COOLDOWN);
+                member->PRecastContainer->Add(RECAST_LOOT, id, specialDropCooldwn);
             }
         }
     };
@@ -954,7 +961,7 @@ void CMobEntity::DropItems(CCharEntity* PChar)
     {
         // Check for seal drops
         // Only one type of seal can drop per mob
-        if (xirand::GetRandomNumber(100) < 20 && CanAddSpecial(RECAST_SEAL))
+        if (xirand::GetRandomNumber(100) < settings::get<int>("map.SEAL_DROP_RATE") && CanAddSpecial(RECAST_SEAL))
         {
             const auto seals = GetEligibleSeals();
             AddItemToPool(seals[xirand::GetRandomNumber(seals.size())]);

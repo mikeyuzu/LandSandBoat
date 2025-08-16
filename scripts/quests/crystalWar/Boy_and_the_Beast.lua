@@ -19,7 +19,7 @@ quest.sections =
     {
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_AVAILABLE and
-                player:hasCompletedMission(xi.mission.log_id.WOTG, xi.mission.id.wotg.BACK_TO_THE_BEGINNING)
+                player:getCurrentMission(xi.mission.log_id.WOTG) == xi.mission.id.wotg.CAIT_SITH
         end,
 
         [xi.zone.SOUTHERN_SAN_DORIA_S] =
@@ -135,7 +135,9 @@ quest.sections =
                         quest:setVar(player, 'Prog', 3)
                     end
 
-                    npcUtil.giveKeyItem(player, xi.ki.VUNKERL_HERB)
+                    if option < 2 then
+                        npcUtil.giveKeyItem(player, xi.ki.VUNKERL_HERB)
+                    end
                 end,
 
                 [108] = function(player, csid, option, npc)

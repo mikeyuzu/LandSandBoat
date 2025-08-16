@@ -187,7 +187,34 @@ quest.sections =
             ['Gentle_Tiger'] = quest:event(17),
             ['Engelhart'] = quest:event(18),
             ['Pagdako'] = quest:event(20),
-            ['Blatherix'] = quest:event(24),
+
+            ['Blatherix'] =
+            {
+                onTrigger = function(player, npc)
+                    return quest:event(24)
+                end,
+
+                onTrade = function(player, npc, trade)
+                    if
+                        not player:hasKeyItem(xi.ki.MINE_SHAFT_KEY)
+                    then
+                        if
+                            npcUtil.tradeHasExactly(trade, { { xi.item.CHUNK_OF_GOBLIN_CHOCOLATE, 30 } }) or
+                            npcUtil.tradeHasExactly(trade, { { 'gil', 5000 } })
+                        then
+                            return quest:progressEvent(23)
+                        end
+                    end
+                end,
+            },
+
+            onEventFinish =
+            {
+                [23] = function(player, csid, option, npc)
+                    player:confirmTrade()
+                    npcUtil.giveKeyItem(player, xi.ki.MINE_SHAFT_KEY)
+                end,
+            },
         },
     },
 

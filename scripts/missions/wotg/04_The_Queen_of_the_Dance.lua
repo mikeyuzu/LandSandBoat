@@ -21,8 +21,7 @@ mission.sections =
     -- 0: Try to enter without a ticket
     {
         check = function(player, currentMission, missionStatus, vars)
-            return currentMission == mission.missionId and missionStatus == 0 and
-                xi.wotg.helpers.meetsMission4Reqs(player)
+            return currentMission == mission.missionId and missionStatus == 0
         end,
 
         [xi.zone.SOUTHERN_SAN_DORIA_S] =
@@ -71,7 +70,7 @@ mission.sections =
 
         [xi.zone.SOUTHERN_SAN_DORIA_S] =
         {
-            ['Lion_Springs'] = mission:progressEvent(70, 1, 0, 2964, 0, 66453367, 8366690, 4095, 131140),
+            ['Lion_Springs'] = mission:progressEvent(70, 0, 0, 2964, 0, 66453367, 8366690, 4095, 131140),
 
             onZoneIn = function(player, prevZone)
                 local missionStatus = player:getMissionStatus(mission.areaId)
@@ -85,15 +84,24 @@ mission.sections =
 
             onEventUpdate =
             {
+                [70] = function(player, csid, option, npc)
+                    if option == 1 then
+                        local campaing_allegince = player:getCampaignAllegiance()
+                        player:updateEvent(campaing_allegince, 0, 2964, 0, 66453367, 8366690, 4095, 131140)
+                    end
+                end,
+
                 [152] = function(player, csid, option, npc)
                     if option == 1 then
-                        player:updateEvent(1, 0, 1756, 0, 66453367, 8366690, 4095, 131140)
+                        local campaing_allegince = player:getCampaignAllegiance()
+                        player:updateEvent(campaing_allegince, 0, 1756, 0, 66453367, 8366690, 4095, 131140)
                     end
                 end,
 
                 [153] = function(player, csid, option, npc)
                     if option == 1 then
-                        player:updateEvent(1, 0, 1756, 0, 66451386, 11124900, 4095, 131140)
+                        local campaing_allegince = player:getCampaignAllegiance()
+                        player:updateEvent(campaing_allegince, 0, 1756, 0, 66451386, 11124900, 4095, 131140)
                     end
                 end,
             },

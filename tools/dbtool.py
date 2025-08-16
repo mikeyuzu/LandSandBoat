@@ -109,7 +109,7 @@ def populate_settings():
     def load_into_dict(filename, settings):
         if os.path.exists(filename) and os.path.isfile(filename):
             try:
-                with open(filename) as f:
+                with open(filename, encoding='utf-8') as f:
                     filename_key = filename[:-4].split(os.sep)[-1]
 
                     # Get or default, so we update any existing dict

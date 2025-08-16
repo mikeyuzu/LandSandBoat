@@ -97,7 +97,7 @@ xi.shop.nation = function(player, stock, nation)
         if
             (stockItem[3] == 1 and player:getNation() == nation and rank == 1) or
             (stockItem[3] == 2 and rank <= 2) or
-            (stockItem[3] == 3)
+            (stockItem[3] == 3) or true
         then
             table.insert(newStock, { stockItem[1], stockItem[2] })
         end
@@ -418,21 +418,21 @@ xi.shop.curioVendorMoogleStock =
 {
     [xi.shop.curio.medicine] =
     {
-        { xi.item.POTION,                  300, xi.ki.RHAPSODY_IN_WHITE   },
-        { xi.item.HI_POTION,               600, xi.ki.RHAPSODY_IN_UMBER   },
-        { xi.item.X_POTION,               1200, xi.ki.RHAPSODY_IN_CRIMSON },
-     -- { xi.item.ETHER,                   650, xi.ki.RHAPSODY_IN_WHITE   }, -- Removed by SE June 2021
-        { xi.item.HI_ETHER,               1300, xi.ki.RHAPSODY_IN_UMBER   },
-        { xi.item.SUPER_ETHER,            3000, xi.ki.RHAPSODY_IN_CRIMSON },
-        { xi.item.ELIXIR,                15000, xi.ki.RHAPSODY_IN_AZURE   },
-        { xi.item.ANTIDOTE,                300, xi.ki.RHAPSODY_IN_WHITE   },
-        { xi.item.FLASK_OF_EYE_DROPS,     1000, xi.ki.RHAPSODY_IN_UMBER   },
-        { xi.item.FLASK_OF_ECHO_DROPS,     700, xi.ki.RHAPSODY_IN_UMBER   },
-        { xi.item.BOTTLE_OF_MULSUM,        500, xi.ki.RHAPSODY_IN_WHITE   },
-        { xi.item.PINCH_OF_PRISM_POWDER,   500, xi.ki.RHAPSODY_IN_WHITE   },
-        { xi.item.POT_OF_SILENT_OIL,       500, xi.ki.RHAPSODY_IN_WHITE   },
-        { xi.item.FLASK_OF_DEODORIZER,     250, xi.ki.RHAPSODY_IN_WHITE   },
-        { xi.item.RERAISER,               1000, xi.ki.RHAPSODY_IN_AZURE   },
+        { xi.item.POTION,                    300,      xi.ki.RHAPSODY_IN_WHITE },   -- Potion
+        { xi.item.HI_POTION,                 600,      xi.ki.RHAPSODY_IN_UMBER },   -- Hi-Potion
+        { xi.item.X_POTION,                 1200,    xi.ki.RHAPSODY_IN_CRIMSON },   -- X-Potion
+        { xi.item.ETHER,                     650,      xi.ki.RHAPSODY_IN_WHITE },   -- Ether / Temporarily(?) removed by SE June 2021
+        { xi.item.HI_ETHER,                 1300,      xi.ki.RHAPSODY_IN_UMBER },   -- Hi-Ether
+        { xi.item.SUPER_ETHER,              3000,    xi.ki.RHAPSODY_IN_CRIMSON },   -- Super Ether
+        { xi.item.ELIXIR,                  15000,      xi.ki.RHAPSODY_IN_AZURE },   -- Elixir
+        { xi.item.ANTIDOTE,                  300,      xi.ki.RHAPSODY_IN_WHITE },   -- Antidote
+        { xi.item.FLASK_OF_EYE_DROPS,       1000,      xi.ki.RHAPSODY_IN_UMBER },   -- Eye Drops
+        { xi.item.FLASK_OF_ECHO_DROPS,       700,      xi.ki.RHAPSODY_IN_UMBER },   -- Echo Drops
+        { xi.item.BOTTLE_OF_MULSUM,          500,      xi.ki.RHAPSODY_IN_WHITE },   -- Mulsum
+        { xi.item.PINCH_OF_PRISM_POWDER,     500,      xi.ki.RHAPSODY_IN_WHITE },   -- Prism Powder
+        { xi.item.POT_OF_SILENT_OIL,         500,      xi.ki.RHAPSODY_IN_WHITE },   -- Silent Oil
+        { xi.item.FLASK_OF_DEODORIZER,       250,      xi.ki.RHAPSODY_IN_WHITE },   -- Deodorizer
+        { xi.item.RERAISER,                 1000,      xi.ki.RHAPSODY_IN_AZURE },   -- Reraiser
     },
 
     [xi.shop.curio.ammunition] =
@@ -545,12 +545,53 @@ xi.shop.curioVendorMoogleStock =
 
     [xi.shop.curio.scrolls] =
     {
-        { xi.item.SCROLL_OF_INSTANT_WARP,      500, xi.ki.RHAPSODY_IN_WHITE },
-        { xi.item.SCROLL_OF_INSTANT_RERAISE,   500, xi.ki.RHAPSODY_IN_WHITE },
-        { xi.item.SCROLL_OF_INSTANT_RETRACE,   500, xi.ki.RHAPSODY_IN_AZURE },
-        { xi.item.SCROLL_OF_INSTANT_PROTECT,   500, xi.ki.RHAPSODY_IN_WHITE },
-        { xi.item.SCROLL_OF_INSTANT_SHELL,     500, xi.ki.RHAPSODY_IN_WHITE },
-        { xi.item.SCROLL_OF_INSTANT_STONESKIN, 500, xi.ki.RHAPSODY_IN_UMBER },
+        { xi.item.SCROLL_OF_INSTANT_WARP,       500,      xi.ki.RHAPSODY_IN_WHITE },   -- Instant Warp
+        { xi.item.SCROLL_OF_INSTANT_RERAISE,    500,      xi.ki.RHAPSODY_IN_WHITE },   -- Instant Reraise
+        { xi.item.SCROLL_OF_INSTANT_RETRACE,    500,      xi.ki.RHAPSODY_IN_AZURE },   -- Instant Retrace
+        { xi.item.SCROLL_OF_INSTANT_PROTECT,    500,      xi.ki.RHAPSODY_IN_WHITE },   -- Instant Protect
+        { xi.item.SCROLL_OF_INSTANT_SHELL,      500,      xi.ki.RHAPSODY_IN_WHITE },   -- Instant Shell
+        { xi.item.SCROLL_OF_INSTANT_STONESKIN,  500,      xi.ki.RHAPSODY_IN_UMBER },   -- Instant Stoneskin
+        { xi.item.ANCIENT_BEASTCOIN,            1000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_ECARLATE_CLOTH,     2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.ARGYRO_RIVET,                 2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.UTOPIAN_GOLD_THREAD,          2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.ANCIENT_BRASS_INGOT,          2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_BENEDICT_SILK,      2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_BENEDICT_YARN,       2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_DIABOLIC_SILK,      2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_DIABOLIC_YARN,       2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_RUBY_SILK_THREAD,    2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_CARDINAL_CLOTH,     2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_SUPPLE_SKIN,        2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_LIGHT_FILAMENT,      2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.CHUNK_OF_SNOWY_CERMET,        2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.WHITE_RIVET,                  2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.DARK_ORICHALCUM_INGOT,        2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.BLACK_RIVET,                  2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_SMALT_LEATHER,      2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.FETID_LANOLIN_CUBE,           2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_COILED_YARN,         2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_BROWN_DOESKIN,      2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_CHAMELEON_YARN,      2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_CHARCOAL_COTTON,    2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_SCARLET_ODOSHI,      2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SHEET_OF_KUROGANE,            2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.PLAITED_CORD,                 2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.POT_OF_EBONY_LACQUER,         2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SHEET_OF_COBALT_MYTHRIL,      2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.BLUE_RIVET,                   2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_GLITTERING_YARN,     2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_ASTRAL_LEATHER,     2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_LUMINIAN_THREAD,     2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_FLAMESHUN_CLOTH,    2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SPOOL_OF_SILKWORM_THREAD,     2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_CANVAS_TOILE,       2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.PANTIN_WIRE,                  2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_CORDUROY_CLOTH,     2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_FILET_LACE,         2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.GOLD_STUD,                    2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.SQUARE_OF_BRILLIANTINE,       2000,     xi.ki.RHAPSODY_IN_WHITE },
+        { xi.item.ELECTRUM_STUD,                2000,     xi.ki.RHAPSODY_IN_WHITE },
     },
 
     [xi.shop.curio.keys] =

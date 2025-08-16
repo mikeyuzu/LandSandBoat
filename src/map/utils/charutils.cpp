@@ -1364,6 +1364,16 @@ namespace charutils
 
     uint8 AddItem(CCharEntity* PChar, uint8 LocationID, CItem* PItem, bool silence)
     {
+        if (LocationID == LOC_INVENTORY && settings::get<bool>("map.CUSTOM_INVENTORY"))
+        {
+            return AddItemCustom(PChar, LocationID, PItem, silence);
+        }
+
+        return AddItemInventory(PChar, LocationID, PItem, silence);
+    }
+
+    uint8 AddItemInventory(CCharEntity* PChar, uint8 LocationID, CItem* PItem, bool silence)
+    {
         if (PItem->isType(ITEM_CURRENCY))
         {
             UpdateItem(PChar, LocationID, 0, PItem->getQuantity());
@@ -1426,6 +1436,59 @@ namespace charutils
             destroy(PItem);
         }
         return SlotID;
+    }
+
+    /// <summary>
+    /// カスタム倉庫
+    /// </summary>
+    /// <param name="PChar"></param>
+    /// <param name="LocationID"></param>
+    /// <param name="PItem"></param>
+    /// <param name="silence"></param>
+    /// <returns></returns>
+    uint8 AddItemCustom(CCharEntity* PChar, uint8 LocationID, CItem* PItem, bool silence)
+    {
+        {
+            int  Ingredient_item = 0;
+            auto itemId          = PItem->getID();
+            auto itemQuantity    = PItem->getQuantity();
+            auto select_ret      = db::preparedStmt(std::format("SELECT Result FROM synth_recipes WHERE Ingredient1 = {} OR Ingredient2 = {} OR Ingredient3 = {} OR Ingredient4 = {} OR Ingredient5 = {} OR Ingredient6 = {} OR Ingredient7 = {} OR Ingredient8 = {}", itemId, itemId, itemId, itemId, itemId, itemId, itemId, itemId));
+            if (select_ret && select_ret->rowsCount() && select_ret->next())
+            {
+                Ingredient_item = select_ret->get<uint8>("Result");
+            }
+            // Crystalの場合も含める(塊は除外するためItemID直で判定している)
+            if (PItem->getID() >= 4096 && PItem->getID() <= 4103)
+            {
+                Ingredient_item = PItem->getID();
+            }
+
+            if (Ingredient_item == 0)
+            {
+                // 素材ではないため通常処理へ
+                return AddItemInventory(PChar, LocationID, PItem, silence);
+            }
+
+            char signature[DecodeStringLength];
+            DecodeStringSignature(PItem->getSignature().c_str(), signature);
+
+            const char* Query = "INSERT INTO custom_inventory("
+                                    "charid, "
+                                    "location, "
+                                    "slot, "
+                                    "itemId, "
+                                    "quantity, "
+                                    "signature, "
+                                    "extra) "
+                                "VALUES(?, ?, 0, ?, ?, ?, ?)  ON DUPLICATE KEY "
+                                "UPDATE quantity = quantity + VALUES(quantity)";
+            if (!db::preparedStmt(Query, PChar->id, LocationID, itemId, itemQuantity, signature, PItem->m_extra))
+            {
+                ShowError("charplugin::AddItem: Cannot insert item to database");
+                return ERROR_SLOTID;
+            }
+        }
+        return 0;
     }
 
     /************************************************************************
@@ -5250,6 +5313,91 @@ namespace charutils
 
         PChar->PAI->EventHandler.triggerListener("EXPERIENCE_POINTS", PChar, PMob, exp);
 
+        auto support_job_exp_rate = settings::get<float>("map.SUPPORT_JOB_EXP_RATE");
+        if (support_job_exp_rate > 0.0f)
+        {
+            auto sjob = PChar->GetSJob();
+            if (sjob != JOB_NON)
+            {
+                // サポートジョブにも経験値を付与する
+                // 限界レベル未満、もしくは限界レベルでかつ、経験値がカンストしていない
+                if (PChar->jobs.job[sjob] < PChar->jobs.genkai || (PChar->jobs.job[sjob] >= PChar->jobs.genkai && PChar->jobs.exp[sjob] < GetExpNEXTLevel(PChar->jobs.job[sjob] - 1)))
+                {
+                    auto sjob_exp = exp * support_job_exp_rate;
+                    PChar->jobs.exp[sjob] += sjob_exp;
+
+                    // レベルが上ったか確認
+                    if (PChar->jobs.exp[sjob] >= GetExpNEXTLevel(PChar->jobs.job[sjob]))
+                    {
+                        // 限界レベルの場合
+                        if (PChar->jobs.job[sjob] >= PChar->jobs.genkai)
+                        {
+                            // 経験値をカンストさせる
+                            PChar->jobs.exp[sjob] = GetExpNEXTLevel(PChar->jobs.job[sjob]) - 1;
+                            if (PChar->PParty && PChar->PParty->GetSyncTarget() == PChar)
+                            {
+                                PChar->PParty->SetSyncTarget(nullptr, MsgStd::LevelSyncRemoveIneligibleExp);
+                            }
+                        }
+                        else
+                        {
+                            PChar->jobs.exp[sjob] -= GetExpNEXTLevel(PChar->jobs.job[sjob]);
+                            // レベルが2つ以上上がらないように経験値を調整する
+                            if (PChar->jobs.exp[sjob] >= GetExpNEXTLevel(PChar->jobs.job[sjob] + 1))
+                            {
+                                PChar->jobs.exp[sjob] = GetExpNEXTLevel(PChar->jobs.job[sjob] + 1) - 1;
+                            }
+                            PChar->jobs.job[sjob] += 1;
+                            PChar->SetSLevel(PChar->jobs.job[sjob]);
+
+                            BuildingCharSkillsTable(PChar);
+                            CalculateStats(PChar);
+                            BuildingCharAbilityTable(PChar);
+                            BuildingCharTraitsTable(PChar);
+                            BuildingCharWeaponSkills(PChar);
+                            puppetutils::LoadAutomaton(PChar);
+                            PChar->PLatentEffectContainer->CheckLatentsJobLevel();
+
+                            if (PChar->PParty != nullptr)
+                            {
+                                if (PChar->PParty->GetSyncTarget() == PChar)
+                                {
+                                    PChar->PParty->RefreshSync();
+                                }
+                                PChar->PParty->ReloadParty();
+                            }
+
+                            PChar->UpdateHealth();
+
+                            PChar->health.hp = PChar->GetMaxHP();
+                            PChar->health.mp = PChar->GetMaxMP();
+
+                            SaveCharStats(PChar);
+                            SaveCharJob(PChar, PChar->GetSJob());
+                            SaveCharExp(PChar, PChar->GetSJob());
+
+                            PChar->pushPacket<CCharJobsPacket>(PChar);
+                            PChar->pushPacket<CCharStatusPacket>(PChar);
+                            PChar->pushPacket<CCharSkillsPacket>(PChar);
+                            PChar->pushPacket<CCharRecastPacket>(PChar);
+                            PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+                            PChar->pushPacket<CMenuMeritPacket>(PChar);
+                            PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
+                            PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
+                            PChar->pushPacket<CCharSyncPacket>(PChar);
+
+                            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageCombatPacket>(PChar, PMob, PChar->jobs.job[sjob], 0, 9));
+                            PChar->pushPacket<CCharStatsPacket>(PChar);
+
+                            luautils::OnPlayerLevelUp(PChar);
+                            roeutils::event(ROE_EVENT::ROE_LEVELUP, PChar, RoeDatagramList{});
+                            PChar->updatemask |= UPDATE_HP;
+                        }
+                    }
+                }
+            }
+        }
+
         // Player levels up
         if ((currentExp + exp) >= GetExpNEXTLevel(PChar->jobs.job[PChar->GetMJob()]) && !onLimitMode)
         {
@@ -6871,6 +7019,22 @@ namespace charutils
             db::preparedStmt("UPDATE char_inventory SET extra = ? WHERE charid = ? AND location = ? AND slot = ? LIMIT 1",
                              PWeapon->m_extra, PChar->id, PWeapon->getLocationID(), PWeapon->getSlotID());
 
+            if (settings::get<bool>("map.ENABLE_TRIAL_WS_POINT_MESSAGE"))
+            {
+                int final_ws_points = settings::get<int>("map.TRIAL_WS_POINTS");
+                int trial_ws_points = PWeapon->getCurrentUnlockPoints();
+                if (trial_ws_points >= final_ws_points)
+                {
+                    const std::string msg = settings::get<std::string>("map.TRIAL_FINISH_MESSAGE");
+                    PChar->pushPacket<CChatMessagePacket>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, msg.c_str(), "");
+                }
+                else
+                {
+                    const std::string msg_fmt = settings::get<std::string>("map.TRIAL_WS_POINT_MESSAGE");
+                    const std::string msg     = fmt::sprintf(msg_fmt, trial_ws_points, final_ws_points);
+                    PChar->pushPacket<CChatMessagePacket>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, msg.c_str(), "");
+                }
+            }
             return true;
         }
         return false;

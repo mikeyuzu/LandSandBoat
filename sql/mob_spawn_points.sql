@@ -45809,6 +45809,22 @@ INSERT INTO `mob_spawn_points` VALUES (17301542,'Tolba','Tolba',9,0.000,0.000,0.
 -- ------------------------------------------------------------
 -- Ghoyu's Reverie (Zone 129)
 -- ------------------------------------------------------------
+INSERT INTO `mob_spawn_points` VALUES (17305647, 'Yagudo_Priest', 'Yagudo Priest', 100, -182.199, 19.706, 287.855, 56);
+INSERT INTO `mob_spawn_points` VALUES (17305648, 'Yagudo_Priest', 'Yagudo Priest', 100, -177.187, 19.643, 304.174, 173);
+INSERT INTO `mob_spawn_points` VALUES (17305649, 'Yagudo_Priest', 'Yagudo Priest', 100, -101.675, -0.417, 258.404, 119);
+INSERT INTO `mob_spawn_points` VALUES (17305650, 'Yagudo_Theologist', 'Yagudo Theologist', 101, -168.369, 19.902, 299.455, 143);
+INSERT INTO `mob_spawn_points` VALUES (17305651, 'Yagudo_Theologist', 'Yagudo Theologist', 101, -179.023, 19.298, 308.004, 211);
+INSERT INTO `mob_spawn_points` VALUES (17305652, 'Yagudo_Theologist', 'Yagudo Theologist', 101, -180.913, 20.245, 296.45, 112);
+INSERT INTO `mob_spawn_points` VALUES (17305653, 'Yagudo_Interrogator', 'Yagudo Interrogator', 102, -180.671, 20.075, 300.049, 180);
+INSERT INTO `mob_spawn_points` VALUES (17305654, 'Yagudo_Interrogator', 'Yagudo Interrogator', 102, -174.302, 19.826, 292.008, 99);
+INSERT INTO `mob_spawn_points` VALUES (17305655, 'Yagudo_Interrogator', 'Yagudo Interrogator', 102, -172.091, 18.272, 305.426, 204);
+INSERT INTO `mob_spawn_points` VALUES (17305656, 'Yagudo_Herald', 'Yagudo Herald', 103, -122.483, 10.217, 297.392, 249);
+INSERT INTO `mob_spawn_points` VALUES (17305657, 'Yagudo_Herald', 'Yagudo Herald', 103, -180.613, 19.712, 287.037, 53);
+INSERT INTO `mob_spawn_points` VALUES (17305658, 'Yagudo_Herald', 'Yagudo Herald', 103, -181.243, 20.155, 297.388, 60);
+INSERT INTO `mob_spawn_points` VALUES (17305659, 'Yagudo_Votary', 'Yagudo Votary', 104, -130.723, 12.308, 297.507, 18);
+INSERT INTO `mob_spawn_points` VALUES (17305660, 'Yagudo_Votary', 'Yagudo Votary', 104, -184.615, 19.511, 299.591, 115);
+INSERT INTO `mob_spawn_points` VALUES (17305661, 'Yagudo_Votary', 'Yagudo Votary', 104, -185.336, 19.469, 303.437, 178);
+INSERT INTO `mob_spawn_points` VALUES (17305662, 'Laa_Yaku_the_Austere', 'Laa Yaku the Austere', 105, -140.848, -0.447, 163.449, 161);
 
 -- A feast for gnats entrance -459.165 -1.331 -33.5 rot 194
 INSERT INTO `mob_spawn_points` VALUES (17305683,'Romaa_Mihgo','Romaa Mihgo',1,-413.540,-0.618,-11.722,111);
