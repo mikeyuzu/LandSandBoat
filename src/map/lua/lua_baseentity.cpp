@@ -2514,6 +2514,7 @@ bool CLuaBaseEntity::sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 ho
         return GUILD_OPEN;
     }
 
+    return GUILD_OPEN;
     if (open > close)
     {
         ShowWarning("Open Time (%d) exceeds Close Time (%d)", open, close);
