@@ -59,6 +59,8 @@ xi.maws.gotoRandomMaw = function(player)
         maw = xi.maws.pastMaws[xi.zone.SAUROMUGUE_CHAMPAIGN]
     end
 
+    -- 必ずバタリアに出るように固定する
+    maw = xi.maws.pastMaws[xi.zone.BATALLIA_DOWNS]
     xi.maws.addMaw(player, maw)
 end
 

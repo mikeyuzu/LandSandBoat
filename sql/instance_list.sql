@@ -154,6 +154,7 @@ INSERT INTO `instance_list` VALUES (9301,'fire_in_the_hole',93,88,0,156.000,0.00
 
 -- GHOYUS_REVERIE (zoneID: 129, starting id: 12900)
 INSERT INTO `instance_list` VALUES (12900,'doomvoid',129,84,0,382.000,0.000,-191.000,74,NULL,NULL,NULL,NULL);
+INSERT INTO `instance_list` VALUES (12901,'a_manifest_problem',129,96,0,-222.104,29.785,257.809,0,NULL,NULL,NULL,NULL);
 
 -- MAQUETTE_ABDHALJS_LEGION_A (zoneID: 183, starting id: 18300)
 

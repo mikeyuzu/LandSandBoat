@@ -37,9 +37,8 @@ mission.sections =
             onEventFinish =
             {
                 [500] = function(player, csid, option, npc)
-                    if mission:complete(player) then
-                        xi.maws.gotoRandomMaw(player)
-                    end
+                    xi.maws.gotoRandomMaw(player)
+                    mission:setVar(player, 'Status', 1)
                 end,
             },
         },
@@ -56,9 +55,8 @@ mission.sections =
             onEventFinish =
             {
                 [500] = function(player, csid, option, npc)
-                    if mission:complete(player) then
-                        xi.maws.gotoRandomMaw(player)
-                    end
+                    xi.maws.gotoRandomMaw(player)
+                    mission:setVar(player, 'Status', 1)
                 end,
             },
         },
@@ -75,9 +73,56 @@ mission.sections =
             onEventFinish =
             {
                 [500] = function(player, csid, option, npc)
-                    if mission:complete(player) then
-                        xi.maws.gotoRandomMaw(player)
-                    end
+                    xi.maws.gotoRandomMaw(player)
+                    mission:setVar(player, 'Status', 1)
+                end,
+            },
+        },
+
+        [xi.zone.BATALLIA_DOWNS_S] =
+        {
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 1 then
+                    return 700
+                end
+            end,
+
+            onEventFinish =
+            {
+                [700] = function(player, csid, option, npc)
+                    mission:complete(player)
+                end,
+            },
+        },
+
+        [xi.zone.ROLANBERRY_FIELDS_S] =
+        {
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 1 then
+                    return 700
+                end
+            end,
+
+            onEventFinish =
+            {
+                [700] = function(player, csid, option, npc)
+                    mission:complete(player)
+                end,
+            },
+        },
+
+        [xi.zone.SAUROMUGUE_CHAMPAIGN_S] =
+        {
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 1 then
+                    return 700
+                end
+            end,
+
+            onEventFinish =
+            {
+                [700] = function(player, csid, option, npc)
+                    mission:complete(player)
                 end,
             },
         },

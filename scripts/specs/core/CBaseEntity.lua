@@ -1177,7 +1177,25 @@ end
 
 ---@nodiscard
 ---@return integer
+function CBaseEntity:getFace()
+end
+
+---@nodiscard
+---@return integer
 function CBaseEntity:getGender()
+end
+
+---@nodiscard
+---@return integer
+function CBaseEntity:getSize()
+end
+
+---@nodiscard
+---@param newRace integer
+---@param newFace integer
+---@param newSize integer
+---@return boolean
+function CBaseEntity:raceChange(newRace, newFace, newSize)
 end
 
 ---@nodiscard
@@ -1210,6 +1228,11 @@ end
 ---@param slotObj integer?
 ---@return nil
 function CBaseEntity:setModelId(modelId, slotObj)
+end
+
+---@param look table
+---@return nil
+function CBaseEntity:setLook(look)
 end
 
 ---@nodiscard
@@ -3421,9 +3444,10 @@ end
 function CBaseEntity:setPetName(pType, value, arg2)
 end
 
----@param value integer
+---@param color xi.chocobo.color
+---@param traits table
 ---@return nil
-function CBaseEntity:registerChocobo(value)
+function CBaseEntity:registerChocobo(color, traits)
 end
 
 ---@nodiscard
@@ -3764,13 +3788,18 @@ function CBaseEntity:setDamage(damage)
 end
 
 ---@nodiscard
+---@return integer
+function CBaseEntity:getSpellListId()
+end
+
+---@nodiscard
 ---@return boolean
 function CBaseEntity:hasSpellList()
 end
 
----@param spellList integer
+---@param spellListId integer
 ---@return nil
-function CBaseEntity:setSpellList(spellList)
+function CBaseEntity:setSpellList(spellListId)
 end
 
 ---@param state boolean
@@ -3887,6 +3916,12 @@ end
 
 ---@return nil
 function CBaseEntity:useMobAbility()
+end
+
+---@param skillId integer
+---@param PLuaBaseEntity CBaseEntity?
+---@return nil
+function CBaseEntity:usePetAbility(skillId, PLuaBaseEntity)
 end
 
 ---@nodiscard

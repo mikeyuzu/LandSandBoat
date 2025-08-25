@@ -207,6 +207,7 @@ xi.instance.lookup =
 
     [xi.zone.GHOYUS_REVERIE] =
     {
+        { 12901, {   235, 0, 0, 28 }, {   235, 540 }, {   235, 4 } }, -- A Manifest Problem (WOTG Bastok Quest 2)
         -- A Feast for Gnats
         -- A Manifest Problem
         -- In a Haze of Glory

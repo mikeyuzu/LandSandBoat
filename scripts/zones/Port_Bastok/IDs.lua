@@ -8,6 +8,7 @@ zones[xi.zone.PORT_BASTOK] =
     text =
     {
         NOTHING_HAPPENS               = 119,   -- Nothing happens...
+        ASSIST_CHANNEL                = 6380,  -- You will be able to use the Assist Channel until #/#/# at #:# (JST).
         ITEM_CANNOT_BE_OBTAINED       = 6385,  -- You cannot obtain the <item>. Come back after sorting your inventory.
         FULL_INVENTORY_AFTER_TRADE    = 6389,  -- You cannot obtain the <item>. Try trading again after sorting your inventory.
         ITEM_OBTAINED                 = 6391,  -- Obtained: <item>.
@@ -77,6 +78,7 @@ zones[xi.zone.PORT_BASTOK] =
         OBTAINED_GUILD_POINTS         = 12699, -- Obtained: <number> guild points.
         OBTAINED_NUM_KEYITEMS         = 13092, -- Obtained key item: <number> <keyitem>!
         NOT_ACQUAINTED                = 13094, -- I'm sorry, but I don't believe we're acquainted. Please leave me be.
+        UNABLE_RACE_CHANGE            = 14186, -- You were unable to use the specified appearance for your character.
     },
     mob =
     {

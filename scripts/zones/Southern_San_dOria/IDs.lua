@@ -8,6 +8,7 @@ zones[xi.zone.SOUTHERN_SAN_DORIA] =
     text =
     {
         HOMEPOINT_SET                  = 24,    -- Home point set!
+        ASSIST_CHANNEL                 = 6424,  -- You will be able to use the Assist Channel until #/#/# at #:# (JST).
         ITEM_CANNOT_BE_OBTAINED        = 6429,  -- You cannot obtain the <item>. Come back after sorting your inventory.
         CANNOT_OBTAIN_THE_ITEM         = 6431,  -- You cannot obtain the item. Come back after sorting your inventory.
         FULL_INVENTORY_AFTER_TRADE     = 6433,  -- You cannot obtain the <item>. Try trading again after sorting your inventory.
@@ -85,8 +86,8 @@ zones[xi.zone.SOUTHERN_SAN_DORIA] =
         KUEH_IGUNAHMORI_DIALOG         = 8239,  -- Good day! We have lots in stock today.
         SOBANE_DIALOG                  = 8258,  -- My name is Sobane, and I'm sharpening my knives.
         PAUNELIE_DIALOG                = 8348,  -- I'm sorry, can I help you?
-        PAUNELIE_SHOP_DIALOG           = 8353,  -- These magic shells are full of mysteries...
         ITEM_DELIVERY_DIALOG           = 8448,  -- Parcels delivered to rooms anywhere in Vana'diel!
+        PAUNELIE_SHOP_DIALOG           = 8451,  -- Like %?
         MACHIELLE_OPEN_DIALOG          = 8454,  -- Might I interest you in produce from Norvallen?
         CORUA_OPEN_DIALOG              = 8455,  -- Ronfaure produce for sale!
         PHAMELISE_OPEN_DIALOG          = 8456,  -- I've got fresh produce from Zulkheim!
