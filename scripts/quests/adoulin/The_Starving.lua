@@ -52,7 +52,7 @@ quest.sections =
                     local itemObj = trade:getItem(0)
                     local auctionCategory = itemObj:getAHCat()
 
-                    if auctionCategory == 58 then
+                    if auctionCategory == xi.itemAHCategory.DRINKS then
                         return quest:event(3008)
                     else
                         return quest:event(3006)
@@ -70,7 +70,7 @@ quest.sections =
             [3007] = function(player, csid, option, npc)
                 if quest:complete(player) then
                     xi.quest.setMustZone(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.ALWAYS_MORE_QUOTH_THE_RAVENOUS)
-                    xi.quest.setVar(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.ALWAYS_MORE_QUOTH_THE_RAVENOUS, 'Timer', VanadielUniqueDay() + 1)
+                    xi.quest.setVar(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.ALWAYS_MORE_QUOTH_THE_RAVENOUS, 'Timer', VanadielUniqueDay())
                 end
             end,
 

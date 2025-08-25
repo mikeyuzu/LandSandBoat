@@ -125,7 +125,7 @@ quest.sections =
 
                         if waitTime == 0 then
                             return quest:progressEvent(34)
-                        elseif os.time() < waitTime then
+                        elseif GetSystemTime() < waitTime then
                             return quest:event(46)
                         else
                             return quest:progressEvent(35)
@@ -150,7 +150,7 @@ quest.sections =
             {
                 [24] = function(player, csid, option, npc)
                     if quest:complete(player) then
-                        xi.quest.setVar(player, xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.CLAWS_OF_THE_GRIFFON, 'Timer', VanadielUniqueDay() + 1)
+                        xi.quest.setVar(player, xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.CLAWS_OF_THE_GRIFFON, 'Timer', VanadielUniqueDay())
                     end
                 end,
 

@@ -52,8 +52,8 @@ quest.sections =
                     local auctionCategory = itemObj:getAHCat()
 
                     if
-                        auctionCategory >= 52 and
-                        auctionCategory <= 57
+                        auctionCategory >= xi.itemAHCategory.MEAT_EGGS and
+                        auctionCategory <= xi.itemAHCategory.SWEETS
                     then
                         return quest:event(2533)
                     end
@@ -69,7 +69,7 @@ quest.sections =
                 if quest:complete(player) then
                     player:confirmTrade()
 
-                    xi.quest.setVar(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.THE_STARVING, 'Timer', VanadielUniqueDay() + 1)
+                    xi.quest.setVar(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.THE_STARVING, 'Timer', VanadielUniqueDay())
                 end
             end,
 

@@ -89,12 +89,12 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
     local finalDamage  = 0
     local spellId      = spell:getID()
     local modAbsorbed  = absorbPointsData[spellId][1]
-    local casterPoints = caster:getHP()
     local targetPoints = target:getHP()
+    local displayCap   = caster:getMaxHP() - caster:getHP()
 
     if modAbsorbed == xi.mod.MP then
-        casterPoints = caster:getMP()
         targetPoints = target:getMP()
+        displayCap   = caster:getMaxMP() - caster:getMP()
     end
 
     -- Early return: Target absorbs or nullifies dark.
@@ -147,14 +147,12 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
     finalDamage = math.floor(finalDamage * liberatorMultiplier)
     finalDamage = math.floor(finalDamage * netherVoidMultiplier)
 
-    -- Clamp: We cannot absorb more HP/MP than the target has.
-    finalDamage = utils.clamp(finalDamage, 0, targetPoints)
-
     -- Final operations.
     if modAbsorbed == xi.mod.HP then
         finalDamage = utils.clamp(finalDamage - target:getMod(xi.mod.PHALANX), 0, 99999)
         finalDamage = utils.clamp(utils.oneforall(target, finalDamage), 0, 99999)
         finalDamage = utils.clamp(utils.stoneskin(target, finalDamage), -99999, 99999)
+        finalDamage = utils.clamp(finalDamage, 0, targetPoints)
         finalDamage = target:checkDamageCap(finalDamage)
 
         -- Handle Bind break and TP?
@@ -165,15 +163,38 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
 
         -- Handle Enmity.
         target:updateEnmityFromDamage(caster, finalDamage)
+    else
+        finalDamage = utils.clamp(finalDamage, 0, targetPoints)
     end
 
-    -- Drain II and Drain III increase max HP.
+    -- Drain II and Drain III increase max HP via effect.
     if absorbPointsData[spellId][5] then
+        -- Remove cap on damage displayed in log.
+        displayCap = 9999 - caster:getHP()
+
+        -- Calculate overflow.
         local overflow = finalDamage + caster:getHP() - caster:getMaxHP()
         if overflow > 0 then
-            local power    = 100 * overflow / caster:getMaxHP()
-            local duration = 180 + 180 * caster:getMod(xi.mod.DARK_MAGIC_DURATION) / 100
-            caster:addStatusEffect(xi.effect.MAX_HP_BOOST, power, 0, duration)
+            -- Check if effect should be applied. Only 1 "Max HP Effect" can be in place at a time.
+            -- Retail testing suggest that %power effect takes precedent over flat power.
+            local hasMaxHPEffect      = caster:hasStatusEffect(xi.effect.MAX_HP_BOOST)
+            local maxHPEffectPower    = 0
+            local maxHPEffectSubpower = 0
+
+            if hasMaxHPEffect then
+                maxHPEffectPower    = caster:getStatusEffect(xi.effect.MAX_HP_BOOST):getPower()
+                maxHPEffectSubpower = caster:getStatusEffect(xi.effect.MAX_HP_BOOST):getSubPower()
+            end
+
+            if
+                not hasMaxHPEffect or           -- No effect present, so apply.
+                (maxHPEffectPower == 0 and      -- Effect present, but it isn't %. If subpower is higher, we can override the effect.
+                maxHPEffectSubpower < overflow) -- Subpower present is lower than new one, so we can override the effect.
+            then
+                local duration = 180 + 180 * caster:getMod(xi.mod.DARK_MAGIC_DURATION) / 100
+                caster:delStatusEffect(xi.effect.MAX_HP_BOOST)
+                caster:addStatusEffect(xi.effect.MAX_HP_BOOST, 0, 0, duration, 0, overflow)
+            end
         end
     end
 
@@ -186,7 +207,7 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
     end
 
     -- Displayed damage in log is the amount the player heals by, not the damage actually done.
-    local displayDamage = utils.clamp(finalDamage, 0, casterPoints)
+    local displayDamage = utils.clamp(finalDamage, 0, displayCap)
 
     return displayDamage
 end

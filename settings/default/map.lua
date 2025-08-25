@@ -271,6 +271,9 @@ xi.settings.map =
     AUDIT_LINKSHELL = false, -- リンクシェルログ
     AUDIT_UNITY     = false, -- ユニティチャットログ
     AUDIT_PARTY     = false, -- パーティチャットログ
+    AUDIT_BALLISTA  = false,
+    AUDIT_ASSISTE   = false,
+    AUDIT_ASSISTJ   = false,
 
     -- Player Item Transaction Logging (Default: Off)
     -- Logs player item transactions to the database for persistence.
@@ -345,6 +348,8 @@ xi.settings.map =
     CUSTOM_INVENTORY = false,
     -- カスタムインベントリのメッセージ：を合成倉庫に入れた
     CUSTOM_INVENTORY_MESSAGE = '\x82\xf0\x8d\x87\x90\xac\x91\x71\x8c\xc9\x82\xc9\x93\xfc\x82\xea\x82\xbd',
+    -- カスタムアイテム図鑑を有効にする
+    CUSTOM_ITEM_BOOK = false,
 
     -- ヘイトがある状態でフェイスを呼び出せない
     DISABLE_TRUST_WHEN_ENMITY = true,

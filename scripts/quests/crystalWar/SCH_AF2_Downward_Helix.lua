@@ -18,6 +18,7 @@ quest.sections =
     {
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_AVAILABLE and
+                player:hasCompletedQuest(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.ON_SABBATICAL) and
                 xi.quest.getVar(player, xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.ON_SABBATICAL, 'Timer') <= VanadielUniqueDay() and
                 player:getMainJob() == xi.job.SCH and
                 player:getMainLvl() >= xi.settings.main.AF2_QUEST_LEVEL
@@ -90,7 +91,7 @@ quest.sections =
 
                 [27] = function(player, csid, option, npc)
                     if quest:complete(player) then
-                        xi.quest.setVar(player, xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.DOWNWARD_HELIX, 'Timer', VanadielUniqueDay() + 1)
+                        xi.quest.setVar(player, xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.DOWNWARD_HELIX, 'Timer', VanadielUniqueDay())
                         xi.quest.setMustZone(player, xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.DOWNWARD_HELIX)
                     end
                 end,
