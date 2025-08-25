@@ -49,7 +49,7 @@ local assessment = function(player, npc)
         if completed then
             return mission:progressEvent(204, 0, 0, 0, 0, 0, VanadielHour(), hoursRemaining, 0)
         else
-            return mission:progressEvent(183, 0, VanadielHour(), hoursRemaining)
+            --return mission:progressEvent(183, 0, VanadielHour(), hoursRemaining)
         end
     end
 
@@ -59,9 +59,9 @@ local assessment = function(player, npc)
 
         if killCount >= 35 then
             event = completed and 206 or 201
-        elseif killCount >= 30 then
+        elseif killCount >= 10 then
             event = completed and 209 or 200
-        elseif not completed and killCount >= 19 then
+        elseif not completed and killCount >= 5 then
             event = 199
         end
 

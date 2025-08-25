@@ -344,6 +344,9 @@ xi.settings.map =
     -- 魔封門の札を受け取れるタイミングをそれぞれの正義クリア時に変更する
     AMULETTE_DE_PORTAIL_MISSION_TO_EACH_HIS_OWN_RIGHT = false,
 
+    -- ウィンダスミッション 試験の行方 報告受付開始時間（公式ヴァナ時間23時間後）
+    A_TESTING_TIME_report_start_time = 23,
+
     -- カスタムインベントリを有効にする
     CUSTOM_INVENTORY = false,
     -- カスタムインベントリのメッセージ：を合成倉庫に入れた
