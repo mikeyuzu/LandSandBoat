@@ -120,6 +120,7 @@ namespace charutils
     uint8  MoveItem(CCharEntity* PChar, uint8 LocationID, uint8 SlotID, uint8 NewSlotID);
     uint32 UpdateItem(CCharEntity* PChar, uint8 LocationID, uint8 slotID, int32 quantity, bool force = false);
     void   DropItem(CCharEntity* PChar, uint8 container, uint8 slotID, int32 quantity, uint16 ItemID);
+    void   AddCustomItemBook(CCharEntity* PChar, uint8 LocationID, CItem* PItem, bool silence = false);
     void   CheckValidEquipment(CCharEntity* PChar);
     void   CheckEquipLogic(CCharEntity* PChar, SCRIPTTYPE ScriptType, uint32 param);
     void   SaveJobChangeGear(CCharEntity* PChar);
