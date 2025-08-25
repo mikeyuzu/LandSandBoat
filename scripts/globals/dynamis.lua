@@ -290,7 +290,7 @@ local function arg3(player, bit)
 end
 
 local function handleEntryTime(player)
-    local realDay = os.time()
+    local realDay = GetSystemTime()
 
     if xi.settings.main.DYNA_MIDNIGHT_RESET then
         realDay = getMidnight() - 86400
@@ -361,7 +361,7 @@ xi.dynamis.entryNpcOnTrigger = function(player, npc)
 
         -- dynamis entry
         elseif not info.reqs or info.reqs(player) then
-            local realDay      = os.time()
+            local realDay      = GetSystemTime()
             local dynaWaitxDay = player:getCharVar('dynaWaitxDay')
             local sjobOption   = info.csBit > 6 and 1 or 0
 
@@ -1046,8 +1046,7 @@ xi.dynamis.hourglassAndCurrencyExchangeNPCOnEventUpdate = function(player, csid,
                 player:messageSpecial(ID.text.NOT_ENOUGH_GIL)
             else
                 player:delGil(price)
-                player:addKeyItem(option)
-                player:messageSpecial(ID.text.KEYITEM_OBTAINED, option)
+                npcUtil.giveKeyItem(player, option)
             end
 
             player:updateEvent(xi.dynamis.getDynamisMapList(player), player:getGil())
@@ -1064,8 +1063,7 @@ xi.dynamis.hourglassAndCurrencyExchangeNPCOnEventFinish = function(player, csid,
     -- bought prismatic hourglass
     if csid == baseCs + 4 then
         player:tradeComplete()
-        player:addKeyItem(xi.ki.PRISMATIC_HOURGLASS)
-        player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.PRISMATIC_HOURGLASS)
+        npcUtil.giveKeyItem(player, xi.ki.PRISMATIC_HOURGLASS)
 
     -- refund timeless hourglass
     elseif csid == baseCs + 13 then

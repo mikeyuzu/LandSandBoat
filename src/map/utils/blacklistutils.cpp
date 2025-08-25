@@ -20,65 +20,65 @@
 */
 
 #include "blacklistutils.h"
+
+#include "common/database.h"
 #include "common/utils.h"
+
 #include "entities/charentity.h"
-#include "map.h"
 
 #include "packets/send_blacklist.h"
 
 namespace blacklistutils
 {
-    bool IsBlacklisted(uint32 ownerId, uint32 targetId)
+    auto IsBlacklisted(uint32 ownerId, uint32 targetId) -> bool
     {
-        const char* query = "SELECT * FROM char_blacklist WHERE charid_owner = %u AND charid_target = %u";
-        int32       ret   = _sql->Query(query, ownerId, targetId);
-
-        return (ret != SQL_ERROR && _sql->NumRows() == 1);
+        const auto rset = db::preparedStmt("SELECT * FROM char_blacklist WHERE charid_owner = ? AND charid_target = ? LIMIT 1", ownerId, targetId);
+        return rset && rset->rowsCount();
     }
 
-    bool AddBlacklisted(uint32 ownerId, uint32 targetId)
+    auto AddBlacklisted(uint32 ownerId, uint32 targetId) -> bool
     {
         if (IsBlacklisted(ownerId, targetId))
         {
             return false;
         }
 
-        const char* query = "INSERT INTO char_blacklist (charid_owner, charid_target) VALUES (%u, %u)";
-        return (_sql->Query(query, ownerId, targetId) != SQL_ERROR && _sql->AffectedRows() == 1);
+        const auto rset = db::preparedStmt("INSERT INTO char_blacklist (charid_owner, charid_target) VALUES (?, ?)", ownerId, targetId);
+        return rset && rset->rowsAffected();
     }
 
-    bool DeleteBlacklisted(uint32 ownerId, uint32 targetId)
+    auto DeleteBlacklisted(uint32 ownerId, uint32 targetId) -> bool
     {
         if (!IsBlacklisted(ownerId, targetId))
         {
             return false;
         }
 
-        const char* query = "DELETE FROM char_blacklist WHERE charid_owner = %u AND charid_target = %u";
-        return (_sql->Query(query, ownerId, targetId) != SQL_ERROR && _sql->AffectedRows() == 1);
+        const auto rset = db::preparedStmt("DELETE FROM char_blacklist WHERE charid_owner = ? AND charid_target = ? LIMIT 1", ownerId, targetId);
+        return rset && rset->rowsAffected();
     }
 
     void SendBlacklist(CCharEntity* PChar)
     {
         std::vector<std::pair<uint32, std::string>> blacklist;
 
-        // Obtain this users blacklist info..
-        const char* query = "SELECT c.charid, c.charname FROM char_blacklist AS b INNER JOIN chars AS c ON b.charid_target = c.charid WHERE charid_owner = %u";
-        if (_sql->Query(query, PChar->id) == SQL_ERROR || _sql->NumRows() == 0)
+        // Obtain this users blacklist info
+        const auto rset = db::preparedStmt("SELECT c.charid, c.charname FROM char_blacklist AS b INNER JOIN chars AS c ON b.charid_target = c.charid WHERE charid_owner = ?", PChar->id);
+        if (!rset || !rset->rowsCount())
         {
             PChar->pushPacket<CSendBlacklist>(PChar, blacklist, true, true);
             return;
         }
 
         // Loop and build blacklist
-        int currentCount = 0;
-        int totalCount   = 0;
-        int rowCount     = _sql->NumRows();
+        int       currentCount = 0;
+        int       totalCount   = 0;
+        const int rowCount     = rset->rowsCount();
 
-        while (_sql->NextRow() == SQL_SUCCESS)
+        while (rset->next())
         {
-            uint32      accid_target = _sql->GetUIntData(0);
-            std::string targetName   = _sql->GetStringData(1);
+            auto accid_target = rset->get<uint32>(0);
+            auto targetName   = rset->get<std::string>(1);
 
             blacklist.emplace_back(accid_target, targetName);
             currentCount++;

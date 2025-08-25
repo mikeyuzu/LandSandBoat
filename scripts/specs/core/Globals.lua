@@ -81,10 +81,11 @@ end
 function IsConquestAlliance()
 end
 
----@param zoneId xi.zone
+---@param requestingZoneId xi.zone
+---@param executorZoneId xi.zone
 ---@param str string
 ---@return nil
-function SendLuaFuncStringToZone(zoneId, str)
+function SendLuaFuncStringToZone(requestingZoneId, executorZoneId, str)
 end
 
 ---@nodiscard
@@ -164,7 +165,32 @@ end
 
 ---@nodiscard
 ---@return integer
-function JstWeekday()
+function JstDayOfTheYear()
+end
+
+---@nodiscard
+---@return integer
+function JstDayOfTheMonth()
+end
+
+---@nodiscard
+---@return integer
+function JstDayOfTheWeek()
+end
+
+---@nodiscard
+---@return integer
+function JstYear()
+end
+
+---@nodiscard
+---@return integer
+function JstMonth()
+end
+
+---@nodiscard
+---@return integer
+function JstHour()
 end
 
 ---@nodiscard
@@ -261,12 +287,6 @@ end
 ---@nodiscard
 ---@return integer
 function VanadielRSELocation()
-end
-
----@nodiscard
----@param offset integer
----@return boolean
-function SetVanadielTimeOffset(offset)
 end
 
 ---@nodiscard

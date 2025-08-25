@@ -27,7 +27,8 @@ mission.sections =
 {
     {
         check = function(player, currentMission, missionStatus, vars)
-            return currentMission == mission.missionId
+            return currentMission == mission.missionId and
+                xi.wotg.helpers.meetsMission2Reqs(player)
         end,
 
         [xi.zone.BATALLIA_DOWNS] =

@@ -22,7 +22,7 @@
 #include <cstring>
 
 #include "entities/charentity.h"
-#include "map.h"
+#include "map_server.h"
 #include "merit.h"
 #include "packets/char_abilities.h"
 #include "packets/char_spells.h"
@@ -429,8 +429,8 @@ namespace meritNameSpace
 
     void LoadMeritsList()
     {
-        int32 ret = _sql->Query("SELECT m.meritid, m.value, m.jobs, m.upgrade, m.upgradeid, m.catagoryid, sl.spellid, ws.unlock_id FROM merits m LEFT JOIN \
-            spell_list sl ON m.name = sl.name LEFT JOIN weapon_skills ws ON m.name = ws.name ORDER BY m.meritid ASC LIMIT %u",
+        int32 ret = _sql->Query("SELECT m.meritid, m.value, m.jobs, m.upgrade, m.upgradeid, m.catagoryid, sl.spellid, ws.unlock_id FROM merits m LEFT JOIN "
+                                "spell_list sl ON m.name = sl.name LEFT JOIN weapon_skills ws ON m.name = ws.name ORDER BY m.meritid ASC LIMIT %u",
                                 MERITS_COUNT);
 
         if (ret != SQL_ERROR && _sql->NumRows() != MERITS_COUNT)

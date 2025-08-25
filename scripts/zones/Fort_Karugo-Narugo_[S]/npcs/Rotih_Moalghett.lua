@@ -7,24 +7,18 @@
 ---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
     if player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.THE_TIGRESS_STRIKES) == xi.questStatus.QUEST_ACCEPTED then
         if player:getCharVar('TigressStrikesProg') == 1 then
-            player:startEvent(101)
-        else
             player:startEvent(104)
+        else
+            player:startEvent(101)
         end
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
-    if csid == 104 then
+    if csid == 101 then
         player:setCharVar('TigressStrikesProg', 1)
     end
 end

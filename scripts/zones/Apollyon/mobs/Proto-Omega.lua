@@ -54,16 +54,16 @@ entity.onMobSpawn = function(mob)
     mob:setBehavior(bit.bor(mob:getBehavior(), xi.behavior.NO_TURN))
     -- base speed of 60 is based on retail capture and applies to all forms
     -- also has standard boost (2.5x) up to 150 when target is out of range
-    mob:setSpeed(60)
+    mob:setBaseSpeed(60)
     quadrupedForm(mob)
 end
 
 entity.onMobEngage = function(mob, target)
-    mob:setLocalVar('formTime', os.time() + 120)
+    mob:setLocalVar('formTime', GetSystemTime() + 120)
 end
 
 entity.onMobFight = function(mob, target)
-    local now = os.time()
+    local now = GetSystemTime()
 
     -- If in Final form then do Pod Ejection every 5 minutes
     if mob:getLocalVar('final') == 1 then

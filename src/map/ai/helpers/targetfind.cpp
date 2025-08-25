@@ -30,11 +30,10 @@
 #include "entities/charentity.h"
 #include "entities/mobentity.h"
 #include "entities/trustentity.h"
+#include "mob_modifier.h"
 #include "packets/action.h"
 #include "status_effect_container.h"
 #include "utils/zoneutils.h"
-
-#include <cmath>
 
 CTargetFind::CTargetFind(CBattleEntity* PBattleEntity)
 : isPlayer(false)
@@ -149,7 +148,17 @@ void CTargetFind::findWithinArea(CBattleEntity* PTarget, AOE_RADIUS radiusType, 
     else
     {
         // handle this as a mob
-        if (m_PMasterTarget->objtype == TYPE_PC || m_PBattleEntity->allegiance == ALLEGIANCE_TYPE::PLAYER)
+        if (m_targetFlags & TARGET_ANY_ALLEGIANCE)
+        {
+            m_findType = FIND_TYPE::MONSTER_PLAYER;
+            if ((m_targetFlags & TARGET_SELF) && m_PBattleEntity->GetBattleTarget())
+            {
+                // This ability targets self for aoe skills (such as Frozen Mist)
+                // We must update the base target for allegiance checks
+                m_PMasterTarget = findMaster(m_PBattleEntity->GetBattleTarget());
+            }
+        }
+        else if (m_PMasterTarget->objtype == TYPE_PC || m_PBattleEntity->allegiance == ALLEGIANCE_TYPE::PLAYER)
         {
             m_findType = FIND_TYPE::MONSTER_PLAYER;
         }
@@ -235,9 +244,8 @@ void CTargetFind::addAllInMobList(CBattleEntity* PTarget, bool withPet)
     CCharEntity* PChar = dynamic_cast<CCharEntity*>(findMaster(m_PBattleEntity));
     if (PChar)
     {
-        for (SpawnIDList_t::const_iterator it = PChar->SpawnMOBList.begin(); it != PChar->SpawnMOBList.end(); ++it)
+        FOR_EACH_PAIR_CAST_SECOND(CMobEntity*, PBattleTarget, PChar->SpawnMOBList)
         {
-            CBattleEntity* PBattleTarget = dynamic_cast<CBattleEntity*>(it->second);
             if (PBattleTarget && isMobOwner(PBattleTarget))
             {
                 addEntity(PBattleTarget, withPet);
@@ -311,12 +319,10 @@ void CTargetFind::addAllInEnmityList()
 {
     if (m_PBattleEntity->objtype == TYPE_MOB)
     {
-        CMobEntity*   mob        = (CMobEntity*)m_PBattleEntity;
-        EnmityList_t* enmityList = mob->PEnmityContainer->GetEnmityList();
+        CMobEntity* PMob = static_cast<CMobEntity*>(m_PBattleEntity);
 
-        for (auto& it : *enmityList)
+        for (const auto& [_, PEnmityObject] : *PMob->PEnmityContainer->GetEnmityList())
         {
-            EnmityObject_t& PEnmityObject = it.second;
             if (PEnmityObject.PEnmityOwner)
             {
                 addEntity(PEnmityObject.PEnmityOwner, false);
@@ -335,11 +341,10 @@ void CTargetFind::addAllInRange(CBattleEntity* PTarget, float radius, ALLEGIANCE
         if (PTarget->objtype == TYPE_PC)
         {
             CCharEntity* PChar = static_cast<CCharEntity*>(PTarget);
-            for (const auto& list : { PChar->SpawnPCList, PChar->SpawnPETList })
+            for (auto& spawnList : { PChar->SpawnPCList, PChar->SpawnPETList })
             {
-                for (const auto& pair : list)
+                FOR_EACH_PAIR_CAST_SECOND(CBattleEntity*, PBattleEntity, spawnList)
                 {
-                    CBattleEntity* PBattleEntity = static_cast<CBattleEntity*>(pair.second);
                     if (PBattleEntity && isWithinArea(&(PBattleEntity->loc.p)) && !PBattleEntity->isDead() &&
                         PBattleEntity->allegiance == ALLEGIANCE_TYPE::PLAYER)
                     {
@@ -399,6 +404,14 @@ bool CTargetFind::isMobOwner(CBattleEntity* PTarget)
         return true;
     }
 
+    if (auto* PMob = dynamic_cast<CMobEntity*>(PTarget))
+    {
+        if (PMob->getMobMod(MOBMOD_CLAIM_TYPE) == static_cast<int16>(ClaimType::NonExclusive))
+        {
+            return true;
+        }
+    }
+
     bool found = false;
 
     // clang-format off
@@ -456,39 +469,59 @@ bool CTargetFind::validEntity(CBattleEntity* PTarget)
         return true;
     }
 
-    if (m_PTarget->allegiance != PTarget->allegiance)
+    // short-circuit allegiance checks for aoe skills/abilities/spells that can hit players and mobs simultaneously
+    if (m_targetFlags & TARGET_ANY_ALLEGIANCE)
     {
-        return false;
-    }
-
-    // If offensive, don't target other entities with same allegiance
-    // Cures can be AoE with Accession and Majesty, ideally we would use SPELLGROUP or some other mechanism, but TargetFind wasn't designed with that in mind
-    if ((m_targetFlags & TARGET_ENEMY) && !(m_targetFlags & TARGET_PLAYER_PARTY) &&
-        m_PBattleEntity->allegiance == PTarget->allegiance)
-    {
-        return false;
-    }
-
-    // shouldn't add if target is charmed by the enemy
-    if (PTarget->PMaster != nullptr)
-    {
-        if (m_findType == FIND_TYPE::MONSTER_PLAYER)
+        if (m_targetFlags & TARGET_SELF)
         {
-            if (PTarget->PMaster->objtype == TYPE_MOB)
+            if (m_PBattleEntity->allegiance == PTarget->allegiance)
             {
+                // TARGET_ANY_ALLEGIANCE with TARGET_SELF means it should behave like TARGET_ENEMY
                 return false;
             }
         }
-        else if (m_findType == FIND_TYPE::PLAYER_MONSTER)
+        else if (m_PBattleEntity == PTarget)
         {
-            if (PTarget->PMaster->objtype == TYPE_PC)
-            {
-                return false;
-            }
+            // Don't erroneously include self when using TARGET_ANY_ALLEGIANCE
+            return false;
         }
-        else if (m_findType == FIND_TYPE::MONSTER_MONSTER || m_findType == FIND_TYPE::PLAYER_PLAYER)
+    }
+    else
+    {
+        if (m_PTarget->allegiance != PTarget->allegiance)
         {
-            return PTarget->objtype == TYPE_TRUST;
+            return false;
+        }
+
+        // If offensive, don't target other entities with same allegiance
+        // Cures can be AoE with Accession and Majesty, ideally we would use SPELLGROUP or some other mechanism, but TargetFind wasn't designed with that in mind
+        if ((m_targetFlags & TARGET_ENEMY) && !(m_targetFlags & TARGET_PLAYER_PARTY) &&
+            m_PBattleEntity->allegiance == PTarget->allegiance)
+        {
+            return false;
+        }
+
+        // shouldn't add if target is charmed by the enemy
+        if (PTarget->PMaster != nullptr)
+        {
+            if (m_findType == FIND_TYPE::MONSTER_PLAYER)
+            {
+                if (PTarget->PMaster->objtype == TYPE_MOB)
+                {
+                    return false;
+                }
+            }
+            else if (m_findType == FIND_TYPE::PLAYER_MONSTER)
+            {
+                if (PTarget->PMaster->objtype == TYPE_PC)
+                {
+                    return false;
+                }
+            }
+            else if (m_findType == FIND_TYPE::MONSTER_MONSTER || m_findType == FIND_TYPE::PLAYER_PLAYER)
+            {
+                return PTarget->objtype == TYPE_TRUST;
+            }
         }
     }
 

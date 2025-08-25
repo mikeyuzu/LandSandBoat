@@ -42,9 +42,10 @@
 #include "utils/mobutils.h"
 #include "utils/zoneutils.h"
 
-CInstanceLoader::CInstanceLoader(uint16 instanceid, CCharEntity* PRequester)
+CInstanceLoader::CInstanceLoader(uint32 instanceid, CCharEntity* PRequester)
 {
     TracyZoneScoped;
+
     auto   instanceData = instanceutils::GetInstanceData(instanceid);
     CZone* PZone        = zoneutils::GetZone(instanceData.instance_zone);
 
@@ -54,9 +55,9 @@ CInstanceLoader::CInstanceLoader(uint16 instanceid, CCharEntity* PRequester)
         return;
     }
 
-    requester = PRequester;
-    zone      = PZone;
-    instance  = ((CZoneInstance*)PZone)->CreateInstance(instanceid);
+    m_PRequester = PRequester;
+    m_PZone      = PZone;
+    m_PInstance  = ((CZoneInstance*)PZone)->CreateInstance(instanceid);
 }
 
 CInstanceLoader::~CInstanceLoader()
@@ -67,32 +68,33 @@ CInstanceLoader::~CInstanceLoader()
 CInstance* CInstanceLoader::LoadInstance()
 {
     TracyZoneScoped;
-    const char* Query = "SELECT mobname, mobid, pos_rot, pos_x, pos_y, pos_z, \
-            respawntime, spawntype, dropid, mob_groups.HP, mob_groups.MP, minLevel, maxLevel, \
-            modelid, mJob, sJob, cmbSkill, cmbDmgMult, cmbDelay, behavior, links, mobType, immunity, \
-            ecosystemID, mobradius, speed, \
-            STR, DEX, VIT, AGI, `INT`, MND, CHR, EVA, DEF, ATT, ACC, \
-            slash_sdt, pierce_sdt, h2h_sdt, impact_sdt, \
-            magical_sdt, fire_sdt, ice_sdt, wind_sdt, earth_sdt, lightning_sdt, water_sdt, light_sdt, dark_sdt, \
-            fire_res_rank, ice_res_rank, wind_res_rank, earth_res_rank, lightning_res_rank, water_res_rank, light_res_rank, dark_res_rank, \
-            Element, mob_pools.familyid, name_prefix, entityFlags, animationsub, \
-            (mob_family_system.HP / 100), (mob_family_system.MP / 100), hasSpellScript, spellList, mob_groups.poolid, \
-            allegiance, namevis, aggro, mob_pools.skill_list_id, mob_pools.true_detection, detects, \
-            mob_family_system.charmable \
-            FROM instance_entities INNER JOIN mob_spawn_points ON instance_entities.id = mob_spawn_points.mobid \
-            INNER JOIN mob_groups ON mob_groups.groupid = mob_spawn_points.groupid AND mob_groups.zoneid=((mob_spawn_points.mobid>>12)&0xFFF) \
-            INNER JOIN mob_pools ON mob_groups.poolid = mob_pools.poolid \
-            INNER JOIN mob_resistances ON mob_resistances.resist_id = mob_pools.resist_id \
-            INNER JOIN mob_family_system ON mob_pools.familyid = mob_family_system.familyID \
-            WHERE instanceid = %u AND NOT (pos_x = 0 AND pos_y = 0 AND pos_z = 0)";
 
-    int32 ret = _sql->Query(Query, instance->GetID());
+    const char* Query = "SELECT mobname, mobid, pos_rot, pos_x, pos_y, pos_z, "
+                        "respawntime, spawntype, dropid, mob_groups.HP, mob_groups.MP, minLevel, maxLevel, "
+                        "modelid, mJob, sJob, cmbSkill, cmbDmgMult, cmbDelay, behavior, links, mobType, immunity, "
+                        "ecosystemID, mobradius, speed, "
+                        "STR, DEX, VIT, AGI, `INT`, MND, CHR, EVA, DEF, ATT, ACC, "
+                        "slash_sdt, pierce_sdt, h2h_sdt, impact_sdt, "
+                        "magical_sdt, fire_sdt, ice_sdt, wind_sdt, earth_sdt, lightning_sdt, water_sdt, light_sdt, dark_sdt, "
+                        "fire_res_rank, ice_res_rank, wind_res_rank, earth_res_rank, lightning_res_rank, water_res_rank, light_res_rank, dark_res_rank, "
+                        "Element, mob_pools.familyid, name_prefix, entityFlags, animationsub, "
+                        "(mob_family_system.HP / 100), (mob_family_system.MP / 100), hasSpellScript, spellList, mob_groups.poolid, "
+                        "allegiance, namevis, aggro, mob_pools.skill_list_id, mob_pools.true_detection, detects, "
+                        "mob_family_system.charmable "
+                        "FROM instance_entities INNER JOIN mob_spawn_points ON instance_entities.id = mob_spawn_points.mobid "
+                        "INNER JOIN mob_groups ON mob_groups.groupid = mob_spawn_points.groupid AND mob_groups.zoneid=((mob_spawn_points.mobid>>12)&0xFFF) "
+                        "INNER JOIN mob_pools ON mob_groups.poolid = mob_pools.poolid "
+                        "INNER JOIN mob_resistances ON mob_resistances.resist_id = mob_pools.resist_id "
+                        "INNER JOIN mob_family_system ON mob_pools.familyid = mob_family_system.familyID "
+                        "WHERE instanceid = %u AND NOT (pos_x = 0 AND pos_y = 0 AND pos_z = 0)";
 
-    if (!instance->Failed() && ret != SQL_ERROR /*&& sql->NumRows() != 0*/)
+    int32 ret = _sql->Query(Query, m_PInstance->GetID());
+
+    if (!m_PInstance->Failed() && ret != SQL_ERROR /*&& sql->NumRows() != 0*/)
     {
         while (_sql->NextRow() == SQL_SUCCESS)
         {
-            CMobEntity* PMob = new CMobEntity;
+            CMobEntity* PMob = new CMobEntity();
 
             PMob->name.insert(0, (const char*)_sql->GetData(0));
             PMob->id     = _sql->GetUIntData(1);
@@ -104,7 +106,7 @@ CInstance* CInstanceLoader::LoadInstance()
             PMob->m_SpawnPoint.z        = _sql->GetFloatData(5);
             PMob->loc.p                 = PMob->m_SpawnPoint;
 
-            PMob->m_RespawnTime = _sql->GetUIntData(6) * 1000;
+            PMob->m_RespawnTime = std::chrono::seconds(_sql->GetUIntData(6));
             PMob->m_SpawnType   = (SPAWNTYPE)_sql->GetUIntData(7);
             PMob->m_DropID      = _sql->GetUIntData(8);
 
@@ -135,8 +137,8 @@ CInstance* CInstanceLoader::LoadInstance()
             PMob->m_ModelRadius = (float)_sql->GetIntData(24);
 
             PMob->baseSpeed      = (uint8)_sql->GetIntData(25);
-            PMob->speed          = (uint8)_sql->GetIntData(25);
             PMob->animationSpeed = (uint8)_sql->GetIntData(25);
+            PMob->UpdateSpeed();
 
             PMob->strRank = (uint8)_sql->GetIntData(26);
             PMob->dexRank = (uint8)_sql->GetIntData(27);
@@ -150,10 +152,10 @@ CInstance* CInstanceLoader::LoadInstance()
             PMob->attRank = (uint8)_sql->GetIntData(35);
             PMob->accRank = (uint8)_sql->GetIntData(36);
 
-            PMob->setModifier(Mod::SLASH_SDT, (uint16)(_sql->GetFloatData(37) * 1000));
-            PMob->setModifier(Mod::PIERCE_SDT, (uint16)(_sql->GetFloatData(38) * 1000));
-            PMob->setModifier(Mod::HTH_SDT, (uint16)(_sql->GetFloatData(39) * 1000));
-            PMob->setModifier(Mod::IMPACT_SDT, (uint16)(_sql->GetFloatData(40) * 1000));
+            PMob->setModifier(Mod::SLASH_SDT, (int16)_sql->GetIntData(37));
+            PMob->setModifier(Mod::PIERCE_SDT, (int16)_sql->GetIntData(38));
+            PMob->setModifier(Mod::HTH_SDT, (int16)_sql->GetIntData(39));
+            PMob->setModifier(Mod::IMPACT_SDT, (int16)_sql->GetIntData(40));
 
             PMob->setModifier(Mod::UDMGMAGIC, (int16)_sql->GetIntData(41)); // Modifier 389, base 10000 stored as signed integer. Positives signify less damage.
 
@@ -216,7 +218,7 @@ CInstance* CInstanceLoader::LoadInstance()
             PMob->setMobMod(MOBMOD_CHARMABLE, _sql->GetUIntData(74));
 
             // Overwrite base family charmables depending on mob type. Disallowed mobs which should be charmable
-            // can be set in mob_spawn_mods or in their onInitialize
+            // can be set in in their onInitialize
             if (PMob->m_Type & MOBTYPE_EVENT || PMob->m_Type & MOBTYPE_FISHED || PMob->m_Type & MOBTYPE_BATTLEFIELD || PMob->m_Type & MOBTYPE_NOTORIOUS)
             {
                 PMob->setMobMod(MOBMOD_CHARMABLE, 0);
@@ -224,22 +226,22 @@ CInstance* CInstanceLoader::LoadInstance()
 
             // must be here first to define mobmods
             mobutils::InitializeMob(PMob);
-            PMob->PInstance = instance;
+            PMob->PInstance = m_PInstance;
 
-            instance->InsertMOB(PMob);
+            m_PInstance->InsertMOB(PMob);
         }
 
-        Query = "SELECT npcid, name, pos_rot, pos_x, pos_y, pos_z,\
-            flag, speed, speedsub, animation, animationsub, namevis,\
-            status, entityFlags, look, name_prefix, widescan \
-            FROM instance_entities INNER JOIN npc_list ON \
-            (instance_entities.id = npc_list.npcid) \
-            WHERE instanceid = %u AND npcid >= %u AND npcid < %u";
+        Query = "SELECT npcid, name, pos_rot, pos_x, pos_y, pos_z, "
+                "flag, speed, speedsub, animation, animationsub, namevis, "
+                "status, entityFlags, look, name_prefix, widescan "
+                "FROM instance_entities INNER JOIN npc_list ON "
+                "(instance_entities.id = npc_list.npcid) "
+                "WHERE instanceid = %u AND npcid >= %u AND npcid < %u";
 
-        uint32 zoneMin = (zone->GetID() << 12) + 0x1000000;
+        uint32 zoneMin = (m_PZone->GetID() << 12) + 0x1000000;
         uint32 zoneMax = zoneMin + 1024;
 
-        ret = _sql->Query(Query, instance->GetID(), zoneMin, zoneMax);
+        ret = _sql->Query(Query, m_PInstance->GetID(), zoneMin, zoneMax);
 
         if (ret != SQL_ERROR && _sql->NumRows() != 0)
         {
@@ -259,11 +261,11 @@ CInstance* CInstanceLoader::LoadInstance()
 
                 PNpc->m_TargID = _sql->GetUIntData(6) >> 16; // "quite likely"
 
-                PNpc->baseSpeed      = (uint8)_sql->GetIntData(8);
-                PNpc->speed          = (uint8)_sql->GetIntData(7);
+                PNpc->baseSpeed      = (uint8)_sql->GetIntData(7);
                 PNpc->animationSpeed = (uint8)_sql->GetIntData(8);
-                PNpc->animation      = (uint8)_sql->GetIntData(9);
-                PNpc->animationsub   = (uint8)_sql->GetIntData(10);
+                PNpc->UpdateSpeed();
+                PNpc->animation    = (uint8)_sql->GetIntData(9);
+                PNpc->animationsub = (uint8)_sql->GetIntData(10);
 
                 PNpc->namevis = (uint8)_sql->GetIntData(11);
                 PNpc->status  = static_cast<STATUS_TYPE>(_sql->GetIntData(12));
@@ -276,45 +278,50 @@ CInstance* CInstanceLoader::LoadInstance()
                 PNpc->name_prefix = (uint8)_sql->GetIntData(15);
                 PNpc->widescan    = (uint8)_sql->GetIntData(16);
 
-                PNpc->PInstance = instance;
+                PNpc->PInstance = m_PInstance;
 
-                instance->InsertNPC(PNpc);
+                m_PInstance->InsertNPC(PNpc);
             }
         }
 
+        // clang-format off
         // Finish setting up Mobs
-        for (auto PMob : instance->m_mobList)
+        m_PInstance->ForEachMob([&](CMobEntity* PMob)
         {
-            luautils::OnMobInitialize(PMob.second);
-            luautils::ApplyMixins(PMob.second);
-            ((CMobEntity*)PMob.second)->saveModifiers();
-            ((CMobEntity*)PMob.second)->saveMobModifiers();
+            luautils::OnMobInitialize(PMob);
+            luautils::ApplyMixins(PMob);
+            ((CMobEntity*)PMob)->saveModifiers();
+            ((CMobEntity*)PMob)->saveMobModifiers();
 
             // Add to cache
             luautils::CacheLuaObjectFromFile(
                 fmt::format("./scripts/zones/{}/mobs/{}.lua",
-                            PMob.second->loc.zone->getName(),
-                            PMob.second->getName()));
-        }
+                            PMob->loc.zone->getName(),
+                            PMob->getName()));
+        });
+        // clang-format on
 
+        // clang-format off
         // Finish setting up NPCs
-        for (auto PNpc : instance->m_npcList)
+        m_PInstance->ForEachNpc([&](CNpcEntity* PNpc)
         {
-            luautils::OnNpcSpawn(PNpc.second);
+            luautils::OnNpcSpawn(PNpc);
 
             // Add to cache
             luautils::CacheLuaObjectFromFile(
                 fmt::format("./scripts/zones/{}/npcs/{}.lua",
-                            PNpc.second->loc.zone->getName(),
-                            PNpc.second->getName()));
-        }
+                            PNpc->loc.zone->getName(),
+                            PNpc->getName()));
+        });
+        // clang-format on
 
         // Cache Instance script (TODO: This will be done multiple times, don't do that)
-        luautils::CacheLuaObjectFromFile(instanceutils::GetInstanceData(instance->GetID()).filename);
+        luautils::CacheLuaObjectFromFile(instanceutils::GetInstanceData(m_PInstance->GetID()).filename);
 
         // Finish setup
-        luautils::OnInstanceCreatedCallback(requester, instance);
-        luautils::OnInstanceCreated(instance);
+        luautils::OnInstanceCreatedCallback(m_PRequester, m_PInstance);
+        luautils::OnInstanceCreated(m_PInstance);
     }
-    return instance;
+
+    return m_PInstance;
 }

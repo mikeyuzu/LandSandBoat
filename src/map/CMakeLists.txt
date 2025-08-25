@@ -1,26 +1,30 @@
 add_subdirectory(ai)
 add_subdirectory(entities)
+add_subdirectory(enums)
 add_subdirectory(items)
 add_subdirectory(los)
 add_subdirectory(lua)
 add_subdirectory(packets)
+add_subdirectory(packets/c2s)
 add_subdirectory(utils)
 
 set(SOURCES
     ${COMMON_SOURCES}
     ${AI_SOURCES}
     ${ENTITY_SOURCES}
+    ${ENUMS_SOURCES}
     ${ITEM_SOURCES}
     ${LOS_SOURCES}
     ${LUA_SOURCES}
     ${PACKET_SOURCES}
+    ${PACKET_C2S_SOURCES}
     ${UTIL_SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/ability.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ability.h
     ${CMAKE_CURRENT_SOURCE_DIR}/alliance.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/alliance.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/anticheat.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/anticheat.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/aman.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/aman.h
     ${CMAKE_CURRENT_SOURCE_DIR}/attack.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/attack.h
     ${CMAKE_CURRENT_SOURCE_DIR}/attackround.cpp
@@ -64,6 +68,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/instance_loader.h
     ${CMAKE_CURRENT_SOURCE_DIR}/instance.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/instance.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_client.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_client.h
     ${CMAKE_CURRENT_SOURCE_DIR}/item_container.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/item_container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/items.h
@@ -75,12 +81,21 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/latent_effect.h
     ${CMAKE_CURRENT_SOURCE_DIR}/linkshell.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/linkshell.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/map.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/map.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_networking.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_networking.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_server.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_server.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_session_container.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_session_container.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_session.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_session.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_socket.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_socket.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_statistics.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_statistics.h
     ${CMAKE_CURRENT_SOURCE_DIR}/merit.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/merit.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/message.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/message.h
     ${CMAKE_CURRENT_SOURCE_DIR}/mob_modifier.h
     ${CMAKE_CURRENT_SOURCE_DIR}/mob_spell_container.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/mob_spell_container.h
@@ -153,12 +168,18 @@ set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_SOURCE_D
 
 # Search for module directories
 set(module_include_dirs "")
+set(cmakelist_include_paths "")
 file(STRINGS ${CMAKE_SOURCE_DIR}/modules/init.txt INIT_FILE_ENTRIES REGEX "^[^#\n].*")
 foreach(entry ${INIT_FILE_ENTRIES})
     if (${entry} STREQUAL "")
         continue()
     endif()
     if (IS_DIRECTORY "${CMAKE_SOURCE_DIR}/modules/${entry}")
+        if (EXISTS "${CMAKE_SOURCE_DIR}/modules/${entry}/CMakeLists.txt")
+            list(APPEND cmakelist_include_paths "${CMAKE_SOURCE_DIR}/modules/${entry}/CMakeLists.txt")
+            message(STATUS "Adding module CMakeLists.txt to build: ${CMAKE_SOURCE_DIR}/modules/${entry}/CMakeLists.txt")
+            continue()
+        endif()
         file(GLOB_RECURSE module_files
             "${CMAKE_SOURCE_DIR}/modules/${entry}/*.cpp"
             "${CMAKE_SOURCE_DIR}/modules/${entry}/*.h")
@@ -175,20 +196,21 @@ add_executable(xi_map
     ${SOURCES}
     ${resource})
 
+foreach(entry ${cmakelist_include_paths})
+    if (${entry} STREQUAL "")
+        continue()
+    endif()
+    include("${entry}")
+endforeach()
+
 if(WIN32)
     set_target_properties(xi_map PROPERTIES OUTPUT_NAME xi_map)
 endif()
 
-target_compile_definitions(
-    xi_map
-    PUBLIC
-    -DdsUDPSERV
-    -DDEBUGLOGMAP
-)
-
 target_link_libraries(xi_map
     PUBLIC
-        ${EXTERNAL_LIBS}
+        ${SHARED_EXTERNAL_LIBS}
+        ${MAP_ONLY_EXTERNAL_LIBS}
         project_options
     PRIVATE
         project_warnings

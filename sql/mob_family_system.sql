@@ -127,7 +127,7 @@ INSERT INTO `mob_family_system` VALUES (74,'Corse',47,'Corse',19,'Undead',1.00,4
 INSERT INTO `mob_family_system` VALUES (75,'Crab',48,'Crab',2,'Aquan',0.00,40,108,120,4,4,3,5,4,4,4,1,3,1,3,6.0,2,1);
 INSERT INTO `mob_family_system` VALUES (76,'Crab',48,'Crab',2,'Aquan',0.00,40,108,120,4,4,3,5,4,4,4,1,3,1,3,6.0,2,1);
 INSERT INTO `mob_family_system` VALUES (77,'Crab',48,'Crab',2,'Aquan',0.00,40,108,120,4,4,3,5,4,4,4,1,3,1,3,6.0,2,1);
-INSERT INTO `mob_family_system` VALUES (78,'Craver',49,'Craver',12,'Empty',0.00,40,120,90,1,3,1,3,6,6,5,1,3,1,3,0.0,257,0);
+INSERT INTO `mob_family_system` VALUES (78,'Craver',49,'Craver',12,'Empty',0.00,40,120,90,1,3,1,3,6,6,5,1,3,1,3,0.0,2,0);
 INSERT INTO `mob_family_system` VALUES (79,'Crawler',63,'Crawler',20,'Vermin',1.00,40,105,120,4,4,3,5,4,4,4,1,5,1,3,4.0,2,1);
 INSERT INTO `mob_family_system` VALUES (80,'Dhalmel',51,'Dhalmel',6,'Beast',1.00,40,110,120,3,4,4,5,4,4,5,1,3,1,3,4.0,257,1);
 INSERT INTO `mob_family_system` VALUES (81,'Diremite',52,'Diremite',20,'Vermin',1.00,40,86,90,4,4,4,4,4,4,4,1,3,1,3,3.0,2,1);
@@ -446,7 +446,7 @@ INSERT INTO `mob_family_system` VALUES (395,'Doll-Calcabrina',53,'Doll',3,'Arcan
 INSERT INTO `mob_family_system` VALUES (396,'Worm-Bedrock_Barry',148,'Worm',1,'Amorph',0.00,0,70,200,4,3,5,4,3,4,4,1,3,1,5,4.0,2,0);
 INSERT INTO `mob_family_system` VALUES (397,'Quadav-Qu_Vho_Deathhurler',116,'Quadav',7,'Beastmen',1.00,40,112,110,2,3,4,4,4,5,3,1,3,1,3,6.0,258,0);
 INSERT INTO `mob_family_system` VALUES (398,'Sheep-Slumbering_Samwell',90,'Sheep',6,'Beast',1.00,40,120,110,3,4,4,4,5,4,4,1,3,1,3,4.0,1,0);
-INSERT INTO `mob_family_system` VALUES (399,'Demon-Duke_Focalor',9,'Demon',9,'Demon',0.00,50,110,140,1,2,4,4,1,2,4,1,3,1,3,8.0,257,0);
+-- 399 Free
 INSERT INTO `mob_family_system` VALUES (400,'Crab-Tegmine',48,'Crab',2,'Aquan',0.00,40,108,120,4,4,3,5,4,4,4,1,3,1,3,6.0,2,0);
 INSERT INTO `mob_family_system` VALUES (401,'Doll-Martinet',53,'Doll',3,'Arcana',1.00,40,108,90,1,3,3,5,6,6,5,1,3,1,3,2.0,288,0);
 INSERT INTO `mob_family_system` VALUES (402,'Scorpion-Aqrabuamelu',128,'Scorpion',20,'Vermin',3.00,40,90,120,3,5,4,4,4,4,4,1,3,1,3,4.0,258,0);

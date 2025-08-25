@@ -19,13 +19,18 @@
 ===========================================================================
 */
 
+#include "itemutils.h"
+
 #include <array>
 #include <cstring>
 
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
+
 #include "entities/battleentity.h"
-#include "itemutils.h"
 #include "lua/luautils.h"
-#include "map.h"
+#include "map_server.h"
 
 std::array<CItem*, MAX_ITEMID>      g_pItemList; // global array of pointers to game items
 std::array<DropList_t*, MAX_DROPID> g_pDropList; // global array of monster droplist items
@@ -421,13 +426,13 @@ namespace itemutils
                     if (PItem->isType(ITEM_USABLE))
                     {
                         ((CItemUsable*)PItem)->setValidTarget(_sql->GetUIntData(7));
-                        ((CItemUsable*)PItem)->setActivationTime(_sql->GetUIntData(8) * 1000);
+                        ((CItemUsable*)PItem)->setActivationTime(std::chrono::seconds(_sql->GetUIntData(8)));
                         ((CItemUsable*)PItem)->setAnimationID(_sql->GetUIntData(9));
-                        ((CItemUsable*)PItem)->setAnimationTime(_sql->GetUIntData(10) * 1000);
+                        ((CItemUsable*)PItem)->setAnimationTime(std::chrono::seconds(_sql->GetUIntData(10)));
                         ((CItemUsable*)PItem)->setMaxCharges(_sql->GetUIntData(11));
                         ((CItemUsable*)PItem)->setCurrentCharges(_sql->GetUIntData(11));
-                        ((CItemUsable*)PItem)->setUseDelay(_sql->GetUIntData(12));
-                        ((CItemUsable*)PItem)->setReuseDelay(_sql->GetUIntData(13));
+                        ((CItemUsable*)PItem)->setUseDelay(std::chrono::seconds(_sql->GetUIntData(12)));
+                        ((CItemUsable*)PItem)->setReuseDelay(std::chrono::seconds(_sql->GetUIntData(13)));
                         ((CItemUsable*)PItem)->setAoE(_sql->GetUIntData(14));
                     }
                     if (PItem->isType(ITEM_PUPPET))
@@ -471,7 +476,20 @@ namespace itemutils
                         ((CItemWeapon*)PItem)->setDamage(_sql->GetUIntData(31));
                         ((CItemWeapon*)PItem)->setDmgType(static_cast<DAMAGE_TYPE>(_sql->GetUIntData(32)));
                         ((CItemWeapon*)PItem)->setMaxHit(_sql->GetUIntData(33));
-                        ((CItemWeapon*)PItem)->setTotalUnlockPointsNeeded(_sql->GetUIntData(34));
+                        // EVWSのトライアルの場合はmain.luaの設定値に置き換える
+                        int unclock_point = _sql->GetUIntData(34);
+                        if (unclock_point == 300)
+                        {
+                            ((CItemWeapon*)PItem)->setTotalUnlockPointsNeeded(settings::get<int>("map.TRIAL_WS_POINTS"));
+                        }
+                        else if (unclock_point == 500)
+                        {
+                            ((CItemWeapon*)PItem)->setTotalUnlockPointsNeeded(settings::get<int>("map.RETRIAL_WS_POINTS"));
+                        }
+                        else
+                        {
+                            ((CItemWeapon*)PItem)->setTotalUnlockPointsNeeded(unclock_point);
+                        }
 
                         int  dmg   = _sql->GetUIntData(31);
                         int  delay = _sql->GetIntData(30);

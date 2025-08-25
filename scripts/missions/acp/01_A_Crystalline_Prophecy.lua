@@ -16,9 +16,14 @@ mission.sections =
 {
     {
         check = function(player, currentMission, missionStatus, vars)
+            custom_check = true
+            if xi.settings.map.MISSION_PROGRESS_CUSTOM then
+                custom_check = player:hasCompletedMission(xi.mission.log_id.WOTG, xi.mission.id.wotg.LEST_WE_FORGET)
+            end
+
             return currentMission == mission.missionId and
                 xi.settings.main.ENABLE_ACP == 1 and
-                player:getMainLvl() >= 10
+                player:getMainLvl() >= 10 and custom_check
         end,
 
         [xi.zone.LOWER_JEUNO] =
@@ -36,8 +41,10 @@ mission.sections =
                         local noVerena = 0
                         local noSibyl  = 0
 
-                        -- TODO: Fact check this.
-                        if player:hasCompletedMission(xi.mission.log_id.ZILART, xi.mission.id.zilart.WELCOME_TNORG) then
+                        if
+                            player:getCurrentMission(xi.mission.log_id.ZILART) >= xi.mission.id.zilart.RETURN_TO_DELKFUTTS_TOWER and -- Verena is kidnapped and then in plot coma.
+                            player:getCurrentMission(xi.mission.log_id.ZILART) < xi.mission.id.zilart.AWAKENING                      -- Verena appears in Tenshodo cutscene, recovered.
+                        then
                             noVerena = 1
                         end
 

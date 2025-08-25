@@ -104,7 +104,7 @@ end
 -- NOTE: will NOT allow a spawn if time since last spanwed is under 5 mins.
 -----------------------------------
 local function timeElapsedCheck(npc)
-    local spawnTime   = os.time() + 360000 -- defualt time in case no var set.
+    local spawnTime   = GetSystemTime() + 360000 -- defualt time in case no var set.
     local timeTable   = { 0, 0, 0 }        -- HOURS, MINUTES, SECONDS.
 
     if npc == nil then
@@ -115,7 +115,7 @@ local function timeElapsedCheck(npc)
         spawnTime = npc:getLocalVar('[caskets]SPAWNTIME')
     end
 
-    local lastSpawned = os.time() - spawnTime
+    local lastSpawned = GetSystemTime() - spawnTime
 
     timeTable = convertTime(lastSpawned)
 
@@ -217,9 +217,9 @@ end
 -- Desc: Despawn a chest and reset its local var's
 -----------------------------------
 local function removeChest(npc)
-    npc:setAnimationSub(0)
+    npc:setAnimationSub(0, false)
     npc:setStatus(xi.status.DISAPPEAR)
-    npc:setLocalVar('[caskets]SPAWNSTATUS', casketInfo.spawnStatus.DESPAWNED)
+    npc:resetLocalVars()
 end
 
 -----------------------------------
@@ -239,7 +239,7 @@ local function setCasketData(player, x, y, z, r, npc, partyID, mobLvl)
     --     kupowersBonus = 0.2
     -- end
 
-    if typeChance < 0.2 + kupowersBonus then
+    if typeChance < xi.settings.main.CASKET_BROWN_CHANCE + kupowersBonus then
         chestStyle = 966 -- Brown locked
     else
         chestStyle = 965 -- Blue
@@ -260,7 +260,11 @@ local function setCasketData(player, x, y, z, r, npc, partyID, mobLvl)
             npc:setLocalVar('[caskets]ATTEMPTS', attempts)
             npc:setLocalVar('[caskets]CORRECT_NUM', correctNum)
             npc:setLocalVar('[caskets]FAILED_ATEMPTS', 0)
-            npc:setLocalVar('[caskets]LOCKED', 1)
+            if xi.settings.main.CASKET_NO_PASSWORD then
+                npc:setLocalVar('[caskets]LOCKED', 0)
+            else
+                npc:setLocalVar('[caskets]LOCKED', 1)
+            end
             npc:setLocalVar('[caskets]LOOT_TYPE', 2)
             npc:setLocalVar('[caskets]HINTS_TABLE', 1234567)
         else
@@ -269,7 +273,7 @@ local function setCasketData(player, x, y, z, r, npc, partyID, mobLvl)
         end
 
         npc:setLocalVar('[caskets]SPAWNSTATUS', casketInfo.spawnStatus.SPAWNED_CLOSED)
-        npc:setLocalVar('[caskets]SPAWNTIME', os.time())
+        npc:setLocalVar('[caskets]SPAWNTIME', GetSystemTime())
         npc:setPos(x, y, z, r)
         npc:setStatus(xi.status.NORMAL)
         npc:entityAnimationPacket(xi.animationString.STATUS_VISIBLE)
@@ -278,7 +282,7 @@ local function setCasketData(player, x, y, z, r, npc, partyID, mobLvl)
         -----------------------------------
         -- Despawn chest after 3 Mins
         -----------------------------------
-        npc:timer(180000, function(npcArg)
+        npc:timer(1000 * 60 * 3, function(npcArg)
             removeChest(npcArg)
         end)
     end
@@ -548,7 +552,7 @@ end
 -----------------------------------
 -- Desc: Gives the player the temp item from a casket based on the selection of the csid
 -----------------------------------
-local function giveTempItem(player, npc, tempNum)
+local function giveTempItem(player, npc, tempNum, subOption)
     local tempQuery   = string.format('[caskets]TEMP' ..tempNum.. '')
     local tempID      = npc:getLocalVar(tempQuery)
     local zoneId      = player:getZoneID()
@@ -556,6 +560,13 @@ local function giveTempItem(player, npc, tempNum)
     local spawnStatus = npc:getLocalVar('[caskets]SPAWNSTATUS')
 
     if spawnStatus == casketInfo.spawnStatus.DESPAWNED then
+        return
+    end
+
+    -- 2 = "do not obtain"
+    -- 1 = "obtain"
+    -- 0 = "None of them"
+    if subOption == 2 or subOption == 0 then
         return
     end
 
@@ -596,7 +607,7 @@ end
 -----------------------------------
 -- Desc: Gives the player the item from a casket based on the selection of the csid
 -----------------------------------
-local function giveItem(player, npc, itemNum)
+local function giveItem(player, npc, itemNum, subOption)
     local itemQuery   = string.format('[caskets]ITEM' ..itemNum.. '')
     local itemID      = npc:getLocalVar(itemQuery)
     local zoneId      = player:getZoneID()
@@ -604,6 +615,13 @@ local function giveItem(player, npc, itemNum)
     local spawnStatus = npc:getLocalVar('[caskets]SPAWNSTATUS')
 
     if spawnStatus == casketInfo.spawnStatus.DESPAWNED then
+        return
+    end
+
+    -- 2 = "do not obtain"
+    -- 1 = "obtain"
+    -- 0 = "None of them"
+    if subOption == 2 or subOption == 0 then
         return
     end
 
@@ -939,12 +957,13 @@ xi.caskets.onEventFinish = function(player, csid, option, npc)
         end
 
     elseif locked == 0 then
-        local itemPos = bit.band(option, 0x7)
+        local itemPos   = bit.band(option, 0x7)
+        local subOption = bit.band(bit.rshift(option, 16), 0x3) -- 2 bit mask
 
         if lootType == 1 then
-            giveTempItem(player, chestObj, itemPos)
+            giveTempItem(player, chestObj, itemPos, subOption)
         elseif lootType == 2 then
-            giveItem(player, chestObj, itemPos)
+            giveItem(player, chestObj, itemPos, subOption)
         end
     end
 end

@@ -34,6 +34,7 @@ entity.onMobSpawn = function(mob)
     })
 
     mob:setMobMod(xi.mobMod.NO_MOVE, 1)
+    mob:addImmunity(xi.immunity.SILENCE)
     mob:setAnimationSub(0)
     mob:setAutoAttackEnabled(true)
     mob:setMobAbilityEnabled(true)
@@ -64,20 +65,7 @@ entity.onMobFight = function(mob, target)
     local randomTime = math.random(15, 45)
     local changeTime = mob:getLocalVar('changeTime')
 
-    local isBusy = false
-    local act = mob:getCurrentAction()
-    if
-        act == xi.act.MOBABILITY_START or
-        act == xi.act.MOBABILITY_USING or
-        act == xi.act.MOBABILITY_FINISH
-    then
-        isBusy = true
-    end
-
-    if
-        mob:actionQueueEmpty() and
-        not isBusy
-    then -- dont change forms while charging Optic Induration
+    if not xi.combat.behavior.isEntityBusy(mob) then -- dont change forms while charging Optic Induration
         if
             mob:getAnimationSub() == 0 and
             mob:getBattleTime() - changeTime > randomTime

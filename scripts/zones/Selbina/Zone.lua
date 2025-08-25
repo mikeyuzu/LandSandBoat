@@ -30,8 +30,9 @@ zoneObject.onZoneIn = function(player, prevZone)
         player:getZPos() == 0
     then
         if
-            prevZone == xi.zone.SHIP_BOUND_FOR_SELBINA or
-            prevZone == xi.zone.SHIP_BOUND_FOR_SELBINA_PIRATES
+            player:hasKeyItem(xi.ki.FERRY_TICKET) and
+            (prevZone == xi.zone.SHIP_BOUND_FOR_SELBINA or
+            prevZone == xi.zone.SHIP_BOUND_FOR_SELBINA_PIRATES)
         then
             cs = 202
             player:setPos(32.500, -2.500, -45.500, 192)
@@ -51,11 +52,15 @@ zoneObject.onZoneIn = function(player, prevZone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTransportEvent = function(player, transport)
-    player:startEvent(200)
+    if player:hasKeyItem(xi.ki.FERRY_TICKET) then
+        player:startEvent(200)
+    else
+        player:setPos(32.500, -2.500, -45.500, 192)
+    end
 end
 
 zoneObject.onEventUpdate = function(player, csid, option, npc)

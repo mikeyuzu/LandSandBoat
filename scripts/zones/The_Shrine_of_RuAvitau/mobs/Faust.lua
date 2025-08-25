@@ -11,7 +11,7 @@ local north = 192
 local home = { 740, -0.463, -99 }
 
 local setFaustNextTurnTime = function(faust)
-    faust:setLocalVar('NextTurnTime', os.time() + math.random(45, 75))
+    faust:setLocalVar('NextTurnTime', GetSystemTime() + math.random(45, 75))
 end
 
 local faustNextTurnTime = function(faust)
@@ -28,7 +28,7 @@ local faustFacingDirection = function(faust)
 end
 
 local handleFaustFacingDirectionMechanics = function(faust)
-    if os.time() > faustNextTurnTime(faust) then
+    if GetSystemTime() > faustNextTurnTime(faust) then
         if faustFacingDirection(faust) == north then
             setFaustFacingDirection(faust, east)
         else
@@ -37,6 +37,11 @@ local handleFaustFacingDirectionMechanics = function(faust)
 
         setFaustNextTurnTime(faust)
     end
+end
+
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.GIL_MIN, 17986)
+    mob:setMobMod(xi.mobMod.GIL_MAX, 27482)
 end
 
 entity.onMobSpawn = function(mob)

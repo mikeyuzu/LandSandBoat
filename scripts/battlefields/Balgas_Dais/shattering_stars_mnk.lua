@@ -8,6 +8,7 @@ local balgasID = zones[xi.zone.BALGAS_DAIS]
 local content = Battlefield:new({
     zoneId        = xi.zone.BALGAS_DAIS,
     battlefieldId = xi.battlefield.id.SHATTERING_STARS_MNK,
+    allowTrusts   = true,
     maxPlayers    = 1,
     levelCap      = 99,
     allowSubjob   = false,
@@ -19,9 +20,12 @@ local content = Battlefield:new({
 })
 
 function content:entryRequirement(player, npc, isRegistrant, trade)
-    return player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.SHATTERING_STARS) >= xi.questStatus.QUEST_ACCEPTED and
-        player:getMainJob() == xi.job.MNK and
-        player:getMainLvl() >= 66
+    local jobRequirement   = player:getMainJob() == xi.job.MNK
+    local levelRequirement = player:getMainLvl() >= 66
+    local questStatus      = player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.SHATTERING_STARS)
+    local questRequirement = questStatus == xi.questStatus.QUEST_COMPLETED or (questStatus == xi.questStatus.QUEST_ACCEPTED and player:getCharVar('Quest[3][132]tradedTestimony') == 1)
+
+    return jobRequirement and levelRequirement and questRequirement
 end
 
 content.groups =

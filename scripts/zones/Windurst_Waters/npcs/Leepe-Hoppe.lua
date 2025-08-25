@@ -4,8 +4,6 @@
 -- Involved in Mission 1-3, Mission 7-2
 -- !pos 13 -9 -197 238
 -----------------------------------
-local ID = zones[xi.zone.WINDURST_WATERS]
------------------------------------
 ---@type TNpcEntity
 local entity = {}
 
@@ -137,7 +135,7 @@ entity.onTrigger = function(player, npc)
             local availRewards = getFenrirRewardMask(player)
 
             player:startEvent(850, 0, 13399, 1208, 1125, availRewards, 18165, 13572)
-        elseif os.time() > player:getCharVar('MoonlitPath_date') then --24 hours have passed, flag a new fight
+        elseif GetSystemTime() > player:getCharVar('MoonlitPath_date') then --24 hours have passed, flag a new fight
             player:startEvent(848, 0, 1125, 334)
         end
     elseif tuningIn == xi.questStatus.QUEST_ACCEPTED then
@@ -149,16 +147,12 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     -- Moonlit Path and Other Fenrir Stuff
     if csid == 842 and option == 2 then
         player:addQuest(xi.questLog.WINDURST, xi.quest.id.windurst.THE_MOONLIT_PATH)
     elseif csid == 844 then
-        player:addKeyItem(xi.ki.MOON_BAUBLE)
-        player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.MOON_BAUBLE)
+        npcUtil.giveKeyItem(player, xi.ki.MOON_BAUBLE)
         player:delKeyItem(xi.ki.WHISPER_OF_FLAMES)
         player:delKeyItem(xi.ki.WHISPER_OF_TREMORS)
         player:delKeyItem(xi.ki.WHISPER_OF_TIDES)
@@ -188,8 +182,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         elseif option == 7 then
             player:addSpell(xi.magic.spell.FENRIR) -- Pact
         elseif option == 8 then
-            player:addKeyItem(xi.ki.FENRIR_WHISTLE)
-            player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.FENRIR_WHISTLE)
+            npcUtil.giveKeyItem(player, xi.ki.FENRIR_WHISTLE)
             -- Pact as Mount
         end
 

@@ -63,6 +63,38 @@ xi.moghouse.moghouse2FUnlockCSs =
     [xi.zone.WINDURST_WOODS]     = 885,
 }
 
+local offsetAxis =
+{
+    X = 1,
+    Z = 3,
+}
+
+--  [zoneId]                       = {      x,      y,      z, rot, offsetAxis  , max }
+xi.moghouse.exits =
+{
+    [xi.zone.AL_ZAHBI]             = {     37,      0,    -62, 192, offsetAxis.X, 5.0 },
+    [xi.zone.AHT_URHGAN_WHITEGATE] = {   -100,      0,    -83,   0, offsetAxis.Z, 5.0 },
+    [xi.zone.SOUTHERN_SAN_DORIA_S] = {    147,     -2,    116,  95, offsetAxis.X, 5.0 },
+    [xi.zone.BASTOK_MARKETS_S]     = {   -177,     -8,    -33, 128, offsetAxis.Z, 5.0 },
+    [xi.zone.WINDURST_WATERS_S]    = {    157,      0,     -8, 191, offsetAxis.X, 5.0 },
+    [xi.zone.SOUTHERN_SAN_DORIA]   = {    161,     -2,  162.1,  95, offsetAxis.Z, 3.0 },
+    [xi.zone.NORTHERN_SAN_DORIA]   = {    130,   -0.2,     -3, 160, offsetAxis.X, 3.0 },
+    [xi.zone.PORT_SAN_DORIA]       = {     78,    -16, -135.9, 165, offsetAxis.X, 2.0 },
+    [xi.zone.BASTOK_MINES]         = {    116,   0.99,    -75, 127, offsetAxis.Z, 5.0 },
+    [xi.zone.BASTOK_MARKETS]       = {   -177,     -8,    -33, 127, offsetAxis.Z, 5.0 },
+    [xi.zone.PORT_BASTOK]          = {     57,    8.5,   -239, 192, offsetAxis.X, 5.0 },
+    [xi.zone.WINDURST_WATERS]      = {    157,     -5,    -62, 192, offsetAxis.X, 5.0 },
+    [xi.zone.WINDURST_WALLS]       = { -257.5,  -5.05,   -123,   0, offsetAxis.Z, 5.0 },
+    [xi.zone.PORT_WINDURST]        = {    195, -15.56,    258,  65, offsetAxis.X, 5.0 },
+    [xi.zone.WINDURST_WOODS]       = {   -138,    -10,     37,   0, offsetAxis.Z, 5.0 },
+    [xi.zone.RULUDE_GARDENS]       = {     45,     10,    -73, 192, offsetAxis.X, 5.0 },
+    [xi.zone.UPPER_JEUNO]          = {     45,     -5,    -78, 172, offsetAxis.X, 2.5 },
+    [xi.zone.LOWER_JEUNO]          = {   41.2,     -5,     84,  85, offsetAxis.X, 2.5 },
+    [xi.zone.PORT_JEUNO]           = { -192.5,     -5,   -1.3,   0, offsetAxis.Z, 2.5 },
+    [xi.zone.WESTERN_ADOULIN]      = {     -0,     -0,   -144, 223, offsetAxis.Z, 5.0 },
+    [xi.zone.EASTERN_ADOULIN]      = {  -59.3,      0, -128.5, 191, offsetAxis.X, 5.0 },
+}
+
 xi.moghouse.isInMogHouseInHomeNation = function(player)
     if not player:isInMogHouse() then
         return false
@@ -105,6 +137,95 @@ xi.moghouse.set2ndFloorStyle = function(player, style)
     utils.mask.setBit(mhflag, 0x0080, utils.mask.getBit(style, 0))
     utils.mask.setBit(mhflag, 0x0100, utils.mask.getBit(style, 1))
     player:setMoghouseFlag(mhflag)
+end
+
+xi.moghouse.getAvailableMusic = function(player)
+    -- See documentation/songdata.txt or documentation/MusicIDs.txt for song data.
+    local possibleSongs = {}
+
+    local orchestrion  = player:findItem(xi.item.ORCHESTRION)
+    local spinet       = player:findItem(xi.item.SPINET)
+    local nanaaStatue1 = player:findItem(xi.item.NANAA_MIHGO_STATUE)
+    local nanaaStatue2 = player:findItem(xi.item.NANAA_MIHGO_STATUE_II)
+
+    local hasOrchestrion  = orchestrion and orchestrion:isInstalled()
+    local hasSpinet       = spinet and spinet:isInstalled()
+    local hasNanaaStatue1 = nanaaStatue1 and nanaaStatue1:isInstalled()
+    local hasNanaaStatue2 = nanaaStatue2 and nanaaStatue2:isInstalled()
+
+    -- NOTE: Since Spinet, Nanaa Mihgo Statue I, and Nanaa Mihgo Statue II are promotional-only items,
+    --     : it is extremely difficult to get them and test what they do when used together.
+    --     : We're completely guessing how they interact with each other.
+    --     : TODO: Do these overwrite eachother in some way, or do they work together (as we've implemented
+    --     : them here)?
+    if not hasOrchestrion then
+        -- https://www.bg-wiki.com/ffxi/Orchestrion
+        if hasSpinet then
+            table.insert(possibleSongs, 112) -- Selbina
+            table.insert(possibleSongs, 196) -- Fighters of the Crystal
+            table.insert(possibleSongs, 230) -- A New Horizon
+            table.insert(possibleSongs, 187) -- Ragnarok
+            table.insert(possibleSongs, 215) -- Clash of Standards
+            table.insert(possibleSongs, 47)  -- Echoes of Creation
+            table.insert(possibleSongs, 49)  -- Luck of the Mog
+            table.insert(possibleSongs, 50)  -- Feast of the Ladies
+            table.insert(possibleSongs, 51)  -- Abyssea
+            table.insert(possibleSongs, 52)  -- Melodies Errant
+            table.insert(possibleSongs, 109) -- Ronfaure
+            table.insert(possibleSongs, 251) -- Autumn Footfalls
+            table.insert(possibleSongs, 48)  -- Main Theme
+            table.insert(possibleSongs, 126) -- Mog House
+        end
+
+        if hasNanaaStatue1 then
+            table.insert(possibleSongs, 69) -- Distant Worlds (Nanaa Mihgo's Version)
+        end
+
+        if hasNanaaStatue2 then
+            table.insert(possibleSongs, 59) -- The Pioneers (Nanaa Mihgo's Version)
+        end
+    end
+
+    return possibleSongs
+end
+
+xi.moghouse.trySetMusic = function(player)
+    local possibleSongs = xi.moghouse.getAvailableMusic(player)
+
+    if #possibleSongs > 0 then
+        -- This needs a moment before music changes can take effect
+        player:timer(1000, function(playerArg)
+            playerArg:changeMusic(6, utils.randomEntry(possibleSongs))
+        end)
+    end
+end
+
+xi.moghouse.onMoghouseZoneEvent = function(player, prevZone)
+    -- Handle players zoning in their Mog House
+    if player:isInMogHouse() then
+        return xi.moghouse.onMoghouseZoneIn(player, prevZone)
+    end
+
+    -- Handle players zoning out of their Mog House
+    if
+        player:getXPos() == 0 and
+        player:getYPos() == 0 and
+        player:getZPos() == 0
+    then
+        local x, y, z, r, randomizedAxis, randomMax = unpack(xi.moghouse.exits[player:getZoneID()])
+        local randomOffset                          = math.random(randomMax * 1000)
+
+        -- 0.000 - N.N00 variance
+        if randomizedAxis == offsetAxis.X then
+            x = x + (randomOffset / 1000)
+        elseif randomizedAxis == offsetAxis.Z then
+            z = z + (randomOffset / 1000)
+        end
+
+        player:setPos(x, y, z, r)
+    end
+
+    return -1
 end
 
 xi.moghouse.onMoghouseZoneIn = function(player, prevZone)
@@ -155,6 +276,8 @@ xi.moghouse.onMoghouseZoneIn = function(player, prevZone)
         xi.moghouse.set2ndFloorStyle(player, nation)
     end
 
+    xi.moghouse.trySetMusic(player)
+
     return cs
 end
 
@@ -202,7 +325,7 @@ xi.moghouse.moogleTrigger = function(player, npc)
             end
         end
 
-        player:sendMenu(1)
+        player:sendMenu(xi.menuType.MOOGLE)
     end
 end
 
@@ -244,7 +367,7 @@ xi.moghouse.getMogLockerExpiryTimestamp = function(player)
         return nil
     end
 
-    local now = os.time() - mogLockerStartTimestamp
+    local now = GetSystemTime() - mogLockerStartTimestamp
 
     if now > expiryTime then
         player:setCharVar(mogLockerTimestampVarName, -1)
@@ -274,7 +397,7 @@ xi.moghouse.addMogLockerExpiryTime = function(player, numBronze)
     end
 
     if currentTs == -1 then
-        currentTs = os.time() - mogLockerStartTimestamp
+        currentTs = GetSystemTime() - mogLockerStartTimestamp
     end
 
     local timeIncrease = 60 * 60 * 24 * numDaysPerBronze * numBronze

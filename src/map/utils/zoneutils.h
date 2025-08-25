@@ -19,10 +19,10 @@
 ===========================================================================
 */
 
-#ifndef _ZONEUTILS_H
-#define _ZONEUTILS_H
+#pragma once
 
 #include "common/cbasetypes.h"
+#include "common/ipp.h"
 
 #include "zone.h"
 
@@ -32,10 +32,10 @@ class CNpcEntity;
 
 namespace zoneutils
 {
-    void LoadZoneList();
+    void LoadZoneList(IPP mapIPP);
     void FreeZoneList();
     void InitializeWeather();
-    void TOTDChange(TIMETYPE TOTD);
+    void TOTDChange(vanadiel_time::TOTD TOTD);
     void SavePlayTime();
 
     REGION_TYPE    GetCurrentRegion(uint16 ZoneID);
@@ -47,11 +47,11 @@ namespace zoneutils
     CNpcEntity*  GetTrigger(uint16 TargID, uint16 ZoneID);
     CBaseEntity* GetEntity(uint32 ID, uint8 filter = -1);
     CCharEntity* GetCharByName(std::string const& name);
-    CCharEntity* GetCharFromWorld(uint32 charid, uint16 targid);  // returns pointer to character by id and target id
-    CCharEntity* GetChar(uint32 id);                              // returns pointer to character by id
-    CCharEntity* GetCharToUpdate(uint32 primary, uint32 ternary); // returns pointer to preferred char to update for party changes
-    auto         GetZonesOnThisProcess() -> std::vector<uint16>;
-    bool         IsZoneOnThisProcess(ZONEID zoneId);
+    auto         GetCharFromWorld(uint32 charid, uint16 targid) -> CCharEntity*; // returns pointer to character by id and target id
+    CCharEntity* GetChar(uint32 id);                                             // returns pointer to character by id
+    CCharEntity* GetCharToUpdate(uint32 primary, uint32 ternary);                // returns pointer to preferred char to update for party changes
+    auto         GetZonesAssignedToThisProcess(IPP mapIPP) -> std::vector<uint16>;
+    bool         IsZoneAssignedToThisProcess(IPP mapIPP, ZONEID zoneId);
     void         ForEachZone(const std::function<void(CZone*)>& func);
     uint64       GetZoneIPP(uint16 zoneid);                      // returns IPP for zone ID
     bool         IsResidentialArea(CCharEntity*);                // returns whether or not the area is a residential zone
@@ -60,5 +60,3 @@ namespace zoneutils
     void AfterZoneIn(CBaseEntity* PEntity); // triggers after a player has finished zoning in
 
 }; // namespace zoneutils
-
-#endif

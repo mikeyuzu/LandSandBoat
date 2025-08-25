@@ -19,17 +19,19 @@
 ===========================================================================
 */
 
-#include "common/socket.h"
-
 #include "party_define.h"
+
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
 
 #include "entities/charentity.h"
 #include "entities/trustentity.h"
 #include "utils/zoneutils.h"
 
-const char* partyQuery = "SELECT chars.charid, partyflag, pos_zone, pos_prevzone FROM accounts_parties \
-                                        LEFT JOIN chars ON accounts_parties.charid = chars.charid WHERE \
-                                        IF (allianceid <> 0, allianceid = %d, partyid = %d) ORDER BY partyflag & %u, timestamp";
+const char* partyQuery = "SELECT chars.charid, partyflag, pos_zone, pos_prevzone FROM accounts_parties "
+                         "LEFT JOIN chars ON accounts_parties.charid = chars.charid WHERE "
+                         "IF (allianceid <> 0, allianceid = %d, partyid = %d) ORDER BY partyflag & %u, timestamp";
 
 CPartyDefinePacket::CPartyDefinePacket(CParty* PParty, bool loadTrust)
 {

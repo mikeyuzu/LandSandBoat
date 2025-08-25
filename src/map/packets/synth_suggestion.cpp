@@ -19,10 +19,14 @@
 ===========================================================================
 */
 
-#include "common/socket.h"
-#include "map.h"
-
 #include "synth_suggestion.h"
+
+#include "map_server.h"
+
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
+
 #include <map>
 
 CSynthSuggestionListPacket::CSynthSuggestionListPacket(uint16 skillID, uint16 skillLevel, uint8 skillRank, uint16 resultOffset)
@@ -41,9 +45,9 @@ CSynthSuggestionListPacket::CSynthSuggestionListPacket(uint16 skillID, uint16 sk
         maxSkill = skillLevel;
     }
 
-    const char* fmtQuery = "SELECT Result FROM synth_recipes INNER JOIN item_basic ON Result = item_basic.itemid \
-        WHERE `%s` >= GREATEST(`Wood`, `Smith`, `Gold`, `Cloth`, `Leather`, `Bone`, `Alchemy`, `Cook`) AND \
-        `%s` BETWEEN %u AND %u AND Desynth = 0 ORDER BY `%s`, item_basic.name LIMIT %d, 17";
+    const char* fmtQuery = "SELECT Result FROM synth_recipes INNER JOIN item_basic ON Result = item_basic.itemid "
+                           "WHERE `%s` >= GREATEST(`Wood`, `Smith`, `Gold`, `Cloth`, `Leather`, `Bone`, `Alchemy`, `Cook`) AND "
+                           "`%s` BETWEEN %u AND %u AND Desynth = 0 ORDER BY `%s`, item_basic.name LIMIT %d, 17";
 
     int32 ret = _sql->Query(fmtQuery, craftName, craftName, minSkill, maxSkill, craftName, resultOffset);
 
@@ -81,11 +85,11 @@ CSynthSuggestionRecipePacket::CSynthSuggestionRecipePacket(uint16 skillID, uint1
         maxSkill = skillLevel;
     }
 
-    const char* fmtQuery = "SELECT KeyItem, Wood, Smith, Gold, Cloth, Leather, Bone, Alchemy, Cook, Crystal, Result, \
-        Ingredient1, Ingredient2, Ingredient3, Ingredient4, Ingredient5, Ingredient6, Ingredient7, Ingredient8 \
-        FROM synth_recipes INNER JOIN item_basic ON Result = item_basic.itemid \
-        WHERE `%s` >= GREATEST(`Wood`, `Smith`, `Gold`, `Cloth`, `Leather`, `Bone`, `Alchemy`, `Cook`) AND \
-        `%s` BETWEEN %u AND %u AND Desynth = 0 ORDER BY `%s`, item_basic.name LIMIT %d, 1";
+    const char* fmtQuery = "SELECT KeyItem, Wood, Smith, Gold, Cloth, Leather, Bone, Alchemy, Cook, Crystal, Result,  "
+                           "Ingredient1, Ingredient2, Ingredient3, Ingredient4, Ingredient5, Ingredient6, Ingredient7, Ingredient8 "
+                           "FROM synth_recipes INNER JOIN item_basic ON Result = item_basic.itemid "
+                           "WHERE `%s` >= GREATEST(`Wood`, `Smith`, `Gold`, `Cloth`, `Leather`, `Bone`, `Alchemy`, `Cook`) AND "
+                           "`%s` BETWEEN %u AND %u AND Desynth = 0 ORDER BY `%s`, item_basic.name LIMIT %d, 1";
 
     int32 ret = _sql->Query(fmtQuery, craftName, craftName, minSkill, maxSkill, craftName, selectedRecipeOffset);
 

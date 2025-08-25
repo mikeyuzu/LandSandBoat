@@ -51,6 +51,11 @@ xi.settings.main =
     DAILY_TALLY_LIMIT  = 50000, -- デイリーポイントの上限
     GOBBIE_BOX_MIN_AGE = 45, -- ゴブリンの不思議箱に登録できるようになるまでのキャラクター作成日数の下限
 
+    -- A.M.A.N.
+    ASSIST_CHANNEL_ENABLED            = true, -- Enable Assist Channel
+    ASSIST_CHANNEL_MEMBERSHIP_LENGTH  = 240,  -- How long returnees and new players will have access to the assist channel, in playtime hours.
+    ASSIST_CHANNEL_RETURNEE_LOGIN_GAP =  48,  -- How many days must have elapsed before returnees are added to the assist channel.
+
     -- エミネンスレコード
     ENABLE_ROE            = 1, -- エミネンスレコードを有効にする
     ENABLE_ROE_TIMED      = 1, -- 4時間制のレコードを有効にする
@@ -69,6 +74,9 @@ xi.settings.main =
 
     -- ボイドウォーカー
     ENABLE_VOIDWALKER = 1,
+
+    -- モブリンメンズモンガー
+    ENABLE_MMM = 0,
 
     -- モンストロス・プレッジ (開発中のため、使用は自己責任で！)
     ENABLE_MONSTROSITY               = 0,   -- モンストロス・プレッジを有効にする
@@ -90,6 +98,10 @@ xi.settings.main =
     -- 0に設定するとカスクは無効になります。
     -- 最大値は1.0 (100%)に制限されています。
     CASKET_DROP_RATE = 0.1,
+    -- パスワードなしでトレジャーキャスケットを開くことを許可する
+    CASKET_NO_PASSWORD = false,
+    -- 茶箱の確率（最大値は1.0)残りの率が青箱
+    CASKET_BROWN_CHANCE = 0.2,
 
     -- アビセアの光
     -- 光の量に応じてドロップ率が自動的に低下する特定のモンスターがいます。
@@ -136,6 +148,8 @@ xi.settings.main =
     USE_ADOULIN_WEAPON_SKILL_CHANGES = true,  -- true/false。アドゥリンの新しいウェポンスキルダメージ計算を切り替えます。
     DISABLE_PARTY_EXP_PENALTY        = false, -- true/false。パーティ経験値ペナルティを無効にするかどうか。
     ENABLE_IMMUNOBREAK               = true,  -- true/false。耐性突破を許可/禁止する。
+    USE_PRE_2013_DEX_MULTIPLIER      = false, -- true/false. False uses 75% of DEX for accuracy calculation. Prior to 2013 50% of DEX was used.
+    USE_PRE_2013_STR_MULTIPLIER      = false, -- true/false. False uses STR multiplier of 1.0 for two handed, one handed main, and ranged attacks, 0.75 for H2H, and 0.5 for one handed in sub slot. True uses 0.5 of STR across the board and is how the game was from release to mid 2013.
 
     -- フェイス
     ENABLE_TRUST_CASTING           = 1, -- フェイスの魔法詠唱を許可する
@@ -223,8 +237,6 @@ xi.settings.main =
     SPIKE_EFFECT_DURATION           = 180,   -- 赤魔道士、黒魔道士のスパイク効果の持続時間（報復を除く）。
     ELEMENTAL_DEBUFF_DURATION       = 120,   -- 属性弱体魔法の基本持続時間。
     AQUAVEIL_COUNTER                = 1,     -- アクアベールが呪文詠唱の中断を防ぐために吸収するヒット数。リテール版は1です。
-    ABSORB_SPELL_AMOUNT             = 8,     -- 暗黒騎士の吸収魔法で吸収されるステータス量 - 8の倍数であることが想定されます。
-    ABSORB_SPELL_TICK               = 9,     -- 1回の吸収魔法ティックの持続時間。
     SNEAK_INVIS_DURATION_MULTIPLIER = 1,     -- スニーク、インビジ、デオダライズの持続時間に倍率をかけ、プレイヤーの苦痛を軽減します。1 = リテール版の動作。
     USE_OLD_CURE_FORMULA            = false, -- true/false。trueの場合、古いケアルの計算式を使用します (3*MND + VIT + 3*(回復魔法スキル/5)) // ケアルVIは新しい計算式を使用します。
     USE_OLD_MAGIC_DAMAGE            = false, -- true/false。trueの場合、古い魔法ダメージ計算式を使用します。

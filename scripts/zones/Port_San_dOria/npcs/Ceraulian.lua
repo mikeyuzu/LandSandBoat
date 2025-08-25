@@ -23,7 +23,7 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local craftsmansStatus = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.A_CRAFTSMAN_S_WORK)
+    local craftsmansStatus = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.A_CRAFTSMANS_WORK)
     local quotasStatus     = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.CHASING_QUOTAS)
     local quotasProgress   = player:getCharVar('ChasingQuotas_Progress')
     local quotasNo         = player:getCharVar('ChasingQuotas_No')
@@ -50,7 +50,7 @@ entity.onTrigger = function(player, npc)
     elseif quotasStatus == xi.questStatus.QUEST_ACCEPTED and quotasProgress == 0 then
         player:startEvent(13) -- Reminder to bring Gold Hairpin
     elseif quotasProgress == 1 then
-        if player:getCharVar('ChasingQuotas_date') > os.time() then
+        if player:getCharVar('ChasingQuotas_date') > GetSystemTime() then
             player:startEvent(3) -- Fluff cutscene because you haven't waited a day
         else
             player:startEvent(7) -- Boss got mugged
@@ -89,9 +89,6 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 24 then
         player:setCharVar('TheHolyCrest_Event', 1)
@@ -108,7 +105,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         player:addQuest(xi.questLog.SANDORIA, xi.quest.id.sandoria.CHASING_QUOTAS)
     elseif csid == 17 then
         player:setCharVar('ChasingQuotas_Progress', 1)
-        player:setCharVar('ChasingQuotas_date', os.time() + 60)
+        player:setCharVar('ChasingQuotas_date', GetSystemTime() + 60)
     elseif csid == 7 then
         player:setCharVar('ChasingQuotas_Progress', 2)
         player:setCharVar('ChasingQuotas_date', 0)

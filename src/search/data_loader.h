@@ -60,7 +60,7 @@ struct SearchEntity
     uint8       race           = 0;
     uint16      zone           = 0;
     uint16      prevzone       = 0;
-    uint16      flags1         = 0;
+    uint32      flags1         = 0;
     uint32      flags2         = 0;
     uint32      linkshellid1   = 0;
     uint32      linkshellid2   = 0;
@@ -71,6 +71,7 @@ struct SearchEntity
     uint8       languages      = 0;
     bool        gmHidden       = false;
     bool        disconnecting  = false;
+    bool        muted          = false;
 };
 
 /************************************************************************
@@ -92,7 +93,7 @@ public:
     std::list<SearchEntity*> GetLinkshellList(uint32 LinkshellID);
     std::list<SearchEntity*> GetPlayersList(search_req sr, int* count);
     std::string              GetSearchComment(uint32 playerId);
-    std::vector<ahItem*>     GetAHItemsToCategory(uint8 AHCategoryID, const char* OrderByString);
+    std::vector<ahItem*>     GetAHItemsToCategory(uint8 ahCategoryID, const std::string& orderByString);
     ahItem                   GetAHItemFromItemID(uint16 ItemID);
     void                     ExpireAHItems(uint16 expireAgeInDays);
 };

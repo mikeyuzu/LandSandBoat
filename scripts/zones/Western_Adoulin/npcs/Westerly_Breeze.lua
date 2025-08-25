@@ -20,7 +20,10 @@ entity.onTrade = function(player, npc, trade)
         local itemId = item:getID()
         local ahCategory = item:getAHCat()
 
-        if ahCategory >= 52 and ahCategory <= 57 then
+        if
+            ahCategory >= xi.itemAHCategory.MEAT_EGGS and
+            ahCategory <= xi.itemAHCategory.SWEETS
+        then
             -- We traded him a food item
             if
                 player:getCharVar('ATWTTB_Can_Trade_Gruel') == 1 and
@@ -75,9 +78,6 @@ entity.onTrigger = function(player, npc)
             end
         end
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

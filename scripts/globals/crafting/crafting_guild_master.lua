@@ -41,14 +41,9 @@ local testItemTable =
     [xi.guild.COOKING     ] = {  4355,  4416,  4489,  4381,  4413,  4558,  4546,  4440,  4561,  5930 },
 }
 
-local function giveNewRank(player, guildId, skillId, newRank)
+local function giveNewRank(player, skillId, newRank)
     -- Raise rank.
     player:setSkillRank(skillId, newRank)
-
-    -- Reset guild points for the day.
-    if player:getCharVar('[GUILD]currentGuild') == guildId + 1 then
-        player:setCharVar('[GUILD]daily_points', 1)
-    end
 
     -- Set local var to complete trade after event.
     player:setLocalVar('CompleteTrade', 1)
@@ -93,7 +88,7 @@ xi.crafting.guildMasterOnTrade = function(player, npc, trade)
                 guildId == xi.guild.FISHING
             then
                 player:setCharVar(npcTable[npcName][6], 0)
-                giveNewRank(player, guildId, skillId, newRank)
+                giveNewRank(player, skillId, newRank)
                 player:startEvent(eventId, 0, 0, 0, 0, newRank, 1)
             else
                 player:startEvent(eventId, 0, 0, 0, 0, newRank, 0)
@@ -104,7 +99,7 @@ xi.crafting.guildMasterOnTrade = function(player, npc, trade)
             newRank > xi.craftRank.AMATEUR and
             newRank < lastRank
         then
-            giveNewRank(player, guildId, skillId, newRank)
+            giveNewRank(player, skillId, newRank)
             player:startEvent(eventId, 0, 0, 0, 0, newRank, 0)
         end
     end
@@ -119,7 +114,7 @@ xi.crafting.guildMasterOnTrigger = function(player, npc)
     local nextRank = player:getSkillRank(skillId) + 1
 
     -- Event parameters
-    local testItem       = os.time()                                     -- Parameter 1: Current time OR Test Item if applicable.
+    local testItem       = GetSystemTime()                                     -- Parameter 1: Current time OR Test Item if applicable.
     local skillLevel     = xi.crafting.getRealSkill(player, skillId)     -- Parameter 2: Player real level on concrete craft.
     local skillCap       = xi.crafting.getCraftSkillCap(player, skillId) -- Parameter 3: Player max level on concrete craft.
     local guildsJoined   = player:getCharVar('Guild_Member')             -- Parameter 4: Bitmask with guilds joined.

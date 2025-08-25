@@ -42,7 +42,7 @@ zoneObject.afterZoneIn = function(player)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
@@ -72,7 +72,7 @@ zoneObject.onZoneWeatherChange = function(weather)
         elseif
             not habrok:isSpawned() and
             isHabrokWeather(weather) and
-            os.time() > habrok:getLocalVar('pop')
+            GetSystemTime() > habrok:getLocalVar('pop')
         then
             SpawnMob(ID.mob.HABROK)
         end

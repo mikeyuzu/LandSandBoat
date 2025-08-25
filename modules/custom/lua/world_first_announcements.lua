@@ -32,11 +32,13 @@ local checkWorldFirstServerVar = function(player, varName, worldMessage)
 
     if GetVolatileServerVariable(worldFirst) == 0 then -- Record hasn't been set yet
         local decoratedMessage = string.format('%s %s %s', openingDecoration, worldMessage, closingDecoration)
-        player:printToArea(decoratedMessage, xi.msg.channel.SYSTEM_3, 0, '') -- Sends announcement via ZMQ to all processes and zones
+
+        -- Sends announcement via ZMQ to all processes and zones
+        player:printToArea(decoratedMessage, xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM, '', false)
 
         -- Write out World First (WF) and World First Time (WT) to server vars)
         SetVolatileServerVariable(worldFirst, player:getID())
-        SetVolatileServerVariable(worldTime, os.time())
+        SetVolatileServerVariable(worldTime, GetSystemTime())
 
         -- Summon big swirly starry animation which lingers on the players client in the location
         -- where this event happened. It will linger in that area for anyone that saw it until

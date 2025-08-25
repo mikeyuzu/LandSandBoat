@@ -5,6 +5,11 @@
 ---@type TMobEntity
 local entity = {}
 
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.GIL_MIN, 1000)
+    mob:setMobMod(xi.mobMod.GIL_MAX, 3000)
+end
+
 entity.onMobDeath = function(mob, player, optParams)
 end
 
@@ -16,7 +21,7 @@ entity.onMobDespawn = function(mob)
 
     -- Check if Biast window is open, and there is not an Biast popped already
     if
-        biastTimeOfDeath <= os.time() and
+        biastTimeOfDeath <= GetSystemTime() and
         not GetMobByID(mob:getID() + 1):isSpawned()
     then
         if math.random(1, 20) == 5 then

@@ -5,21 +5,21 @@
 ---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    if player:getZPos() < -28.750 then
-        player:startEvent(220)
-    else
+    -- Outside dock zone.
+    if player:getZPos() >= -28.750 then
         player:startEvent(229)
+
+    -- Inside dock zone.
+    else
+        player:startEvent(220)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
+    if csid == 220 and option == 256 then
+        player:delKeyItem(xi.ki.FERRY_TICKET)
+    end
 end
 
 return entity

@@ -29,12 +29,9 @@
 // Valid MessageIDs for both standard and SYSTEM type messages
 // Found in ROM/27/76.dat or 1-27-76.xml if using mass extractor
 // Todo: move msg enums to common location out of packet headers
-enum class MsgStd
+enum class MsgStd : uint16
 {
-    // Used as a sentinel value. This should not be used as part of a packet.
-    Unknown = -1,
-
-    // Keep message IDs in order OR ELSE UNSPECIFIED CONSQUENSES SHALL ENSUE
+    // Keep message IDs in order OR ELSE UNSPECIFIED CONSEQUENCES SHALL ENSUE
 
     CouldNotEnter                = 2,   // You could not enter the next area. [0,1,3,4, all same message]
     CouldNotEnterYourRoom        = 5,   // You could not enter your room.
@@ -65,6 +62,9 @@ enum class MsgStd
     LinkshellUnavailable         = 112, // The linkshell name you entered is already in use or otherwise unavailable.
     EventSkipped                 = 117, // Event skipped.
     TellNotReceivedOffline       = 125, // Your tell was not received.  The recipient is currently away.
+    MooglePlantsSeeds            = 132, // Your moogle plants the <seed> in the flowerpot.
+    MoogleDriesPlant             = 133, // Your moogle dries the plant in the <item>.
+    MoogleUsesItemOnPLant        = 136, // Your moogle uses the <item> on the plant.
     MoghouseCantPickUp           = 137, // Kupo... I can't pick anything right now, kupo.
     ChocoboRefusedToEnte         = 138, // The chocobo refused to enter the next area.
     CurrentPollResultsSystem     = 140, // Player Name's proposal - Current poll results:
@@ -89,6 +89,8 @@ enum class MsgStd
     UnableToProcessRequest       = 183, // Unable to process request.
     ExpansionPackNotRegistered   = 184, // Unable to enter next area. Expansion pack not registered.
     ExpansionPackNotInstalled    = 185, // Unable to enter next area. Expansion pack not installed.
+    GainsEffect                  = 205, // Player Name gains the effect of <effect>.
+    EffectWearsOff               = 206, // Player Name's <effect> wears off.
     CannotPerformPetra           = 209, // You cannot perform that action while holding a Petra.
     CannotPerformNoPetra         = 210, // You cannot perform that action without a Petra.
     LostYourPetras               = 211, // You lost your Petras.
@@ -127,13 +129,26 @@ enum class MsgStd
     PollProposalLinkshell2       = 289, // Player Name's proposal to the linkshell group (cast vote with command: "/vote ?"):
     CurrentPollResultsLinkshell2 = 290, // Player Name's proposal - Current poll results:
     FinalPollResultsLinkshell2   = 291, // Player Name's proposal - Final poll results:
+    SuccessfulRemodel            = 293, // Your second floor has been successfully remodeled.
     TrustCannotLFP               = 296, // You cannot use Trust magic while seeking a party.
     WaitParty                    = 297, // While inviting a party member, you must wait a while before using Trust magic.
     TrustMaximumNumber           = 298, // You have called forth your maximum number of alter egos.
     TrustAlreadyCalled           = 299, // That alter ego has already been called forth.
     TrustEnmity                  = 300, // You cannot use Trust magic while having gained enmity.
     TrustSoloOrLeader            = 301, // You cannot use Trust magic unless you are solo or the party leader.
+    GivenThumbsUp                = 306, // You have given a thumbs up to <player>'s message.
+    GivenWarning                 = 307, // You have given a warning to <player>'s message.
     AnErrorHasOccured            = 308, // An error has occurred.
+    ThumbsUpCooldown             = 309, // You have reached the maximum number of thumbs up that can be issued.
+    WarningCooldown              = 310, // You have reached the maximum number of warnings that can be issued.
+    AddedToMuteList              = 311, // <player> has added <player> to the Mute list.
+    AlreadyMuted                 = 312, // That individual is already on the Mute list.
+    RemovedFromMuteList          = 313, // <player> has removed <player> from the Mute list.
+    ReceivedThumbsUp             = 314, // You have received a thumbs up for your message.
+    ReceivedWarning              = 315, // Someone has issued you a warning for your message.
+    AssistChannelExpiring        = 317, // You will no longer be able to chat in this channel in <time> hour/minute(s).
+    AssistChannelExpired         = 318, // You are no longer able to chat in the Assist channel. We recommend that you visit a linkshell concierge to find more friends to adventure with.
+    UnableToThrowAway            = 325, // You are unable to throw away the <item>.
     LevelSyncActivated           = 540, // Level Sync activated. Your level has been restricted to <Level>. Equipment effected by the level restriction will be adjusted accordingly. Experience...
     LevelSyncDesigneeBelowMin    = 541, // Level Sync could not be activated. The designated player is below level 10.
     LevelSyncDesigneeInOtherArea = 542, // Level Sync could not be activated. The designated player is in a different area.
@@ -149,6 +164,7 @@ enum class MsgStd
     LevelSyncRemoveLowLevel      = 554, // Level sync will be deactivated in 30 seconds. The Level Sync designee has fallen below level 10.
     LevelSyncRemoveJobChange     = 555, // Level sync will be deactivated in 30 seconds. A party member has undergone a job change.
     LevelSyncRemoveIneligibleExp = 556, // Level sync will be deactivated in 30 seconds. The Level Sync designee is incapable of receiving experience points.
+    TreasureHunterProc           = 603, // Additional effect: Treasure Hunter effectiveness against <Target> increases to <number>
 };
 
 class CCharEntity;
@@ -160,7 +176,8 @@ public:
     CMessageStandardPacket(uint16 MessageID);
 
     CMessageStandardPacket(MsgStd MessageID);
-    CMessageStandardPacket(uint32 param0, uint16 MessageID);
+    CMessageStandardPacket(uint32 param0, MsgStd MessageID);
+    CMessageStandardPacket(const std::string& string2, MsgStd MesNo);
     CMessageStandardPacket(uint32 param0, uint32 param1, uint16 MessageID);
     CMessageStandardPacket(CCharEntity* PChar, uint32 param0, MsgStd MessageID);
     CMessageStandardPacket(CCharEntity* PChar, uint32 param0, uint32 param1, MsgStd MessageID);

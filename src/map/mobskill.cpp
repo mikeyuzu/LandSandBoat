@@ -33,10 +33,11 @@ CMobSkill::CMobSkill(uint16 id)
 , m_Distance(0)
 , m_Flag(0)
 , m_ValidTarget(0)
-, m_AnimationTime(0)
-, m_ActivationTime(0)
+, m_AnimationTime(0s)
+, m_ActivationTime(0s)
 , m_Message(0)
 , m_TP(0)
+, m_HP(0)
 , m_HPP(0)
 , m_knockback(0)
 , m_primarySkillchain(0)
@@ -158,18 +159,24 @@ void CMobSkill::setTP(int16 tp)
     m_TP = tp;
 }
 
+// Stores the Monsters HP as it was at the start of mobskill
+auto CMobSkill::setHP(int32 hp) -> void
+{
+    m_HP = hp;
+}
+
 // Stores the Monsters HP% as it was at the start of mobskill
 void CMobSkill::setHPP(uint8 hpp)
 {
     m_HPP = hpp;
 }
 
-void CMobSkill::setAnimationTime(uint16 AnimationTime)
+void CMobSkill::setAnimationTime(timer::duration AnimationTime)
 {
     m_AnimationTime = AnimationTime;
 }
 
-void CMobSkill::setActivationTime(uint16 ActivationTime)
+void CMobSkill::setActivationTime(timer::duration ActivationTime)
 {
     m_ActivationTime = ActivationTime;
 }
@@ -192,6 +199,12 @@ uint16 CMobSkill::getAnimationID() const
 int16 CMobSkill::getTP() const
 {
     return m_TP;
+}
+
+// Retrieves the Monsters HP as it was at the start of mobskill
+auto CMobSkill::getHP() const -> int32
+{
+    return m_HP;
 }
 
 // Retrieves the Monsters HP% as it was at the start of mobskill
@@ -331,12 +344,12 @@ uint16 CMobSkill::getValidTargets() const
     return m_ValidTarget;
 }
 
-uint16 CMobSkill::getAnimationTime() const
+timer::duration CMobSkill::getAnimationTime() const
 {
     return m_AnimationTime;
 }
 
-uint16 CMobSkill::getActivationTime() const
+timer::duration CMobSkill::getActivationTime() const
 {
     return m_ActivationTime;
 }

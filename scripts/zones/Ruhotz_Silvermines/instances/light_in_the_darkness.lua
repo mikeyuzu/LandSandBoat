@@ -32,6 +32,8 @@ end
 instanceObject.onInstanceCreated = function(instance)
     for i = 0, 9 do
         SpawnMob(ID.mob.SAPPHIRINE_QUADAV_OFFSET + i, instance)
+        local mob = GetMobByID(ID.mob.SAPPHIRINE_QUADAV_OFFSET + i, instance)
+        mob:delMobMod(xi.mobMod.DETECTION, xi.detects.HEARING)
     end
 end
 

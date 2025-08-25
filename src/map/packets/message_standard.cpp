@@ -19,8 +19,6 @@
 ===========================================================================
 */
 
-#include "common/socket.h"
-
 #include <cstring>
 
 #include "message_standard.h"
@@ -43,14 +41,24 @@ CMessageStandardPacket::CMessageStandardPacket(uint16 MessageID)
     ref<uint16>(0x0A) = MessageID;
 }
 
-CMessageStandardPacket::CMessageStandardPacket(uint32 param0, uint16 MessageID)
+CMessageStandardPacket::CMessageStandardPacket(uint32 param0, MsgStd MessageID)
 {
     this->setType(0x09);
     this->setSize(0x1C);
 
-    ref<uint16>(0x0A) = MessageID;
+    ref<uint16>(0x0A) = static_cast<uint16>(MessageID);
 
     snprintf((char*)buffer_.data() + 0x0D, 16, "Para0 %u ", param0);
+}
+
+CMessageStandardPacket::CMessageStandardPacket(const std::string& string2, MsgStd MesNo)
+{
+    this->setType(0x09);
+    this->setSize(0x1C);
+
+    ref<uint16>(0x0A) = static_cast<uint16>(MesNo);
+
+    snprintf((char*)buffer_.data() + 0x0D, 24, "string2 %s", string2.c_str());
 }
 
 CMessageStandardPacket::CMessageStandardPacket(uint32 param0, uint32 param1, uint16 MessageID)

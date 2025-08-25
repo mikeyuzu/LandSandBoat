@@ -14,7 +14,7 @@ mixins =
 local entity = {}
 
 local function spawnSaplings()
-    for i = ID.mob.CHERRY_SAPLING_OFFSET, ID.mob.CHERRY_SAPLING_OFFSET + 12 do
+    for i = ID.mob.CHERRY_SAPLING_OFFSET, ID.mob.CHERRY_SAPLING_OFFSET + 8 do
         local mob = GetMobByID(i)
         if mob ~= nil and mob:getName() == 'Cherry_Sapling' and not mob:isSpawned() then
             SpawnMob(i)
@@ -23,7 +23,11 @@ local function spawnSaplings()
 end
 
 entity.onMobInitialize = function(mob)
-    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 600)
+    mob:setMobMod(xi.mobMod.GIL_MIN, 20000)
+    mob:setMobMod(xi.mobMod.GIL_MAX, 30000)
+    mob:setMobMod(xi.mobMod.MUG_GIL, 10000)
+    mob:addImmunity(xi.immunity.SILENCE)
 
     local saplingsRespawn = math.random(1800, 3600) -- 30 to 60 minutes
     mob:timer(saplingsRespawn * 1000, function(mobArg)

@@ -44,6 +44,10 @@ local skillID =    {  1000,    316,  1001,    316,  1002,    316,  1003,    316,
 local avatarAbilities = {  917,   918,   914,   913,   915,   916,   839,   919 }
 local avatarSkins =     {   22,    23,    19,    18,    20,    21,    17,    16 }
 
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 900)
+end
+
 entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.DEF, 450)
     mob:setMod(xi.mod.MEVA, 380)
@@ -55,7 +59,7 @@ entity.onMobSpawn = function(mob)
     mob:hideHP(true)
 
     -- Two hours to forced depop
-    mob:setLocalVar('PWDespawnTime', os.time() + 7200)
+    mob:setLocalVar('PWDespawnTime', GetSystemTime() + 7200)
     mob:setLocalVar('phase', 1)
     mob:setLocalVar('astralFlow', 1)
 end
@@ -189,8 +193,8 @@ entity.onMobFight = function(mob, target)
 
     -- Check for time limit, too
     if
-        os.time() > depopTime and
-        mob:actionQueueEmpty()
+        GetSystemTime() > depopTime and
+        not xi.combat.behavior.isEntityBusy(mob)
     then
         for i = 0, 1 do
             for j = 1, 8 do

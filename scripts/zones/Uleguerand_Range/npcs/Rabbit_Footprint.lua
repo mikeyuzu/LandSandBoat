@@ -52,15 +52,6 @@ entity.onTrade = function(player, npc, trade)
     end
 end
 
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
-end
-
 local function moveFootprint(npc)
     -- ffxiclopedia's pages for Black Coney and White Coney say 7 and 5 Earth seconds respectively, in game it is very fast
     -- https://ffxiclopedia.fandom.com/wiki/Black_Coney
@@ -90,8 +81,8 @@ entity.onTimeTrigger = function(npc, triggerID)
     if not isSpawned then
         if IsMoonFull() or IsMoonNew() then
             if activeTime == 0 then
-                npc:setLocalVar('activeTime', os.time() + math.random(60 * 9, 60 * 15)) -- moon phase just changed, i'm active in 9 to 15 mins from now
-            elseif os.time() > activeTime then
+                npc:setLocalVar('activeTime', GetSystemTime() + math.random(60 * 9, 60 * 15)) -- moon phase just changed, i'm active in 9 to 15 mins from now
+            elseif GetSystemTime() > activeTime then
                 moveFootprint(npc)
             end
         else

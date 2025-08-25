@@ -18,7 +18,7 @@ entity.onTrade = function(player, npc, trade)
         spawnChance = 50
     end
 
-    if os.time() < timer then
+    if GetSystemTime() < timer then
         player:messageSpecial(ID.text.NOTHING_OUT_OF_ORDINARY)
     elseif spawnChance > 0 then
         player:confirmTrade()
@@ -35,12 +35,6 @@ end
 
 entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.WATER_HOLE)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

@@ -313,15 +313,17 @@ xi.trust.canCast = function(caster, spell, notAllowedTrustIds)
 
     -- Block summoning trusts if someone recently joined party (120s)
     local lastPartyMemberAddedTime = caster:getPartyLastMemberJoinedTime()
-    if os.time() - lastPartyMemberAddedTime < 120 then
+    if GetSystemTime() - lastPartyMemberAddedTime < 120 then
         caster:messageSystem(xi.msg.system.TRUST_DELAY_NEW_PARTY_MEMBER)
         return -1
     end
 
     -- Trusts cannot be summoned if you have hate
     if caster:hasEnmity() then
-        caster:messageSystem(xi.msg.system.TRUST_NO_ENMITY)
-        return -1
+        if xi.settings.map.DISABLE_TRUST_WHEN_ENMITY then
+            caster:messageSystem(xi.msg.system.TRUST_NO_ENMITY)
+            return -1
+        end
     end
 
     -- Check party for trusts

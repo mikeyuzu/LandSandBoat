@@ -9,9 +9,6 @@ local ID = zones[xi.zone.TEMPLE_OF_UGGALEPIH]
 ---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
     local xPos = player:getXPos()
     local zPos = player:getZPos()
@@ -42,7 +39,7 @@ entity.onTrigger = function(player, npc)
             then
                 -- has paintbrush of souls + close enough
                 player:messageSpecial(ID.text.PAINTBRUSH_OFFSET + 17, xi.ki.PAINTBRUSH_OF_SOULS)
-                player:setCharVar('started_painting', os.time())
+                player:setCharVar('started_painting', GetSystemTime())
                 player:startEvent(60, xi.ki.PAINTBRUSH_OF_SOULS)
             elseif player:hasKeyItem(xi.ki.PAINTBRUSH_OF_SOULS) then
                 player:messageSpecial(ID.text.PAINTBRUSH_OFFSET + 15, xi.ki.PAINTBRUSH_OF_SOULS)
@@ -55,14 +52,11 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 50 then
         -- Soon !
     elseif csid == 60 then
-        local timeElapsed = os.time() - player:getCharVar('started_painting')
+        local timeElapsed = GetSystemTime() - player:getCharVar('started_painting')
         if timeElapsed >= 30 then
             player:messageSpecial(ID.text.PAINTBRUSH_OFFSET + 22) -- You succeeded in projecting the image in your soul to the blank canvas. The door to the Rancor Den has opened!<Prompt>
             GetNPCByID(ID.npc.DOOR_TO_RANCOR):openDoor(45) -- Open the door to Den of Rancor for 45 sec

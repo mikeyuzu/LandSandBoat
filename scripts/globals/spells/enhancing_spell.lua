@@ -123,7 +123,7 @@ local pTable =
     [xi.magic.spell.GAIN_CHR     ] = { 1, xi.effect.CHR_BOOST,      1,    5,  300, true,  false, 0 },
 
     -- Haste
-    [xi.magic.spell.HASTE        ] = { 1, xi.effect.HASTE,         48, 1465,  180, true,  false, 0 },
+    [xi.magic.spell.HASTE        ] = { 1, xi.effect.HASTE,         40, 1465,  180, true,  false, 0 },
     [xi.magic.spell.HASTE_II     ] = { 2, xi.effect.HASTE,         96, 2998,  180, true,  false, 0 },
     [xi.magic.spell.HASTEGA      ] = { 1, xi.effect.HASTE,         48, 1494,  180, false, false, 0 },
     -- [xi.magic.spell.HASTEGA_II   ] = { 2, xi.effect.HASTE,         99, 2998,  180, false, false, 0 },
@@ -497,8 +497,8 @@ xi.spells.enhancing.useEnhancingSpell = function(caster, target, spell)
     -- Refresh
     elseif spellEffect == xi.effect.REFRESH then
         if
-            target:hasStatusEffect(xi.effect.SUBLIMATION_ACTIVATED) or
-            target:hasStatusEffect(xi.effect.SUBLIMATION_COMPLETE)
+            tier < 3 and
+            (target:hasStatusEffect(xi.effect.SUBLIMATION_ACTIVATED) or target:hasStatusEffect(xi.effect.SUBLIMATION_COMPLETE))
         then
             spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT)
             return 0

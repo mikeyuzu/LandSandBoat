@@ -1206,11 +1206,11 @@ xi.abyssea.searingWardTimer = function(player)
     local tetherTimer = player:getLocalVar('tetherTimer')
 
     if tetherTimer > 1 then
-        if tetherTimer == 11 or tetherTimer <= 6 then
+        player:setLocalVar('tetherTimer', tetherTimer - 1)
+        if tetherTimer <= 6 then
             player:messageSpecial(ID.text.RETURNING_TO_SEARING_IN, tetherTimer - 1)
         end
 
-        player:setLocalVar('tetherTimer', tetherTimer - 1)
         player:timer(1500, function()
             xi.abyssea.searingWardTimer(player)
         end)
@@ -1349,7 +1349,7 @@ xi.abyssea.traverserNPCOnUpdate = function(player, csid, option, npc)
             -- the result as a minute value to the player.
 
             local rechargeInterval = 20 - xi.abyssea.getAbyssiteTotal(player, xi.abyssea.abyssiteType.CELERITY)
-            local lastStoneClaimedTime = os.time() - player:getTraverserEpoch() - rechargeInterval * 3600 * player:getClaimedTraverserStones()
+            local lastStoneClaimedTime = GetSystemTime() - player:getTraverserEpoch() - rechargeInterval * 3600 * player:getClaimedTraverserStones()
             local rechargeRemaining = rechargeInterval * 60 - lastStoneClaimedTime / 60
 
             player:updateEvent(0, 0, 0, 0, rechargeRemaining)
