@@ -26,9 +26,9 @@
 
 #include "entities/charentity.h"
 #include "items/item_equipment.h"
-#include "trait.h"
 #include "zone.h"
 
+enum class KeyItem : uint16_t;
 class CPetEntity;
 class CMobEntity;
 class CMeritPoints;
@@ -67,12 +67,13 @@ const std::vector<std::pair<uint16, uint8>> roeCapacityBonusRecords = {
 namespace charutils
 {
     void LoadExpTable();
-    auto LoadChar(uint32 charId) -> CCharEntity*;
+    auto LoadChar(uint32 charId) -> std::unique_ptr<CCharEntity>;
     void LoadSpells(CCharEntity* PChar);
     void LoadInventory(CCharEntity* PChar);
     void LoadEquip(CCharEntity* PChar);
 
     void SendQuestMissionLog(CCharEntity* PChar);
+    void SendRecordsOfEminenceLog(CCharEntity* PChar);
     void SendKeyItems(CCharEntity* PChar);
     void SendInventory(CCharEntity* PChar);
 
@@ -97,12 +98,14 @@ namespace charutils
     void   AddCapacityPoints(CCharEntity* PChar, CBaseEntity* PMob, uint32 capacityPoints, int16 levelDiff = 0, bool isCapacityChain = false);
     void   DistributeCapacityPoints(CCharEntity* PChar, CMobEntity* PMob);
 
-    void TrySkillUP(CCharEntity* PChar, SKILLTYPE SkillID, uint8 lvl, bool forceSkillUp = false, bool useSubSkill = false);
-    void BuildingCharSkillsTable(CCharEntity* PChar);
-    void BuildingCharWeaponSkills(CCharEntity* PChar);
-    void BuildingCharAbilityTable(CCharEntity* PChar);
-    void BuildingCharTraitsTable(CCharEntity* PChar);
-    void BuildingCharPetAbilityTable(CCharEntity* PChar, CPetEntity* PPet, uint32 PetID);
+    void  TrySkillUP(CCharEntity* PChar, SKILLTYPE SkillID, uint8 lvl, bool forceSkillUp = false, bool useSubSkill = false);
+    bool  isArtsBonusActive(CCharEntity* PChar, SKILLTYPE SkillID);
+    int16 ArtsBonusSkill(CCharEntity* PChar, SKILLTYPE SkillID);
+    void  BuildingCharSkillsTable(CCharEntity* PChar);
+    void  BuildingCharWeaponSkills(CCharEntity* PChar);
+    void  BuildingCharAbilityTable(CCharEntity* PChar);
+    void  BuildingCharTraitsTable(CCharEntity* PChar);
+    void  BuildingCharPetAbilityTable(CCharEntity* PChar, CPetEntity* PPet, uint32 PetID);
 
     void DoTrade(CCharEntity* PChar, CCharEntity* PTarget);
     bool CanTrade(CCharEntity* PChar, CCharEntity* PTarget);
@@ -117,6 +120,7 @@ namespace charutils
     uint8  MoveItem(CCharEntity* PChar, uint8 LocationID, uint8 SlotID, uint8 NewSlotID);
     uint32 UpdateItem(CCharEntity* PChar, uint8 LocationID, uint8 slotID, int32 quantity, bool force = false);
     void   DropItem(CCharEntity* PChar, uint8 container, uint8 slotID, int32 quantity, uint16 ItemID);
+    void   AddCustomItemBook(CCharEntity* PChar, uint8 LocationID, CItem* PItem, bool silence = false);
     void   CheckValidEquipment(CCharEntity* PChar);
     void   CheckEquipLogic(CCharEntity* PChar, SCRIPTTYPE ScriptType, uint32 param);
     void   SaveJobChangeGear(CCharEntity* PChar);
@@ -136,11 +140,12 @@ namespace charutils
     void   AddItemToRecycleBin(CCharEntity* PChar, uint32 container, uint8 slotID, uint8 quantity);
     void   EmptyRecycleBin(CCharEntity* PChar);
 
-    bool hasKeyItem(CCharEntity* PChar, uint16 KeyItemID);    // checking the presence of a key item
-    bool seenKeyItem(CCharEntity* PChar, uint16 KeyItemID);   // checking whether the description of the key item has been read
-    void unseenKeyItem(CCharEntity* PChar, uint16 KeyItemID); // attempt to remove keyitem from seen list
-    void addKeyItem(CCharEntity* PChar, uint16 KeyItemID);    // add a key item
-    void delKeyItem(CCharEntity* PChar, uint16 KeyItemID);    // delete a key item
+    auto hasKeyItem(const CCharEntity* PChar, KeyItem keyItemId) -> bool; // checking the presence of a key item
+    auto seenKeyItem(CCharEntity* PChar, KeyItem keyItemId) -> bool;      // checking whether the description of the key item has been read
+    void markSeenKeyItem(CCharEntity* PChar, KeyItem keyItemId);          // mark key item as seen (description read)
+    void unseenKeyItem(CCharEntity* PChar, KeyItem keyItemId);            // attempt to remove keyitem from seen list
+    void addKeyItem(CCharEntity* PChar, KeyItem keyItemId);               // add a key item
+    void delKeyItem(CCharEntity* PChar, KeyItem keyItemId);               // delete a key item
 
     int32 hasSpell(CCharEntity* PChar, uint16 SpellID); // checking for the presence of a spell
     int32 addSpell(CCharEntity* PChar, uint16 SpellID); // add a spell
@@ -207,7 +212,8 @@ namespace charutils
     void SaveTeleport(CCharEntity* PChar, TELEPORT_TYPE type); // save the character's teleports (homepoints, outposts, maws, etc)
     void SaveDeathTime(CCharEntity* PChar);                    // save when this character last died
     void SavePlayTime(CCharEntity* PChar);                     // save this character's total play time
-    bool hasMogLockerAccess(CCharEntity* PChar);               // true if have access, false otherwise
+    void SaveLastLogout(const CCharEntity* PChar);             // save the last logout time of this character
+    bool hasMogLockerAccess(const CCharEntity* PChar);         // true if have access, false otherwise
 
     uint8 getQuestStatus(CCharEntity* PChar, uint8 log, uint8 quest); // Get Quest status (used in FishingUtils.cpp, allows to fish quest specific mobs, like PLD AF NM)
 
@@ -223,7 +229,7 @@ namespace charutils
     bool isRecvBoxOpen(CCharEntity* PChar);
     bool isAnyDeliveryBoxOpen(CCharEntity* PChar);
 
-    bool CheckAbilityAddtype(CCharEntity* PChar, CAbility* PAbility);
+    auto CheckAbilityAddtype(CCharEntity* PChar, const CAbility* PAbility) -> bool;
 
     void RemoveStratagems(CCharEntity* PChar, CSpell* PSpell);
 
@@ -252,6 +258,7 @@ namespace charutils
     void  SetCharVar(CCharEntity* PChar, std::string const& var, int32 value, uint32 expiry = 0);
     int32 ClearCharVarsWithPrefix(CCharEntity* PChar, std::string const& prefix);
     void  ClearCharVarFromAll(std::string const& varName, bool localOnly = false);
+    void  IncrementCharVar(uint32 charId, std::string const& var, int32 value);
     void  IncrementCharVar(CCharEntity* PChar, std::string const& var, int32 value);
 
     auto FetchCharVar(uint32 charId, std::string const& var) -> std::pair<int32, uint32>;
@@ -295,6 +302,8 @@ namespace charutils
 
     bool isOrchestrionPlaced(CCharEntity* PChar);
     void updateMannequins(CCharEntity* PChar);
+
+    bool raceChange(CCharEntity* PChar, CharRace newRace, CharFace newFace, CharSize newSize);
 }; // namespace charutils
 
 #endif // _CHARUTILS_H

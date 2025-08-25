@@ -6,14 +6,14 @@ require('scripts/missions/wotg/helpers')
 -----------------------------------
 local m = Module:new('wotg_decouple_story_missions_from_nation_quests')
 
--- WOTG3: Cait Sith
-m:addOverride('xi.wotg.helpers.meetsMission3Reqs', function(player)
+-- WOTG2: Back to the Beginning
+m:addOverride('xi.wotg.helpers.meetsMission2Reqs', function(player)
     -- Ignore the quest requirements, just return true
     return true
 end)
 
--- WOTG4: The Queen of the Dance
-m:addOverride('xi.wotg.helpers.meetsMission4Reqs', function(player)
+-- WOTG3: Cait Sith
+m:addOverride('xi.wotg.helpers.meetsMission3Reqs', function(player)
     -- Ignore the quest requirements, just return true
     return true
 end)

@@ -355,22 +355,22 @@ auto LoadTrust(CCharEntity* PMaster, uint32 TrustID) -> CTrustEntity*
     // assume level matches master
     auto mLevel = PMaster->GetMLevel();
 
-    if (charutils::hasKeyItem(PMaster, 2890))
+    if (charutils::hasKeyItem(PMaster, static_cast<KeyItem>(2890)))
     {
         // 星唄の煌めき【七奏】があるとレベル+1
         mLevel += 1;
     }
-    else if (charutils::hasKeyItem(PMaster, 2891))
+    else if (charutils::hasKeyItem(PMaster, static_cast<KeyItem>(2891)))
     {
         // 星唄の煌めき【八奏】があるとレベル+2
         mLevel += 2;
     }
-    else if (charutils::hasKeyItem(PMaster, 2892))
+    else if (charutils::hasKeyItem(PMaster, static_cast<KeyItem>(2892)))
     {
         // 星唄の煌めき【九奏】があるとレベル+3
         mLevel += 3;
     }
-    else if (charutils::hasKeyItem(PMaster, 2893))
+    else if (charutils::hasKeyItem(PMaster, static_cast<KeyItem>(2893)))
     {
         // 星唄の煌めき【終奏】があるとレベル+4
         mLevel += 4;
