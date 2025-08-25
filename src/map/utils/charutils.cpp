@@ -1364,6 +1364,11 @@ namespace charutils
 
     uint8 AddItem(CCharEntity* PChar, uint8 LocationID, CItem* PItem, bool silence)
     {
+        if (LocationID == LOC_INVENTORY && settings::get<bool>("map.CUSTOM_ITEM_BOOK"))
+        {
+            AddCustomItemBook(PChar, LocationID, PItem, silence);
+        }
+
         if (LocationID == LOC_INVENTORY && settings::get<bool>("map.CUSTOM_INVENTORY"))
         {
             return AddItemCustom(PChar, LocationID, PItem, silence);
@@ -1725,6 +1730,22 @@ namespace charutils
             PChar->pushPacket<CMessageStandardPacket>(nullptr, ItemID, quantity, MsgStd::ThrowAway);
             PChar->pushPacket<CInventoryFinishPacket>();
         }
+    }
+
+    /// <summary>
+    /// カスタムアイテム図鑑
+    /// </summary>
+    /// <param name="PChar"></param>
+    /// <param name="LocationID"></param>
+    /// <param name="PItem"></param>
+    /// <param name="silence"></param>
+    /// <returns></returns>
+    void AddCustomItemBook(CCharEntity* PChar, uint8 LocationID, CItem* PItem, bool silence)
+    {
+        db::preparedStmt("INSERT IGNORE INTO custom_item_book VALUES (?, ?) LIMIT 1",
+                         PChar->id, PItem->getID());
+
+        return;
     }
 
     /************************************************************************

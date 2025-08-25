@@ -223,6 +223,9 @@ player_data = [
     "linkshells.sql",
     "server_variables.sql",
     "unity_system.sql",
+    "conquest_system.sql",
+    "custom_inventory.sql",
+    "custom_item_book.sql",
 ]
 
 import_files = []
