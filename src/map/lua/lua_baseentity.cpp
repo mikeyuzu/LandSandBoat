@@ -10799,8 +10799,12 @@ uint32 CLuaBaseEntity::canLearnSpell(uint16 spellID)
     }
     else if (!spell::CanUseSpell(PChar, static_cast<SpellID>(spellID)))
     {
-        Message = 95;
+        if (!settings::get<bool>("map.NO_LEVEL_CAN_LEARN_SPELL"))
+        {
+            Message = 95;
+        }
     }
+}
 
     return Message;
 }

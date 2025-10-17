@@ -359,4 +359,7 @@ xi.settings.map =
 
     -- ギルドショップを24時間営業にする
     GUILD_SHOP_FULLTIME = false,
+
+    -- レベル制限を無視してスペルを覚えられるようにする
+    NO_LEVEL_CAN_LEARN_SPELL = false,
 }
