@@ -2514,7 +2514,6 @@ bool CLuaBaseEntity::sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 ho
         return GUILD_OPEN;
     }
 
-    return GUILD_OPEN;
     if (open > close)
     {
         ShowWarning("Open Time (%d) exceeds Close Time (%d)", open, close);
@@ -2534,9 +2533,17 @@ bool CLuaBaseEntity::sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 ho
     //     status = GUILD_HOLYDAY;
     // }
 
-    if ((VanadielHour < open) || (VanadielHour >= close))
+    if (settings::get<bool>("map.GUILD_SHOP_FULLTIME"))
     {
-        status = GUILD_CLOSE;
+        open  = 0;
+        close = 24;
+    }
+    else
+    {
+        if ((VanadielHour < open) || (VanadielHour >= close))
+        {
+            status = GUILD_CLOSE;
+        }
     }
 
     CItemContainer* PGuildShop = guildutils::GetGuildShop(guildID);
