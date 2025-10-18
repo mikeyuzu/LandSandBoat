@@ -362,4 +362,7 @@ xi.settings.map =
 
     -- レベル制限を無視してスペルを覚えられるようにする
     NO_LEVEL_CAN_LEARN_SPELL = false,
+
+    -- 迷のアニマの効果時間
+    BOTTLE_OF_HYSTEROANIMA_DURATION = 40,
 }
