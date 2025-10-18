@@ -35,7 +35,7 @@ entity.onMobFight = function(mob, target)
     if
         yang and
         yang:getCurrentAction() == xi.act.NONE and
-        GetSystemTime() > yangToD + 30
+        GetSystemTime() > yangToD + 300
     then
         yang:setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
         yang:spawn()
