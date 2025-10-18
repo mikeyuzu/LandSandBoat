@@ -163,15 +163,8 @@ xi.cop.helpers.spireEventFinish = function(mission, player, csid, option, npc)
 
         local numCompletedPromyvions = xi.cop.helpers.numPromyvionCompleted(player)
 
-        if
-            (player:getCurrentMission(xi.mission.log_id.COP) == xi.mission.id.cop.BELOW_THE_ARKS and
-            numCompletedPromyvions == 1) or
-            numCompletedPromyvions == 3
-        then
-            mission:complete(player)
-        end
-
         if numCompletedPromyvions == 3 then
+            mission:complete(player)
             -- We need to make sure the fallthrough does not trigger an overriding
             -- teleport.
             player:setLocalVar('toLufaise', 1)
