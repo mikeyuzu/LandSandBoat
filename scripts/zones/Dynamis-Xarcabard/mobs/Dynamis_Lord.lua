@@ -18,7 +18,7 @@ entity.onMobSpawn = function(mob)
             { id = xi.jsa.HUNDRED_FISTS,  hpp = 95 },
             { id = xi.jsa.MIGHTY_STRIKES, hpp = 95 },
             { id = xi.jsa.BLOOD_WEAPON,   hpp = 95 },
-            { id = xi.jsa.CHAINSPELL,     hpp = 95 },
+            --Lv75Т▓Ро { id = xi.jsa.CHAINSPELL,     hpp = 95 },
         },
     })
 end
