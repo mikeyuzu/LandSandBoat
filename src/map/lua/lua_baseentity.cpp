@@ -10804,7 +10804,6 @@ uint32 CLuaBaseEntity::canLearnSpell(uint16 spellID)
             Message = 95;
         }
     }
-}
 
     return Message;
 }
