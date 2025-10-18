@@ -32,7 +32,7 @@ entity.onMobFight = function(mob, target)
 
         if pet then
             if
-                battleTime % 90 == 0 and
+                battleTime % 900 == 0 and
                 battleTime >= 90 and
                 not pet:isSpawned()
             then
