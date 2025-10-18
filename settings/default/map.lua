@@ -356,4 +356,10 @@ xi.settings.map =
 
     -- ヘイトがある状態でフェイスを呼び出せない
     DISABLE_TRUST_WHEN_ENMITY = true,
+
+    -- ギルドショップを24時間営業にする
+    GUILD_SHOP_FULLTIME = false,
+
+    -- レベル制限を無視してスペルを覚えられるようにする
+    NO_LEVEL_CAN_LEARN_SPELL = false,
 }
