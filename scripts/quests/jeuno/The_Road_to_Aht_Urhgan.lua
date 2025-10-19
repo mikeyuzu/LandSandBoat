@@ -100,7 +100,6 @@ local function handleSelectionEventFinish(player, csid, option, npc)
             player:delGil(500000)
             quest:setVar(player, 'Prog', 2)
             quest:setMustZone(player)
-            quest:setVar(player, 'Timer', VanadielUniqueDay())
         end
     end
 end
@@ -153,7 +152,6 @@ quest.sections =
 
                 onTrigger = function(player, npc)
                     local questProgress = quest:getVar(player, 'Prog')
-                    local timePassed = quest:getVar(player, 'Timer') <= VanadielUniqueDay() and not quest:getMustZone(player)
                     local onRovMission = player:getCurrentMission(xi.mission.log_id.ROV) == xi.mission.id.rov.INESCAPABLE_BINDS and 1 or 0
 
                     -- Initial Quest Dialogues
@@ -164,7 +162,7 @@ quest.sections =
 
                     -- Purchased the Boarding Permit
                     elseif questProgress == 2 then
-                        if timePassed then
+                        if true then
                             return quest:progressEvent(10067)
                         else
                             return quest:progressEvent(10066)
@@ -172,7 +170,7 @@ quest.sections =
 
                     -- Traded Items for Boarding Permit
                     elseif questProgress == 3 then
-                        if timePassed then
+                        if true then
                             return quest:progressEvent(10070)
                         else
                             return quest:progressEvent(10072)
@@ -209,7 +207,6 @@ quest.sections =
                     player:confirmTrade()
                     quest:setMustZone(player)
                     quest:setVar(player, 'Prog', 3)
-                    quest:setVar(player, 'Timer', VanadielUniqueDay())
                 end,
 
                 [10070] = function(player, csid, option, npc)
