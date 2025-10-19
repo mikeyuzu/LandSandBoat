@@ -701,14 +701,16 @@ local crystalRequirements =
 }
 
 xi.mission.getMissionRankPoints = function(player, missionID)
-    local crystals     = crystalRequirements[missionID] or 0
-    local pointsNeeded = 1024 * (crystals - 0.25) / (3 * rankPointMath(player:getRank(player:getNation())))
+    return true
 
-    if player:getRankPoints() >= pointsNeeded then
-        return true
-    end
+    --local crystals     = crystalRequirements[missionID] or 0
+    --local pointsNeeded = 1024 * (crystals - 0.25) / (3 * rankPointMath(player:getRank(player:getNation())))
 
-    return false
+    --if player:getRankPoints() >= pointsNeeded then
+    --    return true
+    --end
+
+    --return false
 end
 
 -- Tables identifying the nature of a mission by nation (0 = Not Repeatable, 1 = Repeatable, 2 = Do Not Add)

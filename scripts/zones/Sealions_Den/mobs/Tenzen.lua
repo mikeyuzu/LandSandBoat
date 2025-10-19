@@ -175,7 +175,7 @@ entity.onMobFight = function(mob, target)
     -- Meikyo Shisui
     if
         mob:getAnimationSub() == 0 and
-        mob:getLocalVar('[Tenzen]LastWeaponskill') <= mob:getBattleTime() - 5 and
+        mob:getLocalVar('[Tenzen]LastWeaponskill') <= mob:getBattleTime() - 5 * 60 and
         mob:getLocalVar('[Tenzen]MeikyoActive') == 0 and
         mob:getLocalVar('[Tenzen]MeikyoUses') <= 1 and
         mob:getLocalVar('[Tenzen]MeikyoHPP') >= mobHPP

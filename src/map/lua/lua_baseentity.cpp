@@ -2533,9 +2533,17 @@ bool CLuaBaseEntity::sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 ho
     //     status = GUILD_HOLYDAY;
     // }
 
-    if ((VanadielHour < open) || (VanadielHour >= close))
+    if (settings::get<bool>("map.GUILD_SHOP_FULLTIME"))
     {
-        status = GUILD_CLOSE;
+        open  = 0;
+        close = 24;
+    }
+    else
+    {
+        if ((VanadielHour < open) || (VanadielHour >= close))
+        {
+            status = GUILD_CLOSE;
+        }
     }
 
     CItemContainer* PGuildShop = guildutils::GetGuildShop(guildID);
@@ -10791,7 +10799,10 @@ uint32 CLuaBaseEntity::canLearnSpell(uint16 spellID)
     }
     else if (!spell::CanUseSpell(PChar, static_cast<SpellID>(spellID)))
     {
-        Message = 95;
+        if (!settings::get<bool>("map.NO_LEVEL_CAN_LEARN_SPELL"))
+        {
+            Message = 95;
+        }
     }
 
     return Message;

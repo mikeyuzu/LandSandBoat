@@ -212,6 +212,12 @@ mission.sections =
                 [50] = function(player, csid, option, npc)
                     mission:setVar(player, 'Option', xi.cop.helpers.promyvionCrags.DEM)
                 end,
+                [51] = function(player, csid, option, npc)
+                    mission:setVar(player, 'Option', xi.cop.helpers.promyvionCrags.DEM)
+                end,
+                [52] = function(player, csid, option, npc)
+                    mission:setVar(player, 'Option', xi.cop.helpers.promyvionCrags.DEM)
+                end,
             },
         },
 
@@ -232,6 +238,12 @@ mission.sections =
                 [50] = function(player, csid, option, npc)
                     mission:setVar(player, 'Option', xi.cop.helpers.promyvionCrags.HOLLA)
                 end,
+                [51] = function(player, csid, option, npc)
+                    mission:setVar(player, 'Option', xi.cop.helpers.promyvionCrags.HOLLA)
+                end,
+                [52] = function(player, csid, option, npc)
+                    mission:setVar(player, 'Option', xi.cop.helpers.promyvionCrags.HOLLA)
+                end,
             },
         },
 
@@ -250,6 +262,12 @@ mission.sections =
             onEventFinish =
             {
                 [50] = function(player, csid, option, npc)
+                    mission:setVar(player, 'Option', xi.cop.helpers.promyvionCrags.MEA)
+                end,
+                [51] = function(player, csid, option, npc)
+                    mission:setVar(player, 'Option', xi.cop.helpers.promyvionCrags.MEA)
+                end,
+                [52] = function(player, csid, option, npc)
                     mission:setVar(player, 'Option', xi.cop.helpers.promyvionCrags.MEA)
                 end,
             },

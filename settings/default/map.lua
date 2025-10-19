@@ -344,6 +344,9 @@ xi.settings.map =
     -- 魔封門の札を受け取れるタイミングをそれぞれの正義クリア時に変更する
     AMULETTE_DE_PORTAIL_MISSION_TO_EACH_HIS_OWN_RIGHT = false,
 
+    -- ウィンダスミッション 試験の行方 報告受付開始時間（公式ヴァナ時間23時間後）
+    A_TESTING_TIME_report_start_time = 23,
+
     -- カスタムインベントリを有効にする
     CUSTOM_INVENTORY = false,
     -- カスタムインベントリのメッセージ：を合成倉庫に入れた
@@ -353,6 +356,18 @@ xi.settings.map =
 
     -- ヘイトがある状態でフェイスを呼び出せない
     DISABLE_TRUST_WHEN_ENMITY = true,
+
+    -- ギルドショップを24時間営業にする
+    GUILD_SHOP_FULLTIME = false,
+
+    -- レベル制限を無視してスペルを覚えられるようにする
+    NO_LEVEL_CAN_LEARN_SPELL = false,
+
+    -- 迷のアニマの効果時間
+    BOTTLE_OF_HYSTEROANIMA_DURATION = 40,
+
+    -- プロミヴォンのワープの仕様を100%にする
+    PROMYVION_WARP_100_PERCENT = false,
 
     -- フェイス詠唱中に攻撃を受けても中断しない
     UNINTERRUPTIBLE_TRUST_CASTING = false,
