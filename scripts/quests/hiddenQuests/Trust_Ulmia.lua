@@ -29,8 +29,10 @@ quest.sections =
                 xi.trust.hasPermit(player) and
                 not player:hasSpell(xi.magic.spell.ULMIA) and
                 -- On Dawn, but past "the boss"
-                (player:getCurrentMission(xi.mission.log_id.COP) > xi.mission.id.cop.DAWN and
-                xi.mission.getVar(player, xi.mission.log_id.COP, xi.mission.id.cop.DAWN, 'Status') >= 2)
+                ((player:getCurrentMission(xi.mission.log_id.COP) > xi.mission.id.cop.DAWN and
+                 xi.mission.getVar(player, xi.mission.log_id.COP, xi.mission.id.cop.DAWN, 'Status') >= 2) or
+                (player:getCurrentMission(xi.mission.log_id.COP) == xi.mission.id.cop.THE_LAST_VERSE and
+                 xi.mission.getVar(player, xi.mission.log_id.COP, xi.mission.id.cop.DAWN, 'Status') == 0))
                 -- TODO: Additional conditions
         end,
 
