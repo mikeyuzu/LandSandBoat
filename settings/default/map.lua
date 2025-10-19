@@ -365,4 +365,7 @@ xi.settings.map =
 
     -- 迷のアニマの効果時間
     BOTTLE_OF_HYSTEROANIMA_DURATION = 40,
+
+    -- プロミヴォンのワープの仕様を100%にする
+    PROMYVION_WARP_100_PERCENT = false,
 }
