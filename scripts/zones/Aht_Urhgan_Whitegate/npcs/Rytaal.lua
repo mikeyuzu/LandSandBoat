@@ -16,6 +16,11 @@ entity.onTrigger = function(player, npc)
         player:getMainLvl() <= 49
     then
         player:startEvent(270)
+    elseif
+        player:getCurrentMission(xi.mission.log_id.TOAU) >= xi.mission.id.toau.PRESIDENT_SALAHEEM and
+        player:getCharVar('ToAU3Progress') == 0
+    then
+        player:startEvent(269, { text_table = 0 })
     elseif currentAssault ~= 0 and player:getCharVar('assaultEntered') ~= 0 then
         if player:getCharVar('AssaultComplete') == 1 then
             player:messageText(player, ID.text.ASSAULT_COMPLETE)
@@ -137,6 +142,10 @@ entity.onEventFinish = function(player, csid, option, npc)
 
         npcUtil.giveKeyItem(player, xi.ki.IMPERIAL_ARMY_ID_TAG)
         player:delAssault(currentAssault)
+    elseif
+        csid == 269
+    then
+        player:setCharVar('ToAU3Progress', 1)
     end
 end
 
