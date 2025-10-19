@@ -353,4 +353,7 @@ xi.settings.map =
 
     -- ヘイトがある状態でフェイスを呼び出せない
     DISABLE_TRUST_WHEN_ENMITY = true,
+
+    -- フェイス詠唱中に攻撃を受けても中断しない
+    UNINTERRUPTIBLE_TRUST_CASTING = false,
 }
