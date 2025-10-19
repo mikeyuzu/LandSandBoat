@@ -48,7 +48,6 @@ quest.sections =
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_AVAILABLE and
                 player:hasCompletedQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.SHADOWS_OF_THE_DEPARTED) and
-                VanadielUniqueDay() >= vars.Timer and
                 not quest:getMustZone(player)
         end,
 
@@ -189,7 +188,6 @@ quest.sections =
             {
                 [10057] = function(player, csid, option, npc)
                     quest:setVar(player, 'Prog', 5)
-                    quest:setVar(player, 'Timer', VanadielUniqueDay())
                 end,
             },
         },
@@ -200,10 +198,9 @@ quest.sections =
             {
                 onTrigger = function(player, npc)
                     if
-                        quest:getVar(player, 'Prog') == 5 and
-                        quest:getVar(player, 'Timer') > VanadielUniqueDay()
+                        quest:getVar(player, 'Prog') == 5
                     then
-                        return quest:progressEvent(235)
+                        return quest:progressEvent(5)
                     end
                 end,
             },
@@ -211,17 +208,12 @@ quest.sections =
             ['Gilgamesh'] =
             {
                 onTrigger = function(player, npc)
-                    if
-                        VanadielUniqueDay() >= quest:getVar(player, 'Timer') and
-                        not quest:getMustZone(player)
-                    then
-                        local questProgress = quest:getVar(player, 'Prog')
+                    local questProgress = quest:getVar(player, 'Prog')
 
-                        if questProgress == 5 then
-                            return quest:progressEvent(232, 252, 6)
-                        elseif questProgress == 6 then
-                            return quest:progressEvent(234, 252)
-                        end
+                    if questProgress == 5 then
+                        return quest:progressEvent(232, 252, 6)
+                    elseif questProgress == 6 then
+                        return quest:progressEvent(234, 252)
                     end
                 end,
             },
