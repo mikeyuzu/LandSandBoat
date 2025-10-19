@@ -352,17 +352,23 @@ xi.promyvion.receptacleOnMobDespawn = function(mob)
     -- Handle portal: Open and choose new portal.
     local portal = GetNPCByID(receptacleInfoTable[zoneId][mobId][3]) -- Fetch mob's associated portal.
 
-    if portal and portal:getLocalVar('[Portal]Chosen') == 1 then
-        portal:openDoor(180)                    -- Open portal for 3 minutes.
-        portal:setLocalVar('[Portal]Chosen', 0) -- Reset.
+    if xi.settings.map.PROMYVION_WARP_100_PERCENT then
+        if portal then
+            portal:openDoor(180) -- Open portal for 3 minutes.
+        end
+    else
+        if portal and portal:getLocalVar('[Portal]Chosen') == 1 then
+            portal:openDoor(180)                    -- Open portal for 3 minutes.
+            portal:setLocalVar('[Portal]Chosen', 0) -- Reset.
 
-        -- Choose new portal.
-        local mobGroup   = receptacleInfoTable[zoneId][mobId][1]               -- Fetch group ID the mob belongs to.
-        local groupTable = portalGroupTable[zoneId][mobGroup]                  -- Fetch the whole group table.
-        local newPortal  = GetNPCByID(groupTable[math.random(1, #groupTable)]) -- Fetch NPC object from table, at random.
+            -- Choose new portal.
+            local mobGroup   = receptacleInfoTable[zoneId][mobId][1]               -- Fetch group ID the mob belongs to.
+            local groupTable = portalGroupTable[zoneId][mobGroup]                  -- Fetch the whole group table.
+            local newPortal  = GetNPCByID(groupTable[math.random(1, #groupTable)]) -- Fetch NPC object from table, at random.
 
-        if newPortal then
-            newPortal:setLocalVar('[Portal]Chosen', 1) -- Mark new portal.
+            if newPortal then
+                newPortal:setLocalVar('[Portal]Chosen', 1) -- Mark new portal.
+            end
         end
     end
 
