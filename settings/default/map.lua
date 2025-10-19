@@ -368,4 +368,7 @@ xi.settings.map =
 
     -- プロミヴォンのワープの仕様を100%にする
     PROMYVION_WARP_100_PERCENT = false,
+
+    -- フェイス詠唱中に攻撃を受けても中断しない
+    UNINTERRUPTIBLE_TRUST_CASTING = false,
 }

@@ -1764,8 +1764,9 @@ namespace battleutils
     bool TryInterruptSpell(CBattleEntity* PAttacker, CBattleEntity* PDefender, CSpell* PSpell)
     {
         // Exceptions.
-        if (PDefender->objtype == TYPE_TRUST ||                                   // Caster is a trust.
-            PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_MANAFONT) || // Caster has Manafont.
+        if ((PSpell->getSpellGroup() == SPELLGROUP_TRUST && settings::get<bool>("map.UNINTERRUPTIBLE_TRUST_CASTING")) || // Spell is a Trust spell.
+            PDefender->objtype == TYPE_TRUST ||                                                                          // Caster is a trust.
+            PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_MANAFONT) ||                                        // Caster has Manafont.
             (SKILLTYPE)PSpell->getSkillType() == SKILL_SINGING)                   // Spell is a song.
         {
             return false;
