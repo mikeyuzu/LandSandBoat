@@ -41,6 +41,8 @@
 #include "common/utils.h"
 #include "petentity.h"
 
+#include "packets/s2c/0x029_battle_message.h"
+
 CPetEntity::CPetEntity(PET_TYPE petType)
 : CMobEntity()
 , m_PetID(0)
@@ -373,7 +375,7 @@ bool CPetEntity::CanAttack(CBattleEntity* PTarget, std::unique_ptr<CBasicPacket>
         auto* PChar = dynamic_cast<CCharEntity*>(this->PMaster);
         if (PChar && !PChar->IsMobOwner(PTarget))
         {
-            errMsg = std::make_unique<CMessageBasicPacket>(this, PTarget, 0, 0, MSGBASIC_ALREADY_CLAIMED);
+            errMsg = std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(this, PTarget, 0, 0, MSGBASIC_ALREADY_CLAIMED);
             PAI->Disengage();
             return false;
         }
@@ -508,6 +510,7 @@ void CPetEntity::OnPetSkillFinished(CPetSkillState& state, action_t& action)
     PSkill->setTotalTargets(targets);
     PSkill->setPrimaryTargetID(PTarget->id);
     PSkill->setTP(state.GetSpentTP());
+    PSkill->setHP(health.hp);
     PSkill->setHPP(GetHPP());
 
     uint16 msg            = 0;
@@ -543,25 +546,23 @@ void CPetEntity::OnPetSkillFinished(CPetSkillState& state, action_t& action)
             damage = luautils::OnPetAbility(PTargetFound, this, PSkill, PMaster, &action);
         }
 
+        // primary target will have msg == 0
         if (msg == 0)
         {
-            if (PSkill->getMsg() == 185) // TODO: remove when we rip out the original SMN implementation, this is xi.msg.basic.DAMAGE (not in .h)
-            {
-                msg = defaultMessage;
-            }
-            else
-            {
-                msg = PSkill->getMsg();
-            }
+            msg = PSkill->getMsg();
         }
         else
         {
+            // convert to aoe message
             msg = PSkill->getAoEMsg();
         }
 
+        // damage was absorbed
         if (damage < 0)
         {
-            msg          = MSGBASIC_SKILL_RECOVERS_HP; // TODO: verify this message does/does not vary depending on mob/avatar/automaton use
+            // TODO: verify this message does/does not vary depending on mob/avatar/automaton use
+            //       furthermore, this likely needs to be PSkill->setMsg(MSGBASIC_SKILL_RECOVERS_HP) and happen before the above code
+            msg          = MSGBASIC_SKILL_RECOVERS_HP;
             target.param = std::clamp(-damage, 0, PTargetFound->GetMaxHP() - PTargetFound->health.hp);
         }
         else
@@ -575,10 +576,6 @@ void CPetEntity::OnPetSkillFinished(CPetSkillState& state, action_t& action)
         {
             target.reaction   = REACTION::MISS;
             target.speceffect = SPECEFFECT::NONE;
-            if (msg == PSkill->getAoEMsg())
-            {
-                msg = 282;
-            }
         }
         else
         {

@@ -11,6 +11,11 @@ end
 
 ---@nodiscard
 ---@return integer
+function CPetSkill:getMobHP()
+end
+
+---@nodiscard
+---@return integer
 function CPetSkill:getMobHPP()
 end
 
@@ -62,4 +67,9 @@ end
 ---@nodiscard
 ---@return integer
 function CPetSkill:getPrimaryTargetID()
+end
+
+---@param newAnimationSub integer
+---@return nil
+function CPetSkill:setFinalAnimationSub(newAnimationSub)
 end

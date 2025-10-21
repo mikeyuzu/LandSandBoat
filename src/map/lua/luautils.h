@@ -38,6 +38,7 @@ extern sol::state lua;
 
 #include "common/xi.h"
 
+#include "attack.h"
 #include "items/item_equipment.h"
 #include "spell.h"
 
@@ -210,7 +211,7 @@ namespace luautils
     void PopulateIDLookupsByFilename(std::optional<std::string> maybeFilename = std::nullopt);
     void PopulateIDLookupsByZone(std::optional<uint16> maybeZoneId = std::nullopt);
 
-    void SendEntityVisualPacket(uint32 npcid, const char* command);
+    void SendEntityVisualPacket(uint32 npcId, const char* command);
     void InitInteractionGlobal();
     auto GetZone(uint16 zoneId) -> CZone*;
     auto GetItemByID(uint32 itemId) -> CItem*;
@@ -269,6 +270,7 @@ namespace luautils
     uint8  VanadielMoonDirection();
     uint8  VanadielRSERace();
     uint8  VanadielRSELocation();
+    void   SetTimeOffset(int32 offset); // Manipulate earth time forward or backward by offset seconds. Affects Vana'Diel time.
     bool   IsMoonNew();
     bool   IsMoonFull();
     void   StartElevator(uint32 ElevatorID);
@@ -288,7 +290,7 @@ namespace luautils
 
     void OnGameDay(CZone* PZone);
     void OnGameHour(CZone* PZone);
-    void OnZoneWeatherChange(uint16 ZoneID, uint8 weather);
+    void OnZoneWeatherChange(uint16 zoneId, Weather weather);
     void OnTOTDChange(uint16 ZoneID, uint8 TOTD);
 
     void OnGameIn(CCharEntity* PChar, bool zoning);
@@ -301,7 +303,7 @@ namespace luautils
     void OnTriggerAreaEnter(CCharEntity* PChar, std::unique_ptr<ITriggerArea> const& PTriggerArea); // when player enters a trigger area in a zone
     void OnTriggerAreaLeave(CCharEntity* PChar, std::unique_ptr<ITriggerArea> const& PTriggerArea); // when player leaves a trigger area in a zone
 
-    void OnTransportEvent(CCharEntity* PChar, uint32 TransportID);
+    void OnTransportEvent(CCharEntity* PChar, uint16 prevZoneId, uint16 transportId);
     void OnTimeTrigger(CNpcEntity* PNpc, uint8 triggerID);
     void OnConquestUpdate(CZone* PZone, ConquestUpdate type, uint8 influence, uint8 owner, uint8 ranking, bool isConquestAlliance); // conquest update (hourly or tally)
 
@@ -327,7 +329,7 @@ namespace luautils
     void OnManeuverLose(CBattleEntity* PEntity, CItemPuppet* attachment, uint8 maneuvers);
     void OnUpdateAttachment(CBattleEntity* PEntity, CItemPuppet* attachment, uint8 maneuvers);
 
-    void OnItemUse(CBaseEntity* PUser, CBaseEntity* PTarget, CItem* PItem);
+    int32 OnItemUse(CBaseEntity* PUser, CBaseEntity* PTarget, CItem* PItem, action_t& action);
     auto OnItemCheck(CBaseEntity* PTarget, CItem* PItem, ITEMCHECK param = ITEMCHECK::NONE, CBaseEntity* PCaster = nullptr) -> std::tuple<int32, int32, int32>;
     void OnItemDrop(CBaseEntity* PUser, CItem* PItem);
     void OnItemEquip(CBaseEntity* PUser, CItem* PItem);
@@ -337,6 +339,7 @@ namespace luautils
     int32 OnMagicCastingCheck(CBaseEntity* PChar, CBaseEntity* PTarget, CSpell* PSpell);
     int32 OnSpellCast(CBattleEntity* PCaster, CBattleEntity* PTarget, CSpell* PSpell);
     void  OnSpellPrecast(CBattleEntity* PCaster, CSpell* PSpell);
+    void  OnSpellInterrupted(CBattleEntity* PCaster, CSpell* PSpell);
     auto  OnMobMagicPrepare(CBattleEntity* PCaster, CBattleEntity* PTarget, std::optional<SpellID> startingSpellId) -> std::optional<SpellID>;
     void  OnMagicHit(CBattleEntity* PCaster, CBattleEntity* PTarget, CSpell* PSpell);
     void  OnWeaponskillHit(CBattleEntity* PMob, CBaseEntity* PAttacker, uint16 PWeaponskill);
@@ -345,6 +348,7 @@ namespace luautils
     void OnMobInitialize(CBaseEntity* PMob);
     void ApplyMixins(CBaseEntity* PMob);
     void ApplyZoneMixins(CBaseEntity* PMob);
+    auto OnMobSpawnCheck(CBaseEntity* PMob) -> int32;
     void OnMobSpawn(CBaseEntity* PMob);
     void OnMobRoamAction(CBaseEntity* PMob); // triggers when event mob is ready for a custom roam action
     void OnMobRoam(CBaseEntity* PMob);
@@ -413,7 +417,6 @@ namespace luautils
 
     uint32 GetMobRespawnTime(uint32 mobid);
     void   DisallowRespawn(uint32 mobid, bool allowRespawn);
-    void   UpdateNMSpawnPoint(uint32 mobid);
 
     std::string GetServerMessage(uint8 language);               // Get the message to be delivered to player on first zone in of a session
     auto        GetRecentFishers(uint16 minutes) -> sol::table; // returns a list of recently active fishers (that fished in the last specified minutes)

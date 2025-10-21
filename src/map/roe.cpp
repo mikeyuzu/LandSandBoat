@@ -22,15 +22,17 @@
 #include "roe.h"
 
 #include "common/timer.h"
+#include "enums/chat_message_type.h"
 #include "lua/luautils.h"
-#include "packets/chat_message.h"
+#include "map_engine.h"
+#include "packets/s2c/0x017_chat_std.h"
+#include "packets/s2c/0x029_battle_message.h"
 #include "utils/charutils.h"
 #include "utils/zoneutils.h"
 
-#include "packets/char_spells.h"
-#include "packets/roe_questlog.h"
-#include "packets/roe_sparkupdate.h"
-#include "packets/roe_update.h"
+#include "packets/s2c/0x0aa_magic_data.h"
+#include "packets/s2c/0x111_roe_activelog.h"
+#include "packets/s2c/0x112_roe_log.h"
 
 #define ROE_CACHETIME 15s
 
@@ -254,7 +256,7 @@ namespace roeutils
 
         for (int i = 0; i < 4; i++)
         {
-            PChar->pushPacket<CRoeQuestLogPacket>(PChar, i);
+            PChar->pushPacket<GP_SERV_COMMAND_ROE_LOG>(PChar, i);
         }
 
         charutils::SaveEminenceData(PChar);
@@ -300,7 +302,7 @@ namespace roeutils
         if (!roeutils::RoeSystem.ImplementedRecords.test(recordID))
         {
             std::string message = "The record #" + std::to_string(recordID) + " is not implemented at this time.";
-            PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_NS_SAY, message, "RoE System");
+            PChar->pushPacket<GP_SERV_COMMAND_CHAT_STD>(PChar, MESSAGE_NS_SAY, message, "RoE System");
             return false;
         }
 
@@ -313,8 +315,8 @@ namespace roeutils
                 PChar->m_eminenceLog.active[i] = recordID;
                 PChar->m_eminenceCache.activemap.set(recordID);
 
-                PChar->pushPacket<CRoeUpdatePacket>(PChar);
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, recordID, 0, MSGBASIC_ROE_START);
+                PChar->pushPacket<GP_SERV_COMMAND_ROE_ACTIVELOG>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, recordID, 0, MSGBASIC_ROE_START);
                 charutils::SaveEminenceData(PChar);
                 return true;
             }
@@ -342,7 +344,7 @@ namespace roeutils
                     std::swap(PChar->m_eminenceLog.active[j], PChar->m_eminenceLog.active[j + 1]);
                     std::swap(PChar->m_eminenceLog.progress[j], PChar->m_eminenceLog.progress[j + 1]);
                 }
-                PChar->pushPacket<CRoeUpdatePacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_ROE_ACTIVELOG>(PChar);
                 charutils::SaveEminenceData(PChar);
                 return true;
             }
@@ -382,7 +384,7 @@ namespace roeutils
                 }
 
                 PChar->m_eminenceLog.progress[i] = progress;
-                PChar->pushPacket<CRoeUpdatePacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_ROE_ACTIVELOG>(PChar);
                 SaveEminenceDataNice(PChar);
                 return true;
             }
@@ -413,7 +415,7 @@ namespace roeutils
 
         if (sendUpdate)
         {
-            PChar->pushPacket<CCharSpellsPacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MAGIC_DATA>(PChar);
         }
     }
 
@@ -515,11 +517,11 @@ namespace roeutils
         auto timedRecordID              = GetActiveTimedRecord();
         PChar->m_eminenceLog.active[30] = timedRecordID;
         PChar->m_eminenceCache.activemap.set(timedRecordID);
-        PChar->pushPacket<CRoeUpdatePacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_ROE_ACTIVELOG>(PChar);
 
         if (timedRecordID)
         {
-            PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, timedRecordID, 0, MSGBASIC_ROE_TIMED);
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, timedRecordID, 0, MSGBASIC_ROE_TIMED);
             SetEminenceRecordCompletion(PChar, timedRecordID, false);
         }
     }
@@ -535,7 +537,7 @@ namespace roeutils
                 PChar->m_eminenceLog.progress[i] = 0;
             }
         }
-        PChar->pushPacket<CRoeUpdatePacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_ROE_ACTIVELOG>(PChar);
 
         // Set completion for daily records to 0
         for (auto record : RoeSystem.DailyRecordIDs)
@@ -557,7 +559,7 @@ namespace roeutils
 
         for (int i = 0; i < 4; i++)
         {
-            PChar->pushPacket<CRoeQuestLogPacket>(PChar, i);
+            PChar->pushPacket<GP_SERV_COMMAND_ROE_LOG>(PChar, i);
         }
     }
 
@@ -613,7 +615,7 @@ namespace roeutils
                 PChar->m_eminenceLog.progress[i] = 0;
             }
         }
-        PChar->pushPacket<CRoeUpdatePacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_ROE_ACTIVELOG>(PChar);
 
         // Set completion for daily records to 0
         for (auto record : RoeSystem.WeeklyRecordIDs)
@@ -636,7 +638,7 @@ namespace roeutils
 
         for (int i = 0; i < 4; i++)
         {
-            PChar->pushPacket<CRoeQuestLogPacket>(PChar, i);
+            PChar->pushPacket<GP_SERV_COMMAND_ROE_LOG>(PChar, i);
         }
     }
 
@@ -669,8 +671,8 @@ namespace roeutils
             return;
         }
 
-        const char* rankingQuery = "UPDATE unity_system SET members_prev = members_current, points_prev = points_current, members_current = 0, points_current = 0";
-        _sql->Query(rankingQuery);
+        db::preparedStmt("UPDATE unity_system "
+                         "SET members_prev = members_current, points_prev = points_current, members_current = 0, points_current = 0");
     }
 
     void UpdateUnityRankings()
@@ -682,36 +684,37 @@ namespace roeutils
             return;
         }
 
-        const char* memberQuery = "UPDATE unity_system JOIN (SELECT unity_leader, COUNT(*) AS members FROM char_profile GROUP BY unity_leader) TMP ON unity_system.leader = unity_leader SET unity_system.members_current = members";
-        _sql->Query(memberQuery);
+        db::preparedStmt("UPDATE unity_system "
+                         "JOIN (SELECT unity_leader, COUNT(*) AS members FROM char_profile GROUP BY unity_leader) "
+                         "TMP ON unity_system.leader = unity_leader "
+                         "SET unity_system.members_current = members");
 
-        const char* unityQuery = "SELECT leader, CASE WHEN members_prev = 0 THEN 0 ELSE FLOOR(points_prev/members_prev) END AS eval FROM unity_system ORDER BY eval DESC";
-        int32       ret        = _sql->Query(unityQuery);
+        const auto rset = db::preparedStmt("SELECT leader, "
+                                           "CASE WHEN members_prev = 0 THEN 0 ELSE FLOOR(points_prev/members_prev) END AS eval "
+                                           "FROM unity_system "
+                                           "ORDER BY eval DESC");
 
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        uint8 currentRank = 1;
+        uint8 rankGap     = 0;
+        int32 prev_eval   = 0;
+
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            uint8 currentRank = 1;
-            uint8 rankGap     = 0;
-            int32 prev_eval   = 0;
+            auto new_eval = rset->get<int32>("eval");
 
-            while (_sql->NextRow() == SQL_SUCCESS)
+            if (new_eval < prev_eval)
             {
-                int32 new_eval = _sql->GetIntData(1);
-
-                if (new_eval < prev_eval)
-                {
-                    currentRank = currentRank + rankGap;
-                    rankGap     = 1;
-                }
-                else
-                {
-                    rankGap++;
-                }
-
-                prev_eval = new_eval;
-
-                roeutils::RoeSystem.unityLeaderRank[_sql->GetIntData(0) - 1] = currentRank;
+                currentRank = currentRank + rankGap;
+                rankGap     = 1;
             }
+            else
+            {
+                rankGap++;
+            }
+
+            prev_eval = new_eval;
+
+            roeutils::RoeSystem.unityLeaderRank[rset->get<int>("leader") - 1] = currentRank;
         }
     }
 } // namespace roeutils

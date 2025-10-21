@@ -19,12 +19,10 @@
 ===========================================================================
 */
 
-#ifndef _CPARTY_H
-#define _CPARTY_H
+#pragma once
 
 #include "common/cbasetypes.h"
-#include "map_server.h"
-#include "packets/message_standard.h"
+#include "packets/s2c/0x009_message.h"
 
 #include <vector>
 
@@ -129,5 +127,3 @@ private:
     std::vector<partyInfo_t> GetPartyInfo() const;
     void                     RefreshFlags(std::vector<partyInfo_t>&);
 };
-
-#endif

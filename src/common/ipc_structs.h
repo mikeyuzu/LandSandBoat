@@ -25,9 +25,9 @@
 
 #include "common/regional_event.h"
 
-#include "map/packets/chat_message.h"
-#include "map/packets/message_standard.h"
-#include "map/packets/party_invite.h"
+#include "map/enums/chat_message_type.h"
+#include "map/enums/msg_std.h"
+#include "map/enums/party_kind.h"
 
 #include <string>
 #include <vector>
@@ -38,10 +38,9 @@ namespace ipc
     {
     };
 
-    struct CharLogin
+    struct AccountLogin
     {
         uint32 accountId{};
-        uint32 charId{};
     };
 
     struct CharZone
@@ -158,7 +157,7 @@ namespace ipc
         uint32      inviterId{};
         uint16      inviterTargId{};
         std::string inviterName{};
-        INVITETYPE  inviteType{};
+        PartyKind   inviteType{};
     };
 
     struct PartyInviteResponse

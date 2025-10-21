@@ -34,7 +34,6 @@
 #include "zoneutils.h"
 
 #include "grades.h"
-#include "map_server.h"
 #include "mob_modifier.h"
 #include "mob_spell_list.h"
 
@@ -47,7 +46,7 @@
 #include "mobskill.h"
 #include "packets/char_sync.h"
 #include "packets/entity_update.h"
-#include "packets/message_standard.h"
+#include "packets/s2c/0x009_message.h"
 #include "status_effect_container.h"
 #include "weapon_skill.h"
 #include "zone_instance.h"
@@ -62,71 +61,80 @@ void LoadTrustStatsAndSkills(CTrustEntity* PTrust);
 
 struct TrustData
 {
-    uint32      trustID;
-    uint32      pool;
+    uint32      trustID{};
+    uint32      pool{};
     look_t      look;        // appearance data
     std::string name;        // script name string
     std::string packet_name; // packet name string
-    ECOSYSTEM   EcoSystem;   // ecosystem
+    ECOSYSTEM   EcoSystem{}; // ecosystem
 
-    uint8  name_prefix;
-    uint8  radius; // Model Radius - affects melee range etc.
-    uint16 m_Family;
+    uint8  name_prefix{};
+    uint8  radius{}; // Model Radius - affects melee range etc.
+    uint16 m_Family{};
 
-    uint8 mJob;
-    uint8 sJob;
-    float HPscale; // HP boost percentage
-    float MPscale; // MP boost percentage
+    uint8 mJob{};
+    uint8 sJob{};
+    float HPscale{}; // HP boost percentage
+    float MPscale{}; // MP boost percentage
 
-    uint8  cmbSkill;
-    uint16 cmbDmgMult;
-    uint16 cmbDelay;
-    uint8  baseSpeed;
-    uint8  animationSpeed;
+    uint8  cmbSkill{};
+    uint16 cmbDmgMult{};
+    uint16 cmbDelay{};
+    uint8  baseSpeed{};
+    uint8  animationSpeed{};
 
     // stat ranks
-    uint8 strRank;
-    uint8 dexRank;
-    uint8 vitRank;
-    uint8 agiRank;
-    uint8 intRank;
-    uint8 mndRank;
-    uint8 chrRank;
-    uint8 attRank;
-    uint8 defRank;
-    uint8 evaRank;
-    uint8 accRank;
+    uint8 strRank{};
+    uint8 dexRank{};
+    uint8 vitRank{};
+    uint8 agiRank{};
+    uint8 intRank{};
+    uint8 mndRank{};
+    uint8 chrRank{};
+    uint8 attRank{};
+    uint8 defRank{};
+    uint8 evaRank{};
+    uint8 accRank{};
 
-    uint16 m_MobSkillList;
+    uint16 m_MobSkillList{};
 
     // magic stuff
-    uint16 spellList;
+    uint16 spellList{};
 
     // resists
-    int16 slash_sdt;
-    int16 pierce_sdt;
-    int16 hth_sdt;
-    int16 impact_sdt;
+    int16 slash_sdt{};
+    int16 pierce_sdt{};
+    int16 hth_sdt{};
+    int16 impact_sdt{};
 
-    int16 magical_sdt;
+    int16 magical_sdt{};
 
-    int16 fire_sdt;
-    int16 ice_sdt;
-    int16 wind_sdt;
-    int16 earth_sdt;
-    int16 thunder_sdt;
-    int16 water_sdt;
-    int16 light_sdt;
-    int16 dark_sdt;
+    int16 fire_sdt{};
+    int16 ice_sdt{};
+    int16 wind_sdt{};
+    int16 earth_sdt{};
+    int16 thunder_sdt{};
+    int16 water_sdt{};
+    int16 light_sdt{};
+    int16 dark_sdt{};
 
-    int8 fire_res_rank;
-    int8 ice_res_rank;
-    int8 wind_res_rank;
-    int8 earth_res_rank;
-    int8 thunder_res_rank;
-    int8 water_res_rank;
-    int8 light_res_rank;
-    int8 dark_res_rank;
+    int8 fire_res_rank{};
+    int8 ice_res_rank{};
+    int8 wind_res_rank{};
+    int8 earth_res_rank{};
+    int8 thunder_res_rank{};
+    int8 water_res_rank{};
+    int8 light_res_rank{};
+    int8 dark_res_rank{};
+
+    int8 paralyze_res_rank{};
+    int8 bind_res_rank{};
+    int8 silence_res_rank{};
+    int8 slow_res_rank{};
+    int8 poison_res_rank{};
+    int8 light_sleep_res_rank{};
+    int8 dark_sleep_res_rank{};
+    int8 blind_res_rank{};
 };
 
 std::unordered_map<uint16, std::unique_ptr<TrustData>> g_PTrustData;
@@ -226,7 +234,11 @@ void BuildTrustData(uint32 TrustID)
                                        "mob_resistances.fire_res_rank, mob_resistances.ice_res_rank, "
                                        "mob_resistances.wind_res_rank, mob_resistances.earth_res_rank, "
                                        "mob_resistances.lightning_res_rank, mob_resistances.water_res_rank, "
-                                       "mob_resistances.light_res_rank, mob_resistances.dark_res_rank "
+                                       "mob_resistances.light_res_rank, mob_resistances.dark_res_rank, "
+                                       "mob_resistances.paralyze_res_rank, mob_resistances.bind_res_rank, "
+                                       "mob_resistances.silence_res_rank, mob_resistances.slow_res_rank, "
+                                       "mob_resistances.poison_res_rank, mob_resistances.light_sleep_res_rank, "
+                                       "mob_resistances.dark_sleep_res_rank, mob_resistances.blind_res_rank "
                                        "FROM spell_list, mob_pools, mob_family_system, mob_resistances "
                                        "WHERE spell_list.spellid = ? "
                                        "AND (spell_list.spellid + 5000) = mob_pools.poolid "
@@ -262,7 +274,7 @@ void BuildTrustData(uint32 TrustID)
             data->m_MobSkillList = rset->get<uint16>("skill_list_id");
 
             data->radius    = rset->get<uint8>("mobradius");
-            data->EcoSystem = static_cast<ECOSYSTEM>(rset->get<uint8>("ecosystemID"));
+            data->EcoSystem = rset->get<ECOSYSTEM>("ecosystemID");
             data->HPscale   = rset->get<float>("HP");
             data->MPscale   = rset->get<float>("MP");
 
@@ -306,6 +318,15 @@ void BuildTrustData(uint32 TrustID)
             data->water_res_rank   = rset->get<int8>("water_res_rank");
             data->light_res_rank   = rset->get<int8>("light_res_rank");
             data->dark_res_rank    = rset->get<int8>("dark_res_rank");
+
+            data->paralyze_res_rank    = rset->get<int8>("paralyze_res_rank");
+            data->bind_res_rank        = rset->get<int8>("bind_res_rank");
+            data->silence_res_rank     = rset->get<int8>("silence_res_rank");
+            data->slow_res_rank        = rset->get<int8>("slow_res_rank");
+            data->poison_res_rank      = rset->get<int8>("poison_res_rank");
+            data->light_sleep_res_rank = rset->get<int8>("light_sleep_res_rank");
+            data->dark_sleep_res_rank  = rset->get<int8>("dark_sleep_res_rank");
+            data->blind_res_rank       = rset->get<int8>("blind_res_rank");
 
             g_PTrustData[TrustID] = std::move(data);
         }
