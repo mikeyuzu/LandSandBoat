@@ -26,7 +26,6 @@ mission.sections =
             {
                 onTrigger = function(player, npc)
                     if
-                        not mission:getMustZone(player) and
                         VanadielUniqueDay() >= mission:getVar(player, 'Timer')
                     then
                         return mission:progressEvent(3110)
