@@ -20,8 +20,7 @@ mission.sections =
     {
         check = function(player, currentMission, missionStatus, vars)
             return currentMission == mission.missionId and
-                not mission:getMustZone(player) and
-                VanadielUniqueDay() >= mission:getVar(player, 'Timer')
+                not mission:getMustZone(player)
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
