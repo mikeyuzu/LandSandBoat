@@ -32,6 +32,7 @@
 #include "ai/states/death_state.h"
 #include "entities/charentity.h"
 #include "item_container.h"
+#include "items/item_linkshell.h"
 #include "status_effect_container.h"
 #include "utils/itemutils.h"
 #include "utils/mountutils.h"
@@ -279,7 +280,7 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
 
     flags1.Speed        = PChar->UpdateSpeed();
     flags1.Hackmove     = PChar->wallhackEnabled; // GM wallhack, walk through walls
-    flags1.FreezeFlag   = 0;                      // Freeze client in place. Is this used?
+    flags1.FreezeFlag   = PChar->isFrozenFlagged; // Freezes player in place, making them unable to move. Used when opening treasure chests, for instance.
     flags1.unknown_1_14 = 0;                      // Unknown.
     flags1.InvisFlag    = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffectByFlag(EFFECTFLAG_INVISIBLE);
     flags1.unknown_2_16 = 0; // Unknown.

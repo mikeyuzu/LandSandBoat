@@ -11,3466 +11,3074 @@ xi.casket_loot.casketItems =
 {
     [xi.zone.WEST_RONFAURE] =
     {
-        regionalItems = { 15834 }, -- Blind Ring
+        regionalItems = { xi.item.BLIND_RING }, -- ブラインリング
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  750, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  660, 4300 }, -- Apple Au Lait
-            {  250, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  750 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  660 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  250 }, -- アップルジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1700,   505 }, -- 大羊の毛皮
-            { 4500,   640 }, -- 銅鉱
-            { 2500,   641 }, -- スズ石
-            { 3450,   642 }, -- 亜鉛鉱
-            { 2000,   688 }, -- アローウッド原木
-            { 1020,   698 }, -- アッシュ原木
-            { 4200,   656 }, -- 獣人貨
-            { 5000,   768 }, -- 火打石
-            { 1250,   818 }, -- 木綿糸
-            { 1300,   833 }, -- モコ草
-            {  800,   840 }, -- チョコボの羽根
-            { 3600,   846 }, -- 虫の翅
-            { 3000,   912 }, -- 蜂の巣のかけら
-            {  700,   943 }, -- 毒素
-            { 2400,  1214 }, -- 石の矢尻 x33
-            { 3590,  4148 }, -- 毒消し
-            { 1150,  4150 }, -- 目薬
-            { 1360,  4151 }, -- やまびこ薬
-            { 2900,  4370 }, -- 蜂蜜
-            {  600, 12290 }, -- メープルシールド
-            {  495, 12440 }, -- レザーバンダナ
-            {  450, 12449 }, -- ブラスキャップ
-            {  190, 12456 }, -- 鉢巻
-            {  530, 12608 }, -- チュニック
-            {  460, 12696 }, -- レザーグローブ
-            {  340, 12705 }, -- ブラスミトン
-            {  168, 12712 }, -- 手甲
-            {  310, 12736 }, -- ミトン
-            {  475, 12824 }, -- レザートラウザ
-            {  280, 12833 }, -- ブラスサブリガ
-            {  235, 12840 }, -- 下ばき
-            {  422, 12864 }, -- ズボン
-            {  250, 12961 }, -- ブラスレギンス
-            {  287, 12992 }, -- ソレア
-            {  500, 13081 }, -- レザーゴルゲット
-            {  300, 16407 }, -- ブラスバグナウ
-            {  120, 16530 }, -- サイフォス
-            {  320, 17050 }, -- ウィローワンド
-        }
+            { itemId = xi.item.SHEEPSKIN,                   weight = 1700 }, -- 大羊の毛皮
+            { itemId = xi.item.CHUNK_OF_COPPER_ORE,         weight = 4500 }, -- 銅鉱
+            { itemId = xi.item.CHUNK_OF_TIN_ORE,            weight = 2500 }, -- スズ石
+            { itemId = xi.item.CHUNK_OF_ZINC_ORE,           weight = 3450 }, -- 亜鉛鉱
+            { itemId = xi.item.ARROWWOOD_LOG,               weight = 2000 }, -- アローウッド原木
+            { itemId = xi.item.ASH_LOG,                     weight = 1020 }, -- アッシュ原木
+            { itemId = xi.item.BEASTCOIN,                   weight = 4200 }, -- 獣人貨
+            { itemId = xi.item.FLINT_STONE,                 weight = 5000 }, -- 火打石
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,      weight = 1250 }, -- 木綿糸
+            { itemId = xi.item.CLUMP_OF_MOKO_GRASS,         weight = 1300 }, -- モコ草
+            { itemId = xi.item.CHOCOBO_FEATHER,             weight =  800 }, -- チョコボの羽根
+            { itemId = xi.item.INSECT_WING,                 weight = 3600 }, -- 虫の翅
+            { itemId = xi.item.BEEHIVE_CHIP,                weight = 3000 }, -- 蜂の巣のかけら
+            { itemId = xi.item.PINCH_OF_POISON_DUST,        weight =  700 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_STONE_ARROWHEADS, weight = 2400 }, -- 石の矢尻 x33
+            { itemId = xi.item.ANTIDOTE,                    weight = 3590 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,          weight = 1150 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,         weight = 1360 }, -- やまびこ薬
+            { itemId = xi.item.POT_OF_HONEY,                weight = 2900 }, -- 蜂蜜
+            { itemId = xi.item.MAPLE_SHIELD,                weight =  600 }, -- メープルシールド
+            { itemId = xi.item.LEATHER_BANDANA,             weight =  495 }, -- レザーバンダナ
+            { itemId = xi.item.BRASS_CAP,                   weight =  450 }, -- ブラスキャップ
+            { itemId = xi.item.HACHIMAKI,                   weight =  190 }, -- 鉢巻
+            { itemId = xi.item.TUNIC,                       weight =  530 }, -- チュニック
+            { itemId = xi.item.LEATHER_GLOVES,              weight =  460 }, -- レザーグローブ
+            { itemId = xi.item.BRASS_MITTENS,               weight =  340 }, -- ブラスミトン
+            { itemId = xi.item.TEKKO,                       weight =  168 }, -- 手甲
+            { itemId = xi.item.MITTS,                       weight =  310 }, -- ミトン
+            { itemId = xi.item.LEATHER_TROUSERS,            weight =  475 }, -- レザートラウザ
+            { itemId = xi.item.BRASS_SUBLIGAR,              weight =  280 }, -- ブラスサブリガ
+            { itemId = xi.item.SITABAKI,                    weight =  235 }, -- 下ばき
+            { itemId = xi.item.SLACKS,                      weight =  422 }, -- ズボン
+            { itemId = xi.item.BRASS_LEGGINGS,              weight =  250 }, -- ブラスレギンス
+            { itemId = xi.item.SOLEA,                       weight =  287 }, -- ソレア
+            { itemId = xi.item.LEATHER_GORGET,              weight =  500 }, -- レザーゴルゲット
+            { itemId = xi.item.BRASS_BAGHNAKHS,             weight =  300 }, -- ブラスバグナウ
+            { itemId = xi.item.XIPHOS,                      weight =  120 }, -- サイフォス
+            { itemId = xi.item.WILLOW_WAND,                 weight =  320 }, -- ウィローワンド
+        },
     },
     [xi.zone.EAST_RONFAURE] =
     {
-        regionalItems = { 19157 }, -- Surviver
+        regionalItems = { xi.item.SURVIVER }, -- サバイバー
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  750, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  660, 4300 }, -- Apple Au Lait
-            {  250, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  750 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  660 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  250 }, -- アップルジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1700,   505 }, -- 大羊の毛皮
-            { 4500,   640 }, -- 銅鉱
-            { 2500,   641 }, -- スズ石
-            { 3450,   642 }, -- 亜鉛鉱
-            { 2000,   688 }, -- アローウッド原木
-            { 1020,   698 }, -- アッシュ原木
-            { 4200,   656 }, -- 獣人貨
-            { 5000,   768 }, -- 火打石
-            { 1250,   818 }, -- 木綿糸
-            { 1300,   833 }, -- モコ草
-            {  800,   840 }, -- チョコボの羽根
-            { 3600,   846 }, -- 虫の翅
-            { 3000,   912 }, -- 蜂の巣のかけら
-            {  700,   943 }, -- 毒素
-            { 2400,  1214 }, -- 石の矢尻 x33
-            { 3590,  4148 }, -- 毒消し
-            { 1150,  4150 }, -- 目薬
-            { 1360,  4151 }, -- やまびこ薬
-            { 2900,  4370 }, -- 蜂蜜
-            {  600, 12290 }, -- メープルシールド
-            {  495, 12440 }, -- レザーバンダナ
-            {  450, 12449 }, -- ブラスキャップ
-            {  190, 12456 }, -- 鉢巻
-            {  530, 12608 }, -- チュニック
-            {  460, 12696 }, -- レザーグローブ
-            {  340, 12705 }, -- ブラスミトン
-            {  168, 12712 }, -- 手甲
-            {  310, 12736 }, -- ミトン
-            {  475, 12824 }, -- レザートラウザ
-            {  280, 12833 }, -- ブラスサブリガ
-            {  235, 12840 }, -- 下ばき
-            {  422, 12864 }, -- ズボン
-            {  250, 12961 }, -- ブラスレギンス
-            {  287, 12992 }, -- ソレア
-            {  500, 13081 }, -- レザーゴルゲット
-            {  300, 16407 }, -- ブラスバグナウ
-            {  120, 16530 }, -- サイフォス
-            {  320, 17050 }, -- ウィローワンド
-        }
+            { itemId = xi.item.SHEEPSKIN,                   weight = 1700 }, -- 大羊の毛皮
+            { itemId = xi.item.CHUNK_OF_COPPER_ORE,         weight = 4500 }, -- 銅鉱
+            { itemId = xi.item.CHUNK_OF_TIN_ORE,            weight = 2500 }, -- スズ石
+            { itemId = xi.item.CHUNK_OF_ZINC_ORE,           weight = 3450 }, -- 亜鉛鉱
+            { itemId = xi.item.ARROWWOOD_LOG,               weight = 2000 }, -- アローウッド原木
+            { itemId = xi.item.ASH_LOG,                     weight = 1020 }, -- アッシュ原木
+            { itemId = xi.item.BEASTCOIN,                   weight = 4200 }, -- 獣人貨
+            { itemId = xi.item.FLINT_STONE,                 weight = 5000 }, -- 火打石
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,      weight = 1250 }, -- 木綿糸
+            { itemId = xi.item.CLUMP_OF_MOKO_GRASS,         weight = 1300 }, -- モコ草
+            { itemId = xi.item.CHOCOBO_FEATHER,             weight =  800 }, -- チョコボの羽根
+            { itemId = xi.item.INSECT_WING,                 weight = 3600 }, -- 虫の翅
+            { itemId = xi.item.BEEHIVE_CHIP,                weight = 3000 }, -- 蜂の巣のかけら
+            { itemId = xi.item.PINCH_OF_POISON_DUST,        weight =  700 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_STONE_ARROWHEADS, weight = 2400 }, -- 石の矢尻 x33
+            { itemId = xi.item.ANTIDOTE,                    weight = 3590 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,          weight = 1150 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,         weight = 1360 }, -- やまびこ薬
+            { itemId = xi.item.POT_OF_HONEY,                weight = 2900 }, -- 蜂蜜
+            { itemId = xi.item.MAPLE_SHIELD,                weight =  600 }, -- メープルシールド
+            { itemId = xi.item.LEATHER_BANDANA,             weight =  495 }, -- レザーバンダナ
+            { itemId = xi.item.BRASS_CAP,                   weight =  450 }, -- ブラスキャップ
+            { itemId = xi.item.HACHIMAKI,                   weight =  190 }, -- 鉢巻
+            { itemId = xi.item.TUNIC,                       weight =  530 }, -- チュニック
+            { itemId = xi.item.LEATHER_GLOVES,              weight =  460 }, -- レザーグローブ
+            { itemId = xi.item.BRASS_MITTENS,               weight =  340 }, -- ブラスミトン
+            { itemId = xi.item.TEKKO,                       weight =  168 }, -- 手甲
+            { itemId = xi.item.MITTS,                       weight =  310 }, -- ミトン
+            { itemId = xi.item.LEATHER_TROUSERS,            weight =  475 }, -- レザートラウザ
+            { itemId = xi.item.BRASS_SUBLIGAR,              weight =  280 }, -- ブラスサブリガ
+            { itemId = xi.item.SITABAKI,                    weight =  235 }, -- 下ばき
+            { itemId = xi.item.SLACKS,                      weight =  422 }, -- ズボン
+            { itemId = xi.item.BRASS_LEGGINGS,              weight =  250 }, -- ブラスレギンス
+            { itemId = xi.item.SOLEA,                       weight =  287 }, -- ソレア
+            { itemId = xi.item.LEATHER_GORGET,              weight =  500 }, -- レザーゴルゲット
+            { itemId = xi.item.BRASS_BAGHNAKHS,             weight =  300 }, -- ブラスバグナウ
+            { itemId = xi.item.XIPHOS,                      weight =  120 }, -- サイフォス
+            { itemId = xi.item.WILLOW_WAND,                 weight =  320 }, -- ウィローワンド
+        },
     },
     [xi.zone.LA_THEINE_PLATEAU] =
     {
-        regionalItems = { 15835 }, -- Desperado Ring
+        regionalItems = { xi.item.DESPERADO_RING }, -- デスペラードリング
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  750, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  240, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  750 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  240 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1700,   626 }, -- Black Pepper
-            { 2500,   641 }, -- スズ石
-            { 2000,   688 }, -- アローウッド原木
-            { 1020,   727 }, -- Dogwood Log
-            { 4200,   750 }, -- Silver Beastcoin
-            { 5000,   768 }, -- 火打石
-            { 3600,   846 }, -- 虫の翅
-            { 1300,   893 }, -- Giant Femur
-            { 3000,   912 }, -- 蜂の巣のかけら
-            { 1400,   925 }, -- Giant Stinger
-            { 4300,   953 }, -- Treant Bulb
-            { 2200,  1215 }, -- Handful of Bone Arrowheads x33
-            { 4000,  1845 }, -- Red Moko Grass
-            {  595,  4148 }, -- 毒消し
-            { 1150,  4151 }, -- やまびこ薬
-            { 2100,  4227 }, -- Bronze Bolt Quiver
-            { 2060,  4509 }, -- Distilled Water
-            {  425, 12432 }, -- Faceguard
-            {  760, 12449 }, -- ブラスキャップ
-            {  590, 12473 }, -- Poet's Circlet
-            {  630, 12601 }, -- Linen Robe
-            {  765, 12705 }, -- ブラスミトン
-            {  465, 12710 }, -- Bone Mittens
-            {  460, 12720 }, -- Gloves
-            {  430, 12729 }, -- Linen Cuffs
-            {  275, 12816 }, -- Scale Cuisses
-            {  730, 12834 }, -- Bone Subligar
-            {  600, 12848 }, -- Brais
-            {  535, 12688 }, -- Scale Finger Gauntlets
-            {  375, 12857 }, -- Linen Slops
-            {  410, 12966 }, -- Bone Leggings
-            {  655, 12976 }, -- Gaiters
-            {  425, 12985 }, -- Holly Clogs
-            {  390, 16466 }, -- Knife
-            {  370, 16531 }, -- Brass Xiphos
-            {  380, 17096 }, -- Holly Pole
-            { 2320, 17316 }, -- Bomb Arm
-        }
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,      weight = 1700 }, -- ブラックペッパー
+            { itemId = xi.item.CHUNK_OF_TIN_ORE,           weight = 2500 }, -- スズ石
+            { itemId = xi.item.ARROWWOOD_LOG,              weight = 2000 }, -- アローウッド原木
+            { itemId = xi.item.DOGWOOD_LOG,                weight = 1020 }, -- ドッグウッド原木
+            { itemId = xi.item.SILVER_BEASTCOIN,           weight = 4200 }, -- 獣人銀貨
+            { itemId = xi.item.FLINT_STONE,                weight = 5000 }, -- 火打石
+            { itemId = xi.item.INSECT_WING,                weight = 3600 }, -- 虫の翅
+            { itemId = xi.item.GIANT_FEMUR,                weight = 1300 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,               weight = 3000 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,              weight = 1400 }, -- 蜂の一刺し
+            { itemId = xi.item.TREANT_BULB,                weight = 4300 }, -- トレントの球根
+            { itemId = xi.item.HANDFUL_OF_BONE_ARROWHEADS, weight = 2200 }, -- 骨の矢 x 33
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS,    weight = 4000 }, -- 赤モコ草
+            { itemId = xi.item.ANTIDOTE,                   weight =  595 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,        weight = 1150 }, -- やまびこ薬
+            { itemId = xi.item.BRONZE_BOLT_QUIVER,         weight = 2100 }, -- ブロンズボルト x33
+            { itemId = xi.item.FLASK_OF_DISTILLED_WATER,   weight = 2060 }, -- 蒸留水
+            { itemId = xi.item.FACEGUARD,                  weight =  425 }, -- フェイスガード
+            { itemId = xi.item.BRASS_CAP,                  weight =  760 }, -- ブラスキャップ
+            { itemId = xi.item.POETS_CIRCLET,              weight =  590 }, -- 詩人のサークレット
+            { itemId = xi.item.LINEN_ROBE,                 weight =  630 }, -- リネンローブ
+            { itemId = xi.item.BRASS_MITTENS,              weight =  765 }, -- ブラスミトン
+            { itemId = xi.item.BONE_MITTENS,               weight =  465 }, -- ボーンミトン
+            { itemId = xi.item.GLOVES,                     weight =  460 }, -- グローブ
+            { itemId = xi.item.LINEN_CUFFS,                weight =  430 }, -- リネンカフス
+            { itemId = xi.item.SCALE_CUISSES,              weight =  275 }, -- スケイルクウィス
+            { itemId = xi.item.BONE_SUBLIGAR,              weight =  730 }, -- ボーンサブリガ
+            { itemId = xi.item.BRAIS,                      weight =  600 }, -- ブレー
+            { itemId = xi.item.SCALE_FINGER_GAUNTLETS,     weight =  535 }, -- スケイルフィンガー
+            { itemId = xi.item.LINEN_SLOPS,                weight =  375 }, -- リネンスロップス
+            { itemId = xi.item.BONE_LEGGINGS,              weight =  410 }, -- ボーンレギンス
+            { itemId = xi.item.GAITERS,                    weight =  655 }, -- ゲートル
+            { itemId = xi.item.HOLLY_CLOGS,                weight =  425 }, -- ホーリークロッグ
+            { itemId = xi.item.KNIFE,                      weight =  390 }, -- ナイフ
+            { itemId = xi.item.BRASS_XIPHOS,               weight =  370 }, -- ブラスサイフォス
+            { itemId = xi.item.HOLLY_POLE,                 weight =  380 }, -- ホーリーポール
+            { itemId = xi.item.BOMB_ARM,                   weight = 2320 }, -- ボムのうで
+        },
     },
     [xi.zone.VALKURM_DUNES] =
     {
-        regionalItems = { 16367 }, -- Phlegethon's Trousers
+        regionalItems = { xi.item.PHLEGETHONS_TROUSERS }, -- プレゲトントラウザ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  450, 4202 }, -- Daedalus Wing
-            {  310, 4206 }, -- Catholicon
-            {  240, 4301 }, -- Pear Au Lait
-            {  660, 4425 }, -- Tomato Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  450 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,   weight =  310 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PEAR_AU_LAIT,  weight =  240 }, -- ペア・オレ
+            { itemId = xi.item.BOTTLE_OF_TOMATO_JUICE, weight =  660 }, -- トマトジュース
         },
         items =
         {
-            -----------------------------------
-            -- { weight, itemId }
-            -----------------------------------
-            { 4600,   642 }, -- 亜鉛鉱
-            { 1250,   689 }, -- Lauan Log
-            {  600,   693 }, -- Walnut Log
-            { 3250,   736 }, -- Silver Ore
-            { 2900,   835 }, -- Flax Flower
-            { 4800,   847 }, -- Bird Feather
-            { 1600,   898 }, -- Chicken Bone
-            { 2020,   914 }, -- Mercury
-            { 5000,   936 }, -- Rock Salt
-            {  540,   947 }, -- Firesand
-            { 3540,  1108 }, -- Sulfur
-            { 4750,  1211 }, -- Handful of Bronze Bolt Heads x33
-            {  575,  4148 }, -- 毒消し
-            { 3150,  4151 }, -- やまびこ薬
-            { 1010,  4373 }, -- Woozyshroom
-            {  200, 16643 }, -- Battleaxe
-            {  520, 12455 }, -- Beetle Mask
-            {  240, 12583 }, -- Beetle Harness
-            {  680, 12711 }, -- Beetle Mittens
-            { 1200, 12835 }, -- Beetle Subligar
-            {  990, 12967 }, -- Beetle Leggings
-            {  880, 12865 }, -- Black Slacks
-            { 1530, 12966 }, -- Bone Leggings
-            { 1760, 12454 }, -- Bone Mask
-            { 1900, 12710 }, -- Bone Mittens
-            { 1870, 12834 }, -- Bone Subligar
-            {  310, 13584 }, -- Cotton Cape
-            {  595, 13588 }, -- Dhalmel Mantle
-            { 1580, 12985 }, -- Holly Clogs
-            {  275, 16473 }, -- Kukri
-            { 1680, 12729 }, -- Linen Cuffs
-            { 1460, 12857 }, -- Linen Slops
-            { 2620, 12697 }, -- Lizard Gloves
-            {  645, 12441 }, -- Lizard Helm
-            {  835, 12953 }, -- Lizard Ledelsens
-            {  610, 12825 }, -- Lizard Trousers
-            {  455, 12473 }, -- Poet's Circlet
-            {  745, 12993 }, -- Sandals
-            { 2165, 12737 }, -- White Mitts
-        }
+            { itemId = xi.item.CHUNK_OF_ZINC_ORE,            weight = 4600 }, -- 亜鉛鉱
+            { itemId = xi.item.LAUAN_LOG,                    weight = 1250 }, -- ラワン原木
+            { itemId = xi.item.WALNUT_LOG,                   weight =  600 }, -- ウォルナット原木
+            { itemId = xi.item.CHUNK_OF_SILVER_ORE,          weight = 3250 }, -- 銀鉱
+            { itemId = xi.item.FLAX_FLOWER,                  weight = 2900 }, -- 亜麻
+            { itemId = xi.item.BIRD_FEATHER,                 weight = 4800 }, -- 鳥の羽根
+            { itemId = xi.item.CHICKEN_BONE,                 weight = 1600 }, -- がら
+            { itemId = xi.item.VIAL_OF_MERCURY,              weight = 2020 }, -- 水銀
+            { itemId = xi.item.CHUNK_OF_ROCK_SALT,           weight = 5000 }, -- 岩塩
+            { itemId = xi.item.JAR_OF_FIRESAND,              weight =  540 }, -- 発火薬
+            { itemId = xi.item.PINCH_OF_SULFUR,              weight = 3540 }, -- 硫黄
+            { itemId = xi.item.HANDFUL_OF_BRONZE_BOLT_HEADS, weight = 4750 }, -- ブロンズボルト x33
+            { itemId = xi.item.ANTIDOTE,                     weight =  575 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,          weight = 3150 }, -- やまびこ薬
+            { itemId = xi.item.WOOZYSHROOM,                  weight = 1010 }, -- マヨイタケ
+            { itemId = xi.item.BATTLEAXE,                    weight =  200 }, -- バトルアクス
+            { itemId = xi.item.BEETLE_MASK,                  weight =  520 }, -- ビートルマスク
+            { itemId = xi.item.BEETLE_HARNESS,               weight =  240 }, -- ビートルハーネス
+            { itemId = xi.item.BEETLE_MITTENS,               weight =  680 }, -- ビートルミトン
+            { itemId = xi.item.BEETLE_SUBLIGAR,              weight = 1200 }, -- ビートルサブリガ
+            { itemId = xi.item.BEETLE_LEGGINGS,              weight =  990 }, -- ビートルレギンス
+            { itemId = xi.item.BLACK_SLACKS,                 weight =  880 }, -- ブラックズボン
+            { itemId = xi.item.BONE_LEGGINGS,                weight = 1530 }, -- ボーンレギンス
+            { itemId = xi.item.BONE_MASK,                    weight = 1760 }, -- ボーンマスク
+            { itemId = xi.item.BONE_MITTENS,                 weight = 1900 }, -- ボーンミトン
+            { itemId = xi.item.BONE_SUBLIGAR,                weight = 1870 }, -- ボーンサブリガ
+            { itemId = xi.item.COTTON_CAPE,                  weight =  310 }, -- コットンケープ
+            { itemId = xi.item.DHALMEL_MANTLE,               weight =  595 }, -- ダルメルマント
+            { itemId = xi.item.HOLLY_CLOGS,                  weight = 1580 }, -- ホーリークロッグ
+            { itemId = xi.item.KUKRI,                        weight =  275 }, -- ククリ
+            { itemId = xi.item.LINEN_CUFFS,                  weight = 1680 }, -- リネンカフス
+            { itemId = xi.item.LINEN_SLOPS,                  weight = 1460 }, -- リネンスロップス
+            { itemId = xi.item.LIZARD_GLOVES,                weight = 2620 }, -- リザードグローブ
+            { itemId = xi.item.LIZARD_HELM,                  weight =  645 }, -- リザードヘルム
+            { itemId = xi.item.LIZARD_LEDELSENS,             weight =  835 }, -- リザードレデルセン
+            { itemId = xi.item.LIZARD_TROUSERS,              weight =  610 }, -- リザードトラウザ
+            { itemId = xi.item.POETS_CIRCLET,                weight =  455 }, -- 詩人のサークレット
+            { itemId = xi.item.SANDALS,                      weight =  745 }, -- サンダル
+            { itemId = xi.item.WHITE_MITTS,                  weight = 2165 }, -- ホワイトミトン
+        },
     },
     [xi.zone.JUGNER_FOREST] =
     {
-        regionalItems = { 15927 }, -- Pinwheel Belt
+        regionalItems = { xi.item.PINWHEEL_BELT }, -- ピンホイールベルト
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  450, 4202 }, -- Daedalus Wing
-            {  310, 4206 }, -- Catholicon
-            {  240, 4302 }, -- Pamama Au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  450 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  310 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  240 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 4600,   642 }, -- 亜鉛鉱
-            { 1250,   689 }, -- Lauan Log
-            {  600,   693 }, -- Walnut Log
-            { 3250,   736 }, -- Silver Ore
-            { 2900,   835 }, -- Flax Flower
-            { 4800,   847 }, -- Bird Feather
-            { 1600,   898 }, -- Chicken Bone
-            { 2020,   914 }, -- Mercury
-            { 5000,   936 }, -- Rock Salt
-            {  540,   947 }, -- Firesand
-            { 3540,  1108 }, -- Sulfur
-            { 4750,  1211 }, -- Handful of Bronze Bolt Heads x33
-            {  575,  4148 }, -- 毒消し
-            { 3150,  4151 }, -- やまびこ薬
-            { 1010,  4373 }, -- Woozyshroom
-            {  200, 16643 }, -- Battleaxe
-            {  520, 12455 }, -- Beetle Mask
-            {  240, 12583 }, -- Beetle Harness
-            {  680, 12711 }, -- Beetle Mittens
-            { 1200, 12835 }, -- Beetle Subligar
-            {  990, 12967 }, -- Beetle Leggings
-            {  880, 12865 }, -- Black Slacks
-            { 1530, 12966 }, -- Bone Leggings
-            { 1760, 12454 }, -- Bone Mask
-            { 1900, 12710 }, -- Bone Mittens
-            { 1870, 12834 }, -- Bone Subligar
-            {  310, 13584 }, -- Cotton Cape
-            {  595, 13588 }, -- Dhalmel Mantle
-            { 1580, 12985 }, -- Holly Clogs
-            {  275, 16473 }, -- Kukri
-            { 1680, 12729 }, -- Linen Cuffs
-            { 1460, 12857 }, -- Linen Slops
-            { 2620, 12697 }, -- Lizard Gloves
-            {  645, 12441 }, -- Lizard Helm
-            {  835, 12953 }, -- Lizard Ledelsens
-            {  610, 12825 }, -- Lizard Trousers
-            {  455, 12473 }, -- Poet's Circlet
-            {  745, 12993 }, -- Sandals
-            { 2165, 12737 }, -- White Mitts
-        }
+            { itemId = xi.item.CHUNK_OF_ZINC_ORE,            weight = 4600 }, -- 亜鉛鉱
+            { itemId = xi.item.LAUAN_LOG,                    weight = 1250 }, -- ラワン原木
+            { itemId = xi.item.WALNUT_LOG,                   weight =  600 }, -- ウォルナット原木
+            { itemId = xi.item.CHUNK_OF_SILVER_ORE,          weight = 3250 }, -- 銀鉱
+            { itemId = xi.item.FLAX_FLOWER,                  weight = 2900 }, -- 亜麻
+            { itemId = xi.item.BIRD_FEATHER,                 weight = 4800 }, -- 鳥の羽根
+            { itemId = xi.item.CHICKEN_BONE,                 weight = 1600 }, -- がら
+            { itemId = xi.item.VIAL_OF_MERCURY,              weight = 2020 }, -- 水銀
+            { itemId = xi.item.CHUNK_OF_ROCK_SALT,           weight = 5000 }, -- 岩塩
+            { itemId = xi.item.JAR_OF_FIRESAND,              weight =  540 }, -- 発火薬
+            { itemId = xi.item.PINCH_OF_SULFUR,              weight = 3540 }, -- 硫黄
+            { itemId = xi.item.HANDFUL_OF_BRONZE_BOLT_HEADS, weight = 4750 }, -- ブロンズボルト x33
+            { itemId = xi.item.ANTIDOTE,                     weight =  575 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,          weight = 3150 }, -- やまびこ薬
+            { itemId = xi.item.WOOZYSHROOM,                  weight = 1010 }, -- マヨイタケ
+            { itemId = xi.item.BATTLEAXE,                    weight =  200 }, -- バトルアクス
+            { itemId = xi.item.BEETLE_MASK,                  weight =  520 }, -- ビートルマスク
+            { itemId = xi.item.BEETLE_HARNESS,               weight =  240 }, -- ビートルハーネス
+            { itemId = xi.item.BEETLE_MITTENS,               weight =  680 }, -- ビートルミトン
+            { itemId = xi.item.BEETLE_SUBLIGAR,              weight = 1200 }, -- ビートルサブリガ
+            { itemId = xi.item.BEETLE_LEGGINGS,              weight =  990 }, -- ビートルレギンス
+            { itemId = xi.item.BLACK_SLACKS,                 weight =  880 }, -- ブラックズボン
+            { itemId = xi.item.BONE_LEGGINGS,                weight = 1530 }, -- ボーンレギンス
+            { itemId = xi.item.BONE_MASK,                    weight = 1760 }, -- ボーンマスク
+            { itemId = xi.item.BONE_MITTENS,                 weight = 1900 }, -- ボーンミトン
+            { itemId = xi.item.BONE_SUBLIGAR,                weight = 1870 }, -- ボーンサブリガ
+            { itemId = xi.item.COTTON_CAPE,                  weight =  310 }, -- コットンケープ
+            { itemId = xi.item.DHALMEL_MANTLE,               weight =  595 }, -- ダルメルマント
+            { itemId = xi.item.HOLLY_CLOGS,                  weight = 1580 }, -- ホーリークロッグ
+            { itemId = xi.item.KUKRI,                        weight =  275 }, -- ククリ
+            { itemId = xi.item.LINEN_CUFFS,                  weight = 1680 }, -- リネンカフス
+            { itemId = xi.item.LINEN_SLOPS,                  weight = 1460 }, -- リネンスロップス
+            { itemId = xi.item.LIZARD_GLOVES,                weight = 2620 }, -- リザードグローブ
+            { itemId = xi.item.LIZARD_HELM,                  weight =  645 }, -- リザードヘルム
+            { itemId = xi.item.LIZARD_LEDELSENS,             weight =  835 }, -- リザードレデルセン
+            { itemId = xi.item.LIZARD_TROUSERS,              weight =  610 }, -- リザードトラウザ
+            { itemId = xi.item.POETS_CIRCLET,                weight =  455 }, -- 詩人のサークレット
+            { itemId = xi.item.SANDALS,                      weight =  745 }, -- サンダル
+            { itemId = xi.item.WHITE_MITTS,                  weight = 2165 }, -- ホワイトミトン
+        },
     },
     [xi.zone.BATALLIA_DOWNS] =
     {
-        regionalItems = { 18451 }, -- Mokusa
+        regionalItems = { xi.item.MOKUSA }, -- 舞草
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  450, 4202 }, -- Daedalus Wing
-            {  310, 4206 }, -- Catholicon
-            {  240, 4302 }, -- Pamama Au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  450 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  310 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  240 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   573 }, -- Vegetable Seeds
-            {  475,   636 }, -- Chamomile
-            { 2780,   643 }, -- Iron Ore
-            { 1940,   644 }, -- Mythril Ore
-            { 2700,   691 }, -- メープル原木
-            { 1060,   694 }, -- Chestnut Log
-            { 3500,   749 }, -- Mythril Beastcoin
-            { 1900,   820 }, -- Wool Thread
-            { 1150,   859 }, -- Ram Skin
-            { 1090,   895 }, -- Ram Horn
-            { 4600,   928 }, -- Bomb Ash
-            { 2650,   943 }, -- 毒素
-            { 3300,  1212 }, -- Handful of Mythril Bolt Heads x33
-            {  120, 12300 }, -- Targe
-            {  320, 12433 }, -- Brass Mask
-            {  660, 12442 }, -- Studded Bandana
-            {  680, 12465 }, -- Cotton Headgear
-            {  520, 12474 }, -- Wool Hat
-            {  200, 12570 }, -- Studded Vest
-            {  450, 12689 }, -- Brass Finger Gauntlets
-            {  460, 12721 }, -- Cotton Gloves
-            {  390, 12817 }, -- Brass Cuisses
-            {  550, 12826 }, -- Studded Trousers
-            {  420, 12849 }, -- Cotton Brais
-            {  690, 12945 }, -- Brass Greaves
-            {  770, 12954 }, -- Studded Boots
-            {  510, 12977 }, -- Cotton Gaiters
-            {  625, 12986 }, -- Chestnut Sabots
-            {  310, 13085 }, -- Hemp Gorget
-            {  305, 13205 }, -- Silver Obi
-            {  430, 13328 }, -- Mythril Earring
-            {  235, 13446 }, -- Mythril Ring
-            {  525, 16467 }, -- Mythril Knife
-            {  505, 17097 }, -- Elm Pole
-            {  350, 17284 }, -- Chakram
-        }
+            { itemId = xi.item.CHAMOMILE,                     weight =  475 }, -- カモミール
+            { itemId = xi.item.CHUNK_OF_IRON_ORE,             weight = 2780 }, -- 鉄鉱
+            { itemId = xi.item.CHUNK_OF_MYTHRIL_ORE,          weight = 1940 }, -- ミスリル鉱
+            { itemId = xi.item.MAPLE_LOG,                     weight = 2700 }, -- メープル原木
+            { itemId = xi.item.CHESTNUT_LOG,                  weight = 1060 }, -- チェスナット原木
+            { itemId = xi.item.MYTHRIL_BEASTCOIN,             weight = 3500 }, -- 獣人ミスリル貨
+            { itemId = xi.item.SPOOL_OF_WOOL_THREAD,          weight = 1900 }, -- 毛糸
+            { itemId = xi.item.RAM_SKIN,                      weight = 1150 }, -- 雄羊の毛皮
+            { itemId = xi.item.RAM_HORN,                      weight = 1090 }, -- 雄羊の角
+            { itemId = xi.item.PINCH_OF_BOMB_ASH,             weight = 4600 }, -- ボムの灰
+            { itemId = xi.item.PINCH_OF_POISON_DUST,          weight = 2650 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_MYTHRIL_BOLT_HEADS, weight = 3300 }, -- ミスリルボルト x33
+            { itemId = xi.item.TARGE,                         weight =  120 }, -- タージェ
+            { itemId = xi.item.BRASS_MASK,                    weight =  320 }, -- ブラスマスク
+            { itemId = xi.item.STUDDED_BANDANA,               weight =  660 }, -- スタデッドバンダナ
+            { itemId = xi.item.COTTON_HEADGEAR,               weight =  680 }, -- コットンヘッドギア
+            { itemId = xi.item.WOOL_HAT,                      weight =  520 }, -- ウールハット
+            { itemId = xi.item.STUDDED_VEST,                  weight =  200 }, -- スタデッドベスト
+            { itemId = xi.item.BRASS_FINGER_GAUNTLETS,        weight =  450 }, -- ブラスフィンガー
+            { itemId = xi.item.COTTON_GLOVES,                 weight =  460 }, -- コットングローブ
+            { itemId = xi.item.BRASS_CUISSES,                 weight =  390 }, -- ブラスクウィス
+            { itemId = xi.item.STUDDED_TROUSERS,              weight =  550 }, -- スタデッドトラウザ
+            { itemId = xi.item.COTTON_BRAIS,                  weight =  420 }, -- コットンブレー
+            { itemId = xi.item.BRASS_GREAVES,                 weight =  690 }, -- ブラスグリーヴ
+            { itemId = xi.item.STUDDED_BOOTS,                 weight =  770 }, -- スタデッドブーツ
+            { itemId = xi.item.COTTON_GAITERS,                weight =  510 }, -- コットンゲートル
+            { itemId = xi.item.CHESTNUT_SABOTS,               weight =  625 }, -- チェスナットサボ
+            { itemId = xi.item.HEMP_GORGET,                   weight =  310 }, -- ヘンプゴルゲット
+            { itemId = xi.item.SILVER_OBI,                    weight =  305 }, -- 銀の帯
+            { itemId = xi.item.MYTHRIL_EARRING,               weight =  430 }, -- ミスリルピアス
+            { itemId = xi.item.MYTHRIL_RING,                  weight =  235 }, -- ミスリルリング
+            { itemId = xi.item.MYTHRIL_KNIFE,                 weight =  525 }, -- ミスリルナイフ
+            { itemId = xi.item.ELM_POLE,                      weight =  505 }, -- エルムポール
+            { itemId = xi.item.CHAKRAM,                       weight =  350 }, -- チャクラム
+        },
     },
     [xi.zone.NORTH_GUSTABERG] =
     {
-        regionalItems = { 11312 }, -- Rambler's Cloak
+        regionalItems = { xi.item.RAMBLERS_CLOAK }, -- ランブラークローク
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1700,   505 }, -- 大羊の毛皮
-            { 4500,   640 }, -- 銅鉱
-            { 2500,   641 }, -- スズ石
-            { 3450,   642 }, -- 亜鉛鉱
-            { 2000,   688 }, -- アローウッド原木
-            { 1020,   698 }, -- アッシュ原木
-            { 4200,   656 }, -- 獣人貨
-            { 5000,   768 }, -- 火打石
-            { 1250,   818 }, -- 木綿糸
-            { 1300,   833 }, -- モコ草
-            {  800,   840 }, -- チョコボの羽根
-            { 3600,   846 }, -- 虫の翅
-            { 3000,   912 }, -- 蜂の巣のかけら
-            {  700,   943 }, -- 毒素
-            { 2400,  1214 }, -- 石の矢尻 x33
-            { 3590,  4148 }, -- 毒消し
-            { 1150,  4150 }, -- 目薬
-            { 1360,  4151 }, -- やまびこ薬
-            { 2900,  4370 }, -- 蜂蜜
-            {  600, 12290 }, -- メープルシールド
-            {  295, 12440 }, -- レザーバンダナ
-            {  450, 12449 }, -- ブラスキャップ
-            {  290, 12456 }, -- 鉢巻
-            {  530, 12608 }, -- チュニック
-            {  460, 12696 }, -- レザーグローブ
-            {  340, 12705 }, -- ブラスミトン
-            {  168, 12712 }, -- 手甲
-            {  310, 12736 }, -- ミトン
-            {  475, 12824 }, -- レザートラウザ
-            {   80, 12833 }, -- ブラスサブリガ
-            {  235, 12840 }, -- 下ばき
-            {  422, 12864 }, -- ズボン
-            {  135, 12952 }, -- Leather Highboots
-            {  250, 12961 }, -- ブラスレギンス
-            {  255, 12968 }, -- Kyahan
-            {  287, 12992 }, -- ソレア
-            {  500, 13081 }, -- レザーゴルゲット
-            {  300, 16407 }, -- ブラスバグナウ
-            {  120, 16530 }, -- サイフォス
-            {  320, 17050 }, -- ウィローワンド
-        }
+            { itemId = xi.item.SHEEPSKIN,                   weight = 1700 }, -- 大羊の毛皮
+            { itemId = xi.item.CHUNK_OF_COPPER_ORE,         weight = 4500 }, -- 銅鉱
+            { itemId = xi.item.CHUNK_OF_TIN_ORE,            weight = 2500 }, -- スズ石
+            { itemId = xi.item.CHUNK_OF_ZINC_ORE,           weight = 3450 }, -- 亜鉛鉱
+            { itemId = xi.item.ARROWWOOD_LOG,               weight = 2000 }, -- アローウッド原木
+            { itemId = xi.item.ASH_LOG,                     weight = 1020 }, -- アッシュ原木
+            { itemId = xi.item.BEASTCOIN,                   weight = 4200 }, -- 獣人貨
+            { itemId = xi.item.FLINT_STONE,                 weight = 5000 }, -- 火打石
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,      weight = 1250 }, -- 木綿糸
+            { itemId = xi.item.CLUMP_OF_MOKO_GRASS,         weight = 1300 }, -- モコ草
+            { itemId = xi.item.CHOCOBO_FEATHER,             weight =  800 }, -- チョコボの羽根
+            { itemId = xi.item.INSECT_WING,                 weight = 3600 }, -- 虫の翅
+            { itemId = xi.item.BEEHIVE_CHIP,                weight = 3000 }, -- 蜂の巣のかけら
+            { itemId = xi.item.PINCH_OF_POISON_DUST,        weight =  700 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_STONE_ARROWHEADS, weight = 2400 }, -- 石の矢尻 x33
+            { itemId = xi.item.ANTIDOTE,                    weight = 3590 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,          weight = 1150 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,         weight = 1360 }, -- やまびこ薬
+            { itemId = xi.item.POT_OF_HONEY,                weight = 2900 }, -- 蜂蜜
+            { itemId = xi.item.MAPLE_SHIELD,                weight =  600 }, -- メープルシールド
+            { itemId = xi.item.LEATHER_BANDANA,             weight =  295 }, -- レザーバンダナ
+            { itemId = xi.item.BRASS_CAP,                   weight =  450 }, -- ブラスキャップ
+            { itemId = xi.item.HACHIMAKI,                   weight =  290 }, -- 鉢巻
+            { itemId = xi.item.TUNIC,                       weight =  530 }, -- チュニック
+            { itemId = xi.item.LEATHER_GLOVES,              weight =  460 }, -- レザーグローブ
+            { itemId = xi.item.BRASS_MITTENS,               weight =  340 }, -- ブラスミトン
+            { itemId = xi.item.TEKKO,                       weight =  168 }, -- 手甲
+            { itemId = xi.item.MITTS,                       weight =  310 }, -- ミトン
+            { itemId = xi.item.LEATHER_TROUSERS,            weight =  475 }, -- レザートラウザ
+            { itemId = xi.item.BRASS_SUBLIGAR,              weight =   80 }, -- ブラスサブリガ
+            { itemId = xi.item.SITABAKI,                    weight =  235 }, -- 下ばき
+            { itemId = xi.item.SLACKS,                      weight =  422 }, -- ズボン
+            { itemId = xi.item.LEATHER_HIGHBOOTS,           weight =  135 }, -- レザーハイブーツ
+            { itemId = xi.item.BRASS_LEGGINGS,              weight =  250 }, -- ブラスレギンス
+            { itemId = xi.item.KYAHAN,                      weight =  255 }, -- 脚絆
+            { itemId = xi.item.SOLEA,                       weight =  287 }, -- ソレア
+            { itemId = xi.item.LEATHER_GORGET,              weight =  500 }, -- レザーゴルゲット
+            { itemId = xi.item.BRASS_BAGHNAKHS,             weight =  300 }, -- ブラスバグナウ
+            { itemId = xi.item.XIPHOS,                      weight =  120 }, -- サイフォス
+            { itemId = xi.item.WILLOW_WAND,                 weight =  320 }, -- ウィローワンド
+        },
     },
     [xi.zone.SOUTH_GUSTABERG] =
     {
-        regionalItems = { 15926 }, -- Bronze Bandolier
+        regionalItems = { xi.item.BRONZE_BANDOLIER }, -- ブロンズバンドリア
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1700,   505 }, -- 大羊の毛皮
-            { 4500,   640 }, -- 銅鉱
-            { 2500,   641 }, -- スズ石
-            { 3450,   642 }, -- 亜鉛鉱
-            { 2000,   688 }, -- アローウッド原木
-            { 1020,   698 }, -- アッシュ原木
-            { 4200,   656 }, -- 獣人貨
-            { 5000,   768 }, -- 火打石
-            { 1250,   818 }, -- 木綿糸
-            { 1300,   833 }, -- モコ草
-            {  800,   840 }, -- チョコボの羽根
-            { 3600,   846 }, -- 虫の翅
-            { 3000,   912 }, -- 蜂の巣のかけら
-            {  700,   943 }, -- 毒素
-            { 2400,  1214 }, -- 石の矢尻 x33
-            { 3590,  4148 }, -- 毒消し
-            { 1150,  4150 }, -- 目薬
-            { 1360,  4151 }, -- やまびこ薬
-            { 2900,  4370 }, -- 蜂蜜
-            {  600, 12290 }, -- メープルシールド
-            {  295, 12440 }, -- レザーバンダナ
-            {  450, 12449 }, -- ブラスキャップ
-            {  290, 12456 }, -- 鉢巻
-            {  530, 12608 }, -- チュニック
-            {  460, 12696 }, -- レザーグローブ
-            {  340, 12705 }, -- ブラスミトン
-            {  168, 12712 }, -- 手甲
-            {  310, 12736 }, -- ミトン
-            {  475, 12824 }, -- レザートラウザ
-            {   80, 12833 }, -- ブラスサブリガ
-            {  235, 12840 }, -- 下ばき
-            {  422, 12864 }, -- ズボン
-            {  135, 12952 }, -- Leather Highboots
-            {  250, 12961 }, -- ブラスレギンス
-            {  255, 12968 }, -- Kyahan
-            {  287, 12992 }, -- ソレア
-            {  500, 13081 }, -- レザーゴルゲット
-            {  300, 16407 }, -- ブラスバグナウ
-            {  120, 16530 }, -- サイフォス
-            {  320, 17050 }, -- ウィローワンド
-        }
+            { itemId = xi.item.SHEEPSKIN,                   weight = 1700 }, -- 大羊の毛皮
+            { itemId = xi.item.CHUNK_OF_COPPER_ORE,         weight = 4500 }, -- 銅鉱
+            { itemId = xi.item.CHUNK_OF_TIN_ORE,            weight = 2500 }, -- スズ石
+            { itemId = xi.item.CHUNK_OF_ZINC_ORE,           weight = 3450 }, -- 亜鉛鉱
+            { itemId = xi.item.ARROWWOOD_LOG,               weight = 2000 }, -- アローウッド原木
+            { itemId = xi.item.ASH_LOG,                     weight = 1020 }, -- アッシュ原木
+            { itemId = xi.item.BEASTCOIN,                   weight = 4200 }, -- 獣人貨
+            { itemId = xi.item.FLINT_STONE,                 weight = 5000 }, -- 火打石
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,      weight = 1250 }, -- 木綿糸
+            { itemId = xi.item.CLUMP_OF_MOKO_GRASS,         weight = 1300 }, -- モコ草
+            { itemId = xi.item.CHOCOBO_FEATHER,             weight =  800 }, -- チョコボの羽根
+            { itemId = xi.item.INSECT_WING,                 weight = 3600 }, -- 虫の翅
+            { itemId = xi.item.BEEHIVE_CHIP,                weight = 3000 }, -- 蜂の巣のかけら
+            { itemId = xi.item.PINCH_OF_POISON_DUST,        weight =  700 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_STONE_ARROWHEADS, weight = 2400 }, -- 石の矢尻 x33
+            { itemId = xi.item.ANTIDOTE,                    weight = 3590 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,          weight = 1150 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,         weight = 1360 }, -- やまびこ薬
+            { itemId = xi.item.POT_OF_HONEY,                weight = 2900 }, -- 蜂蜜
+            { itemId = xi.item.MAPLE_SHIELD,                weight =  600 }, -- メープルシールド
+            { itemId = xi.item.LEATHER_BANDANA,             weight =  295 }, -- レザーバンダナ
+            { itemId = xi.item.BRASS_CAP,                   weight =  450 }, -- ブラスキャップ
+            { itemId = xi.item.HACHIMAKI,                   weight =  290 }, -- 鉢巻
+            { itemId = xi.item.TUNIC,                       weight =  530 }, -- チュニック
+            { itemId = xi.item.LEATHER_GLOVES,              weight =  460 }, -- レザーグローブ
+            { itemId = xi.item.BRASS_MITTENS,               weight =  340 }, -- ブラスミトン
+            { itemId = xi.item.TEKKO,                       weight =  168 }, -- 手甲
+            { itemId = xi.item.MITTS,                       weight =  310 }, -- ミトン
+            { itemId = xi.item.LEATHER_TROUSERS,            weight =  475 }, -- レザートラウザ
+            { itemId = xi.item.BRASS_SUBLIGAR,              weight =   80 }, -- ブラスサブリガ
+            { itemId = xi.item.SITABAKI,                    weight =  235 }, -- 下ばき
+            { itemId = xi.item.SLACKS,                      weight =  422 }, -- ズボン
+            { itemId = xi.item.LEATHER_HIGHBOOTS,           weight =  135 }, -- レザーハイブーツ
+            { itemId = xi.item.BRASS_LEGGINGS,              weight =  250 }, -- ブラスレギンス
+            { itemId = xi.item.KYAHAN,                      weight =  255 }, -- 脚絆
+            { itemId = xi.item.SOLEA,                       weight =  287 }, -- ソレア
+            { itemId = xi.item.LEATHER_GORGET,              weight =  500 }, -- レザーゴルゲット
+            { itemId = xi.item.BRASS_BAGHNAKHS,             weight =  300 }, -- ブラスバグナウ
+            { itemId = xi.item.XIPHOS,                      weight =  120 }, -- サイフォス
+            { itemId = xi.item.WILLOW_WAND,                 weight =  320 }, -- ウィローワンド
+        },
     },
     [xi.zone.KONSCHTAT_HIGHLANDS] =
     {
-        regionalItems = { 19223 }, -- Attar Of Roses
+        regionalItems = { xi.item.ATTAR_OF_ROSES }, -- アターオブローゼス
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  240, 4301 }, -- Pear Au Lait
-            {  660, 4425 }, -- Tomato Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_PEAR_AU_LAIT,  weight =  240 }, -- ペア・オレ
+            { itemId = xi.item.BOTTLE_OF_TOMATO_JUICE, weight =  660 }, -- トマトジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2400,   626 }, -- Black Pepper
-            { 3100,   641 }, -- スズ石
-            { 3900,   688 }, -- アローウッド原木
-            { 1200,   727 }, -- Dogwood Log
-            { 4200,   750 }, -- Silver Beastcoin
-            { 4900,   768 }, -- 火打石
-            { 4500,   846 }, -- 虫の翅
-            { 2200,   893 }, -- Giant Femur
-            { 2600,   912 }, -- 蜂の巣のかけら
-            { 3250,   925 }, -- Giant Stinger
-            { 5000,   953 }, -- Treant Bulb
-            { 4450,  1215 }, -- Handful of Bone Arrowheads x33
-            { 4650,  1845 }, -- Red Moko Grass
-            {  460,  4148 }, -- 毒消し
-            { 1360,  4151 }, -- やまびこ薬
-            { 2120,  4227 }, -- Bronze Bolt Quiver
-            { 1600,  4509 }, -- Distilled Water
-            {  650, 12432 }, -- Faceguard
-            {  620, 12449 }, -- ブラスキャップ
-            {  550, 12473 }, -- Poet's Circlet
-            {  630, 12601 }, -- Linen Robe
-            {  660, 12688 }, -- Scale Finger Gauntlets
-            {  540, 12705 }, -- ブラスミトン
-            {  340, 12710 }, -- Bone Mittens
-            {  730, 12720 }, -- Gloves
-            {  830, 12729 }, -- Linen Cuffs
-            {  715, 12816 }, -- Scale Cuisses
-            {  830, 12834 }, -- Bone Subligar
-            {  910, 12848 }, -- Brais
-            { 1100, 12857 }, -- Linen Slops
-            { 1250, 12966 }, -- Bone Leggings
-            {  530, 12976 }, -- Gaiters
-            {  345, 12985 }, -- Holly Clogs
-            {  210, 16466 }, -- Knife
-            {  455, 16531 }, -- Brass Xiphos
-            {  610, 17096 }, -- Holly Pole
-            { 1465, 17316 }, -- Bomb Arm
-        }
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,      weight = 2400 }, -- ブラックペッパー
+            { itemId = xi.item.CHUNK_OF_TIN_ORE,           weight = 3100 }, -- スズ石
+            { itemId = xi.item.ARROWWOOD_LOG,              weight = 3900 }, -- アローウッド原木
+            { itemId = xi.item.DOGWOOD_LOG,                weight = 1200 }, -- ドッグウッド原木
+            { itemId = xi.item.SILVER_BEASTCOIN,           weight = 4200 }, -- 獣人銀貨
+            { itemId = xi.item.FLINT_STONE,                weight = 4900 }, -- 火打石
+            { itemId = xi.item.INSECT_WING,                weight = 4500 }, -- 虫の翅
+            { itemId = xi.item.GIANT_FEMUR,                weight = 2200 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,               weight = 2600 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,              weight = 3250 }, -- 蜂の一刺し
+            { itemId = xi.item.TREANT_BULB,                weight = 5000 }, -- トレントの球根
+            { itemId = xi.item.HANDFUL_OF_BONE_ARROWHEADS, weight = 4450 }, -- 骨の矢 x 33
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS,    weight = 4650 }, -- 赤モコ草
+            { itemId = xi.item.ANTIDOTE,                   weight =  460 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,        weight = 1360 }, -- やまびこ薬
+            { itemId = xi.item.BRONZE_BOLT_QUIVER,         weight = 2120 }, -- ブロンズボルト x33
+            { itemId = xi.item.FLASK_OF_DISTILLED_WATER,   weight = 1600 }, -- 蒸留水
+            { itemId = xi.item.FACEGUARD,                  weight =  650 }, -- フェイスガード
+            { itemId = xi.item.BRASS_CAP,                  weight =  620 }, -- ブラスキャップ
+            { itemId = xi.item.POETS_CIRCLET,              weight =  550 }, -- 詩人のサークレット
+            { itemId = xi.item.LINEN_ROBE,                 weight =  630 }, -- リネンローブ
+            { itemId = xi.item.SCALE_FINGER_GAUNTLETS,     weight =  660 }, -- スケイルフィンガー
+            { itemId = xi.item.BRASS_MITTENS,              weight =  540 }, -- ブラスミトン
+            { itemId = xi.item.BONE_MITTENS,               weight =  340 }, -- ボーンミトン
+            { itemId = xi.item.GLOVES,                     weight =  730 }, -- グローブ
+            { itemId = xi.item.LINEN_CUFFS,                weight =  830 }, -- リネンカフス
+            { itemId = xi.item.SCALE_CUISSES,              weight =  715 }, -- スケイルクウィス
+            { itemId = xi.item.BONE_SUBLIGAR,              weight =  830 }, -- ボーンサブリガ
+            { itemId = xi.item.BRAIS,                      weight =  910 }, -- ブレー
+            { itemId = xi.item.LINEN_SLOPS,                weight = 1100 }, -- リネンスロップス
+            { itemId = xi.item.BONE_LEGGINGS,              weight = 1250 }, -- ボーンレギンス
+            { itemId = xi.item.GAITERS,                    weight =  530 }, -- ゲートル
+            { itemId = xi.item.HOLLY_CLOGS,                weight =  345 }, -- ホーリークロッグ
+            { itemId = xi.item.KNIFE,                      weight =  210 }, -- ナイフ
+            { itemId = xi.item.BRASS_XIPHOS,               weight =  455 }, -- ブラスサイフォス
+            { itemId = xi.item.HOLLY_POLE,                 weight =  610 }, -- ホーリーポール
+            { itemId = xi.item.BOMB_ARM,                   weight = 1465 }, -- ボムのうで
+        },
     },
     [xi.zone.PASHHOW_MARSHLANDS] =
     {
-        regionalItems = { 19222 }, -- Wurger
+        regionalItems = { xi.item.WURGER }, -- ヴュルガー
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  250, 4302 }, -- Pamama Au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  250 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2400,   627 }, -- Maple Sugar
-            { 1700,   637 }, -- Slime Oil
-            { 3200,   643 }, -- Iron Ore
-            { 4320,   690 }, -- Elm Log
-            { 2050,   816 }, -- Silk Thread
-            { 2450,   835 }, -- Flax Flower
-            { 4050,   857 }, -- Dhalmel Hide
-            { 5000,   880 }, -- Bone Chip
-            { 3250,   897 }, -- Scorpion Claw
-            { 1670,   900 }, -- Fish Bones
-            { 3520,   913 }, -- Beeswax
-            { 4300,   943 }, -- 毒素
-            { 4690,  1211 }, -- Brz. Bolt Heads x33
-            { 2600,  4151 }, -- やまびこ薬
-            { 3170,  4225 }, -- Iron Quiver
-            { 1540,  4447 }, -- Scream Fungus
-            {  670, 12424 }, -- Iron Mask
-            {  630, 12441 }, -- Lizard Helm
-            {  710, 12455 }, -- Beetle Mask
-            {  420, 12552 }, -- Chainmail
-            {  820, 12593 }, -- Cotton Doublet
-            {  310, 12680 }, -- Chain Mittens
-            {  520, 12697 }, -- Lizard Gloves
-            {  790, 12711 }, -- Beetle Mittens
-            {  900, 12721 }, -- Cotton Gloves
-            {  890, 12737 }, -- White Mitts
-            {  740, 12825 }, -- Lizard Trousers
-            {  650, 12849 }, -- Cotton Brais
-            {  760, 12865 }, -- Black Slacks
-            {  895, 12953 }, -- Lizard Ledelsens
-            { 1020, 12967 }, -- Beetle Leggings
-            { 1100, 12977 }, -- Cotton Gaiters
-            { 1200, 12993 }, -- Sandals
-            {  330, 16406 }, -- Baghnakhs
-            {  320, 16835 }, -- Spear
-            {  350, 17090 }, -- Elm Staff
-        }
+            { itemId = xi.item.POT_OF_MAPLE_SUGAR,           weight = 2400 }, -- メープルシュガー
+            { itemId = xi.item.VIAL_OF_SLIME_OIL,            weight = 1700 }, -- スライムオイル
+            { itemId = xi.item.CHUNK_OF_IRON_ORE,            weight = 3200 }, -- 鉄鉱
+            { itemId = xi.item.ELM_LOG,                      weight = 4320 }, -- エルム原木
+            { itemId = xi.item.SPOOL_OF_SILK_THREAD,         weight = 2050 }, -- 絹糸
+            { itemId = xi.item.FLAX_FLOWER,                  weight = 2450 }, -- 亜麻
+            { itemId = xi.item.DHALMEL_HIDE,                 weight = 4050 }, -- ダルメルの毛皮
+            { itemId = xi.item.BONE_CHIP,                    weight = 5000 }, -- 骨くず
+            { itemId = xi.item.SCORPION_CLAW,                weight = 3250 }, -- 大サソリの爪
+            { itemId = xi.item.SET_OF_FISH_BONES,            weight = 1670 }, -- 魚の骨
+            { itemId = xi.item.LUMP_OF_BEESWAX,              weight = 3520 }, -- 蜜蝋
+            { itemId = xi.item.PINCH_OF_POISON_DUST,         weight = 4300 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_BRONZE_BOLT_HEADS, weight = 4690 }, -- ブロンズボルト x33
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,          weight = 2600 }, -- やまびこ薬
+            { itemId = xi.item.IRON_QUIVER,                  weight = 3170 }, -- 箙【鉄】
+            { itemId = xi.item.SCREAM_FUNGUS,                weight = 1540 }, -- サケビタケ
+            { itemId = xi.item.IRON_MASK,                    weight =  670 }, -- アイアンマスク
+            { itemId = xi.item.LIZARD_HELM,                  weight =  630 }, -- リザードヘルム
+            { itemId = xi.item.BEETLE_MASK,                  weight =  710 }, -- ビートルマスク
+            { itemId = xi.item.CHAINMAIL,                    weight =  420 }, -- チェーンメイル
+            { itemId = xi.item.COTTON_DOUBLET,               weight =  820 }, -- コットンダブレット
+            { itemId = xi.item.CHAIN_MITTENS,                weight =  310 }, -- チェーンミトン
+            { itemId = xi.item.LIZARD_GLOVES,                weight =  520 }, -- リザードグローブ
+            { itemId = xi.item.BEETLE_MITTENS,               weight =  790 }, -- ビートルミトン
+            { itemId = xi.item.COTTON_GLOVES,                weight =  900 }, -- コットングローブ
+            { itemId = xi.item.WHITE_MITTS,                  weight =  890 }, -- ホワイトミトン
+            { itemId = xi.item.LIZARD_TROUSERS,              weight =  740 }, -- リザードトラウザ
+            { itemId = xi.item.COTTON_BRAIS,                 weight =  650 }, -- コットンブレー
+            { itemId = xi.item.BLACK_SLACKS,                 weight =  760 }, -- ブラックズボン
+            { itemId = xi.item.LIZARD_LEDELSENS,             weight =  895 }, -- リザードレデルセン
+            { itemId = xi.item.BEETLE_LEGGINGS,              weight = 1020 }, -- ビートルレギンス
+            { itemId = xi.item.COTTON_GAITERS,               weight = 1100 }, -- コットンゲートル
+            { itemId = xi.item.SANDALS,                      weight = 1200 }, -- サンダル
+            { itemId = xi.item.BAGHNAKHS,                    weight =  330 }, -- バグナウ
+            { itemId = xi.item.SPEAR,                        weight =  320 }, -- スピア
+            { itemId = xi.item.ELM_STAFF,                    weight =  350 }, -- エルムスタッフ
+        },
     },
     [xi.zone.ROLANBERRY_FIELDS] =
     {
-        regionalItems = { 11401 }, -- Rambler's Gaiters
+        regionalItems = { xi.item.RAMBLERS_GAITERS }, -- ランブラーゲートル
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  240, 4302 }, -- Pamama Au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  240 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
 
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2400,   627 }, -- Maple Sugar
-            { 1700,   637 }, -- Slime Oil
-            { 3200,   643 }, -- Iron Ore
-            { 4320,   690 }, -- Elm Log
-            { 2050,   816 }, -- Silk Thread
-            { 2450,   835 }, -- Flax Flower
-            { 4050,   857 }, -- Dhalmel Hide
-            { 5000,   880 }, -- Bone Chip
-            { 3250,   897 }, -- Scorpion Claw
-            { 1670,   900 }, -- Fish Bones
-            { 3520,   913 }, -- Beeswax
-            { 4300,   943 }, -- 毒素
-            { 4690,  1211 }, -- Brz. Bolt Heads x33
-            { 2600,  4151 }, -- やまびこ薬
-            { 3170,  4225 }, -- Iron Quiver
-            { 1540,  4447 }, -- Scream Fungus
-            {  670, 12424 }, -- Iron Mask
-            {  630, 12441 }, -- Lizard Helm
-            {  710, 12455 }, -- Beetle Mask
-            {  420, 12552 }, -- Chainmail
-            {  820, 12593 }, -- Cotton Doublet
-            {  310, 12680 }, -- Chain Mittens
-            {  520, 12697 }, -- Lizard Gloves
-            {  790, 12711 }, -- Beetle Mittens
-            {  900, 12721 }, -- Cotton Gloves
-            {  890, 12737 }, -- White Mitts
-            {  740, 12825 }, -- Lizard Trousers
-            {  650, 12849 }, -- Cotton Brais
-            {  760, 12865 }, -- Black Slacks
-            {  895, 12953 }, -- Lizard Ledelsens
-            { 1020, 12967 }, -- Beetle Leggings
-            { 1100, 12977 }, -- Cotton Gaiters
-            { 1200, 12993 }, -- Sandals
-            {  330, 16406 }, -- Baghnakhs
-            {  320, 16835 }, -- Spear
-            {  350, 17090 }, -- Elm Staff
-        }
+            { itemId = xi.item.POT_OF_MAPLE_SUGAR,           weight = 2400 }, -- メープルシュガー
+            { itemId = xi.item.VIAL_OF_SLIME_OIL,            weight = 1700 }, -- スライムオイル
+            { itemId = xi.item.CHUNK_OF_IRON_ORE,            weight = 3200 }, -- 鉄鉱
+            { itemId = xi.item.ELM_LOG,                      weight = 4320 }, -- エルム原木
+            { itemId = xi.item.SPOOL_OF_SILK_THREAD,         weight = 2050 }, -- 絹糸
+            { itemId = xi.item.FLAX_FLOWER,                  weight = 2450 }, -- 亜麻
+            { itemId = xi.item.DHALMEL_HIDE,                 weight = 4050 }, -- ダルメルの毛皮
+            { itemId = xi.item.BONE_CHIP,                    weight = 5000 }, -- 骨くず
+            { itemId = xi.item.SCORPION_CLAW,                weight = 3250 }, -- 大サソリの爪
+            { itemId = xi.item.SET_OF_FISH_BONES,            weight = 1670 }, -- 魚の骨
+            { itemId = xi.item.LUMP_OF_BEESWAX,              weight = 3520 }, -- 蜜蝋
+            { itemId = xi.item.PINCH_OF_POISON_DUST,         weight = 4300 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_BRONZE_BOLT_HEADS, weight = 4690 }, -- ブロンズボルト x33
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,          weight = 2600 }, -- やまびこ薬
+            { itemId = xi.item.IRON_QUIVER,                  weight = 3170 }, -- 箙【鉄】
+            { itemId = xi.item.SCREAM_FUNGUS,                weight = 1540 }, -- サケビタケ
+            { itemId = xi.item.IRON_MASK,                    weight =  670 }, -- アイアンマスク
+            { itemId = xi.item.LIZARD_HELM,                  weight =  630 }, -- リザードヘルム
+            { itemId = xi.item.BEETLE_MASK,                  weight =  710 }, -- ビートルマスク
+            { itemId = xi.item.CHAINMAIL,                    weight =  420 }, -- チェーンメイル
+            { itemId = xi.item.COTTON_DOUBLET,               weight =  820 }, -- コットンダブレット
+            { itemId = xi.item.CHAIN_MITTENS,                weight =  310 }, -- チェーンミトン
+            { itemId = xi.item.LIZARD_GLOVES,                weight =  520 }, -- リザードグローブ
+            { itemId = xi.item.BEETLE_MITTENS,               weight =  790 }, -- ビートルミトン
+            { itemId = xi.item.COTTON_GLOVES,                weight =  900 }, -- コットングローブ
+            { itemId = xi.item.WHITE_MITTS,                  weight =  890 }, -- ホワイトミトン
+            { itemId = xi.item.LIZARD_TROUSERS,              weight =  740 }, -- リザードトラウザ
+            { itemId = xi.item.COTTON_BRAIS,                 weight =  650 }, -- コットンブレー
+            { itemId = xi.item.BLACK_SLACKS,                 weight =  760 }, -- ブラックズボン
+            { itemId = xi.item.LIZARD_LEDELSENS,             weight =  895 }, -- リザードレデルセン
+            { itemId = xi.item.BEETLE_LEGGINGS,              weight = 1020 }, -- ビートルレギンス
+            { itemId = xi.item.COTTON_GAITERS,               weight = 1100 }, -- コットンゲートル
+            { itemId = xi.item.SANDALS,                      weight = 1200 }, -- サンダル
+            { itemId = xi.item.BAGHNAKHS,                    weight =  330 }, -- バグナウ
+            { itemId = xi.item.SPEAR,                        weight =  320 }, -- スピア
+            { itemId = xi.item.ELM_STAFF,                    weight =  350 }, -- エルムスタッフ
+        },
     },
     [xi.zone.BEAUCEDINE_GLACIER] =
     {
-        regionalItems = { 16280 }, -- Haraldr's Muffler
+        regionalItems = { xi.item.HARALDRS_MUFFLER }, -- ハーラルマフラー
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  240, 4302 }, -- Pamama au Lait
-            {  640, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  240 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  640 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   575 }, -- Grain Seeds
-            { 1690,   612 }, -- Kazham Peppers
-            { 2480,   644 }, -- Mythril Ore
-            { 4150,   699 }, -- Oak Log
-            { 3600,   819 }, -- Linen Thread
-            { 1740,   845 }, -- Black C. Feather
-            { 2350,   914 }, -- Mercury
-            { 2600,  1217 }, -- Slv. Arrowheads
-            {  660, 12450 }, -- Padded Cap
-            {  540, 12475 }, -- Velvet Hat
-            {  475, 12571 }, -- Cuir Bouilli
-            {  570, 12699 }, -- Cuir Gloves
-            {  690, 12706 }, -- Iron Mittens
-            { 1100, 12731 }, -- Velvet Cuffs
-            {  860, 12827 }, -- Cuir Trousers
-            {  720, 12836 }, -- Iron Subligar
-            {  490, 12859 }, -- Velvet Slops
-            { 1120, 12955 }, -- Cuir Highboots
-            {  390, 12987 }, -- Ebony Sabots
-        }
+            { itemId = xi.item.BAG_OF_GRAIN_SEEDS,           weight = 5000 }, -- 謎の穀物の種
+            { itemId = xi.item.BUNCH_OF_KAZHAM_PEPPERS,      weight = 1690 }, -- カザムがらし
+            { itemId = xi.item.CHUNK_OF_MYTHRIL_ORE,         weight = 2480 }, -- ミスリル鉱
+            { itemId = xi.item.OAK_LOG,                      weight = 4150 }, -- オーク原木
+            { itemId = xi.item.SPOOL_OF_LINEN_THREAD,        weight = 3600 }, -- 亜麻糸
+            { itemId = xi.item.BLACK_CHOCOBO_FEATHER,        weight = 1740 }, -- 黒チョコボの羽根
+            { itemId = xi.item.VIAL_OF_MERCURY,              weight = 2350 }, -- 水銀
+            { itemId = xi.item.HANDFUL_OF_SILVER_ARROWHEADS, weight = 2600 }, -- 銀の矢尻 x33
+            { itemId = xi.item.PADDED_CAP,                   weight =  660 }, -- パッデッドキャップ
+            { itemId = xi.item.VELVET_HAT,                   weight =  540 }, -- ビロードハット
+            { itemId = xi.item.CUIR_BOUILLI,                 weight =  475 }, -- クイルブゥイ
+            { itemId = xi.item.CUIR_GLOVES,                  weight =  570 }, -- クイルグローブ
+            { itemId = xi.item.IRON_MITTENS,                 weight =  690 }, -- アイアンミトン
+            { itemId = xi.item.VELVET_CUFFS,                 weight = 1100 }, -- ビロードカフス
+            { itemId = xi.item.CUIR_TROUSERS,                weight =  860 }, -- クイルトラウザ
+            { itemId = xi.item.IRON_SUBLIGAR,                weight =  720 }, -- アイアンサブリガ
+            { itemId = xi.item.VELVET_SLOPS,                 weight =  490 }, -- ビロードスロップス
+            { itemId = xi.item.CUIR_HIGHBOOTS,               weight = 1120 }, -- クイルハイブーツ
+            { itemId = xi.item.EBONY_SABOTS,                 weight =  390 }, -- エボニーサボ
+        },
     },
     [xi.zone.XARCABARD] =
     {
-        regionalItems = { 15042, 17267 }, -- Gothic Gauntlets / Negoroshiki
+        regionalItems = { xi.item.GOTHIC_GAUNTLETS, xi.item.NEGOROSHIKI }, -- ゴシックガントレット、根来式鉄砲
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  240, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  240 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   575 }, -- Grain Seeds
-            { 2600,   612 }, -- Kazham Peppers
-            { 4200,   698 }, -- アッシュ原木
-            { 3100,   816 }, -- Silk Thread
-            { 2750,   923 }, -- Dryad Root
-            {  320,   932 }, -- Carbon Fiber
-            {  510,  1225 }, -- Gold Nugget
-            {  120,  1228 }, -- Dst. Nugget
-            {  560, 12450 }, -- Padded Cap
-            {  790, 12837 }, -- Carapace Subligar
-            {  810, 13711 }, -- Carapace Mask
-            {  680, 13713 }, -- Carapace Mittens
-            {  725, 13715 }, -- Cpc. Leggings
-            {  120, 16412 }, -- Mythril Claws
-            {   95, 16558 }, -- Falchion
-            {  100, 16590 }, -- Greatsword
-            {  675, 16796 }, -- Mythril Zaghnal
-            {  450, 17062 }, -- Bone Rod
-            {  840, 17610 }, -- Bone Knife
-            {   80, 18207 }, -- Kheten
-        }
+            { itemId = xi.item.BAG_OF_GRAIN_SEEDS,      weight = 5000 }, -- 謎の穀物の種
+            { itemId = xi.item.BUNCH_OF_KAZHAM_PEPPERS, weight = 2600 }, -- カザムがらし
+            { itemId = xi.item.ASH_LOG,                 weight = 4200 }, -- アッシュ原木
+            { itemId = xi.item.SPOOL_OF_SILK_THREAD,    weight = 3100 }, -- 絹糸
+            { itemId = xi.item.DRYAD_ROOT,              weight = 2750 }, -- 木霊の根
+            { itemId = xi.item.LOOP_OF_CARBON_FIBER,    weight =  320 }, -- カーボンファイバー
+            { itemId = xi.item.GOLD_NUGGET,             weight =  510 }, -- ゴールドナゲット
+            { itemId = xi.item.DARKSTEEL_NUGGET,        weight =  120 }, -- ダークナゲット
+            { itemId = xi.item.PADDED_CAP,              weight =  560 }, -- パッデッドキャップ
+            { itemId = xi.item.CARAPACE_SUBLIGAR,       weight =  790 }, -- カラパスサブリガ
+            { itemId = xi.item.CARAPACE_MASK,           weight =  810 }, -- カラパスマスク
+            { itemId = xi.item.CARAPACE_MITTENS,        weight =  680 }, -- カラパスミトン
+            { itemId = xi.item.CARAPACE_LEGGINGS,       weight =  725 }, -- カラパスレギンス
+            { itemId = xi.item.MYTHRIL_CLAWS,           weight =  120 }, -- ミスリルクロー
+            { itemId = xi.item.FALCHION,                weight =   95 }, -- ファルシオン
+            { itemId = xi.item.GREATSWORD,              weight =  100 }, -- グレートソード
+            { itemId = xi.item.MYTHRIL_ZAGHNAL,         weight =  675 }, -- ミスリルザグナル
+            { itemId = xi.item.BONE_ROD,                weight =  450 }, -- ボーンロッド
+            { itemId = xi.item.BONE_KNIFE,              weight =  840 }, -- ボーンナイフ
+            { itemId = xi.item.KHETEN,                  weight =   80 }, -- ケーテン
+        },
     },
     [xi.zone.CAPE_TERIGGAN] =
     {
-        regionalItems = { 17965 }, -- Sirocco Axe
+        regionalItems = { xi.item.SIROCCO_AXE }, -- シロッコアクス
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {   60, 4149 }, -- Panacea
-            {  460, 4155 }, -- Remedy
-            {  790, 4202 }, -- Daedalus Wing
-            {  490, 4206 }, -- Catholicon
-            {  320, 4210 }, -- Lethe Water
-            {  225, 4255 }, -- Mana Powder
-            {  360, 4302 }, -- Pamama au Lait
-            {  540, 4424 }, -- Melon Juice
-            {  210, 5322 }, -- Healing Powder
+            { itemId = xi.item.FLASK_OF_PANACEA,        weight =   60 }, -- パナケイア
+            { itemId = xi.item.REMEDY,                  weight =  460 }, -- 万能薬
+            { itemId = xi.item.DAEDALUS_WING,           weight =  790 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  490 }, -- カトリコン
+            { itemId = xi.item.BOTTLE_OF_LETHE_WATER,   weight =  320 }, -- レーテー水
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,    weight =  225 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  360 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  540 }, -- メロンジュース
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER, weight =  210 }, -- ヒールパウダー
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2320,   645 }, -- Darksteel Ore
-            { 1350,   702 }, -- Ebony Log
-            { 1290,   737 }, -- Gold Ore
-            {  525,   823 }, -- Gold Thread
-            {  190,   844 }, -- Phoenix Feather
-            {  780,  1443 }, -- Dried Mugwort
-            { 1230,  5164 }, -- Ground Wasabi
-            { 1150, 12427 }, -- Bascinet
-            {  575, 12683 }, -- Darksteel Mufflers
-            {  680, 12740 }, -- Silk Mitts
-            {  740, 12811 }, -- Dst. Breeches
-            {  625, 12829 }, -- Beak Trousers
-            {  490, 12868 }, -- Silk Slacks
-            {  710, 12939 }, -- Dst. Sollerets
-            {  460, 12996 }, -- Silk Pumps
-            {  615, 13698 }, -- Beak Helm
-            {  540, 13700 }, -- Beak Gloves
-            {  470, 13702 }, -- Beak Ledelsens
-        }
+            { itemId = xi.item.CHUNK_OF_DARKSTEEL_ORE, weight = 2320 }, -- 黒鉄鉱
+            { itemId = xi.item.EBONY_LOG,              weight = 1350 }, -- エボニー原木
+            { itemId = xi.item.CHUNK_OF_GOLD_ORE,      weight = 1290 }, -- 金鉱
+            { itemId = xi.item.SPOOL_OF_GOLD_THREAD,   weight =  525 }, -- 金糸
+            { itemId = xi.item.PHOENIX_FEATHER,        weight =  190 }, -- フェニックスの尾
+            { itemId = xi.item.PINCH_OF_DRIED_MUGWORT, weight =  780 }, -- 乾燥マグワート
+            { itemId = xi.item.JAR_OF_GROUND_WASABI,   weight = 1230 }, -- ねりわさび
+            { itemId = xi.item.BASCINET,               weight = 1150 }, -- バシニット
+            { itemId = xi.item.DARKSTEEL_MUFFLERS,     weight =  575 }, -- ダークマフラ
+            { itemId = xi.item.SILK_MITTS,             weight =  680 }, -- シルクミトン
+            { itemId = xi.item.DARKSTEEL_BREECHES,     weight =  740 }, -- ダークブリーチズ
+            { itemId = xi.item.BEAK_TROUSERS,          weight =  625 }, -- ビークトラウザ
+            { itemId = xi.item.SILK_SLACKS,            weight =  490 }, -- シルクスラックス
+            { itemId = xi.item.DARKSTEEL_SOLLERETS,    weight =  710 }, -- ダークソレル
+            { itemId = xi.item.SILK_PUMPS,             weight =  460 }, -- シルクパンプス
+            { itemId = xi.item.BEAK_HELM,              weight =  615 }, -- ビークヘルム
+            { itemId = xi.item.BEAK_GLOVES,            weight =  540 }, -- ビークグローブ
+            { itemId = xi.item.BEAK_LEDELSENS,         weight =  470 }, -- ビークレデルセン
+        },
     },
     [xi.zone.EASTERN_ALTEPA_DESERT] =
     {
-        regionalItems = { 16251 }, -- Casaba Melon Tank
+        regionalItems = { xi.item.CASABA_MELON_TANK }, -- カサバメロンタンク
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1450, 4148 }, -- 毒消し
-            { 1550, 4150 }, -- 目薬
-            { 1650, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            {  820, 4164 }, -- Prism Powder
-            {  840, 4165 }, -- Silent Oil
-            {  600, 4202 }, -- Daedalus Wing
-            {  250, 4206 }, -- Catholicon
-            {  420, 4302 }, -- Pamama au Lait
-            {  720, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight = 1450 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight = 1550 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight = 1650 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight =  820 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  840 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  600 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  250 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  420 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  720 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   575 }, -- Grain Seeds
-            { 1690,   612 }, -- Kazham Peppers
-            { 2480,   644 }, -- Mythril Ore
-            { 4150,   699 }, -- Oak Log
-            { 3600,   819 }, -- Linen Thread
-            { 1740,   845 }, -- Black C. Feather
-            { 2350,   914 }, -- Mercury
-            { 2600,  1217 }, -- Slv. Arrowheads
-            {  660, 12450 }, -- Padded Cap
-            {  540, 12475 }, -- Velvet Hat
-            {  475, 12571 }, -- Cuir Bouilli
-            {  570, 12699 }, -- Cuir Gloves
-            {  690, 12706 }, -- Iron Mittens
-            { 1100, 12731 }, -- Velvet Cuffs
-            {  860, 12827 }, -- Cuir Trousers
-            {  720, 12836 }, -- Iron Subligar
-            {  490, 12859 }, -- Velvet Slops
-            { 1120, 12955 }, -- Cuir Highboots
-            {  390, 12987 }, -- Ebony Sabots
-        }
+            { itemId = xi.item.BAG_OF_GRAIN_SEEDS,           weight = 5000 }, -- 謎の穀物の種
+            { itemId = xi.item.BUNCH_OF_KAZHAM_PEPPERS,      weight = 1690 }, -- カザムがらし
+            { itemId = xi.item.CHUNK_OF_MYTHRIL_ORE,         weight = 2480 }, -- ミスリル鉱
+            { itemId = xi.item.OAK_LOG,                      weight = 4150 }, -- オーク原木
+            { itemId = xi.item.SPOOL_OF_LINEN_THREAD,        weight = 3600 }, -- 亜麻糸
+            { itemId = xi.item.BLACK_CHOCOBO_FEATHER,        weight = 1740 }, -- 黒チョコボの羽根
+            { itemId = xi.item.VIAL_OF_MERCURY,              weight = 2350 }, -- 水銀
+            { itemId = xi.item.HANDFUL_OF_SILVER_ARROWHEADS, weight = 2600 }, -- 銀の矢尻 x33
+            { itemId = xi.item.PADDED_CAP,                   weight =  660 }, -- パッデッドキャップ
+            { itemId = xi.item.VELVET_HAT,                   weight =  540 }, -- ビロードハット
+            { itemId = xi.item.CUIR_GLOVES,                  weight =  570 }, -- クイルグローブ
+            { itemId = xi.item.IRON_MITTENS,                 weight =  690 }, -- アイアンミトン
+            { itemId = xi.item.VELVET_CUFFS,                 weight = 1100 }, -- ビロードカフス
+            { itemId = xi.item.CUIR_TROUSERS,                weight =  860 }, -- クイルトラウザ
+            { itemId = xi.item.IRON_SUBLIGAR,                weight =  720 }, -- アイアンサブリガ
+            { itemId = xi.item.VELVET_SLOPS,                 weight =  490 }, -- ビロードスロップス
+            { itemId = xi.item.CUIR_HIGHBOOTS,               weight = 1120 }, -- クイルハイブーツ
+            { itemId = xi.item.EBONY_SABOTS,                 weight =  390 }, -- エボニーサボ
+        },
     },
     [xi.zone.QUICKSAND_CAVES] =
     {
-        regionalItems = { 10952 }, -- Tanner's Torque
+        regionalItems = { xi.item.TANNERS_TORQUE }, -- 革細工師トルク
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {   60, 4149 }, -- Panacea
-            {  460, 4155 }, -- Remedy
-            {  790, 4202 }, -- Daedalus Wing
-            {  490, 4206 }, -- Catholicon
-            {  320, 4210 }, -- Lethe Water
-            {  225, 4255 }, -- Mana Powder
-            {  360, 4302 }, -- Pamama au Lait
-            {  540, 4424 }, -- Melon Juice
-            {  210, 5322 }, -- Healing Powder
+            { itemId = xi.item.FLASK_OF_PANACEA,        weight =   60 }, -- パナケイア
+            { itemId = xi.item.REMEDY,                  weight =  460 }, -- 万能薬
+            { itemId = xi.item.DAEDALUS_WING,           weight =  790 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  490 }, -- カトリコン
+            { itemId = xi.item.BOTTLE_OF_LETHE_WATER,   weight =  320 }, -- レーテー水
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,    weight =  225 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  360 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  540 }, -- メロンジュース
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER, weight =  210 }, -- ヒールパウダー
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2320,   645 }, -- Darksteel Ore
-            { 1350,   702 }, -- Ebony Log
-            { 1290,   737 }, -- Gold Ore
-            {  525,   823 }, -- Gold Thread
-            {  190,   844 }, -- Phoenix Feather
-            {  780,  1443 }, -- Dried Mugwort
-            {  240,  3309 }, -- Barrage Turbine
-            { 1230,  5164 }, -- Ground Wasabi
-            { 1150, 12427 }, -- Bascinet
-            {  575, 12683 }, -- Darksteel Mufflers
-            {  680, 12740 }, -- Silk Mitts
-            {  740, 12811 }, -- Dst. Breeches
-            {  625, 12829 }, -- Beak Trousers
-            {  490, 12868 }, -- Silk Slacks
-            {  710, 12939 }, -- Dst. Sollerets
-            {  460, 12996 }, -- Silk Pumps
-            {  615, 13698 }, -- Beak Helm
-            {  540, 13700 }, -- Beak Gloves
-            {  470, 13702 }, -- Beak Ledelsens
-        }
+            { itemId = xi.item.CHUNK_OF_DARKSTEEL_ORE, weight = 2320 }, -- 黒鉄鉱
+            { itemId = xi.item.EBONY_LOG,              weight = 1350 }, -- エボニー原木
+            { itemId = xi.item.CHUNK_OF_GOLD_ORE,      weight = 1290 }, -- 金鉱
+            { itemId = xi.item.SPOOL_OF_GOLD_THREAD,   weight =  525 }, -- 金糸
+            { itemId = xi.item.PHOENIX_FEATHER,        weight =  190 }, -- フェニックスの尾
+            { itemId = xi.item.PINCH_OF_DRIED_MUGWORT, weight =  780 }, -- 乾燥マグワート
+            { itemId = xi.item.JAR_OF_GROUND_WASABI,   weight = 1230 }, -- ねりわさび
+            { itemId = xi.item.BASCINET,               weight = 1150 }, -- バシニット
+            { itemId = xi.item.DARKSTEEL_MUFFLERS,     weight =  575 }, -- ダークマフラ
+            { itemId = xi.item.SILK_MITTS,             weight =  680 }, -- シルクミトン
+            { itemId = xi.item.DARKSTEEL_BREECHES,     weight =  740 }, -- ダークブリーチズ
+            { itemId = xi.item.BEAK_TROUSERS,          weight =  625 }, -- ビークトラウザ
+            { itemId = xi.item.SILK_SLACKS,            weight =  490 }, -- シルクスラックス
+            { itemId = xi.item.DARKSTEEL_SOLLERETS,    weight =  710 }, -- ダークソレル
+            { itemId = xi.item.SILK_PUMPS,             weight =  460 }, -- シルクパンプス
+            { itemId = xi.item.BEAK_HELM,              weight =  615 }, -- ビークヘルム
+            { itemId = xi.item.BEAK_GLOVES,            weight =  540 }, -- ビークグローブ
+            { itemId = xi.item.BEAK_LEDELSENS,         weight =  470 }, -- ビークレデルセン
+        },
     },
     [xi.zone.WEST_SARUTABARUTA] =
     {
-        regionalItems = { 19221 }, -- Firefly
+        regionalItems = { xi.item.FIREFLY }, -- ファイアフライ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  750, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  240, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  750 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  240 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1700,   505 }, -- 大羊の毛皮
-            { 4500,   640 }, -- 銅鉱
-            { 2500,   641 }, -- スズ石
-            { 3450,   642 }, -- 亜鉛鉱
-            { 2000,   688 }, -- アローウッド原木
-            { 1020,   698 }, -- アッシュ原木
-            { 4200,   656 }, -- 獣人貨
-            { 5000,   768 }, -- 火打石
-            { 1250,   818 }, -- 木綿糸
-            { 1300,   833 }, -- モコ草
-            {  800,   840 }, -- チョコボの羽根
-            { 3600,   846 }, -- 虫の翅
-            { 3000,   912 }, -- 蜂の巣のかけら
-            {  700,   943 }, -- 毒素
-            { 2400,  1214 }, -- 石の矢尻 x33
-            { 3590,  4148 }, -- 毒消し
-            { 1150,  4150 }, -- 目薬
-            { 1360,  4151 }, -- やまびこ薬
-            { 2900,  4370 }, -- 蜂蜜
-            {  600, 12290 }, -- メープルシールド
-            {  295, 12440 }, -- レザーバンダナ
-            {  450, 12449 }, -- ブラスキャップ
-            {  720, 12456 }, -- 鉢巻
-            {  530, 12608 }, -- チュニック
-            {  460, 12696 }, -- レザーグローブ
-            {  340, 12705 }, -- ブラスミトン
-            {  640, 12712 }, -- 手甲
-            {  310, 12736 }, -- ミトン
-            {  475, 12824 }, -- レザートラウザ
-            {   80, 12833 }, -- ブラスサブリガ
-            {  890, 12840 }, -- 下ばき
-            {  422, 12864 }, -- ズボン
-            {  135, 12952 }, -- Leather Highboots
-            {  250, 12961 }, -- ブラスレギンス
-            {  700, 12968 }, -- Kyahan
-            {  287, 12992 }, -- ソレア
-            {  500, 13081 }, -- レザーゴルゲット
-            {  300, 16407 }, -- ブラスバグナウ
-            {  120, 16530 }, -- サイフォス
-            {  320, 17050 }, -- ウィローワンド
-        }
+            { itemId = xi.item.SHEEPSKIN,                   weight = 1700 }, -- 大羊の毛皮
+            { itemId = xi.item.CHUNK_OF_COPPER_ORE,         weight = 4500 }, -- 銅鉱
+            { itemId = xi.item.CHUNK_OF_TIN_ORE,            weight = 2500 }, -- スズ石
+            { itemId = xi.item.CHUNK_OF_ZINC_ORE,           weight = 3450 }, -- 亜鉛鉱
+            { itemId = xi.item.ARROWWOOD_LOG,               weight = 2000 }, -- アローウッド原木
+            { itemId = xi.item.ASH_LOG,                     weight = 1020 }, -- アッシュ原木
+            { itemId = xi.item.BEASTCOIN,                   weight = 4200 }, -- 獣人貨
+            { itemId = xi.item.FLINT_STONE,                 weight = 5000 }, -- 火打石
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,      weight = 1250 }, -- 木綿糸
+            { itemId = xi.item.CLUMP_OF_MOKO_GRASS,         weight = 1300 }, -- モコ草
+            { itemId = xi.item.CHOCOBO_FEATHER,             weight =  800 }, -- チョコボの羽根
+            { itemId = xi.item.INSECT_WING,                 weight = 3600 }, -- 虫の翅
+            { itemId = xi.item.BEEHIVE_CHIP,                weight = 3000 }, -- 蜂の巣のかけら
+            { itemId = xi.item.PINCH_OF_POISON_DUST,        weight =  700 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_STONE_ARROWHEADS, weight = 2400 }, -- 石の矢尻 x33
+            { itemId = xi.item.ANTIDOTE,                    weight = 3590 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,          weight = 1150 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,         weight = 1360 }, -- やまびこ薬
+            { itemId = xi.item.POT_OF_HONEY,                weight = 2900 }, -- 蜂蜜
+            { itemId = xi.item.MAPLE_SHIELD,                weight =  600 }, -- メープルシールド
+            { itemId = xi.item.LEATHER_BANDANA,             weight =  295 }, -- レザーバンダナ
+            { itemId = xi.item.BRASS_CAP,                   weight =  450 }, -- ブラスキャップ
+            { itemId = xi.item.HACHIMAKI,                   weight =  720 }, -- 鉢巻
+            { itemId = xi.item.TUNIC,                       weight =  530 }, -- チュニック
+            { itemId = xi.item.LEATHER_GLOVES,              weight =  460 }, -- レザーグローブ
+            { itemId = xi.item.BRASS_MITTENS,               weight =  340 }, -- ブラスミトン
+            { itemId = xi.item.TEKKO,                       weight =  640 }, -- 手甲
+            { itemId = xi.item.MITTS,                       weight =  310 }, -- ミトン
+            { itemId = xi.item.LEATHER_TROUSERS,            weight =  475 }, -- レザートラウザ
+            { itemId = xi.item.BRASS_SUBLIGAR,              weight =   80 }, -- ブラスサブリガ
+            { itemId = xi.item.SITABAKI,                    weight =  890 }, -- 下ばき
+            { itemId = xi.item.SLACKS,                      weight =  422 }, -- ズボン
+            { itemId = xi.item.LEATHER_HIGHBOOTS,           weight =  135 }, -- レザーハイブーツ
+            { itemId = xi.item.BRASS_LEGGINGS,              weight =  250 }, -- ブラスレギンス
+            { itemId = xi.item.KYAHAN,                      weight =  700 }, -- 脚絆
+            { itemId = xi.item.SOLEA,                       weight =  287 }, -- ソレア
+            { itemId = xi.item.LEATHER_GORGET,              weight =  500 }, -- レザーゴルゲット
+            { itemId = xi.item.BRASS_BAGHNAKHS,             weight =  300 }, -- ブラスバグナウ
+            { itemId = xi.item.XIPHOS,                      weight =  120 }, -- サイフォス
+            { itemId = xi.item.WILLOW_WAND,                 weight =  320 }, -- ウィローワンド
+        },
     },
     [xi.zone.EAST_SARUTABARUTA] =
     {
-        regionalItems = { 16279 }, -- Pile Chain
+        regionalItems = { xi.item.PILE_CHAIN }, -- パイルチェーン
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  750, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  240, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  750 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  240 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1700,   505 }, -- 大羊の毛皮
-            { 4500,   640 }, -- 銅鉱
-            { 2500,   641 }, -- スズ石
-            { 3450,   642 }, -- 亜鉛鉱
-            { 2000,   688 }, -- アローウッド原木
-            { 1020,   698 }, -- アッシュ原木
-            { 4200,   656 }, -- 獣人貨
-            { 5000,   768 }, -- 火打石
-            { 1250,   818 }, -- 木綿糸
-            { 1300,   833 }, -- モコ草
-            {  800,   840 }, -- チョコボの羽根
-            { 3600,   846 }, -- 虫の翅
-            { 3000,   912 }, -- 蜂の巣のかけら
-            {  700,   943 }, -- 毒素
-            { 2400,  1214 }, -- 石の矢尻 x33
-            { 3590,  4148 }, -- 毒消し
-            { 1150,  4150 }, -- 目薬
-            { 1360,  4151 }, -- やまびこ薬
-            { 2900,  4370 }, -- 蜂蜜
-            {  600, 12290 }, -- メープルシールド
-            {  295, 12440 }, -- レザーバンダナ
-            {  450, 12449 }, -- ブラスキャップ
-            {  720, 12456 }, -- 鉢巻
-            {  530, 12608 }, -- チュニック
-            {  460, 12696 }, -- レザーグローブ
-            {  340, 12705 }, -- ブラスミトン
-            {  640, 12712 }, -- 手甲
-            {  310, 12736 }, -- ミトン
-            {  475, 12824 }, -- レザートラウザ
-            {   80, 12833 }, -- ブラスサブリガ
-            {  890, 12840 }, -- 下ばき
-            {  422, 12864 }, -- ズボン
-            {  135, 12952 }, -- Leather Highboots
-            {  250, 12961 }, -- ブラスレギンス
-            {  700, 12968 }, -- Kyahan
-            {  287, 12992 }, -- ソレア
-            {  500, 13081 }, -- レザーゴルゲット
-            {  300, 16407 }, -- ブラスバグナウ
-            {  120, 16530 }, -- サイフォス
-            {  320, 17050 }, -- ウィローワンド
-        }
+            { itemId = xi.item.SHEEPSKIN,                   weight = 1700 }, -- 大羊の毛皮
+            { itemId = xi.item.CHUNK_OF_COPPER_ORE,         weight = 4500 }, -- 銅鉱
+            { itemId = xi.item.CHUNK_OF_TIN_ORE,            weight = 2500 }, -- スズ石
+            { itemId = xi.item.CHUNK_OF_ZINC_ORE,           weight = 3450 }, -- 亜鉛鉱
+            { itemId = xi.item.ARROWWOOD_LOG,               weight = 2000 }, -- アローウッド原木
+            { itemId = xi.item.ASH_LOG,                     weight = 1020 }, -- アッシュ原木
+            { itemId = xi.item.BEASTCOIN,                   weight = 4200 }, -- 獣人貨
+            { itemId = xi.item.FLINT_STONE,                 weight = 5000 }, -- 火打石
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,      weight = 1250 }, -- 木綿糸
+            { itemId = xi.item.CLUMP_OF_MOKO_GRASS,         weight = 1300 }, -- モコ草
+            { itemId = xi.item.CHOCOBO_FEATHER,             weight =  800 }, -- チョコボの羽根
+            { itemId = xi.item.INSECT_WING,                 weight = 3600 }, -- 虫の翅
+            { itemId = xi.item.BEEHIVE_CHIP,                weight = 3000 }, -- 蜂の巣のかけら
+            { itemId = xi.item.PINCH_OF_POISON_DUST,        weight =  700 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_STONE_ARROWHEADS, weight = 2400 }, -- 石の矢尻 x33
+            { itemId = xi.item.ANTIDOTE,                    weight = 3590 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,          weight = 1150 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,         weight = 1360 }, -- やまびこ薬
+            { itemId = xi.item.POT_OF_HONEY,                weight = 2900 }, -- 蜂蜜
+            { itemId = xi.item.MAPLE_SHIELD,                weight =  600 }, -- メープルシールド
+            { itemId = xi.item.LEATHER_BANDANA,             weight =  295 }, -- レザーバンダナ
+            { itemId = xi.item.BRASS_CAP,                   weight =  450 }, -- ブラスキャップ
+            { itemId = xi.item.HACHIMAKI,                   weight =  720 }, -- 鉢巻
+            { itemId = xi.item.TUNIC,                       weight =  530 }, -- チュニック
+            { itemId = xi.item.LEATHER_GLOVES,              weight =  460 }, -- レザーグローブ
+            { itemId = xi.item.BRASS_MITTENS,               weight =  340 }, -- ブラスミトン
+            { itemId = xi.item.TEKKO,                       weight =  640 }, -- 手甲
+            { itemId = xi.item.MITTS,                       weight =  310 }, -- ミトン
+            { itemId = xi.item.LEATHER_TROUSERS,            weight =  475 }, -- レザートラウザ
+            { itemId = xi.item.BRASS_SUBLIGAR,              weight =   80 }, -- ブラスサブリガ
+            { itemId = xi.item.SITABAKI,                    weight =  890 }, -- 下ばき
+            { itemId = xi.item.SLACKS,                      weight =  422 }, -- ズボン
+            { itemId = xi.item.LEATHER_HIGHBOOTS,           weight =  135 }, -- レザーハイブーツ
+            { itemId = xi.item.BRASS_LEGGINGS,              weight =  250 }, -- ブラスレギンス
+            { itemId = xi.item.KYAHAN,                      weight =  700 }, -- 脚絆
+            { itemId = xi.item.SOLEA,                       weight =  287 }, -- ソレア
+            { itemId = xi.item.LEATHER_GORGET,              weight =  500 }, -- レザーゴルゲット
+            { itemId = xi.item.BRASS_BAGHNAKHS,             weight =  300 }, -- ブラスバグナウ
+            { itemId = xi.item.XIPHOS,                      weight =  120 }, -- サイフォス
+            { itemId = xi.item.WILLOW_WAND,                 weight =  320 }, -- ウィローワンド
+        },
     },
     [xi.zone.TAHRONGI_CANYON] =
     {
-        regionalItems = { 16007 }, -- Protect Earring
+        regionalItems = { xi.item.PROTECT_EARRING }, -- プロテクトイヤリング
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  750, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  240, 4301 }, -- Pear au Lait
-            {  660, 4425 }, -- Tomato Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  750 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_PEAR_AU_LAIT,  weight =  240 }, -- ペア・オレ
+            { itemId = xi.item.BOTTLE_OF_TOMATO_JUICE, weight =  660 }, -- トマトジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1700,   626 }, -- Black Pepper
-            { 2500,   641 }, -- スズ石
-            { 2000,   688 }, -- アローウッド原木
-            { 1020,   727 }, -- Dogwood Log
-            { 4200,   750 }, -- Silver Beastcoin
-            { 5000,   768 }, -- 火打石
-            { 3600,   846 }, -- 虫の翅
-            { 1300,   893 }, -- Giant Femur
-            { 3000,   912 }, -- 蜂の巣のかけら
-            { 1400,   925 }, -- Giant Stinger
-            { 4300,   953 }, -- Treant Bulb
-            { 2200,  1215 }, -- Handful of Bone Arrowheads x33
-            { 4000,  1845 }, -- Red Moko Grass
-            {  595,  4148 }, -- 毒消し
-            { 1150,  4151 }, -- やまびこ薬
-            { 2100,  4227 }, -- Bronze Bolt Quiver
-            { 2060,  4509 }, -- Distilled Water
-            {  425, 12432 }, -- Faceguard
-            {  760, 12449 }, -- ブラスキャップ
-            {  590, 12473 }, -- Poet's Circlet
-            {  630, 12601 }, -- Linen Robe
-            {  765, 12705 }, -- ブラスミトン
-            {  465, 12710 }, -- Bone Mittens
-            {  460, 12720 }, -- Gloves
-            {  430, 12729 }, -- Linen Cuffs
-            {  275, 12816 }, -- Scale Cuisses
-            {  730, 12834 }, -- Bone Subligar
-            {  600, 12848 }, -- Brais
-            {  535, 12688 }, -- Scale Finger Gauntlets
-            {  375, 12857 }, -- Linen Slops
-            {  410, 12966 }, -- Bone Leggings
-            {  655, 12976 }, -- Gaiters
-            {  425, 12985 }, -- Holly Clogs
-            {  390, 16466 }, -- Knife
-            {  370, 16531 }, -- Brass Xiphos
-            {  380, 17096 }, -- Holly Pole
-            { 2320, 17316 }, -- Bomb Arm
-        }
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,      weight = 1700 }, -- ブラックペッパー
+            { itemId = xi.item.CHUNK_OF_TIN_ORE,           weight = 2500 }, -- スズ石
+            { itemId = xi.item.ARROWWOOD_LOG,              weight = 2000 }, -- アローウッド原木
+            { itemId = xi.item.DOGWOOD_LOG,                weight = 1020 }, -- ドッグウッド原木
+            { itemId = xi.item.SILVER_BEASTCOIN,           weight = 4200 }, -- 獣人銀貨
+            { itemId = xi.item.FLINT_STONE,                weight = 5000 }, -- 火打石
+            { itemId = xi.item.INSECT_WING,                weight = 3600 }, -- 虫の翅
+            { itemId = xi.item.GIANT_FEMUR,                weight = 1300 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,               weight = 3000 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,              weight = 1400 }, -- 蜂の一刺し
+            { itemId = xi.item.TREANT_BULB,                weight = 4300 }, -- トレントの球根
+            { itemId = xi.item.HANDFUL_OF_BONE_ARROWHEADS, weight = 2200 }, -- 骨の矢 x 33
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS,    weight = 4000 }, -- 赤モコ草
+            { itemId = xi.item.ANTIDOTE,                   weight =  595 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,        weight = 1150 }, -- やまびこ薬
+            { itemId = xi.item.BRONZE_BOLT_QUIVER,         weight = 2100 }, -- ブロンズボルト x33
+            { itemId = xi.item.FLASK_OF_DISTILLED_WATER,   weight = 2060 }, -- 蒸留水
+            { itemId = xi.item.FACEGUARD,                  weight =  425 }, -- フェイスガード
+            { itemId = xi.item.BRASS_CAP,                  weight =  760 }, -- ブラスキャップ
+            { itemId = xi.item.POETS_CIRCLET,              weight =  590 }, -- 詩人のサークレット
+            { itemId = xi.item.LINEN_ROBE,                 weight =  630 }, -- リネンローブ
+            { itemId = xi.item.BRASS_MITTENS,              weight =  765 }, -- ブラスミトン
+            { itemId = xi.item.BONE_MITTENS,               weight =  465 }, -- ボーンミトン
+            { itemId = xi.item.GLOVES,                     weight =  460 }, -- グローブ
+            { itemId = xi.item.LINEN_CUFFS,                weight =  430 }, -- リネンカフス
+            { itemId = xi.item.SCALE_CUISSES,              weight =  275 }, -- スケイルクウィス
+            { itemId = xi.item.BONE_SUBLIGAR,              weight =  730 }, -- ボーンサブリガ
+            { itemId = xi.item.BRAIS,                      weight =  600 }, -- ブレー
+            { itemId = xi.item.SCALE_FINGER_GAUNTLETS,     weight =  535 }, -- スケイルフィンガー
+            { itemId = xi.item.LINEN_SLOPS,                weight =  375 }, -- リネンスロップス
+            { itemId = xi.item.BONE_LEGGINGS,              weight =  410 }, -- ボーンレギンス
+            { itemId = xi.item.GAITERS,                    weight =  655 }, -- ゲートル
+            { itemId = xi.item.HOLLY_CLOGS,                weight =  425 }, -- ホーリークロッグ
+            { itemId = xi.item.KNIFE,                      weight =  390 }, -- ナイフ
+            { itemId = xi.item.BRASS_XIPHOS,               weight =  370 }, -- ブラスサイフォス
+            { itemId = xi.item.HOLLY_POLE,                 weight =  380 }, -- ホーリーポール
+            { itemId = xi.item.BOMB_ARM,                   weight = 2320 }, -- ボムのうで
+        },
     },
     [xi.zone.BUBURIMU_PENINSULA] =
     {
-        regionalItems = { 18599 }, -- Pestle
+        regionalItems = { xi.item.PESTLE }, -- ペストル
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  750, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  240, 4301 }, -- Pear au Lait
-            {  660, 4425 }, -- Tomato Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  750 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_PEAR_AU_LAIT,  weight =  240 }, -- ペア・オレ
+            { itemId = xi.item.BOTTLE_OF_TOMATO_JUICE, weight =  660 }, -- トマトジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 4600,   642 }, -- 亜鉛鉱
-            { 1250,   689 }, -- Lauan Log
-            {  600,   693 }, -- Walnut Log
-            { 3250,   736 }, -- Silver Ore
-            { 2900,   835 }, -- Flax Flower
-            { 4800,   847 }, -- Bird Feather
-            { 1600,   898 }, -- Chicken Bone
-            { 2020,   914 }, -- Mercury
-            { 5000,   936 }, -- Rock Salt
-            {  540,   947 }, -- Firesand
-            { 3540,  1108 }, -- Sulfur
-            { 4750,  1211 }, -- Handful of Bronze Bolt Heads x33
-            {  575,  4148 }, -- 毒消し
-            { 3150,  4151 }, -- やまびこ薬
-            { 1010,  4373 }, -- Woozyshroom
-            {  645, 12441 }, -- Lizard Helm
-            { 1760, 12454 }, -- Bone Mask
-            { 1400, 12455 }, -- Beetle Mask
-            { 1390, 12473 }, -- Poet's Circlet
-            { 1900, 12697 }, -- Lizard Gloves
-            { 1700, 12710 }, -- Bone Mittens
-            {  390, 12711 }, -- Beetle Mittens
-            { 1200, 12729 }, -- Linen Cuffs
-            {  910, 12737 }, -- White Mitts
-            { 1600, 12825 }, -- Lizard Trousers
-            { 1430, 12834 }, -- Bone Subligar
-            {  790, 12835 }, -- Beetle Subligar
-            { 1060, 12857 }, -- Linen Slops
-            {  920, 12865 }, -- Black Slacks
-            { 1250, 12953 }, -- Lizard Ledelsens
-            { 1010, 12966 }, -- Bone Leggings
-            {  475, 12967 }, -- Beetle Leggings
-            { 1600, 12985 }, -- Holly Clogs
-            { 1320, 12993 }, -- Sandals
-            {  610, 13584 }, -- Cotton Cape
-            {  405, 13588 }, -- Dhalmel Mantle
-            {  350, 16473 }, -- Kukri
-            {  345, 16643 }, -- Battleaxe
-        }
+            { itemId = xi.item.CHUNK_OF_ZINC_ORE,            weight = 4600 }, -- 亜鉛鉱
+            { itemId = xi.item.LAUAN_LOG,                    weight = 1250 }, -- ラワン原木
+            { itemId = xi.item.WALNUT_LOG,                   weight =  600 }, -- ウォルナット原木
+            { itemId = xi.item.CHUNK_OF_SILVER_ORE,          weight = 3250 }, -- 銀鉱
+            { itemId = xi.item.FLAX_FLOWER,                  weight = 2900 }, -- 亜麻
+            { itemId = xi.item.BIRD_FEATHER,                 weight = 4800 }, -- 鳥の羽根
+            { itemId = xi.item.CHICKEN_BONE,                 weight = 1600 }, -- がら
+            { itemId = xi.item.VIAL_OF_MERCURY,              weight = 2020 }, -- 水銀
+            { itemId = xi.item.CHUNK_OF_ROCK_SALT,           weight = 5000 }, -- 岩塩
+            { itemId = xi.item.JAR_OF_FIRESAND,              weight =  540 }, -- 発火薬
+            { itemId = xi.item.PINCH_OF_SULFUR,              weight = 3540 }, -- 硫黄
+            { itemId = xi.item.HANDFUL_OF_BRONZE_BOLT_HEADS, weight = 4750 }, -- ブロンズボルト x33
+            { itemId = xi.item.ANTIDOTE,                     weight =  575 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,          weight = 3150 }, -- やまびこ薬
+            { itemId = xi.item.WOOZYSHROOM,                  weight = 1010 }, -- マヨイタケ
+            { itemId = xi.item.LIZARD_HELM,                  weight =  645 }, -- リザードヘルム
+            { itemId = xi.item.BONE_MASK,                    weight = 1760 }, -- ボーンマスク
+            { itemId = xi.item.BEETLE_MASK,                  weight = 1400 }, -- ビートルマスク
+            { itemId = xi.item.POETS_CIRCLET,                weight = 1390 }, -- 詩人のサークレット
+            { itemId = xi.item.LIZARD_GLOVES,                weight = 1900 }, -- リザードグローブ
+            { itemId = xi.item.BONE_MITTENS,                 weight = 1700 }, -- ボーンミトン
+            { itemId = xi.item.BEETLE_MITTENS,               weight =  390 }, -- ビートルミトン
+            { itemId = xi.item.LINEN_CUFFS,                  weight = 1200 }, -- リネンカフス
+            { itemId = xi.item.WHITE_MITTS,                  weight =  910 }, -- ホワイトミトン
+            { itemId = xi.item.LIZARD_TROUSERS,              weight = 1600 }, -- リザードトラウザ
+            { itemId = xi.item.BONE_SUBLIGAR,                weight = 1430 }, -- ボーンサブリガ
+            { itemId = xi.item.BEETLE_SUBLIGAR,              weight =  790 }, -- ビートルサブリガ
+            { itemId = xi.item.LINEN_SLOPS,                  weight = 1060 }, -- リネンスロップス
+            { itemId = xi.item.BLACK_SLACKS,                 weight =  920 }, -- ブラックズボン
+            { itemId = xi.item.LIZARD_LEDELSENS,             weight = 1250 }, -- リザードレデルセン
+            { itemId = xi.item.BONE_LEGGINGS,                weight = 1010 }, -- ボーンレギンス
+            { itemId = xi.item.BEETLE_LEGGINGS,              weight =  475 }, -- ビートルレギンス
+            { itemId = xi.item.HOLLY_CLOGS,                  weight = 1600 }, -- ホーリークロッグ
+            { itemId = xi.item.SANDALS,                      weight = 1320 }, -- サンダル
+            { itemId = xi.item.COTTON_CAPE,                  weight =  610 }, -- コットンケープ
+            { itemId = xi.item.DHALMEL_MANTLE,               weight =  405 }, -- ダルメルマント
+            { itemId = xi.item.KUKRI,                        weight =  350 }, -- ククリ
+            { itemId = xi.item.BATTLEAXE,                    weight =  345 }, -- バトルアクス
+        },
     },
     [xi.zone.MERIPHATAUD_MOUNTAINS] =
     {
-        regionalItems = { 18503 }, -- Mammut
+        regionalItems = { xi.item.MAMMUT }, -- マンムート
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2400,   627 }, -- Maple Sugar
-            { 1700,   637 }, -- Slime Oil
-            { 3200,   643 }, -- Iron Ore
-            { 4320,   690 }, -- Elm Log
-            { 2050,   816 }, -- Silk Thread
-            { 2450,   835 }, -- Flax Flower
-            { 4050,   857 }, -- Dhalmel Hide
-            { 5000,   880 }, -- Bone Chip
-            { 3250,   897 }, -- Scorpion Claw
-            { 1670,   900 }, -- Fish Bones
-            { 3520,   913 }, -- Beeswax
-            { 4300,   943 }, -- 毒素
-            { 4690,  1211 }, -- Brz. Bolt Heads x33
-            { 2600,  4151 }, -- やまびこ薬
-            { 3170,  4225 }, -- Iron Quiver
-            { 1540,  4447 }, -- Scream Fungus
-            {  670, 12424 }, -- Iron Mask
-            {  630, 12441 }, -- Lizard Helm
-            {  710, 12455 }, -- Beetle Mask
-            {  420, 12552 }, -- Chainmail
-            {  820, 12593 }, -- Cotton Doublet
-            {  310, 12680 }, -- Chain Mittens
-            {  520, 12697 }, -- Lizard Gloves
-            {  790, 12711 }, -- Beetle Mittens
-            {  900, 12721 }, -- Cotton Gloves
-            {  890, 12737 }, -- White Mitts
-            {  740, 12825 }, -- Lizard Trousers
-            {  650, 12849 }, -- Cotton Brais
-            {  760, 12865 }, -- Black Slacks
-            {  895, 12953 }, -- Lizard Ledelsens
-            { 1020, 12967 }, -- Beetle Leggings
-            { 1100, 12977 }, -- Cotton Gaiters
-            { 1200, 12993 }, -- Sandals
-            {  330, 16406 }, -- Baghnakhs
-            {  320, 16835 }, -- Spear
-            {  350, 17090 }, -- Elm Staff
-        }
+            { itemId = xi.item.POT_OF_MAPLE_SUGAR,           weight = 2400 }, -- メープルシュガー
+            { itemId = xi.item.VIAL_OF_SLIME_OIL,            weight = 1700 }, -- スライムオイル
+            { itemId = xi.item.CHUNK_OF_IRON_ORE,            weight = 3200 }, -- 鉄鉱
+            { itemId = xi.item.ELM_LOG,                      weight = 4320 }, -- エルム原木
+            { itemId = xi.item.SPOOL_OF_SILK_THREAD,         weight = 2050 }, -- 絹糸
+            { itemId = xi.item.FLAX_FLOWER,                  weight = 2450 }, -- 亜麻
+            { itemId = xi.item.DHALMEL_HIDE,                 weight = 4050 }, -- ダルメルの毛皮
+            { itemId = xi.item.BONE_CHIP,                    weight = 5000 }, -- 骨くず
+            { itemId = xi.item.SCORPION_CLAW,                weight = 3250 }, -- 大サソリの爪
+            { itemId = xi.item.SET_OF_FISH_BONES,            weight = 1670 }, -- 魚の骨
+            { itemId = xi.item.LUMP_OF_BEESWAX,              weight = 3520 }, -- 蜜蝋
+            { itemId = xi.item.PINCH_OF_POISON_DUST,         weight = 4300 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_BRONZE_BOLT_HEADS, weight = 4690 }, -- ブロンズボルト x33
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,          weight = 2600 }, -- やまびこ薬
+            { itemId = xi.item.IRON_QUIVER,                  weight = 3170 }, -- 箙【鉄】
+            { itemId = xi.item.SCREAM_FUNGUS,                weight = 1540 }, -- サケビタケ
+            { itemId = xi.item.IRON_MASK,                    weight =  670 }, -- アイアンマスク
+            { itemId = xi.item.LIZARD_HELM,                  weight =  630 }, -- リザードヘルム
+            { itemId = xi.item.BEETLE_MASK,                  weight =  710 }, -- ビートルマスク
+            { itemId = xi.item.CHAINMAIL,                    weight =  420 }, -- チェーンメイル
+            { itemId = xi.item.COTTON_DOUBLET,               weight =  820 }, -- コットンダブレット
+            { itemId = xi.item.CHAIN_MITTENS,                weight =  310 }, -- チェーンミトン
+            { itemId = xi.item.LIZARD_GLOVES,                weight =  520 }, -- リザードグローブ
+            { itemId = xi.item.BEETLE_MITTENS,               weight =  790 }, -- ビートルミトン
+            { itemId = xi.item.COTTON_GLOVES,                weight =  900 }, -- コットングローブ
+            { itemId = xi.item.WHITE_MITTS,                  weight =  890 }, -- ホワイトミトン
+            { itemId = xi.item.LIZARD_TROUSERS,              weight =  740 }, -- リザードトラウザ
+            { itemId = xi.item.COTTON_BRAIS,                 weight =  650 }, -- コットンブレー
+            { itemId = xi.item.BLACK_SLACKS,                 weight =  760 }, -- ブラックズボン
+            { itemId = xi.item.LIZARD_LEDELSENS,             weight =  895 }, -- リザードレデルセン
+            { itemId = xi.item.BEETLE_LEGGINGS,              weight = 1020 }, -- ビートルレギンス
+            { itemId = xi.item.COTTON_GAITERS,               weight = 1100 }, -- コットンゲートル
+            { itemId = xi.item.SANDALS,                      weight = 1200 }, -- サンダル
+            { itemId = xi.item.BAGHNAKHS,                    weight =  330 }, -- バグナウ
+            { itemId = xi.item.SPEAR,                        weight =  320 }, -- スピア
+            { itemId = xi.item.ELM_STAFF,                    weight =  350 }, -- エルムスタッフ
+        },
     },
     [xi.zone.SAUROMUGUE_CHAMPAIGN] =
     {
-        regionalItems = { 16368 }, -- Herder's Subligar
+        regionalItems = { xi.item.HERDERS_SUBLIGAR }, -- ハーダーサブリガ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   573 }, -- Vegetable Seeds
-            {  475,   636 }, -- Chamomile
-            { 2780,   643 }, -- Iron Ore
-            { 1940,   644 }, -- Mythril Ore
-            { 2700,   691 }, -- メープル原木
-            { 1060,   694 }, -- Chestnut Log
-            { 3500,   749 }, -- Mythril Beastcoin
-            { 1900,   820 }, -- Wool Thread
-            { 1150,   859 }, -- Ram Skin
-            { 1090,   895 }, -- Ram Horn
-            { 4600,   928 }, -- Bomb Ash
-            { 2650,   943 }, -- 毒素
-            { 3300,  1212 }, -- Handful of Mythril Bolt Heads x33
-            {  120, 12300 }, -- Targe
-            {  320, 12433 }, -- Brass Mask
-            {  660, 12442 }, -- Studded Bandana
-            {  680, 12465 }, -- Cotton Headgear
-            {  520, 12474 }, -- Wool Hat
-            {  200, 12570 }, -- Studded Vest
-            {  450, 12689 }, -- Brass Finger Gauntlets
-            {  460, 12721 }, -- Cotton Gloves
-            {  390, 12817 }, -- Brass Cuisses
-            {  550, 12826 }, -- Studded Trousers
-            {  420, 12849 }, -- Cotton Brais
-            {  690, 12945 }, -- Brass Greaves
-            {  770, 12954 }, -- Studded Boots
-            {  510, 12977 }, -- Cotton Gaiters
-            {  625, 12986 }, -- Chestnut Sabots
-            {  310, 13085 }, -- Hemp Gorget
-            {  305, 13205 }, -- Silver Obi
-            {  430, 13328 }, -- Mythril Earring
-            {  235, 13446 }, -- Mythril Ring
-            {  525, 16467 }, -- Mythril Knife
-            {  505, 17097 }, -- Elm Pole
-            {  350, 17284 }, -- Chakram
-        }
+            { itemId = xi.item.CHAMOMILE,                     weight =  475 }, -- カモミール
+            { itemId = xi.item.CHUNK_OF_IRON_ORE,             weight = 2780 }, -- 鉄鉱
+            { itemId = xi.item.CHUNK_OF_MYTHRIL_ORE,          weight = 1940 }, -- ミスリル鉱
+            { itemId = xi.item.MAPLE_LOG,                     weight = 2700 }, -- メープル原木
+            { itemId = xi.item.CHESTNUT_LOG,                  weight = 1060 }, -- チェスナット原木
+            { itemId = xi.item.MYTHRIL_BEASTCOIN,             weight = 3500 }, -- 獣人ミスリル貨
+            { itemId = xi.item.SPOOL_OF_WOOL_THREAD,          weight = 1900 }, -- 毛糸
+            { itemId = xi.item.RAM_SKIN,                      weight = 1150 }, -- 雄羊の毛皮
+            { itemId = xi.item.RAM_HORN,                      weight = 1090 }, -- 雄羊の角
+            { itemId = xi.item.PINCH_OF_BOMB_ASH,             weight = 4600 }, -- ボムの灰
+            { itemId = xi.item.PINCH_OF_POISON_DUST,          weight = 2650 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_MYTHRIL_BOLT_HEADS, weight = 3300 }, -- ミスリルボルト x33
+            { itemId = xi.item.TARGE,                         weight =  120 }, -- タージェ
+            { itemId = xi.item.BRASS_MASK,                    weight =  320 }, -- ブラスマスク
+            { itemId = xi.item.STUDDED_BANDANA,               weight =  660 }, -- スタデッドバンダナ
+            { itemId = xi.item.COTTON_HEADGEAR,               weight =  680 }, -- コットンヘッドギア
+            { itemId = xi.item.WOOL_HAT,                      weight =  520 }, -- ウールハット
+            { itemId = xi.item.STUDDED_VEST,                  weight =  200 }, -- スタデッドベスト
+            { itemId = xi.item.BRASS_FINGER_GAUNTLETS,        weight =  450 }, -- ブラスフィンガー
+            { itemId = xi.item.COTTON_GLOVES,                 weight =  460 }, -- コットングローブ
+            { itemId = xi.item.BRASS_CUISSES,                 weight =  390 }, -- ブラスクウィス
+            { itemId = xi.item.STUDDED_TROUSERS,              weight =  550 }, -- スタデッドトラウザ
+            { itemId = xi.item.COTTON_BRAIS,                  weight =  420 }, -- コットンブレー
+            { itemId = xi.item.BRASS_GREAVES,                 weight =  690 }, -- ブラスグリーヴ
+            { itemId = xi.item.STUDDED_BOOTS,                 weight =  770 }, -- スタデッドブーツ
+            { itemId = xi.item.COTTON_GAITERS,                weight =  510 }, -- コットンゲートル
+            { itemId = xi.item.CHESTNUT_SABOTS,               weight =  625 }, -- チェスナットサボ
+            { itemId = xi.item.HEMP_GORGET,                   weight =  310 }, -- ヘンプゴルゲット
+            { itemId = xi.item.SILVER_OBI,                    weight =  305 }, -- 銀の帯
+            { itemId = xi.item.MYTHRIL_EARRING,               weight =  430 }, -- ミスリルピアス
+            { itemId = xi.item.MYTHRIL_RING,                  weight =  235 }, -- ミスリルリング
+            { itemId = xi.item.MYTHRIL_KNIFE,                 weight =  525 }, -- ミスリルナイフ
+            { itemId = xi.item.ELM_POLE,                      weight =  505 }, -- エルムポール
+            { itemId = xi.item.CHAKRAM,                       weight =  350 }, -- チャクラム
+        },
     },
     [xi.zone.THE_SANCTUARY_OF_ZITAH] =
     {
-        regionalItems = { 18075 }, -- Rossignol
+        regionalItems = { xi.item.ROSSIGNOL }, -- ロシニョール
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1450, 4148 }, -- 毒消し
-            { 1550, 4150 }, -- 目薬
-            { 1650, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            {  820, 4164 }, -- Prism Powder
-            {  840, 4165 }, -- Silent Oil
-            {  600, 4202 }, -- Daedalus Wing
-            {  250, 4206 }, -- Catholicon
-            {  420, 4302 }, -- Pamama au Lait
-            {  720, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight = 1450 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight = 1550 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight = 1650 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight =  820 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  840 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  600 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  250 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  420 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  720 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   575 }, -- Grain Seeds
-            { 1690,   612 }, -- Kazham Peppers
-            { 2480,   644 }, -- Mythril Ore
-            { 4150,   699 }, -- Oak Log
-            { 3600,   819 }, -- Linen Thread
-            { 1740,   845 }, -- Black C. Feather
-            { 2350,   914 }, -- Mercury
-            { 2600,  1217 }, -- Slv. Arrowheads
-            {  660, 12450 }, -- Padded Cap
-            {  540, 12475 }, -- Velvet Hat
-            {  475, 12571 }, -- Cuir Bouilli
-            {  570, 12699 }, -- Cuir Gloves
-            {  690, 12706 }, -- Iron Mittens
-            { 1100, 12731 }, -- Velvet Cuffs
-            {  860, 12827 }, -- Cuir Trousers
-            {  720, 12836 }, -- Iron Subligar
-            {  490, 12859 }, -- Velvet Slops
-            { 1120, 12955 }, -- Cuir Highboots
-            {  390, 12987 }, -- Ebony Sabots
-        }
+            { itemId = xi.item.BAG_OF_GRAIN_SEEDS,           weight = 5000 }, -- 謎の穀物の種
+            { itemId = xi.item.BUNCH_OF_KAZHAM_PEPPERS,      weight = 1690 }, -- カザムがらし
+            { itemId = xi.item.CHUNK_OF_MYTHRIL_ORE,         weight = 2480 }, -- ミスリル鉱
+            { itemId = xi.item.OAK_LOG,                      weight = 4150 }, -- オーク原木
+            { itemId = xi.item.SPOOL_OF_LINEN_THREAD,        weight = 3600 }, -- 亜麻糸
+            { itemId = xi.item.BLACK_CHOCOBO_FEATHER,        weight = 1740 }, -- 黒チョコボの羽根
+            { itemId = xi.item.VIAL_OF_MERCURY,              weight = 2350 }, -- 水銀
+            { itemId = xi.item.HANDFUL_OF_SILVER_ARROWHEADS, weight = 2600 }, -- 銀の矢尻 x33
+            { itemId = xi.item.PADDED_CAP,                   weight =  660 }, -- パッデッドキャップ
+            { itemId = xi.item.VELVET_HAT,                   weight =  540 }, -- ビロードハット
+            { itemId = xi.item.CUIR_BOUILLI,                 weight =  475 }, -- クイルブゥイ
+            { itemId = xi.item.CUIR_GLOVES,                  weight =  570 }, -- クイルグローブ
+            { itemId = xi.item.IRON_MITTENS,                 weight =  690 }, -- アイアンミトン
+            { itemId = xi.item.VELVET_CUFFS,                 weight = 1100 }, -- ビロードカフス
+            { itemId = xi.item.CUIR_TROUSERS,                weight =  860 }, -- クイルトラウザ
+            { itemId = xi.item.IRON_SUBLIGAR,                weight =  720 }, -- アイアンサブリガ
+            { itemId = xi.item.VELVET_SLOPS,                 weight =  490 }, -- ビロードスロップス
+            { itemId = xi.item.CUIR_HIGHBOOTS,               weight = 1120 }, -- クイルハイブーツ
+            { itemId = xi.item.EBONY_SABOTS,                 weight =  390 }, -- エボニーサボ
+        },
     },
     [xi.zone.ROMAEVE] =
     {
-        regionalItems = { 11486 }, -- Diana Corona
+        regionalItems = { xi.item.DIANA_CORONA }, -- ディアナコロナ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {   60, 4149 }, -- Panacea
-            {  460, 4155 }, -- Remedy
-            {  790, 4202 }, -- Daedalus Wing
-            {  490, 4206 }, -- Catholicon
-            {  320, 4210 }, -- Lethe Water
-            {  225, 4255 }, -- Mana Powder
-            {  360, 4302 }, -- Pamama au Lait
-            {  540, 4424 }, -- Melon Juice
-            {  210, 5322 }, -- Healing Powder
+            { itemId = xi.item.FLASK_OF_PANACEA,        weight =   60 }, -- パナケイア
+            { itemId = xi.item.REMEDY,                  weight =  460 }, -- 万能薬
+            { itemId = xi.item.DAEDALUS_WING,           weight =  790 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  490 }, -- カトリコン
+            { itemId = xi.item.BOTTLE_OF_LETHE_WATER,   weight =  320 }, -- レーテー水
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,    weight =  225 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  360 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  540 }, -- メロンジュース
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER, weight =  210 }, -- ヒールパウダー
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2320,   645 }, -- Darksteel Ore
-            { 1350,   702 }, -- Ebony Log
-            { 1290,   737 }, -- Gold Ore
-            {  525,   823 }, -- Gold Thread
-            {  190,   844 }, -- Phoenix Feather
-            {  780,  1443 }, -- Dried Mugwort
-            { 1230,  5164 }, -- Ground Wasabi
-            { 1150, 12427 }, -- Bascinet
-            {  575, 12683 }, -- Darksteel Mufflers
-            {  680, 12740 }, -- Silk Mitts
-            {  740, 12811 }, -- Dst. Breeches
-            {  625, 12829 }, -- Beak Trousers
-            {  490, 12868 }, -- Silk Slacks
-            {  710, 12939 }, -- Dst. Sollerets
-            {  460, 12996 }, -- Silk Pumps
-            {  615, 13698 }, -- Beak Helm
-            {  540, 13700 }, -- Beak Gloves
-            {  470, 13702 }, -- Beak Ledelsens
-        }
+            { itemId = xi.item.CHUNK_OF_DARKSTEEL_ORE, weight = 2320 }, -- 黒鉄鉱
+            { itemId = xi.item.EBONY_LOG,              weight = 1350 }, -- エボニー原木
+            { itemId = xi.item.CHUNK_OF_GOLD_ORE,      weight = 1290 }, -- 金鉱
+            { itemId = xi.item.SPOOL_OF_GOLD_THREAD,   weight =  525 }, -- 金糸
+            { itemId = xi.item.PHOENIX_FEATHER,        weight =  190 }, -- フェニックスの尾
+            { itemId = xi.item.PINCH_OF_DRIED_MUGWORT, weight =  780 }, -- 乾燥マグワート
+            { itemId = xi.item.JAR_OF_GROUND_WASABI,   weight = 1230 }, -- ねりわさび
+            { itemId = xi.item.BASCINET,               weight = 1150 }, -- バシニット
+            { itemId = xi.item.DARKSTEEL_MUFFLERS,     weight =  575 }, -- ダークマフラ
+            { itemId = xi.item.SILK_MITTS,             weight =  680 }, -- シルクミトン
+            { itemId = xi.item.DARKSTEEL_BREECHES,     weight =  740 }, -- ダークブリーチズ
+            { itemId = xi.item.BEAK_TROUSERS,          weight =  625 }, -- ビークトラウザ
+            { itemId = xi.item.SILK_SLACKS,            weight =  490 }, -- シルクスラックス
+            { itemId = xi.item.DARKSTEEL_SOLLERETS,    weight =  710 }, -- ダークソレル
+            { itemId = xi.item.SILK_PUMPS,             weight =  460 }, -- シルクパンプス
+            { itemId = xi.item.BEAK_HELM,              weight =  615 }, -- ビークヘルム
+            { itemId = xi.item.BEAK_GLOVES,            weight =  540 }, -- ビークグローブ
+            { itemId = xi.item.BEAK_LEDELSENS,         weight =  470 }, -- ビークレデルセン
+        },
     },
     [xi.zone.YUHTUNGA_JUNGLE] =
     {
-        regionalItems = { 17760 }, -- Buccaneer's Scimitar
+        regionalItems = { xi.item.BUCCANEERS_SCIMITAR }, -- バッカニアシミター
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3600,   633 }, -- オリーブオイル
-            { 3250,   651 }, -- アイアンインゴット
-            { 1200,   653 }, -- ミスリルインゴット
-            { 1420,   691 }, -- メープル原木
-            {  760,   822 }, -- 銀糸
-            { 1350,   943 }, -- 毒素
-            { 2700,  1212 }, -- ミスリルボルトの鏃 x33
-            {  460, 12458 }, -- Soil Hachimaki
-            {  740, 12698 }, -- Studded Gloves
-            {  530, 12714 }, -- Soil Tekko
-            {  360, 12730 }, -- Wool Cuffs
-            {  290, 12826 }, -- Studded Trousers
-            { 1200, 12842 }, -- Soil Sitabaki
-            {  400, 12858 }, -- Wool Slops
-            {  200, 12954 }, -- Studded Boots
-            {  190, 12970 }, -- Soil Kyahan
-            {  390, 12986 }, -- Chestnut Sabots
-        }
+            { itemId = xi.item.BAG_OF_FRUIT_SEEDS,            weight = 2750 }, -- 謎の果物の種
+            { itemId = xi.item.FLASK_OF_OLIVE_OIL,            weight = 3600 }, -- オリーブオイル
+            { itemId = xi.item.IRON_INGOT,                    weight = 3250 }, -- アイアンインゴット
+            { itemId = xi.item.MYTHRIL_INGOT,                 weight = 1200 }, -- ミスリルインゴット
+            { itemId = xi.item.MAPLE_LOG,                     weight = 1420 }, -- メープル原木
+            { itemId = xi.item.SPOOL_OF_SILVER_THREAD,        weight =  760 }, -- 銀糸
+            { itemId = xi.item.PINCH_OF_POISON_DUST,          weight = 1350 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_MYTHRIL_BOLT_HEADS, weight = 2700 }, -- ミスリルボルト x33
+            { itemId = xi.item.SOIL_HACHIMAKI,                weight =  460 }, -- 大地の鉢巻
+            { itemId = xi.item.STUDDED_GLOVES,                weight =  740 }, -- スタデッドグローブ
+            { itemId = xi.item.SOIL_TEKKO,                    weight =  530 }, -- 大地の手甲
+            { itemId = xi.item.WOOL_CUFFS,                    weight =  360 }, -- ウールカフス
+            { itemId = xi.item.STUDDED_TROUSERS,              weight =  290 }, -- スタデッドトラウザ
+            { itemId = xi.item.SOIL_SITABAKI,                 weight = 1200 }, -- 大地の下ばき
+            { itemId = xi.item.WOOL_SLOPS,                    weight =  400 }, -- ウールスロップス
+            { itemId = xi.item.STUDDED_BOOTS,                 weight =  200 }, -- スタデッドブーツ
+            { itemId = xi.item.SOIL_KYAHAN,                   weight =  190 }, -- 脚絆
+            { itemId = xi.item.CHESTNUT_SABOTS,               weight =  390 }, -- チェスナットサボ
+        },
     },
     [xi.zone.YHOATOR_JUNGLE] =
     {
-        regionalItems = { 18953 }, -- Beluga
+        regionalItems = { xi.item.BELUGA }, -- ベルーガ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   575 }, -- Grain Seeds
-            { 2100,   612 }, -- Kazham Peppers
-            { 2300,   644 }, -- Mythril Ore
-            { 3800,   699 }, -- Oak Log
-            { 1700,   819 }, -- Linen Thread
-            {  320,   845 }, -- Black C. Feather
-            { 2750,   914 }, -- Mercury
-            { 2200,  1217 }, -- Slv. Arrowheads x33
-            {  720, 12443 }, -- Cuir Bandana
-            {  610, 12450 }, -- Padded Cap
-            {  530, 12458 }, -- Soil Hachimaki
-            {  715, 12475 }, -- Velvet Hat
-            {  505, 12571 }, -- Cuir Bouilli
-            {  415, 12603 }, -- Velvet Robe
-            {  625, 12699 }, -- Cuir Gloves
-            {  735, 12706 }, -- Iron Mittens
-            {  410, 12731 }, -- Velvet Cuffs
-            {  710, 12827 }, -- Cuir Trousers
-            {  900, 12836 }, -- Iron Subligar
-            {  470, 12859 }, -- Velvet Slops
-            {  865, 12955 }, -- Cuir Highboots
-            {  645, 12962 }, -- Leggings
-            {  230, 12987 }, -- Ebony Sabots
-        }
+            { itemId = xi.item.BAG_OF_GRAIN_SEEDS,           weight = 5000 }, -- 謎の穀物の種
+            { itemId = xi.item.BUNCH_OF_KAZHAM_PEPPERS,      weight = 2100 }, -- カザムがらし
+            { itemId = xi.item.CHUNK_OF_MYTHRIL_ORE,         weight = 2300 }, -- ミスリル鉱
+            { itemId = xi.item.OAK_LOG,                      weight = 3800 }, -- オーク原木
+            { itemId = xi.item.SPOOL_OF_LINEN_THREAD,        weight = 1700 }, -- 亜麻糸
+            { itemId = xi.item.BLACK_CHOCOBO_FEATHER,        weight =  320 }, -- 黒チョコボの羽根
+            { itemId = xi.item.VIAL_OF_MERCURY,              weight = 2750 }, -- 水銀
+            { itemId = xi.item.HANDFUL_OF_SILVER_ARROWHEADS, weight = 2200 }, -- 銀の矢尻 x33
+            { itemId = xi.item.CUIR_BANDANA,                 weight =  720 }, -- クイルバンダナ
+            { itemId = xi.item.PADDED_CAP,                   weight =  610 }, -- パッデッドキャップ
+            { itemId = xi.item.SOIL_HACHIMAKI,               weight =  530 }, -- 大地の鉢巻
+            { itemId = xi.item.VELVET_HAT,                   weight =  715 }, -- ビロードハット
+            { itemId = xi.item.CUIR_BOUILLI,                 weight =  505 }, -- クイルブゥイ
+            { itemId = xi.item.VELVET_ROBE,                  weight =  415 }, -- ビロードローブ
+            { itemId = xi.item.CUIR_GLOVES,                  weight =  625 }, -- クイルグローブ
+            { itemId = xi.item.IRON_MITTENS,                 weight =  735 }, -- アイアンミトン
+            { itemId = xi.item.VELVET_CUFFS,                 weight =  410 }, -- ビロードカフス
+            { itemId = xi.item.CUIR_TROUSERS,                weight =  710 }, -- クイルトラウザ
+            { itemId = xi.item.IRON_SUBLIGAR,                weight =  900 }, -- アイアンサブリガ
+            { itemId = xi.item.VELVET_SLOPS,                 weight =  470 }, -- ビロードスロップス
+            { itemId = xi.item.CUIR_HIGHBOOTS,               weight =  865 }, -- クイルハイブーツ
+            { itemId = xi.item.LEGGINGS,                     weight =  645 }, -- レギンス
+            { itemId = xi.item.EBONY_SABOTS,                 weight =  230 }, -- エボニーサボ
+        },
     },
     [xi.zone.WESTERN_ALTEPA_DESERT] =
     {
-        regionalItems = { 19114 }, -- Galkan Dagger
+        regionalItems = { xi.item.GALKAN_DAGGER }, -- ガルカンダガー
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   575 }, -- Grain Seeds
-            { 2600,   612 }, -- Kazham Peppers
-            { 4200,   698 }, -- アッシュ原木
-            { 3100,   816 }, -- Silk Thread
-            { 2750,   923 }, -- Dryad Root
-            {  320,   932 }, -- Carbon Fiber
-            {  510,  1225 }, -- Gold Nugget
-            {  120,  1228 }, -- Dst. Nugget
-            {  560, 12450 }, -- Padded Cap
-            {  790, 12837 }, -- Carapace Subligar
-            {  810, 13711 }, -- Carapace Mask
-            {  680, 13713 }, -- Carapace Mittens
-            {  725, 13715 }, -- Cpc. Leggings
-            {  120, 16412 }, -- Mythril Claws
-            {   95, 16558 }, -- Falchion
-            {  100, 16590 }, -- Greatsword
-            {  675, 16796 }, -- Mythril Zaghnal
-            {  450, 17062 }, -- Bone Rod
-            {  840, 17610 }, -- Bone Knife
-            {   80, 18207 }, -- Kheten
-        }
+            { itemId = xi.item.BAG_OF_GRAIN_SEEDS,      weight = 5000 }, -- 謎の穀物の種
+            { itemId = xi.item.BUNCH_OF_KAZHAM_PEPPERS, weight = 2600 }, -- カザムがらし
+            { itemId = xi.item.ASH_LOG,                 weight = 4200 }, -- アッシュ原木
+            { itemId = xi.item.SPOOL_OF_SILK_THREAD,    weight = 3100 }, -- 絹糸
+            { itemId = xi.item.DRYAD_ROOT,              weight = 2750 }, -- 木霊の根
+            { itemId = xi.item.LOOP_OF_CARBON_FIBER,    weight =  320 }, -- カーボンファイバー
+            { itemId = xi.item.GOLD_NUGGET,             weight =  510 }, -- ゴールドナゲット
+            { itemId = xi.item.DARKSTEEL_NUGGET,        weight =  120 }, -- ダークナゲット
+            { itemId = xi.item.PADDED_CAP,              weight =  560 }, -- パッデッドキャップ
+            { itemId = xi.item.CARAPACE_SUBLIGAR,       weight =  790 }, -- カラパスサブリガ
+            { itemId = xi.item.CARAPACE_MASK,           weight =  810 }, -- カラパスマスク
+            { itemId = xi.item.CARAPACE_MITTENS,        weight =  680 }, -- カラパスミトン
+            { itemId = xi.item.CARAPACE_LEGGINGS,       weight =  725 }, -- カラパスレギンス
+            { itemId = xi.item.MYTHRIL_CLAWS,           weight =  120 }, -- ミスリルクロー
+            { itemId = xi.item.FALCHION,                weight =   95 }, -- ファルシオン
+            { itemId = xi.item.GREATSWORD,              weight =  100 }, -- グレートソード
+            { itemId = xi.item.MYTHRIL_ZAGHNAL,         weight =  675 }, -- ミスリルザグナル
+            { itemId = xi.item.BONE_ROD,                weight =  450 }, -- ボーンロッド
+            { itemId = xi.item.BONE_KNIFE,              weight =  840 }, -- ボーンナイフ
+            { itemId = xi.item.KHETEN,                  weight =   80 }, -- ケーテン
+        },
     },
     [xi.zone.QUFIM_ISLAND] =
     {
-        regionalItems = { 18762 }, -- Custodes
+        regionalItems = { xi.item.CUSTODES }, -- クーストース
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   573 }, -- Vegetable Seeds
-            {  475,   636 }, -- Chamomile
-            { 2780,   643 }, -- Iron Ore
-            { 1940,   644 }, -- Mythril Ore
-            { 2700,   691 }, -- メープル原木
-            { 1060,   694 }, -- Chestnut Log
-            { 3500,   749 }, -- Mythril Beastcoin
-            { 1900,   820 }, -- Wool Thread
-            { 1150,   859 }, -- Ram Skin
-            { 1090,   895 }, -- Ram Horn
-            { 4600,   928 }, -- Bomb Ash
-            { 2650,   943 }, -- 毒素
-            { 3300,  1212 }, -- Handful of Mythril Bolt Heads x33
-            {  120, 12300 }, -- Targe
-            {  320, 12433 }, -- Brass Mask
-            {  660, 12442 }, -- Studded Bandana
-            {  680, 12465 }, -- Cotton Headgear
-            {  520, 12474 }, -- Wool Hat
-            {  200, 12570 }, -- Studded Vest
-            {  450, 12689 }, -- Brass Finger Gauntlets
-            {  460, 12721 }, -- Cotton Gloves
-            {  390, 12817 }, -- Brass Cuisses
-            {  550, 12826 }, -- Studded Trousers
-            {  420, 12849 }, -- Cotton Brais
-            {  690, 12945 }, -- Brass Greaves
-            {  770, 12954 }, -- Studded Boots
-            {  510, 12977 }, -- Cotton Gaiters
-            {  625, 12986 }, -- Chestnut Sabots
-            {  310, 13085 }, -- Hemp Gorget
-            {  305, 13205 }, -- Silver Obi
-            {  430, 13328 }, -- Mythril Earring
-            {  235, 13446 }, -- Mythril Ring
-            {  525, 16467 }, -- Mythril Knife
-            {  505, 17097 }, -- Elm Pole
-            {  350, 17284 }, -- Chakram
-        }
+            { itemId = xi.item.CHAMOMILE,                     weight =  475 }, -- カモミール
+            { itemId = xi.item.CHUNK_OF_IRON_ORE,             weight = 2780 }, -- 鉄鉱
+            { itemId = xi.item.CHUNK_OF_MYTHRIL_ORE,          weight = 1940 }, -- ミスリル鉱
+            { itemId = xi.item.MAPLE_LOG,                     weight = 2700 }, -- メープル原木
+            { itemId = xi.item.CHESTNUT_LOG,                  weight = 1060 }, -- チェスナット原木
+            { itemId = xi.item.MYTHRIL_BEASTCOIN,             weight = 3500 }, -- 獣人ミスリル貨
+            { itemId = xi.item.SPOOL_OF_WOOL_THREAD,          weight = 1900 }, -- 毛糸
+            { itemId = xi.item.RAM_SKIN,                      weight = 1150 }, -- 雄羊の毛皮
+            { itemId = xi.item.RAM_HORN,                      weight = 1090 }, -- 雄羊の角
+            { itemId = xi.item.PINCH_OF_BOMB_ASH,             weight = 4600 }, -- ボムの灰
+            { itemId = xi.item.PINCH_OF_POISON_DUST,          weight = 2650 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_MYTHRIL_BOLT_HEADS, weight = 3300 }, -- ミスリルボルト x33
+            { itemId = xi.item.TARGE,                         weight =  120 }, -- タージェ
+            { itemId = xi.item.BRASS_MASK,                    weight =  320 }, -- ブラスマスク
+            { itemId = xi.item.STUDDED_BANDANA,               weight =  660 }, -- スタデッドバンダナ
+            { itemId = xi.item.COTTON_HEADGEAR,               weight =  680 }, -- コットンヘッドギア
+            { itemId = xi.item.WOOL_HAT,                      weight =  520 }, -- ウールハット
+            { itemId = xi.item.STUDDED_VEST,                  weight =  200 }, -- スタデッドベスト
+            { itemId = xi.item.BRASS_FINGER_GAUNTLETS,        weight =  450 }, -- ブラスフィンガー
+            { itemId = xi.item.COTTON_GLOVES,                 weight =  460 }, -- コットングローブ
+            { itemId = xi.item.BRASS_CUISSES,                 weight =  390 }, -- ブラスクウィス
+            { itemId = xi.item.STUDDED_TROUSERS,              weight =  550 }, -- スタデッドトラウザ
+            { itemId = xi.item.COTTON_BRAIS,                  weight =  420 }, -- コットンブレー
+            { itemId = xi.item.BRASS_GREAVES,                 weight =  690 }, -- ブラスグリーヴ
+            { itemId = xi.item.STUDDED_BOOTS,                 weight =  770 }, -- スタデッドブーツ
+            { itemId = xi.item.COTTON_GAITERS,                weight =  510 }, -- コットンゲートル
+            { itemId = xi.item.CHESTNUT_SABOTS,               weight =  625 }, -- チェスナットサボ
+            { itemId = xi.item.HEMP_GORGET,                   weight =  310 }, -- ヘンプゴルゲット
+            { itemId = xi.item.SILVER_OBI,                    weight =  305 }, -- 銀の帯
+            { itemId = xi.item.MYTHRIL_EARRING,               weight =  430 }, -- ミスリルピアス
+            { itemId = xi.item.MYTHRIL_RING,                  weight =  235 }, -- ミスリルリング
+            { itemId = xi.item.MYTHRIL_KNIFE,                 weight =  525 }, -- ミスリルナイフ
+            { itemId = xi.item.ELM_POLE,                      weight =  505 }, -- エルムポール
+            { itemId = xi.item.CHAKRAM,                       weight =  350 }, -- チャクラム
+        },
     },
     [xi.zone.BEHEMOTHS_DOMINION] =
     {
-        regionalItems = { 11402 }, -- Gothic Sabatons
+        regionalItems = { xi.item.GOTHIC_SABATONS }, -- ゴシックサバトン
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {   60, 4149 }, -- Panacea
-            {  460, 4155 }, -- Remedy
-            {  790, 4202 }, -- Daedalus Wing
-            {  490, 4206 }, -- Catholicon
-            {  320, 4210 }, -- Lethe Water
-            {  225, 4255 }, -- Mana Powder
-            {  360, 4302 }, -- Pamama au Lait
-            {  540, 4424 }, -- Melon Juice
-            {  210, 5322 }, -- Healing Powder
+            { itemId = xi.item.FLASK_OF_PANACEA,        weight =   60 }, -- パナケイア
+            { itemId = xi.item.REMEDY,                  weight =  460 }, -- 万能薬
+            { itemId = xi.item.DAEDALUS_WING,           weight =  790 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  490 }, -- カトリコン
+            { itemId = xi.item.BOTTLE_OF_LETHE_WATER,   weight =  320 }, -- レーテー水
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,    weight =  225 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  360 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  540 }, -- メロンジュース
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER, weight =  210 }, -- ヒールパウダー
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 5000,   575 }, -- Grain Seeds
-            { 2100,   612 }, -- Kazham Peppers
-            { 2300,   644 }, -- Mythril Ore
-            { 3800,   699 }, -- Oak Log
-            { 1700,   819 }, -- Linen Thread
-            {  320,   845 }, -- Black C. Feather
-            { 2750,   914 }, -- Mercury
-            { 2200,  1217 }, -- Slv. Arrowheads x33
-            {  720, 12443 }, -- Cuir Bandana
-            {  610, 12450 }, -- Padded Cap
-            {  530, 12458 }, -- Soil Hachimaki
-            {  715, 12475 }, -- Velvet Hat
-            {  505, 12571 }, -- Cuir Bouilli
-            {  415, 12603 }, -- Velvet Robe
-            {  625, 12699 }, -- Cuir Gloves
-            {  735, 12706 }, -- Iron Mittens
-            {  410, 12731 }, -- Velvet Cuffs
-            {  710, 12827 }, -- Cuir Trousers
-            {  900, 12836 }, -- Iron Subligar
-            {  470, 12859 }, -- Velvet Slops
-            {  865, 12955 }, -- Cuir Highboots
-            {  645, 12962 }, -- Leggings
-            {  230, 12987 }, -- Ebony Sabots
-        }
+            { itemId = xi.item.BAG_OF_GRAIN_SEEDS,           weight = 5000 }, -- 謎の穀物の種
+            { itemId = xi.item.BUNCH_OF_KAZHAM_PEPPERS,      weight = 2100 }, -- カザムがらし
+            { itemId = xi.item.CHUNK_OF_MYTHRIL_ORE,         weight = 2300 }, -- ミスリル鉱
+            { itemId = xi.item.OAK_LOG,                      weight = 3800 }, -- オーク原木
+            { itemId = xi.item.SPOOL_OF_LINEN_THREAD,        weight = 1700 }, -- 亜麻糸
+            { itemId = xi.item.BLACK_CHOCOBO_FEATHER,        weight =  320 }, -- 黒チョコボの羽根
+            { itemId = xi.item.VIAL_OF_MERCURY,              weight = 2750 }, -- 水銀
+            { itemId = xi.item.HANDFUL_OF_SILVER_ARROWHEADS, weight = 2200 }, -- 銀の矢尻 x33
+            { itemId = xi.item.CUIR_BANDANA,                 weight =  720 }, -- クイルバンダナ
+            { itemId = xi.item.PADDED_CAP,                   weight =  610 }, -- パッデッドキャップ
+            { itemId = xi.item.SOIL_HACHIMAKI,               weight =  530 }, -- 大地の鉢巻
+            { itemId = xi.item.VELVET_HAT,                   weight =  715 }, -- ビロードハット
+            { itemId = xi.item.CUIR_BOUILLI,                 weight =  505 }, -- クイルブゥイ
+            { itemId = xi.item.VELVET_ROBE,                  weight =  415 }, -- ビロードローブ
+            { itemId = xi.item.CUIR_GLOVES,                  weight =  625 }, -- クイルグローブ
+            { itemId = xi.item.IRON_MITTENS,                 weight =  735 }, -- アイアンミトン
+            { itemId = xi.item.VELVET_CUFFS,                 weight =  410 }, -- ビロードカフス
+            { itemId = xi.item.CUIR_TROUSERS,                weight =  710 }, -- クイルトラウザ
+            { itemId = xi.item.IRON_SUBLIGAR,                weight =  900 }, -- アイアンサブリガ
+            { itemId = xi.item.VELVET_SLOPS,                 weight =  470 }, -- ビロードスロップス
+            { itemId = xi.item.CUIR_HIGHBOOTS,               weight =  865 }, -- クイルハイブーツ
+            { itemId = xi.item.LEGGINGS,                     weight =  645 }, -- レギンス
+            { itemId = xi.item.EBONY_SABOTS,                 weight =  230 }, -- エボニーサボ
+        },
     },
     [xi.zone.VALLEY_OF_SORROWS] =
     {
-        regionalItems = { 18867 }, -- Daedalus Hammer
+        regionalItems = { xi.item.DAEDALUS_HAMMER }, -- ダイダロスハンマー
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {   60, 4149 }, -- Panacea
-            {  460, 4155 }, -- Remedy
-            {  790, 4202 }, -- Daedalus Wing
-            {  490, 4206 }, -- Catholicon
-            {  320, 4210 }, -- Lethe Water
-            {  225, 4255 }, -- Mana Powder
-            {  360, 4302 }, -- Pamama au Lait
-            {  540, 4424 }, -- Melon Juice
-            {  210, 5322 }, -- Healing Powder
+            { itemId = xi.item.FLASK_OF_PANACEA,        weight =   60 }, -- パナケイア
+            { itemId = xi.item.REMEDY,                  weight =  460 }, -- 万能薬
+            { itemId = xi.item.DAEDALUS_WING,           weight =  790 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  490 }, -- カトリコン
+            { itemId = xi.item.BOTTLE_OF_LETHE_WATER,   weight =  320 }, -- レーテー水
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,    weight =  225 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  360 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  540 }, -- メロンジュース
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER, weight =  210 }, -- ヒールパウダー
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2320,   645 }, -- Darksteel Ore
-            { 1350,   702 }, -- Ebony Log
-            { 1290,   737 }, -- Gold Ore
-            {  525,   823 }, -- Gold Thread
-            {  190,   844 }, -- Phoenix Feather
-            {  780,  1443 }, -- Dried Mugwort
-            { 1230,  5164 }, -- Ground Wasabi
-            { 1150, 12427 }, -- Bascinet
-            {  575, 12683 }, -- Darksteel Mufflers
-            {  680, 12740 }, -- Silk Mitts
-            {  740, 12811 }, -- Dst. Breeches
-            {  625, 12829 }, -- Beak Trousers
-            {  490, 12868 }, -- Silk Slacks
-            {  710, 12939 }, -- Dst. Sollerets
-            {  460, 12996 }, -- Silk Pumps
-            {  615, 13698 }, -- Beak Helm
-            {  540, 13700 }, -- Beak Gloves
-            {  470, 13702 }, -- Beak Ledelsens
-        }
+            { itemId = xi.item.CHUNK_OF_DARKSTEEL_ORE, weight = 2320 }, -- 黒鉄鉱
+            { itemId = xi.item.EBONY_LOG,              weight = 1350 }, -- エボニー原木
+            { itemId = xi.item.CHUNK_OF_GOLD_ORE,      weight = 1290 }, -- 金鉱
+            { itemId = xi.item.SPOOL_OF_GOLD_THREAD,   weight =  525 }, -- 金糸
+            { itemId = xi.item.PHOENIX_FEATHER,        weight =  190 }, -- フェニックスの尾
+            { itemId = xi.item.PINCH_OF_DRIED_MUGWORT, weight =  780 }, -- 乾燥マグワート
+            { itemId = xi.item.JAR_OF_GROUND_WASABI,   weight = 1230 }, -- ねりわさび
+            { itemId = xi.item.BASCINET,               weight = 1150 }, -- バシニット
+            { itemId = xi.item.DARKSTEEL_MUFFLERS,     weight =  575 }, -- ダークマフラ
+            { itemId = xi.item.SILK_MITTS,             weight =  680 }, -- シルクミトン
+            { itemId = xi.item.DARKSTEEL_BREECHES,     weight =  740 }, -- ダークブリーチズ
+            { itemId = xi.item.BEAK_TROUSERS,          weight =  625 }, -- ビークトラウザ
+            { itemId = xi.item.SILK_SLACKS,            weight =  490 }, -- シルクスラックス
+            { itemId = xi.item.DARKSTEEL_SOLLERETS,    weight =  710 }, -- ダークソレル
+            { itemId = xi.item.SILK_PUMPS,             weight =  460 }, -- シルクパンプス
+            { itemId = xi.item.BEAK_HELM,              weight =  615 }, -- ビークヘルム
+            { itemId = xi.item.BEAK_GLOVES,            weight =  540 }, -- ビークグローブ
+            { itemId = xi.item.BEAK_LEDELSENS,         weight =  470 }, -- ビークレデルセン
+        },
     },
     [xi.zone.RUAUN_GARDENS] =
     {
-        regionalItems = { 16284 }, -- Caract Choker
+        regionalItems = { xi.item.CARACT_CHOKER }, -- カラクトチョーカー
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {   60, 4149 }, -- Panacea
-            {  460, 4155 }, -- Remedy
-            {  790, 4202 }, -- Daedalus Wing
-            {  490, 4206 }, -- Catholicon
-            {  320, 4210 }, -- Lethe Water
-            {  225, 4255 }, -- Mana Powder
-            {  360, 4302 }, -- Pamama au Lait
-            {  540, 4424 }, -- Melon Juice
-            {  210, 5322 }, -- Healing Powder
+            { itemId = xi.item.FLASK_OF_PANACEA,        weight =   60 }, -- パナケイア
+            { itemId = xi.item.REMEDY,                  weight =  460 }, -- 万能薬
+            { itemId = xi.item.DAEDALUS_WING,           weight =  790 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  490 }, -- カトリコン
+            { itemId = xi.item.BOTTLE_OF_LETHE_WATER,   weight =  320 }, -- レーテー水
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,    weight =  225 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  360 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  540 }, -- メロンジュース
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER, weight =  210 }, -- ヒールパウダー
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2700,   646 }, -- Adaman Ore
-            {  310,   739 }, -- Orichalcum Ore
-            {  580,   821 }, -- Rainbow Thread
-            { 4700,  1222 }, -- Yagudo Fltchg.
-            { 3100,  1962 }, -- Plt. Arrowheads
-            { 1050,  2459 }, -- Minium
-            { 2100,  2532 }, -- Teak Log
-            { 2400,  5662 }, -- Dragon Fruit
-            { 1250, 12309 }, -- Ritter Shield
-            {  645, 12324 }, -- Tower Shield
-            {  400, 13087 }, -- Jeweled Collar
-            {  655, 13185 }, -- Muscle Belt
-            {  320, 13212 }, -- Tarutaru Sash
-            {  680, 13587 }, -- Rainbow Cape
-            {  780, 13595 }, -- Coeurl Mantle
-            {  220, 15890 }, -- Marid Belt
-            {  695, 16128 }, -- Wivre Hairpin
-            {  725, 16265 }, -- Wivre Gorget
-        }
+            { itemId = xi.item.CHUNK_OF_ADAMAN_ORE,            weight = 2700 }, -- アダマン鉱
+            { itemId = xi.item.CHUNK_OF_ORICHALCUM_ORE,        weight =  310 }, -- オリハルコン鉱
+            { itemId = xi.item.SPOOL_OF_RAINBOW_THREAD,        weight =  580 }, -- 虹糸
+            { itemId = xi.item.BAG_OF_YAGUDO_FLETCHINGS,       weight = 4700 }, -- ヤグードの羽根
+            { itemId = xi.item.HANDFUL_OF_PLATINUM_ARROWHEADS, weight = 3100 }, -- 白金の矢尻
+            { itemId = xi.item.PINCH_OF_MINIUM,                weight = 1050 }, -- 光明丹
+            { itemId = xi.item.TEAK_LOG,                       weight = 2100 }, -- チーク原木
+            { itemId = xi.item.DRAGON_FRUIT,                   weight = 2400 }, -- ドラゴンフルーツ
+            { itemId = xi.item.RITTER_SHIELD,                  weight = 1250 }, -- リッターシールド
+            { itemId = xi.item.TOWER_SHIELD,                   weight =  645 }, -- タワーシールド
+            { itemId = xi.item.JEWELED_COLLAR,                 weight =  400 }, -- ジュエルカラー
+            { itemId = xi.item.MUSCLE_BELT,                    weight =  655 }, -- マッスルベルト
+            { itemId = xi.item.TARUTARU_SASH,                  weight =  320 }, -- タルタルサッシュ
+            { itemId = xi.item.RAINBOW_CAPE,                   weight =  680 }, -- レインボーケープ
+            { itemId = xi.item.COEURL_MANTLE,                  weight =  780 }, -- クァールマント
+            { itemId = xi.item.MARID_BELT,                     weight =  220 }, -- マーリドベルト
+            { itemId = xi.item.WIVRE_HAIRPIN,                  weight =  695 }, -- 槌の髪飾り
+            { itemId = xi.item.WIVRE_GORGET,                   weight =  725 }, -- ウィヴルゴルジェ
+        },
     },
     [xi.zone.THE_BOYAHDA_TREE] =
     {
-        regionalItems = { 11038, 10948 }, -- Dragonkin Earring | Carver's Torque
+        regionalItems = { xi.item.DRAGONKIN_EARRING, xi.item.CARVERS_TORQUE }, -- ドラゴンキンピアス, バーサーカートルク
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            {   10, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight =   10 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  390,   657 }, -- Tama-Hagane
-            {  745,   876 }, -- Manta Skin
-            {  250,   887 }, -- Coral Fragment
-            { 3700,   919 }, -- Boyahda Moss
-            { 4500,  1163 }, -- Manticore Hair
-            { 1025,  1446 }, -- Lacquer Tree Log
-            {  450,  3313 }, -- Vivi-Valve
-            {  600,  4155 }, -- Remedy
-            { 1200,  4173 }, -- Hi-Reraiser
-            { 1200,  4291 }, -- Sandfish
-            { 1700,  4447 }, -- Scream Fungus
-            {  650,  5866 }, -- Toolbag (Moku)
-            { 1050,  5871 }, -- Ruszor Quiver
-            { 2050, 17881 }, -- Deepbed Soil
-            { 1020, 17884 }, -- Sun Water
-            {  500, 17898 }, -- C. Grass. Broth
-            {  400, 17899 }, -- Svg. Mole Broth
-        }
+            { itemId = xi.item.LUMP_OF_TAMA_HAGANE,               weight =  390 }, -- 玉鋼
+            { itemId = xi.item.MANTA_SKIN,                        weight =  745 }, -- マンタの皮
+            { itemId = xi.item.CORAL_FRAGMENT,                    weight =  250 }, -- 珊瑚のかけら
+            { itemId = xi.item.CLUMP_OF_BOYAHDA_MOSS,             weight = 3700 }, -- ボヤーダ苔
+            { itemId = xi.item.LOCK_OF_MANTICORE_HAIR,            weight = 4500 }, -- 有翼獅子のたてがみ
+            { itemId = xi.item.LACQUER_TREE_LOG,                  weight = 1025 }, -- ラッカー原木
+            { itemId = xi.item.REMEDY,                            weight =  600 }, -- 万能薬
+            { itemId = xi.item.HI_RERAISER,                       weight = 1200 }, -- ハイリレイザー
+            { itemId = xi.item.SANDFISH,                          weight = 1200 }, -- サンドフィッシュ
+            { itemId = xi.item.SCREAM_FUNGUS,                     weight = 1700 }, -- サケビタケ
+            { itemId = xi.item.TOOLBAG_MOKUJIN,                   weight =  650 }, -- 忍だすき【木人】
+            { itemId = xi.item.RUSZOR_QUIVER,                     weight = 1050 }, -- 箙【ルスゾル】
+            { itemId = xi.item.JUG_OF_DEEPBED_SOIL,               weight = 2050 }, -- 整った苗床
+            { itemId = xi.item.JUG_OF_SUN_WATER,                  weight = 1020 }, -- 太陽の水
+            { itemId = xi.item.JUG_OF_CHIRPING_GRASSHOPPER_BROTH, weight =  500 }, -- 響めく飛蝗汁
+            { itemId = xi.item.JUG_OF_SAVAGE_MOLE_BROTH,          weight =  400 }, -- 乱暴な土竜汁
+        },
     },
     [xi.zone.MIDDLE_DELKFUTTS_TOWER] =
     {
-        regionalItems = { 651 }, -- アイアンインゴット
+        regionalItems = { xi.item.REBEL_EARRING }, -- レブルピアス
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3600,   633 }, -- オリーブオイル
-            { 3250,   651 }, -- アイアンインゴット
-            { 1200,   653 }, -- ミスリルインゴット
-            { 1420,   691 }, -- メープル原木
-            {  760,   822 }, -- 銀糸
-            { 1350,   943 }, -- 毒素
-            { 2700,  1212 }, -- ミスリルボルトの鏃 x33
-            {  460, 12458 }, -- Soil Hachimaki
-            {  740, 12698 }, -- Studded Gloves
-            {  530, 12714 }, -- Soil Tekko
-            {  360, 12730 }, -- Wool Cuffs
-            {  290, 12826 }, -- Studded Trousers
-            { 1200, 12842 }, -- Soil Sitabaki
-            {  400, 12858 }, -- Wool Slops
-            {  200, 12954 }, -- Studded Boots
-            {  190, 12970 }, -- Soil Kyahan
-            {  390, 12986 }, -- Chestnut Sabots
-        }
+            { itemId = xi.item.BAG_OF_FRUIT_SEEDS,            weight = 2750 }, -- 謎の果物の種
+            { itemId = xi.item.FLASK_OF_OLIVE_OIL,            weight = 3600 }, -- オリーブオイル
+            { itemId = xi.item.IRON_INGOT,                    weight = 3250 }, -- アイアンインゴット
+            { itemId = xi.item.MYTHRIL_INGOT,                 weight = 1200 }, -- ミスリルインゴット
+            { itemId = xi.item.MAPLE_LOG,                     weight = 1420 }, -- メープル原木
+            { itemId = xi.item.SPOOL_OF_SILVER_THREAD,        weight =  760 }, -- 銀糸
+            { itemId = xi.item.PINCH_OF_POISON_DUST,          weight = 1350 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_MYTHRIL_BOLT_HEADS, weight = 2700 }, -- ミスリルボルト x33
+            { itemId = xi.item.SOIL_HACHIMAKI,                weight =  460 }, -- 大地の鉢巻
+            { itemId = xi.item.STUDDED_GLOVES,                weight =  740 }, -- スタデッドグローブ
+            { itemId = xi.item.SOIL_TEKKO,                    weight =  530 }, -- 大地の手甲
+            { itemId = xi.item.WOOL_CUFFS,                    weight =  360 }, -- ウールカフス
+            { itemId = xi.item.STUDDED_TROUSERS,              weight =  290 }, -- スタデッドトラウザ
+            { itemId = xi.item.SOIL_SITABAKI,                 weight = 1200 }, -- 大地の下ばき
+            { itemId = xi.item.WOOL_SLOPS,                    weight =  400 }, -- ウールスロップス
+            { itemId = xi.item.STUDDED_BOOTS,                 weight =  200 }, -- スタデッドブーツ
+            { itemId = xi.item.SOIL_KYAHAN,                   weight =  190 }, -- 脚絆
+            { itemId = xi.item.CHESTNUT_SABOTS,               weight =  390 }, -- チェスナットサボ
+        },
     },
     [xi.zone.UPPER_DELKFUTTS_TOWER] =
     {
-        regionalItems = { 19779 }, -- Potestas Bomblet
+        regionalItems = { xi.item.POTESTAS_BOMBLET }, -- ポテスタボムレット
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  700,   702 }, -- Ebony Log
-            {  100,   844 }, -- Phoenix Feather
-            {  320,  3308 }, -- Power Cooler
-            {  440, 12996 }, -- Silk Pumps
-        }
+            { itemId = xi.item.EBONY_LOG,         weight =  700 }, -- エボニー原木
+            { itemId = xi.item.PHOENIX_FEATHER,   weight =  100 }, -- フェニックスの尾
+            { itemId = xi.item.SILK_PUMPS,        weight =  440 }, -- シルクパンプス
+        },
     },
     [xi.zone.TEMPLE_OF_UGGALEPIH] =
     {
-        regionalItems = { 10953 }, -- Boneworker's Torque
+        regionalItems = { xi.item.BONEWORKERS_TORQUE }, -- 骨彫師トルク
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  660, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  660 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1400,   645 }, -- Darksteel Ore
-            { 2580,   702 }, -- Ebony Log
-            {  700,   737 }, -- Gold Ore
-            {  690,   823 }, -- Gold Thread
-            {  450,   844 }, -- Phoenix Feather
-            { 3500,  1122 }, -- Wyvern Skin
-            { 2700,  1213 }, -- Dst. Bolt Heads x33
-            {  740,  3308 }, -- Power Cooler
-            {  900,  4449 }, -- Reishi Mushroom
-            { 1200,  5164 }, -- Ground Wasabi
-            {  560, 12427 }, -- Bascinet
-            {  350, 12811 }, -- Dst. Breeches
-            {  540, 12939 }, -- Dst. Sollerets
-            {  610, 12996 }, -- Silk Pumps
-        }
+            { itemId = xi.item.CHUNK_OF_DARKSTEEL_ORE,          weight = 1400 }, -- 黒鉄鉱
+            { itemId = xi.item.EBONY_LOG,                       weight = 2580 }, -- エボニー原木
+            { itemId = xi.item.CHUNK_OF_GOLD_ORE,               weight =  700 }, -- 金鉱
+            { itemId = xi.item.SPOOL_OF_GOLD_THREAD,            weight =  690 }, -- 金糸
+            { itemId = xi.item.PHOENIX_FEATHER,                 weight =  450 }, -- フェニックスの尾
+            { itemId = xi.item.WYVERN_SKIN,                     weight = 3500 }, -- 飛竜の皮
+            { itemId = xi.item.HANDFUL_OF_DARKSTEEL_BOLT_HEADS, weight = 2700 }, -- ダークボルトの鏃
+            { itemId = xi.item.REISHI_MUSHROOM,                 weight =  900 }, -- 霊芝
+            { itemId = xi.item.JAR_OF_GROUND_WASABI,            weight = 1200 }, -- ねりわさび
+            { itemId = xi.item.BASCINET,                        weight =  560 }, -- バシニット
+            { itemId = xi.item.DARKSTEEL_BREECHES,              weight =  350 }, -- ダークブリーチズ
+            { itemId = xi.item.DARKSTEEL_SOLLERETS,             weight =  540 }, -- ダークソレル
+            { itemId = xi.item.SILK_PUMPS,                      weight =  610 }, -- シルクパンプス
+        },
     },
     [xi.zone.DEN_OF_RANCOR] =
     {
-        regionalItems = { 10950, 10991 }, -- Goldsm. Torque | Rancorous Mantle
+        regionalItems = { xi.item.GOLDSMITHS_TORQUE, xi.item.RANCOROUS_MANTLE }, -- 鍛冶師トルク, ランカーマント
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {   60, 4149 }, -- Panacea
-            {  460, 4155 }, -- Remedy
-            {  790, 4202 }, -- Daedalus Wing
-            {  490, 4206 }, -- Catholicon
-            {  320, 4210 }, -- Lethe Water
-            {  225, 4255 }, -- Mana Powder
-            {  360, 4302 }, -- Pamama au Lait
-            {  540, 4424 }, -- Melon Juice
-            {  210, 5322 }, -- Healing Powder
+            { itemId = xi.item.FLASK_OF_PANACEA,        weight =   60 }, -- パナケイア
+            { itemId = xi.item.REMEDY,                  weight =  460 }, -- 万能薬
+            { itemId = xi.item.DAEDALUS_WING,           weight =  790 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  490 }, -- カトリコン
+            { itemId = xi.item.BOTTLE_OF_LETHE_WATER,   weight =  320 }, -- レーテー水
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,    weight =  225 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  360 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  540 }, -- メロンジュース
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER, weight =  210 }, -- ヒールパウダー
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2700,   646 }, -- Adaman Ore
-            {  310,   739 }, -- Orichalcum Ore
-            {  580,   821 }, -- Rainbow Thread
-            { 4250,  1122 }, -- Wyvern Skin
-            { 4700,  1222 }, -- Yagudo Fltchg
-            { 3100,  1962 }, -- Plt. Arrowheads
-            { 1050,  2459 }, -- Minium
-            { 2100,  2532 }, -- Teak Log
-            {  510,  3312 }, -- Percolator
-            {  220,  3314 }, -- Disruptor
-            { 2400,  5662 }, -- Dragon Fruit
-            {  320,  8555 }, -- Barrier Module
-            { 1250, 12309 }, -- Ritter Shield
-            {  645, 12324 }, -- Tower Shield
-            {  400, 13087 }, -- Jeweled Collar
-            {  655, 13185 }, -- Muscle Belt
-            {  320, 13212 }, -- Tarutaru Sash
-            {  680, 13587 }, -- Rainbow Cape
-            {  780, 13595 }, -- Coeurl Mantle
-            {  220, 15890 }, -- Marid Belt
-            {  695, 16128 }, -- Wivre Hairpin
-        }
+            { itemId = xi.item.CHUNK_OF_ADAMAN_ORE,            weight = 2700 }, -- アダマン鉱
+            { itemId = xi.item.CHUNK_OF_ORICHALCUM_ORE,        weight =  310 }, -- オリハルコン鉱
+            { itemId = xi.item.SPOOL_OF_RAINBOW_THREAD,        weight =  580 }, -- 虹糸
+            { itemId = xi.item.WYVERN_SKIN,                    weight = 4250 }, -- 飛竜の皮
+            { itemId = xi.item.BAG_OF_YAGUDO_FLETCHINGS,       weight = 4700 }, -- ヤグードの羽根
+            { itemId = xi.item.HANDFUL_OF_PLATINUM_ARROWHEADS, weight = 3100 }, -- 白金の矢尻
+            { itemId = xi.item.PINCH_OF_MINIUM,                weight = 1050 }, -- 光明丹
+            { itemId = xi.item.TEAK_LOG,                       weight = 2100 }, -- チーク原木
+            { itemId = xi.item.DRAGON_FRUIT,                   weight = 2400 }, -- ドラゴンフルーツ
+            { itemId = xi.item.RITTER_SHIELD,                  weight = 1250 }, -- リッターシールド
+            { itemId = xi.item.TOWER_SHIELD,                   weight =  645 }, -- タワーシールド
+            { itemId = xi.item.JEWELED_COLLAR,                 weight =  400 }, -- ジュエルカラー
+            { itemId = xi.item.MUSCLE_BELT,                    weight =  655 }, -- マッスルベルト
+            { itemId = xi.item.TARUTARU_SASH,                  weight =  320 }, -- タルタルサッシュ
+            { itemId = xi.item.RAINBOW_CAPE,                   weight =  680 }, -- レインボーケープ
+            { itemId = xi.item.COEURL_MANTLE,                  weight =  780 }, -- クァールマント
+            { itemId = xi.item.MARID_BELT,                     weight =  220 }, -- マーリドベルト
+            { itemId = xi.item.WIVRE_HAIRPIN,                  weight =  695 }, -- 槌の髪飾り
+        },
     },
     [xi.zone.RANGUEMONT_PASS] =
     {
-        regionalItems = { 11575 }, -- Grapevine Cape
+        regionalItems = { xi.item.GRAPEVINE_CAPE }, -- グレプバインケープ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  750, 4151 }, -- やまびこ薬
-            {  350, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  240, 4301 }, -- Pear au Lait
-            {  660, 4425 }, -- Tomato Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  750 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  350 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_PEAR_AU_LAIT,  weight =  240 }, -- ペア・オレ
+            { itemId = xi.item.BOTTLE_OF_TOMATO_JUICE, weight =  660 }, -- トマトジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2050,  3437 }, -- Jade Cell
-            {  600,  4155 }, -- Remedy
-            {  500, 17898 }, -- C. Grass. Broth
-        }
+            { itemId = xi.item.REMEDY,                            weight =  600 }, -- 万能薬
+            { itemId = xi.item.JUG_OF_CHIRPING_GRASSHOPPER_BROTH, weight =  500 }, -- 響めく飛蝗汁
+        },
     },
     [xi.zone.BOSTAUNIEUX_OUBLIETTE] =
     {
-        regionalItems = { 11920 }, -- Melaco Mittens
+        regionalItems = { xi.item.MELACO_MITTENS }, -- メラソミトン
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  127,   737 }, -- Gold Ore
-            { 1550,   739 }, -- Orichalcum Ore
-            {  745,   748 }, -- Gold Beastcoin
-            {  625,   769 }, -- Red Rock
-            {  325,   821 }, -- Rainbow Thread
-            {  425,   844 }, -- Phoenix Feather
-            {  720,  1213 }, -- Dst. Bolt Heads
-            {  830,  2459 }, -- Minium
-            {  240,  3309 }, -- Barrage Turbine
-            {  310,  3313 }, -- Vivi-Valve
-            {  290,  3314 }, -- Disruptor
-            {  750,  4155 }, -- Remedy
-            {  210,  4173 }, -- Hi-Reraiser
-            {  630,  5662 }, -- Dragon Fruit
-            {  105,  5821 }, -- Fsn. Bolt Quiver
-            {   80, 13929 }, -- Errant Hat
-            {   75, 14078 }, -- Errant Cuffs
-            {   30, 14380 }, -- Errant Hpl.
-            {  110, 16520 }, -- Verdun
-        }
+            { itemId = xi.item.CHUNK_OF_GOLD_ORE,               weight =  127 }, -- 金鉱
+            { itemId = xi.item.CHUNK_OF_ORICHALCUM_ORE,         weight = 1550 }, -- オリハルコン鉱
+            { itemId = xi.item.GOLD_BEASTCOIN,                  weight =  745 }, -- 獣人金貨
+            { itemId = xi.item.RED_ROCK,                        weight =  625 }, -- 赤石
+            { itemId = xi.item.REMEDY,                          weight =  750 }, -- 万能薬
+            { itemId = xi.item.HI_RERAISER,                     weight =  210 }, -- ハイリレイザー
+            { itemId = xi.item.DRAGON_FRUIT,                    weight =  630 }, -- ドラゴンフルーツ
+            { itemId = xi.item.FUSION_BOLT_QUIVER,              weight =  105 }, -- 矢筒【軽合金】
+            { itemId = xi.item.ERRANT_HAT,                      weight =   80 }, -- エラントハット
+            { itemId = xi.item.ERRANT_CUFFS,                    weight =   75 }, -- エラントカフス
+            { itemId = xi.item.ERRANT_HOUPPELANDE,              weight =   30 }, -- エラントウプランド
+            { itemId = xi.item.VERDUN,                          weight =  110 }, -- ヴェルダン
+        },
     },
     [xi.zone.TORAIMARAI_CANAL] =
     {
-        regionalItems = { 11576 }, -- Bond Cape
+        regionalItems = { xi.item.BOND_CAPE }, -- ボンドケープ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1270,   737 }, -- Gold Ore
-            { 1550,   739 }, -- Orichalcum Ore
-            {  745,   748 }, -- Gold Beastcoin
-            {  625,   769 }, -- Red Rock
-            {  325,   821 }, -- Rainbow Thread
-            {  425,   844 }, -- Phoenix Feather
-            {  720,  1213 }, -- Dst. Bolt Heads
-            {  830,  2459 }, -- Minium
-            {  240,  3309 }, -- Barrage Turbine
-            {  310,  3313 }, -- Vivi-Valve
-            {  290,  3314 }, -- Disruptor
-            {  750,  4155 }, -- Remedy
-            { 2100,  4173 }, -- Hi-Reraiser
-            {  630,  5662 }, -- Dragon Fruit
-            { 1050,  5821 }, -- Fsn. Bolt Quiver
-            {   80, 13929 }, -- Errant Hat
-            {   75, 14078 }, -- Errant Cuffs
-            {   30, 14380 }, -- Errant Hpl.
-            {  110, 16520 }, -- Verdun
-        }
+            { itemId = xi.item.CHUNK_OF_GOLD_ORE,               weight = 1270 }, -- 金鉱
+            { itemId = xi.item.CHUNK_OF_ORICHALCUM_ORE,         weight = 1550 }, -- オリハルコン鉱
+            { itemId = xi.item.GOLD_BEASTCOIN,                  weight =  745 }, -- 獣人金貨
+            { itemId = xi.item.RED_ROCK,                        weight =  625 }, -- 赤石
+            { itemId = xi.item.SPOOL_OF_RAINBOW_THREAD,         weight =  325 }, -- 虹糸
+            { itemId = xi.item.PHOENIX_FEATHER,                 weight =  425 }, -- フェニックスの尾
+            { itemId = xi.item.HANDFUL_OF_DARKSTEEL_BOLT_HEADS, weight =  720 }, -- ダークボルトの鏃
+            { itemId = xi.item.PINCH_OF_MINIUM,                 weight =  830 }, -- 光明丹
+            { itemId = xi.item.REMEDY,                          weight =  750 }, -- 万能薬
+            { itemId = xi.item.HI_RERAISER,                     weight = 2100 }, -- ハイリレイザー
+            { itemId = xi.item.DRAGON_FRUIT,                    weight =  630 }, -- ドラゴンフルーツ
+            { itemId = xi.item.FUSION_BOLT_QUIVER,              weight = 1050 }, -- 矢筒【軽合金】
+            { itemId = xi.item.ERRANT_HAT,                      weight =   80 }, -- エラントハット
+            { itemId = xi.item.ERRANT_CUFFS,                    weight =   75 }, -- エラントカフス
+            { itemId = xi.item.ERRANT_HOUPPELANDE,              weight =   30 }, -- エラントウプランド
+            { itemId = xi.item.VERDUN,                          weight =  110 }, -- ヴェルダン
+        },
     },
     [xi.zone.ZERUHN_MINES] =
     {
-        regionalItems = { 11677 }, -- Prouesse Ring
+        regionalItems = { xi.item.PROUESSE_RING }, -- プルーエスリング
         tempsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         tempsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         itemsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3760,   505 }, -- 大羊の毛皮
-            { 3450,   626 }, -- Black Pepper
-            { 4790,   656 }, -- 獣人貨
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 2430,  4370 }, -- 蜂蜜
+            { itemId = xi.item.SHEEPSKIN,               weight = 3760 }, -- 大羊の毛皮
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,   weight = 3450 }, -- ブラックペッパー
+            { itemId = xi.item.BEASTCOIN,               weight = 4790 }, -- 獣人貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
         },
         itemsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3760,   505 }, -- 大羊の毛皮
-            { 3450,   626 }, -- Black Pepper
-            {  480,   679 }, -- Aluminum Ingot
-            { 1560,   714 }, -- Holly Lumber
-            {  780,   727 }, -- Dogwood Log
-            { 2750,   750 }, -- Silver Beastcoin
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 1290,  1981 }, -- Skull Locust
-            {  230,  3307 }, -- Heat Capacitor
-            {  120,  3308 }, -- Power Cooler
-            {  150,  3309 }, -- Barrage Turbine
-            {  110,  3311 }, -- Galvanizer
-            {  205,  3312 }, -- Percolator
-            {  235,  3313 }, -- Vivi-Valve
-            {  155,  3314 }, -- Disruptor
-            { 2430,  4370 }, -- 蜂蜜
-            {  680,  5819 }, -- Antlion Quiver
-            {  300,  8555 }, -- Barrier Module
-            {  105, 12469 }, -- War Beret
-            {  210, 12725 }, -- War Gloves
-            {   80, 12853 }, -- War Brais
-            {   55, 12981 }, -- War Boots
-            {   95, 13212 }, -- Tarutaru Sash
-            {   25, 13467 }, -- Dragon Ring
-            { 3810, 17316 }, -- Bomb Arm
-            { 1070, 17894 }, -- Vermihumus
-        }
+            { itemId = xi.item.SHEEPSKIN,               weight = 3760 }, -- 大羊の毛皮
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,   weight = 3450 }, -- ブラックペッパー
+            { itemId = xi.item.ALUMINUM_INGOT,          weight =  480 }, -- アルミインゴット
+            { itemId = xi.item.PIECE_OF_HOLLY_LUMBER,   weight = 1560 }, -- ホリー材
+            { itemId = xi.item.DOGWOOD_LOG,             weight =  780 }, -- ドッグウッド原木
+            { itemId = xi.item.SILVER_BEASTCOIN,        weight = 2750 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.SKULL_LOCUST,            weight = 1290 }, -- スカルローカスト
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
+            { itemId = xi.item.ANTLION_QUIVER,          weight =  680 }, -- 箙【アントリオン】
+            { itemId = xi.item.WAR_BERET,               weight =  105 }, -- ウォーベレー
+            { itemId = xi.item.WAR_GLOVES,              weight =  210 }, -- ウォーグローブ
+            { itemId = xi.item.WAR_BRAIS,               weight =   80 }, -- ウォーブレー
+            { itemId = xi.item.WAR_BOOTS,               weight =   55 }, -- ウォーブーツ
+            { itemId = xi.item.TARUTARU_SASH,           weight =   95 }, -- タルタルサッシュ
+            { itemId = xi.item.DRAGON_RING,             weight =   25 }, -- ドラゴンリング
+            { itemId = xi.item.BOMB_ARM,                weight = 3810 }, -- ボムのうで
+            { itemId = xi.item.JUG_OF_VERMIHUMUS,       weight = 1070 }, -- 完熟腐葉土
+        },
     },
     [xi.zone.KORROLOKA_TUNNEL] =
     {
-        regionalItems = { 11039 }, -- Brachyura Earring
+        regionalItems = { xi.item.BRACHYURA_EARRING }, -- ブラキュラピアス
         tempsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         tempsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         itemsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1450,   835 }, -- Flax Flower
-            {  800,   898 }, -- Chicken Bone
-            { 2630,  1155 }, -- Iron Sand
-            { 4790,   656 }, -- 獣人貨
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 2430,  4370 }, -- 蜂蜜
+            { itemId = xi.item.FLAX_FLOWER,             weight = 1450 }, -- 亜麻
+            { itemId = xi.item.CHICKEN_BONE,            weight =  800 }, -- がら
+            { itemId = xi.item.HANDFUL_OF_IRON_SAND,    weight = 2630 }, -- 砂鉄
+            { itemId = xi.item.BEASTCOIN,               weight = 4790 }, -- 獣人貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
         },
         itemsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  870,   746 }, -- Platinum Ingot
-            {  430,   835 }, -- Flax Flower
-            {  790,   898 }, -- Chicken Bone
-            { 2400,  1155 }, -- Iron Sand
-            { 2750,   750 }, -- Silver Beastcoin
-            { 4600,   818 }, -- 木綿糸
-            {  390,   838 }, -- Spider Web
-            { 3500,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 2950,  3437 }, -- Jade Cell
-            { 1650,  4155 }, -- Remedy
-            { 1450,  4449 }, -- Reishi Mushroom
-            {  120, 12880 }, -- Ogre Trousers
-            {  110, 13704 }, -- Ogre Mask
-        }
+            { itemId = xi.item.PLATINUM_INGOT,          weight =  870 }, -- プラチナインゴット
+            { itemId = xi.item.FLAX_FLOWER,             weight =  430 }, -- 亜麻
+            { itemId = xi.item.CHICKEN_BONE,            weight =  790 }, -- がら
+            { itemId = xi.item.HANDFUL_OF_IRON_SAND,    weight = 2400 }, -- 砂鉄
+            { itemId = xi.item.SILVER_BEASTCOIN,        weight = 2750 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.SPIDER_WEB,              weight =  390 }, -- 蜘蛛の網
+            { itemId = xi.item.LIZARD_SKIN,             weight = 3500 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.REMEDY,                  weight = 1650 }, -- 万能薬
+            { itemId = xi.item.REISHI_MUSHROOM,         weight = 1450 }, -- 霊芝
+            { itemId = xi.item.OGRE_TROUSERS,           weight =  120 }, -- オーガトラウザ
+            { itemId = xi.item.OGRE_MASK,               weight =  110 }, -- オーガマスク
+        },
     },
     [xi.zone.KUFTAL_TUNNEL] =
     {
-        regionalItems = { 18816 }, -- Wizzan Grip
+        regionalItems = { xi.item.WIZZAN_GRIP }, -- ヴィサングリップ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  610,   657 }, -- Tama-Hagane
-            {  590,   685 }, -- Khroma Ore
-            {  730,   876 }, -- Manta Skin
-            { 1640,   919 }, -- Boyahda Moss
-            { 1390,   838 }, -- Spider Web
-            { 4500,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 1490,  1446 }, -- Lacquer Tree Log
-            {  250,  3307 }, -- Heat Capacitor
-            {  320,  3308 }, -- Power Cooler
-            {  410,  3309 }, -- Barrage Turbine
-            { 1900,  4155 }, -- Remedy
-            {  980,  4173 }, -- Hi-Reraiser
-            { 1760,  4291 }, -- Sandfish
-            {  500,  4447 }, -- Scream Fungus
-            {  630,  5866 }, -- Toolbag (Moku)
-            {  420,  5872 }, -- D.A. Bolt Quiver
-        }
+            { itemId = xi.item.LUMP_OF_TAMA_HAGANE,     weight =  610 }, -- 玉鋼
+            { itemId = xi.item.CHUNK_OF_KHROMA_ORE,     weight =  590 }, -- クロマ鉄鉱
+            { itemId = xi.item.MANTA_SKIN,              weight =  730 }, -- マンタの皮
+            { itemId = xi.item.CLUMP_OF_BOYAHDA_MOSS,   weight = 1640 }, -- ボヤーダ苔
+            { itemId = xi.item.SPIDER_WEB,              weight = 1390 }, -- 蜘蛛の網
+            { itemId = xi.item.LIZARD_SKIN,             weight = 4500 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.LACQUER_TREE_LOG,        weight = 1490 }, -- ラッカー原木
+            { itemId = xi.item.REMEDY,                  weight = 1900 }, -- 万能薬
+            { itemId = xi.item.HI_RERAISER,             weight =  980 }, -- ハイリレイザー
+            { itemId = xi.item.SANDFISH,                weight = 1760 }, -- サンドフィッシュ
+            { itemId = xi.item.SCREAM_FUNGUS,           weight =  500 }, -- サケビタケ
+            { itemId = xi.item.TOOLBAG_MOKUJIN,         weight =  630 }, -- 忍だすき【木人】
+            { itemId = xi.item.DARK_ADAMAN_BOLT_QUIVER, weight =  420 }, -- 矢筒【超黒鋼】
+        },
     },
     [xi.zone.SEA_SERPENT_GROTTO] =
     {
-        regionalItems = { 19780 }, -- Mana Ampulla
+        regionalItems = { xi.item.MANA_AMPULLA }, -- マナアムプラ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  620, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  620 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  230,   645 }, -- Darksteel Ore
-            {  850,   702 }, -- Ebony Log
-            {  560,   737 }, -- Gold Ore
-            {  520,   823 }, -- Gold Thread
-            {  840,   843 }, -- G. Bird Plume
-            { 1250,   844 }, -- Phoenix Feather
-            { 2500,  1155 }, -- Iron Sand
-            { 1900,  1213 }, -- Dst. Bolt Heads
-            { 2100,  1443 }, -- Dried Mugwort
-            {  210,  3314 }, -- Disruptor
-            {  310,  4449 }, -- Reishi Mushroom
-            {  430,  5164 }, -- Ground Wasabi
-            {  440, 12427 }, -- Bascinet
-            {  365, 12683 }, -- Darksteel Mufflers
-            {  295, 12811 }, -- Dst. Breeches
-            {  345, 12868 }, -- Silk Slacks
-            {  290, 12996 }, -- Silk Pumps
-            {  525, 13702 }, -- Beak Ledelsens
-        }
+            { itemId = xi.item.CHUNK_OF_DARKSTEEL_ORE,          weight =  230 }, -- 黒鉄鉱
+            { itemId = xi.item.EBONY_LOG,                       weight =  850 }, -- エボニー原木
+            { itemId = xi.item.CHUNK_OF_GOLD_ORE,               weight =  560 }, -- 金鉱
+            { itemId = xi.item.SPOOL_OF_GOLD_THREAD,            weight =  520 }, -- 金糸
+            { itemId = xi.item.GIANT_BIRD_PLUME,                weight =  840 }, -- 大鳥の尾羽根
+            { itemId = xi.item.PHOENIX_FEATHER,                 weight = 1250 }, -- フェニックスの尾
+            { itemId = xi.item.HANDFUL_OF_IRON_SAND,            weight = 2500 }, -- 砂鉄
+            { itemId = xi.item.HANDFUL_OF_DARKSTEEL_BOLT_HEADS, weight = 1900 }, -- ダークボルトの鏃
+            { itemId = xi.item.PINCH_OF_DRIED_MUGWORT,          weight = 2100 }, -- 乾燥マグワート
+            { itemId = xi.item.REISHI_MUSHROOM,                 weight =  310 }, -- 霊芝
+            { itemId = xi.item.JAR_OF_GROUND_WASABI,            weight =  430 }, -- ねりわさび
+            { itemId = xi.item.BASCINET,                        weight =  440 }, -- バシニット
+            { itemId = xi.item.DARKSTEEL_MUFFLERS,              weight =  365 }, -- ダークマフラ
+            { itemId = xi.item.DARKSTEEL_BREECHES,              weight =  295 }, -- ダークブリーチズ
+            { itemId = xi.item.SILK_SLACKS,                     weight =  345 }, -- シルクスラックス
+            { itemId = xi.item.SILK_PUMPS,                      weight =  290 }, -- シルクパンプス
+            { itemId = xi.item.BEAK_LEDELSENS,                  weight =  525 }, -- ビークレデルセン
+        },
     },
     [xi.zone.VELUGANNON_PALACE] =
     {
-        regionalItems = { 13467, 10954 }, -- Dragon Ring | Alchemist's Torque
+        regionalItems = { xi.item.ALCHEMISTS_TORQUE }, -- 錬金術師トルク
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {   60, 4149 }, -- Panacea
-            {  980, 4155 }, -- Remedy
-            { 1670, 4202 }, -- Daedalus Wing
-            {  670, 4206 }, -- Catholicon
-            {  760, 4210 }, -- Lethe Water
-            {  680, 4255 }, -- Mana Powder
-            {  450, 4302 }, -- Pamama au Lait
-            {  765, 4424 }, -- Melon Juice
-            {  340, 5322 }, -- Healing Powder
+            { itemId = xi.item.FLASK_OF_PANACEA,        weight =   60 }, -- パナケイア
+            { itemId = xi.item.REMEDY,                  weight =  980 }, -- 万能薬
+            { itemId = xi.item.DAEDALUS_WING,           weight = 1670 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  670 }, -- カトリコン
+            { itemId = xi.item.BOTTLE_OF_LETHE_WATER,   weight =  760 }, -- レーテー水
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,    weight =  680 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  450 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  765 }, -- メロンジュース
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER, weight =  340 }, -- ヒールパウダー
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3760,   505 }, -- 大羊の毛皮
-            { 3450,   626 }, -- Black Pepper
-            {  480,   679 }, -- Aluminum Ingot
-            { 1560,   714 }, -- Holly Lumber
-            {  780,   727 }, -- Dogwood Log
-            { 2750,   750 }, -- Silver Beastcoin
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 1290,  1981 }, -- Skull Locust
-            {  230,  3307 }, -- Heat Capacitor
-            {  120,  3308 }, -- Power Cooler
-            {  150,  3309 }, -- Barrage Turbine
-            {  110,  3311 }, -- Galvanizer
-            {  205,  3312 }, -- Percolator
-            {  235,  3313 }, -- Vivi-Valve
-            {  155,  3314 }, -- Disruptor
-            { 2430,  4370 }, -- 蜂蜜
-            {  680,  5819 }, -- Antlion Quiver
-            {  300,  8555 }, -- Barrier Module
-            {  105, 12469 }, -- War Beret
-            {  210, 12725 }, -- War Gloves
-            {   80, 12853 }, -- War Brais
-            {   55, 12981 }, -- War Boots
-            { 3810, 17316 }, -- Bomb Arm
-            { 1070, 17894 }, -- Vermihumus
-        }
+            { itemId = xi.item.SHEEPSKIN,               weight = 3760 }, -- 大羊の毛皮
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,   weight = 3450 }, -- ブラックペッパー
+            { itemId = xi.item.ALUMINUM_INGOT,          weight =  480 }, -- アルミインゴット
+            { itemId = xi.item.PIECE_OF_HOLLY_LUMBER,   weight = 1560 }, -- ホリー材
+            { itemId = xi.item.DOGWOOD_LOG,             weight =  780 }, -- ドッグウッド原木
+            { itemId = xi.item.SILVER_BEASTCOIN,        weight = 2750 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.SKULL_LOCUST,            weight = 1290 }, -- スカルローカスト
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
+            { itemId = xi.item.ANTLION_QUIVER,          weight =  680 }, -- 箙【アントリオン】
+            { itemId = xi.item.WAR_BERET,               weight =  105 }, -- ウォーベレー
+            { itemId = xi.item.WAR_GLOVES,              weight =  210 }, -- ウォーグローブ
+            { itemId = xi.item.WAR_BRAIS,               weight =   80 }, -- ウォーブレー
+            { itemId = xi.item.WAR_BOOTS,               weight =   55 }, -- ウォーブーツ
+            { itemId = xi.item.DRAGON_RING,             weight =   25 }, -- ドラゴンリング
+            { itemId = xi.item.BOMB_ARM,                weight = 3810 }, -- ボムのうで
+            { itemId = xi.item.JUG_OF_VERMIHUMUS,       weight = 1070 }, -- 完熟腐葉土
+        },
     },
     [xi.zone.THE_SHRINE_OF_RUAVITAU] =
     {
-        regionalItems = { 11040, 10951 }, -- Terminus Earring | Weaver's Torque
+        regionalItems = { xi.item.TERMINUS_EARRING, xi.item.WEAVERS_TORQUE }, -- ターミナスピアス, 裁縫師トルク
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  390,   657 }, -- Tama-Hagane
-            {  745,   876 }, -- Manta Skin
-            {  250,   887 }, -- Coral Fragment
-            { 3700,   919 }, -- Boyahda Moss
-            { 4500,  1163 }, -- Manticore Hair
-            { 1025,  1446 }, -- Lacquer Tree Log
-            {  450,  3313 }, -- Vivi-Valve
-            {  600,  4155 }, -- Remedy
-            { 1200,  4173 }, -- Hi-Reraiser
-            { 1200,  4291 }, -- Sandfish
-            { 1700,  4447 }, -- Scream Fungus
-            {  650,  5866 }, -- Toolbag (Moku)
-            { 1050,  5871 }, -- Ruszor Quiver
-            { 2050, 17881 }, -- Deepbed Soil
-            { 1020, 17884 }, -- Sun Water
-            {  500, 17898 }, -- C. Grass. Broth
-            {  400, 17899 }, -- Svg. Mole Broth
-        }
+            { itemId = xi.item.LUMP_OF_TAMA_HAGANE,               weight =  390 }, -- 玉鋼
+            { itemId = xi.item.MANTA_SKIN,                        weight =  745 }, -- マンタの皮
+            { itemId = xi.item.CORAL_FRAGMENT,                    weight =  250 }, -- 珊瑚のかけら
+            { itemId = xi.item.CLUMP_OF_BOYAHDA_MOSS,             weight = 3700 }, -- ボヤーダ苔
+            { itemId = xi.item.LOCK_OF_MANTICORE_HAIR,            weight = 4500 }, -- 有翼獅子のたてがみ
+            { itemId = xi.item.LACQUER_TREE_LOG,                  weight = 1025 }, -- ラッカー原木
+            { itemId = xi.item.REMEDY,                            weight =  600 }, -- 万能薬
+            { itemId = xi.item.HI_RERAISER,                       weight = 1200 }, -- ハイリレイザー
+            { itemId = xi.item.SANDFISH,                          weight = 1200 }, -- サンドフィッシュ
+            { itemId = xi.item.SCREAM_FUNGUS,                     weight = 1700 }, -- サケビタケ
+            { itemId = xi.item.TOOLBAG_MOKUJIN,                   weight =  650 }, -- 忍だすき【木人】
+            { itemId = xi.item.RUSZOR_QUIVER,                     weight = 1050 }, -- 箙【ルスゾル】
+            { itemId = xi.item.JUG_OF_DEEPBED_SOIL,               weight = 2050 }, -- 整った苗床
+            { itemId = xi.item.JUG_OF_SUN_WATER,                  weight = 1020 }, -- 太陽の水
+            { itemId = xi.item.JUG_OF_CHIRPING_GRASSHOPPER_BROTH, weight =  500 }, -- 響めく飛蝗汁
+            { itemId = xi.item.JUG_OF_SAVAGE_MOLE_BROTH,          weight =  400 }, -- 乱暴な土竜汁
+        },
     },
     [xi.zone.LOWER_DELKFUTTS_TOWER] =
     {
-        regionalItems = { 11043 }, -- Giant's Earring
+        regionalItems = { xi.item.GIANTS_EARRING }, -- ジャイアントピアス
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  220, 4206 }, -- Catholicon
-            {  430, 4302 }, -- Pamama au Lait
-            {  620, 4424 }, -- Melon Juice
+            { itemId = xi.item.ANTIDOTE,                weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,      weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,     weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                  weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,   weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,       weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,           weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,    weight =  220 }, -- カトリコン
+            { itemId = xi.item.FLASK_OF_PAMAMA_AU_LAIT, weight =  430 }, -- パパマ・オレ
+            { itemId = xi.item.BOTTLE_OF_MELON_JUICE,   weight =  620 }, -- メロンジュース
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3600,   633 }, -- オリーブオイル
-            { 3250,   651 }, -- アイアンインゴット
-            { 1200,   653 }, -- ミスリルインゴット
-            { 1420,   691 }, -- メープル原木
-            {  760,   822 }, -- 銀糸
-            { 1350,   943 }, -- 毒素
-            { 2700,  1212 }, -- ミスリルボルトの鏃 x33
-            {  245,  8555 }, -- Barrier Module
-            {  460, 12458 }, -- Soil Hachimaki
-            {  740, 12698 }, -- Studded Gloves
-            {  530, 12714 }, -- Soil Tekko
-            {  360, 12730 }, -- Wool Cuffs
-            {  290, 12826 }, -- Studded Trousers
-            { 1200, 12842 }, -- Soil Sitabaki
-            {  400, 12858 }, -- Wool Slops
-            {  200, 12954 }, -- Studded Boots
-            {  190, 12970 }, -- Soil Kyahan
-            {  390, 12986 }, -- Chestnut Sabots
-        }
+            { itemId = xi.item.BAG_OF_FRUIT_SEEDS,            weight = 2750 }, -- 謎の果物の種
+            { itemId = xi.item.FLASK_OF_OLIVE_OIL,            weight = 3600 }, -- オリーブオイル
+            { itemId = xi.item.IRON_INGOT,                    weight = 3250 }, -- アイアンインゴット
+            { itemId = xi.item.MYTHRIL_INGOT,                 weight = 1200 }, -- ミスリルインゴット
+            { itemId = xi.item.MAPLE_LOG,                     weight = 1420 }, -- メープル原木
+            { itemId = xi.item.SPOOL_OF_SILVER_THREAD,        weight =  760 }, -- 銀糸
+            { itemId = xi.item.PINCH_OF_POISON_DUST,          weight = 1350 }, -- 毒素
+            { itemId = xi.item.HANDFUL_OF_MYTHRIL_BOLT_HEADS, weight = 2700 }, -- ミスリルボルト x33
+            { itemId = xi.item.SOIL_HACHIMAKI,                weight =  460 }, -- 大地の鉢巻
+            { itemId = xi.item.STUDDED_GLOVES,                weight =  740 }, -- スタデッドグローブ
+            { itemId = xi.item.SOIL_TEKKO,                    weight =  530 }, -- 大地の手甲
+            { itemId = xi.item.WOOL_CUFFS,                    weight =  360 }, -- ウールカフス
+            { itemId = xi.item.STUDDED_TROUSERS,              weight =  290 }, -- スタデッドトラウザ
+            { itemId = xi.item.SOIL_SITABAKI,                 weight = 1200 }, -- 大地の下ばき
+            { itemId = xi.item.WOOL_SLOPS,                    weight =  400 }, -- ウールスロップス
+            { itemId = xi.item.STUDDED_BOOTS,                 weight =  200 }, -- スタデッドブーツ
+            { itemId = xi.item.SOIL_KYAHAN,                   weight =  190 }, -- 脚絆
+            { itemId = xi.item.CHESTNUT_SABOTS,               weight =  390 }, -- チェスナットサボ
+        },
     },
     [xi.zone.KING_RANPERRES_TOMB] =
     {
-        regionalItems = { 10924 }, -- Chocobo Torque
+        regionalItems = { xi.item.CHOCOBO_TORQUE }, -- チョコボトルク
         tempsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         tempsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         itemsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3760,   505 }, -- 大羊の毛皮
-            { 3450,   626 }, -- Black Pepper
-            {  800,   898 }, -- Chicken Bone
-            { 1560,   714 }, -- Holly Lumber
-            { 4790,   656 }, -- 獣人貨
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 2430,  4370 }, -- 蜂蜜
+            { itemId = xi.item.SHEEPSKIN,               weight = 3760 }, -- 大羊の毛皮
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,   weight = 3450 }, -- ブラックペッパー
+            { itemId = xi.item.CHICKEN_BONE,            weight =  800 }, -- がら
+            { itemId = xi.item.PIECE_OF_HOLLY_LUMBER,   weight = 1560 }, -- ホリー材
+            { itemId = xi.item.BEASTCOIN,               weight = 4790 }, -- 獣人貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
         },
         itemsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3760,   505 }, -- 大羊の毛皮
-            { 3450,   626 }, -- Black Pepper
-            {  480,   679 }, -- Aluminum Ingot
-            { 1560,   714 }, -- Holly Lumber
-            {  780,   727 }, -- Dogwood Log
-            { 2750,   750 }, -- Silver Beastcoin
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 1290,  1981 }, -- Skull Locust
-            { 2430,  4370 }, -- 蜂蜜
-            {  680,  5819 }, -- Antlion Quiver
-            {  300,  8555 }, -- Barrier Module
-            {  105, 12469 }, -- War Beret
-            {  210, 12725 }, -- War Gloves
-            {   80, 12853 }, -- War Brais
-            {   55, 12981 }, -- War Boots
-            { 3810, 17316 }, -- Bomb Arm
-        }
+            { itemId = xi.item.SHEEPSKIN,               weight = 3760 }, -- 大羊の毛皮
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,   weight = 3450 }, -- ブラックペッパー
+            { itemId = xi.item.ALUMINUM_INGOT,          weight =  480 }, -- アルミインゴット
+            { itemId = xi.item.PIECE_OF_HOLLY_LUMBER,   weight = 1560 }, -- ホリー材
+            { itemId = xi.item.DOGWOOD_LOG,             weight =  780 }, -- ドッグウッド原木
+            { itemId = xi.item.SILVER_BEASTCOIN,        weight = 2750 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.SKULL_LOCUST,            weight = 1290 }, -- スカルローカスト
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
+            { itemId = xi.item.ANTLION_QUIVER,          weight =  680 }, -- 箙【アントリオン】
+            { itemId = xi.item.WAR_BERET,               weight =  105 }, -- ウォーベレー
+            { itemId = xi.item.WAR_GLOVES,              weight =  210 }, -- ウォーグローブ
+            { itemId = xi.item.WAR_BRAIS,               weight =   80 }, -- ウォーブレー
+            { itemId = xi.item.WAR_BOOTS,               weight =   55 }, -- ウォーブーツ
+            { itemId = xi.item.BOMB_ARM,                weight = 3810 }, -- ボムのうで
+        },
     },
     [xi.zone.DANGRUF_WADI] =
     {
-        regionalItems = { 11769 }, -- Field Rope
+        regionalItems = { xi.item.FIELD_ROPE }, -- フィールドロープ
         tempsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         tempsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         itemsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1450,   835 }, -- Flax Flower
-            {  800,   898 }, -- Chicken Bone
-            { 2630,  1155 }, -- Iron Sand
-            { 4790,   656 }, -- 獣人貨
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 2430,  4370 }, -- 蜂蜜
+            { itemId = xi.item.FLAX_FLOWER,             weight = 1450 }, -- 亜麻
+            { itemId = xi.item.CHICKEN_BONE,            weight =  800 }, -- がら
+            { itemId = xi.item.HANDFUL_OF_IRON_SAND,    weight = 2630 }, -- 砂鉄
+            { itemId = xi.item.BEASTCOIN,               weight = 4790 }, -- 獣人貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
         },
         itemsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2700,   646 }, -- Adaman Ore
-            {  920,   653 }, -- ミスリルインゴット
-            { 2100,   690 }, -- Elm Log
-            { 1540,   694 }, -- Chestnut Log
-            { 2160,   749 }, -- Mtl. Beastcoin
-            { 1760,   940 }, -- Revival Root
-            { 2300,   943 }, -- 毒素
-            { 1090,  3311 }, -- Galvanizer
-            {  795,  4155 }, -- Remedy
-            {  245, 12437 }, -- Gavial Mask
-        }
+            { itemId = xi.item.CHUNK_OF_ADAMAN_ORE,  weight = 2700 }, -- アダマン鉱
+            { itemId = xi.item.MYTHRIL_INGOT,        weight =  920 }, -- ミスリルインゴット
+            { itemId = xi.item.ELM_LOG,              weight = 2100 }, -- エルム原木
+            { itemId = xi.item.CHESTNUT_LOG,         weight = 1540 }, -- チェスナット原木
+            { itemId = xi.item.MYTHRIL_BEASTCOIN,    weight = 2160 }, -- 獣人ミスリル貨
+            { itemId = xi.item.REVIVAL_TREE_ROOT,    weight = 1760 }, -- 反魂樹の根
+            { itemId = xi.item.PINCH_OF_POISON_DUST, weight = 2300 }, -- 毒素
+            { itemId = xi.item.REMEDY,               weight =  795 }, -- 万能薬
+            { itemId = xi.item.GAVIAL_MASK,          weight =  245 }, -- ガビアルマスク
+        },
     },
     [xi.zone.INNER_HORUTOTO_RUINS] =
     {
-        regionalItems = { 18624 }, -- Numen Staff
+        regionalItems = { xi.item.NUMEN_STAFF }, -- ヌーメンスタッフ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3760,   505 }, -- 大羊の毛皮
-            { 3450,   626 }, -- Black Pepper
-            {  480,   679 }, -- Aluminum Ingot
-            { 1560,   714 }, -- Holly Lumber
-            {  780,   727 }, -- Dogwood Log
-            { 2750,   750 }, -- Silver Beastcoin
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 1290,  1981 }, -- Skull Locust
-            { 2430,  4370 }, -- 蜂蜜
-            {  680,  5819 }, -- Antlion Quiver
-            {  300,  8555 }, -- Barrier Module
-            {  105, 12469 }, -- War Beret
-            {  210, 12725 }, -- War Gloves
-            {   80, 12853 }, -- War Brais
-            {   55, 12981 }, -- War Boots
-            { 3810, 17316 }, -- Bomb Arm
-        }
+            { itemId = xi.item.SHEEPSKIN,               weight = 3760 }, -- 大羊の毛皮
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,   weight = 3450 }, -- ブラックペッパー
+            { itemId = xi.item.ALUMINUM_INGOT,          weight =  480 }, -- アルミインゴット
+            { itemId = xi.item.PIECE_OF_HOLLY_LUMBER,   weight = 1560 }, -- ホリー材
+            { itemId = xi.item.DOGWOOD_LOG,             weight =  780 }, -- ドッグウッド原木
+            { itemId = xi.item.SILVER_BEASTCOIN,        weight = 2750 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.SKULL_LOCUST,            weight = 1290 }, -- スカルローカスト
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
+            { itemId = xi.item.ANTLION_QUIVER,          weight =  680 }, -- 箙【アントリオン】
+            { itemId = xi.item.WAR_BERET,               weight =  105 }, -- ウォーベレー
+            { itemId = xi.item.WAR_GLOVES,              weight =  210 }, -- ウォーグローブ
+            { itemId = xi.item.WAR_BRAIS,               weight =   80 }, -- ウォーブレー
+            { itemId = xi.item.WAR_BOOTS,               weight =   55 }, -- ウォーブーツ
+            { itemId = xi.item.BOMB_ARM,                weight = 3810 }, -- ボムのうで
+        },
     },
     [xi.zone.ORDELLES_CAVES] =
     {
-        regionalItems = { 11767 }, -- Chocobo Rope
+        regionalItems = { xi.item.CHOCOBO_ROPE }, -- チョコボロープ
         tempsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         tempsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         itemsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1450,  835 }, -- Flax Flower
-            {  800,  898 }, -- Chicken Bone
-            { 2630, 1155 }, -- Iron Sand
-            { 4790,  656 }, -- 獣人貨
-            { 4600,  818 }, -- 木綿糸
-            { 5000,  852 }, -- Lizard Skin
-            { 4990,  880 }, -- Bone Chip
-            { 2650,  893 }, -- Giant Femur
-            { 1730,  912 }, -- 蜂の巣のかけら
-            { 1450,  925 }, -- Giant Stinger
-            { 1060, 1225 }, -- Gold Nugget
-            { 3610, 1845 }, -- Red Moko Grass
-            { 2430, 4370 }, -- 蜂蜜
+            { itemId = xi.item.FLAX_FLOWER,             weight = 1450 }, -- 亜麻
+            { itemId = xi.item.CHICKEN_BONE,            weight =  800 }, -- がら
+            { itemId = xi.item.HANDFUL_OF_IRON_SAND,    weight = 2630 }, -- 砂鉄
+            { itemId = xi.item.BEASTCOIN,               weight = 4790 }, -- 獣人貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
         },
         itemsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  425,   702 }, -- Ebony Log
-            {  870,   746 }, -- Platinum Ingot
-            {  430,   835 }, -- Flax Flower
-            {  790,   898 }, -- Chicken Bone
-            { 2400,   857 }, -- Dhalmel Hide
-            { 2750,   750 }, -- Silver Beastcoin
-            { 4600,   818 }, -- 木綿糸
-            {  390,   838 }, -- Spider Web
-            { 3500,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            {  365,   913 }, -- Beeswax
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            {  210,  1229 }, -- Adaman Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            {  205,  3311 }, -- Galvanizer
-            {  725,  3313 }, -- Vivi-Valve
-            { 1650,  4155 }, -- Remedy
-            { 1450,  4449 }, -- Reishi Mushroom
-            {  795,  5416 }, -- Stl. Bull. Pouch
-            {  120, 12880 }, -- Ogre Trousers
-            {  425, 13587 }, -- Rainbow Cape
-            {  110, 13704 }, -- Ogre Mask
-            {  215, 13706 }, -- Ogre Gloves
-            {  150, 13708 }, -- Ogre Ledelsens
-        }
+            { itemId = xi.item.EBONY_LOG,               weight =  425 }, -- エボニー原木
+            { itemId = xi.item.PLATINUM_INGOT,          weight =  870 }, -- プラチナインゴット
+            { itemId = xi.item.FLAX_FLOWER,             weight =  430 }, -- 亜麻
+            { itemId = xi.item.CHICKEN_BONE,            weight =  790 }, -- がら
+            { itemId = xi.item.DHALMEL_HIDE,            weight = 2400 }, -- ダルメルの毛皮
+            { itemId = xi.item.SILVER_BEASTCOIN,        weight = 2750 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.SPIDER_WEB,              weight =  390 }, -- 蜘蛛の網
+            { itemId = xi.item.LIZARD_SKIN,             weight = 3500 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.LUMP_OF_BEESWAX,         weight =  365 }, -- 蜜蝋
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.ADAMAN_NUGGET,           weight =  210 }, -- アダマンナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.REMEDY,                  weight = 1650 }, -- 万能薬
+            { itemId = xi.item.REISHI_MUSHROOM,         weight = 1450 }, -- 霊芝
+            { itemId = xi.item.STEEL_BULLET_POUCH,      weight =  795 }, -- 胴乱【鋼】
+            { itemId = xi.item.OGRE_TROUSERS,           weight =  120 }, -- オーガトラウザ
+            { itemId = xi.item.RAINBOW_CAPE,            weight =  425 }, -- レインボーケープ
+            { itemId = xi.item.OGRE_MASK,               weight =  110 }, -- オーガマスク
+            { itemId = xi.item.OGRE_GLOVES,             weight =  215 }, -- オーガグローブ
+            { itemId = xi.item.OGRE_LEDELSENS,          weight =  150 }, -- オーガレデルセン
+        },
     },
     [xi.zone.OUTER_HORUTOTO_RUINS] =
     {
-        regionalItems = { 10925 }, -- Fisher's Torque
+        regionalItems = { xi.item.FISHERS_TORQUE }, -- フィッシャトルク
         tempsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         tempsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         itemsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3760,  505 }, -- 大羊の毛皮
-            { 3450,  626 }, -- Black Pepper
-            { 4790,  656 }, -- 獣人貨
-            { 4600,  818 }, -- 木綿糸
-            { 5000,  852 }, -- Lizard Skin
-            { 4990,  880 }, -- Bone Chip
-            { 2650,  893 }, -- Giant Femur
-            { 1730,  912 }, -- 蜂の巣のかけら
-            { 1450,  925 }, -- Giant Stinger
-            { 1060, 1225 }, -- Gold Nugget
-            { 3610, 1845 }, -- Red Moko Grass
-            { 2430, 4370 }, -- 蜂蜜
+            { itemId = xi.item.SHEEPSKIN,               weight = 3760 }, -- 大羊の毛皮
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,   weight = 3450 }, -- ブラックペッパー
+            { itemId = xi.item.BEASTCOIN,               weight = 4790 }, -- 獣人貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
         },
         itemsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 3760,   505 }, -- 大羊の毛皮
-            { 3450,   626 }, -- Black Pepper
-            {  480,   679 }, -- Aluminum Ingot
-            { 1560,   714 }, -- Holly Lumber
-            {  780,   727 }, -- Dogwood Log
-            { 2750,   750 }, -- Silver Beastcoin
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 1290,  1981 }, -- Skull Locust
-            {  230,  3307 }, -- Heat Capacitor
-            {  120,  3308 }, -- Power Cooler
-            {  150,  3309 }, -- Barrage Turbine
-            {  110,  3311 }, -- Galvanizer
-            {  205,  3312 }, -- Percolator
-            {  235,  3313 }, -- Vivi-Valve
-            {  155,  3314 }, -- Disruptor
-            { 2430,  4370 }, -- 蜂蜜
-            {  680,  5819 }, -- Antlion Quiver
-            {  300,  8555 }, -- Barrier Module
-            {  105, 12469 }, -- War Beret
-            {  210, 12725 }, -- War Gloves
-            {   80, 12853 }, -- War Brais
-            {   55, 12981 }, -- War Boots
-            {   95, 13212 }, -- Tarutaru Sash
-            {   25, 13467 }, -- Dragon Ring
-            { 3810, 17316 }, -- Bomb Arm
-            { 1070, 17894 }, -- Vermihumus
-        }
+            { itemId = xi.item.SHEEPSKIN,               weight = 3760 }, -- 大羊の毛皮
+            { itemId = xi.item.PINCH_OF_BLACK_PEPPER,   weight = 3450 }, -- ブラックペッパー
+            { itemId = xi.item.ALUMINUM_INGOT,          weight =  480 }, -- アルミインゴット
+            { itemId = xi.item.PIECE_OF_HOLLY_LUMBER,   weight = 1560 }, -- ホリー材
+            { itemId = xi.item.DOGWOOD_LOG,             weight =  780 }, -- ドッグウッド原木
+            { itemId = xi.item.SILVER_BEASTCOIN,        weight = 2750 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.SKULL_LOCUST,            weight = 1290 }, -- スカルローカスト
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
+            { itemId = xi.item.ANTLION_QUIVER,          weight =  680 }, -- 箙【アントリオン】
+            { itemId = xi.item.WAR_BERET,               weight =  105 }, -- ウォーベレー
+            { itemId = xi.item.WAR_GLOVES,              weight =  210 }, -- ウォーグローブ
+            { itemId = xi.item.WAR_BRAIS,               weight =   80 }, -- ウォーブレー
+            { itemId = xi.item.WAR_BOOTS,               weight =   55 }, -- ウォーブーツ
+            { itemId = xi.item.TARUTARU_SASH,           weight =   95 }, -- タルタルサッシュ
+            { itemId = xi.item.DRAGON_RING,             weight =   25 }, -- ドラゴンリング
+            { itemId = xi.item.BOMB_ARM,                weight = 3810 }, -- ボムのうで
+            { itemId = xi.item.JUG_OF_VERMIHUMUS,       weight = 1070 }, -- 完熟腐葉土
+        },
     },
     [xi.zone.THE_ELDIEME_NECROPOLIS] =
     {
-        regionalItems = { 18812 }, -- Ossa Grip
+        regionalItems = { xi.item.OSSA_GRIP }, -- オサグリップ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1760,   633 }, -- オリーブオイル
-            {  390,   646 }, -- Adaman Ore
-            { 2650,   694 }, -- Chestnut Log
-            { 3150,   749 }, -- Mtl. Beastcoin
-            { 3200,   859 }, -- Ram Skin
-            { 2570,   895 }, -- Ram Horn
-            {  765,   943 }, -- 毒素
-            {  235,  3309 }, -- Barrage Turbine
-            {  230, 12437 }, -- Gavial Mask
-            {  210, 12693 }, -- Gavial Fng. Gnt.
-            {  110, 16396 }, -- Koenigs Knuckles
-            {   90, 17364 }, -- Cythara Anglica
-            { 2570, 17898 }, -- C. Grass. Broth
-            { 3100, 18259 }, -- Angon
-        }
+            { itemId = xi.item.BAG_OF_FRUIT_SEEDS,                weight = 3000 }, -- 謎の果物の種
+            { itemId = xi.item.FLASK_OF_OLIVE_OIL,                weight = 1760 }, -- オリーブオイル
+            { itemId = xi.item.CHUNK_OF_ADAMAN_ORE,               weight =  390 }, -- アダマン鉱
+            { itemId = xi.item.CHESTNUT_LOG,                      weight = 2650 }, -- チェスナット原木
+            { itemId = xi.item.MYTHRIL_BEASTCOIN,                 weight = 3150 }, -- 獣人ミスリル貨
+            { itemId = xi.item.RAM_SKIN,                          weight = 3200 }, -- 雄羊の毛皮
+            { itemId = xi.item.RAM_HORN,                          weight = 2570 }, -- 雄羊の角
+            { itemId = xi.item.PINCH_OF_POISON_DUST,              weight =  765 }, -- 毒素
+            { itemId = xi.item.GAVIAL_MASK,                       weight =  230 }, -- ガビアルマスク
+            { itemId = xi.item.GAVIAL_FINGER_GAUNTLETS,           weight =  210 }, -- ガビアルフィンガー
+            { itemId = xi.item.KOENIGS_KNUCKLES,                  weight =  110 }, -- ケーニヒスナックル
+            { itemId = xi.item.CYTHARA_ANGLICA,                   weight =   90 }, -- キタラアングリカ
+            { itemId = xi.item.JUG_OF_CHIRPING_GRASSHOPPER_BROTH, weight = 2570 }, -- 響めく飛蝗汁
+            { itemId = xi.item.ANGON,                             weight = 3100 }, -- アンゴン
+        },
     },
     [xi.zone.GUSGEN_MINES] =
     {
-        regionalItems = { 10926 }, -- Field Torque
+        regionalItems = { xi.item.FIELD_TORQUE }, -- フィールドトルク
         tempsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         tempsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         itemsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1450,   835 }, -- Flax Flower
-            {  800,   898 }, -- Chicken Bone
-            { 2630,  1155 }, -- Iron Sand
-            { 4790,   656 }, -- 獣人貨
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 2430,  4370 }, -- 蜂蜜
+            { itemId = xi.item.FLAX_FLOWER,             weight = 1450 }, -- 亜麻
+            { itemId = xi.item.CHICKEN_BONE,            weight =  800 }, -- がら
+            { itemId = xi.item.HANDFUL_OF_IRON_SAND,    weight = 2630 }, -- 砂鉄
+            { itemId = xi.item.BEASTCOIN,               weight = 4790 }, -- 獣人貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
         },
         itemsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  425,   702 }, -- Ebony Log
-            {  870,   746 }, -- Platinum Ingot
-            {  430,   835 }, -- Flax Flower
-            {  790,   898 }, -- Chicken Bone
-            { 2400,   857 }, -- Dhalmel Hide
-            { 2750,   750 }, -- Silver Beastcoin
-            { 4600,   818 }, -- 木綿糸
-            {  390,   838 }, -- Spider Web
-            { 3500,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            {  365,   913 }, -- Beeswax
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            {  210,  1229 }, -- Adaman Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            {  205,  3311 }, -- Galvanizer
-            {  725,  3313 }, -- Vivi-Valve
-            { 1650,  4155 }, -- Remedy
-            { 1450,  4449 }, -- Reishi Mushroom
-            {  795,  5416 }, -- Stl. Bull. Pouch
-            {  235, 12821 }, -- Gavial Cuisses
-            {  120, 12880 }, -- Ogre Trousers
-            {  425, 13587 }, -- Rainbow Cape
-            {  110, 13704 }, -- Ogre Mask
-            {  215, 13706 }, -- Ogre Gloves
-            {  150, 13708 }, -- Ogre Ledelsens
-        }
+            { itemId = xi.item.EBONY_LOG,               weight =  425 }, -- エボニー原木
+            { itemId = xi.item.PLATINUM_INGOT,          weight =  870 }, -- プラチナインゴット
+            { itemId = xi.item.FLAX_FLOWER,             weight =  430 }, -- 亜麻
+            { itemId = xi.item.CHICKEN_BONE,            weight =  790 }, -- がら
+            { itemId = xi.item.DHALMEL_HIDE,            weight = 2400 }, -- ダルメルの毛皮
+            { itemId = xi.item.SILVER_BEASTCOIN,        weight = 2750 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.SPIDER_WEB,              weight =  390 }, -- 蜘蛛の網
+            { itemId = xi.item.LIZARD_SKIN,             weight = 3500 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.LUMP_OF_BEESWAX,         weight =  365 }, -- 蜜蝋
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.ADAMAN_NUGGET,           weight =  210 }, -- アダマンナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.REMEDY,                  weight = 1650 }, -- 万能薬
+            { itemId = xi.item.REISHI_MUSHROOM,         weight = 1450 }, -- 霊芝
+            { itemId = xi.item.STEEL_BULLET_POUCH,      weight =  795 }, -- 胴乱【鋼】
+            { itemId = xi.item.GAVIAL_CUISSES,          weight =  235 }, -- ガビアルクウィス
+            { itemId = xi.item.OGRE_TROUSERS,           weight =  120 }, -- オーガトラウザ
+            { itemId = xi.item.RAINBOW_CAPE,            weight =  425 }, -- レインボーケープ
+            { itemId = xi.item.OGRE_MASK,               weight =  110 }, -- オーガマスク
+            { itemId = xi.item.OGRE_GLOVES,             weight =  215 }, -- オーガグローブ
+            { itemId = xi.item.OGRE_LEDELSENS,          weight =  150 }, -- オーガレデルセン
+        },
     },
     [xi.zone.CRAWLERS_NEST] =
     {
-        regionalItems = { 11823 }, -- Cocoon Band
+        regionalItems = { xi.item.COCOON_BAND }, -- コクーンバンド
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1760,   633 }, -- オリーブオイル
-            {  390,   646 }, -- Adaman Ore
-            { 2650,   694 }, -- Chestnut Log
-            { 3150,   749 }, -- Mtl. Beastcoin
-            { 3200,   859 }, -- Ram Skin
-            { 2570,   895 }, -- Ram Horn
-            {  765,   943 }, -- 毒素
-            {  235,  3309 }, -- Barrage Turbine
-            {  230, 12437 }, -- Gavial Mask
-            {  210, 12693 }, -- Gavial Fng. Gnt.
-            {  110, 16396 }, -- Koenigs Knuckles
-            {   90, 17364 }, -- Cythara Anglica
-            { 2570, 17898 }, -- C. Grass. Broth
-            { 3100, 18259 }, -- Angon
-        }
+            { itemId = xi.item.BAG_OF_FRUIT_SEEDS,                weight = 3000 }, -- 謎の果物の種
+            { itemId = xi.item.FLASK_OF_OLIVE_OIL,                weight = 1760 }, -- オリーブオイル
+            { itemId = xi.item.CHUNK_OF_ADAMAN_ORE,               weight =  390 }, -- アダマン鉱
+            { itemId = xi.item.CHESTNUT_LOG,                      weight = 2650 }, -- チェスナット原木
+            { itemId = xi.item.MYTHRIL_BEASTCOIN,                 weight = 3150 }, -- 獣人ミスリル貨
+            { itemId = xi.item.RAM_SKIN,                          weight = 3200 }, -- 雄羊の毛皮
+            { itemId = xi.item.RAM_HORN,                          weight = 2570 }, -- 雄羊の角
+            { itemId = xi.item.PINCH_OF_POISON_DUST,              weight =  765 }, -- 毒素
+            { itemId = xi.item.GAVIAL_MASK,                       weight =  230 }, -- ガビアルマスク
+            { itemId = xi.item.GAVIAL_FINGER_GAUNTLETS,           weight =  210 }, -- ガビアルフィンガー
+            { itemId = xi.item.KOENIGS_KNUCKLES,                  weight =  110 }, -- ケーニヒスナックル
+            { itemId = xi.item.CYTHARA_ANGLICA,                   weight =   90 }, -- キタラアングリカ
+            { itemId = xi.item.JUG_OF_CHIRPING_GRASSHOPPER_BROTH, weight = 2570 }, -- 響めく飛蝗汁
+            { itemId = xi.item.ANGON,                             weight = 3100 }, -- アンゴン
+        },
     },
     [xi.zone.MAZE_OF_SHAKHRAMI] =
     {
-        regionalItems = { 11768 }, -- Fisher's Rope
+        regionalItems = { xi.item.FISHERS_ROPE }, -- フィッシャロープ
         tempsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  820, 4148 }, -- 毒消し
-            {  730, 4150 }, -- 目薬
-            {  850, 4151 }, -- やまびこ薬
-            {  650, 4155 }, -- Remedy
-            { 1020, 4164 }, -- Prism Powder
-            {  940, 4165 }, -- Silent Oil
-            {  420, 4202 }, -- Daedalus Wing
-            {  250, 4300 }, -- Apple Au Lait
-            {  660, 4423 }, -- Apple Juice
+            { itemId = xi.item.ANTIDOTE,               weight =  820 }, -- 毒消し
+            { itemId = xi.item.FLASK_OF_EYE_DROPS,     weight =  730 }, -- 目薬
+            { itemId = xi.item.FLASK_OF_ECHO_DROPS,    weight =  850 }, -- やまびこ薬
+            { itemId = xi.item.REMEDY,                 weight =  650 }, -- 万能薬
+            { itemId = xi.item.PINCH_OF_PRISM_POWDER,  weight = 1020 }, -- プリズムパウダー
+            { itemId = xi.item.POT_OF_SILENT_OIL,      weight =  940 }, -- サイレントオイル
+            { itemId = xi.item.DAEDALUS_WING,          weight =  420 }, -- ダイダロスウィング
+            { itemId = xi.item.FLASK_OF_APPLE_AU_LAIT, weight =  250 }, -- アップル・オレ
+            { itemId = xi.item.BOTTLE_OF_APPLE_JUICE,  weight =  660 }, -- アップルジュース
         },
         tempsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         itemsLow =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 1450,   835 }, -- Flax Flower
-            {  800,   898 }, -- Chicken Bone
-            { 2630,  1155 }, -- Iron Sand
-            { 4790,   656 }, -- 獣人貨
-            { 4600,   818 }, -- 木綿糸
-            { 5000,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            { 2430,  4370 }, -- 蜂蜜
+            { itemId = xi.item.FLAX_FLOWER,             weight = 1450 }, -- 亜麻
+            { itemId = xi.item.CHICKEN_BONE,            weight =  800 }, -- がら
+            { itemId = xi.item.HANDFUL_OF_IRON_SAND,    weight = 2630 }, -- 砂鉄
+            { itemId = xi.item.BEASTCOIN,               weight = 4790 }, -- 獣人貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.LIZARD_SKIN,             weight = 5000 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.POT_OF_HONEY,            weight = 2430 }, -- 蜂蜜
         },
         itemsHi =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  425,   702 }, -- Ebony Log
-            {  870,   746 }, -- Platinum Ingot
-            {  430,   835 }, -- Flax Flower
-            {  790,   898 }, -- Chicken Bone
-            { 2400,   857 }, -- Dhalmel Hide
-            { 2750,   750 }, -- Silver Beastcoin
-            { 4600,   818 }, -- 木綿糸
-            {  390,   838 }, -- Spider Web
-            { 3500,   852 }, -- Lizard Skin
-            { 4990,   880 }, -- Bone Chip
-            { 2650,   893 }, -- Giant Femur
-            { 1730,   912 }, -- 蜂の巣のかけら
-            {  365,   913 }, -- Beeswax
-            { 1450,   925 }, -- Giant Stinger
-            { 1060,  1225 }, -- Gold Nugget
-            {  210,  1229 }, -- Adaman Nugget
-            { 3610,  1845 }, -- Red Moko Grass
-            {  205,  3311 }, -- Galvanizer
-            {  725,  3313 }, -- Vivi-Valve
-            { 1650,  4155 }, -- Remedy
-            { 1450,  4449 }, -- Reishi Mushroom
-            {  795,  5416 }, -- Stl. Bull. Pouch
-            {  235, 12821 }, -- Gavial Cuisses
-            {  120, 12880 }, -- Ogre Trousers
-            {  425, 13587 }, -- Rainbow Cape
-            {  110, 13704 }, -- Ogre Mask
-            {  215, 13706 }, -- Ogre Gloves
-            {  150, 13708 }, -- Ogre Ledelsens
-        }
+            { itemId = xi.item.EBONY_LOG,               weight =  425 }, -- エボニー原木
+            { itemId = xi.item.PLATINUM_INGOT,          weight =  870 }, -- プラチナインゴット
+            { itemId = xi.item.FLAX_FLOWER,             weight =  430 }, -- 亜麻
+            { itemId = xi.item.CHICKEN_BONE,            weight =  790 }, -- がら
+            { itemId = xi.item.DHALMEL_HIDE,            weight = 2400 }, -- ダルメルの毛皮
+            { itemId = xi.item.SILVER_BEASTCOIN,        weight = 2750 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_COTTON_THREAD,  weight = 4600 }, -- 木綿糸
+            { itemId = xi.item.SPIDER_WEB,              weight =  390 }, -- 蜘蛛の網
+            { itemId = xi.item.LIZARD_SKIN,             weight = 3500 }, -- トカゲの皮
+            { itemId = xi.item.BONE_CHIP,               weight = 4990 }, -- 骨くず
+            { itemId = xi.item.GIANT_FEMUR,             weight = 2650 }, -- 巨大な大腿骨
+            { itemId = xi.item.BEEHIVE_CHIP,            weight = 1730 }, -- 蜂の巣のかけら
+            { itemId = xi.item.LUMP_OF_BEESWAX,         weight =  365 }, -- 蜜蝋
+            { itemId = xi.item.GIANT_STINGER,           weight = 1450 }, -- 蜂の一刺し
+            { itemId = xi.item.GOLD_NUGGET,             weight = 1060 }, -- ゴールドナゲット
+            { itemId = xi.item.ADAMAN_NUGGET,           weight =  210 }, -- アダマンナゲット
+            { itemId = xi.item.CLUMP_OF_RED_MOKO_GRASS, weight = 3610 }, -- 赤モコ草
+            { itemId = xi.item.REMEDY,                  weight = 1650 }, -- 万能薬
+            { itemId = xi.item.REISHI_MUSHROOM,         weight = 1450 }, -- 霊芝
+            { itemId = xi.item.STEEL_BULLET_POUCH,      weight =  795 }, -- 胴乱【鋼】
+            { itemId = xi.item.GAVIAL_CUISSES,          weight =  235 }, -- ガビアルクウィス
+            { itemId = xi.item.OGRE_TROUSERS,           weight =  120 }, -- オーガトラウザ
+            { itemId = xi.item.RAINBOW_CAPE,            weight =  425 }, -- レインボーケープ
+            { itemId = xi.item.OGRE_MASK,               weight =  110 }, -- オーガマスク
+            { itemId = xi.item.OGRE_GLOVES,             weight =  215 }, -- オーガグローブ
+            { itemId = xi.item.OGRE_LEDELSENS,          weight =  150 }, -- オーガレデルセン
+        },
     },
     [xi.zone.GARLAIGE_CITADEL] =
     {
-        regionalItems = { 18784 }, -- Metasoma Katars
+        regionalItems = { xi.item.METASOMA_KATARS }, -- メタソーマカタール
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  640,   633 }, -- オリーブオイル
-            {  510,   646 }, -- Adaman Ore
-            {  410,   653 }, -- ミスリルインゴット
-            {  670,   690 }, -- Elm Log
-            {  325,   691 }, -- メープル原木
-            { 2980,   749 }, -- Mtl. Beastcoin
-            { 3650,   750 }, -- Silver Beastcoin
-            { 2430,   820 }, -- Wool Thread
-            { 3200,   859 }, -- Ram Skin
-            { 2570,   895 }, -- Ram Horn
-            {  765,   943 }, -- 毒素
-            {  325,  3312 }, -- Percolator
-            {  230, 12437 }, -- Gavial Mask
-            {  210, 12693 }, -- Gavial Fng. Gnt.
-            {  110, 16396 }, -- Koenigs Knuckles
-            {   90, 17364 }, -- Cythara Anglica
-            { 2570, 17898 }, -- C. Grass. Broth
-            { 3100, 18259 }, -- Angon
-        }
+            { itemId = xi.item.FLASK_OF_OLIVE_OIL,                weight =  640 }, -- オリーブオイル
+            { itemId = xi.item.CHUNK_OF_ADAMAN_ORE,               weight =  510 }, -- アダマン鉱
+            { itemId = xi.item.MYTHRIL_INGOT,                     weight =  410 }, -- ミスリルインゴット
+            { itemId = xi.item.ELM_LOG,                           weight =  670 }, -- エルム原木
+            { itemId = xi.item.MAPLE_LOG,                         weight =  325 }, -- メープル原木
+            { itemId = xi.item.MYTHRIL_BEASTCOIN,                 weight = 2980 }, -- 獣人ミスリル貨
+            { itemId = xi.item.SILVER_BEASTCOIN,                  weight = 3650 }, -- 獣人銀貨
+            { itemId = xi.item.SPOOL_OF_WOOL_THREAD,              weight = 2430 }, -- 毛糸
+            { itemId = xi.item.RAM_SKIN,                          weight = 3200 }, -- 雄羊の毛皮
+            { itemId = xi.item.RAM_HORN,                          weight = 2570 }, -- 雄羊の角
+            { itemId = xi.item.PINCH_OF_POISON_DUST,              weight =  765 }, -- 毒素
+            { itemId = xi.item.GAVIAL_MASK,                       weight =  230 }, -- ガビアルマスク
+            { itemId = xi.item.GAVIAL_FINGER_GAUNTLETS,           weight =  210 }, -- ガビアルフィンガー
+            { itemId = xi.item.KOENIGS_KNUCKLES,                  weight =  110 }, -- ケーニヒスナックル
+            { itemId = xi.item.CYTHARA_ANGLICA,                   weight =   90 }, -- キタラアングリカ
+            { itemId = xi.item.JUG_OF_CHIRPING_GRASSHOPPER_BROTH, weight = 2570 }, -- 響めく飛蝗汁
+            { itemId = xi.item.ANGON,                             weight = 3100 }, -- アンゴン
+        },
     },
     [xi.zone.FEIYIN] =
     {
-        regionalItems = { 16202 }, -- Dagda's Shield
+        regionalItems = { xi.item.DAGDAS_SHIELD }, -- ダグダシールド
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  760,   645 }, -- Darksteel Ore
-            {  365,   646 }, -- Adaman Ore
-            {  490,   739 }, -- Orichalcum Ore
-            { 2680,   748 }, -- Gold Beastcoin
-            {  230,   773 }, -- Translucent Rock
-            {  570,   775 }, -- Black Rock
-            {  600,   776 }, -- White Rock
-            {  780,   821 }, -- Rainbow Thread
-            { 1480,   823 }, -- Gold Thread
-            { 3600,  1222 }, -- Yagudo Fltchg.
-            { 1460,  1962 }, -- Plt. Arrowheads
-            {  430,  2459 }, -- Minium
-            { 0000,  2761 }, -- Feyweald Log
-            {  360,  3312 }, -- Percolator
-            { 1500,  4155 }, -- Remedy
-            {  700,  4173 }, -- Hi-Reraiser
-            {  845,  5821 }, -- Fsn. Bolt Quiver
-            {  120, 13929 }, -- Errant Hat
-            {   90, 14078 }, -- Errant Cuffs
-            {   85, 14182 }, -- Errant Pigaches
-            {   75, 14301 }, -- Errant Slops
-            {  230, 16520 }, -- Verdun
-            { 1000, 17896 }, -- Gob. Bug Broth
-            { 2150, 18258 }, -- Thr. Tomahawk
-        }
+            { itemId = xi.item.CHUNK_OF_DARKSTEEL_ORE,         weight =  760 }, -- 黒鉄鉱
+            { itemId = xi.item.CHUNK_OF_ADAMAN_ORE,            weight =  365 }, -- アダマン鉱
+            { itemId = xi.item.CHUNK_OF_ORICHALCUM_ORE,        weight =  490 }, -- オリハルコン鉱
+            { itemId = xi.item.GOLD_BEASTCOIN,                 weight = 2680 }, -- 獣人金貨
+            { itemId = xi.item.TRANSLUCENT_ROCK,               weight =  230 }, -- 透石 
+            { itemId = xi.item.BLACK_ROCK,                     weight =  570 }, -- 黒石
+            { itemId = xi.item.WHITE_ROCK,                     weight =  600 }, -- 白石
+            { itemId = xi.item.SPOOL_OF_RAINBOW_THREAD,        weight =  780 }, -- 虹糸
+            { itemId = xi.item.SPOOL_OF_GOLD_THREAD,           weight = 1480 }, -- 金糸
+            { itemId = xi.item.BAG_OF_YAGUDO_FLETCHINGS,       weight = 3600 }, -- ヤグードの羽根
+            { itemId = xi.item.HANDFUL_OF_PLATINUM_ARROWHEADS, weight = 1460 }, -- 白金の矢尻
+            { itemId = xi.item.PINCH_OF_MINIUM,                weight =  430 }, -- 光明丹
+            { itemId = xi.item.FEYWEALD_LOG,                   weight =  100 }, -- フェイウィルド原木
+            { itemId = xi.item.REMEDY,                         weight = 1500 }, -- 万能薬
+            { itemId = xi.item.HI_RERAISER,                    weight =  700 }, -- ハイリレイザー
+            { itemId = xi.item.FUSION_BOLT_QUIVER,             weight =  845 }, -- 矢筒【軽合金】
+            { itemId = xi.item.ERRANT_HAT,                     weight =  120 }, -- エラントハット
+            { itemId = xi.item.ERRANT_CUFFS,                   weight =   90 }, -- エラントカフス
+            { itemId = xi.item.ERRANT_PIGACHES,                weight =   85 }, -- エラントピガッシュ
+            { itemId = xi.item.ERRANT_SLOPS,                   weight =   75 }, -- エラントスロップ
+            { itemId = xi.item.VERDUN,                         weight =  230 }, -- ヴェルダン
+            { itemId = xi.item.JUG_OF_GOBLIN_BUG_BROTH,        weight = 1000 }, -- ゴブリン風蟲汁
+            { itemId = xi.item.THROWING_TOMAHAWK,              weight = 2150 }, -- Ｔ．トマホーク
+        },
     },
     [xi.zone.IFRITS_CAULDRON] =
     {
-        regionalItems = { 10949 }, -- Smithy's Torque
+        regionalItems = { xi.item.SMITHYS_TORQUE }, -- 鍛冶師トルク
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            { 2700,   646 }, -- Adaman Ore
-            {  310,   739 }, -- Orichalcum Ore
-            {  580,   821 }, -- Rainbow Thread
-            { 4700,  1222 }, -- Yagudo Fltchg.
-            { 1540,   838 }, -- Spider Web
-            { 1700,   843 }, -- G. Bird Plume
-            { 2050,  1155 }, -- Iron Sand
-            { 3670,  1222 }, -- Yagudo Fltchg.
-            { 3100,  1962 }, -- Plt. Arrowheads
-            { 1050,  2459 }, -- Minium
-            { 2100,  2532 }, -- Teak Log
-            {  340,  3309 }, -- Barrage Turbine
-            { 2400,  5662 }, -- Dragon Fruit
-            {  410,  8555 }, -- Barrier Module
-            { 1250, 12309 }, -- Ritter Shield
-            {  320, 13212 }, -- Tarutaru Sash
-            {  680, 13587 }, -- Rainbow Cape
-            {  780, 13595 }, -- Coeurl Mantle
-            {  220, 15890 }, -- Marid Belt
-            {  695, 16128 }, -- Wivre Hairpin
-            {  725, 16265 }, -- Wivre Gorget
-        }
+            { itemId = xi.item.CHUNK_OF_ADAMAN_ORE,            weight = 2700 }, -- アダマン鉱
+            { itemId = xi.item.CHUNK_OF_ORICHALCUM_ORE,        weight =  310 }, -- オリハルコン鉱
+            { itemId = xi.item.SPOOL_OF_RAINBOW_THREAD,        weight =  580 }, -- 虹糸
+            { itemId = xi.item.BAG_OF_YAGUDO_FLETCHINGS,       weight = 4700 }, -- ヤグードの羽根
+            { itemId = xi.item.SPIDER_WEB,                     weight = 1540 }, -- 蜘蛛の網
+            { itemId = xi.item.GIANT_BIRD_PLUME,               weight = 1700 }, -- 大鳥の尾羽根
+            { itemId = xi.item.HANDFUL_OF_IRON_SAND,           weight = 2050 }, -- 砂鉄
+            { itemId = xi.item.HANDFUL_OF_PLATINUM_ARROWHEADS, weight = 3100 }, -- 白金の矢尻
+            { itemId = xi.item.PINCH_OF_MINIUM,                weight = 1050 }, -- 光明丹
+            { itemId = xi.item.TEAK_LOG,                       weight = 2100 }, -- チーク原木
+            { itemId = xi.item.DRAGON_FRUIT,                   weight = 2400 }, -- ドラゴンフルーツ
+            { itemId = xi.item.RITTER_SHIELD,                  weight = 1250 }, -- リッターシールド
+            { itemId = xi.item.TARUTARU_SASH,                  weight =  320 }, -- タルタルサッシュ
+            { itemId = xi.item.RAINBOW_CAPE,                   weight =  680 }, -- レインボーケープ
+            { itemId = xi.item.COEURL_MANTLE,                  weight =  780 }, -- クァールマント
+            { itemId = xi.item.MARID_BELT,                     weight =  220 }, -- マーリドベルト
+            { itemId = xi.item.WIVRE_HAIRPIN,                  weight =  695 }, -- 槌の髪飾り
+            { itemId = xi.item.WIVRE_GORGET,                   weight =  725 }, -- ウィヴルゴルジェ
+        },
     },
     [xi.zone.GUSTAV_TUNNEL] =
     {
-        regionalItems = { 10955, 11041 }, -- Culinarian's Torque | Liminus Earring
+        regionalItems = { xi.item.CULINARIANS_TORQUE, xi.item.LIMINUS_EARRING }, -- 調理師トルク, リミナルピアス
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  900 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  500 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  300 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  450 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  320 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  650 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  430 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  690 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  250 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight =  730 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight =  420 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 1010 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  875 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  210 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight =  920 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  190 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  310 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  205 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  410 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  305 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  310 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  200 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  390,   657 }, -- Tama-Hagane
-            {  745,   876 }, -- Manta Skin
-            {  250,   887 }, -- Coral Fragment
-            { 4500,  1163 }, -- Manticore Hair
-            { 1025,  1446 }, -- Lacquer Tree Log
-            {  255,  3307 }, -- Heat Capacitor
-            {  245,  3312 }, -- Percolator
-            {  450,  3313 }, -- Vivi-Valve
-            {  600,  4155 }, -- Remedy
-            { 1200,  4173 }, -- Hi-Reraiser
-            { 1200,  4291 }, -- Sandfish
-            { 1700,  4447 }, -- Scream Fungus
-            {  650,  5866 }, -- Toolbag (Moku)
-            { 1050,  5871 }, -- Ruszor Quiver
-            { 2050, 17881 }, -- Deepbed Soil
-            { 1020, 17884 }, -- Sun Water
-            {  500, 17898 }, -- C. Grass. Broth
-            {  400, 17899 }, -- Svg. Mole Broth
-        }
+            { itemId = xi.item.LUMP_OF_TAMA_HAGANE,               weight =  390 }, -- 玉鋼
+            { itemId = xi.item.MANTA_SKIN,                        weight =  745 }, -- マンタの皮
+            { itemId = xi.item.CORAL_FRAGMENT,                    weight =  250 }, -- 珊瑚のかけら
+            { itemId = xi.item.LOCK_OF_MANTICORE_HAIR,            weight = 4500 }, -- 有翼獅子のたてがみ
+            { itemId = xi.item.LACQUER_TREE_LOG,                  weight = 1025 }, -- ラッカー原木
+            { itemId = xi.item.REMEDY,                            weight =  600 }, -- 万能薬
+            { itemId = xi.item.HI_RERAISER,                       weight = 1200 }, -- ハイリレイザー
+            { itemId = xi.item.SANDFISH,                          weight = 1200 }, -- サンドフィッシュ
+            { itemId = xi.item.SCREAM_FUNGUS,                     weight = 1700 }, -- サケビタケ
+            { itemId = xi.item.TOOLBAG_MOKUJIN,                   weight =  650 }, -- 忍だすき【木人】
+            { itemId = xi.item.RUSZOR_QUIVER,                     weight = 1050 }, -- 箙【ルスゾル】
+            { itemId = xi.item.JUG_OF_DEEPBED_SOIL,               weight = 2050 }, -- 整った苗床
+            { itemId = xi.item.JUG_OF_SUN_WATER,                  weight = 1020 }, -- 太陽の水
+            { itemId = xi.item.JUG_OF_CHIRPING_GRASSHOPPER_BROTH, weight =  500 }, -- 響めく飛蝗汁
+            { itemId = xi.item.JUG_OF_SAVAGE_MOLE_BROTH,          weight =  400 }, -- 乱暴な土竜汁
+        },
     },
     [xi.zone.LABYRINTH_OF_ONZOZO] =
     {
-        regionalItems = { 18817 }, -- Furtive Grip
+        regionalItems = { xi.item.FURTIVE_GRIP }, -- ファテバスグリップ
         temps =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  900, 4202 }, -- Daedalus Wing
-            {  500, 4206 }, -- Catholicon
-            {  300, 4255 }, -- Mana Powder
-            {  450, 5322 }, -- Healing Powder
-            {  320, 5393 }, -- Monarch's Drink
-            {  650, 5394 }, -- Gnostic's Drink
-            {  430, 5395 }, -- Cleric's Drink
-            {  690, 5439 }, -- Vicar's Drink
-            {  250, 5440 }, -- Dusty Wing
-            {  730, 5832 }, -- Healing Mist
-            {  420, 5833 }, -- Mana Mist
-            { 1010, 5834 }, -- Lucid Wings I
-            {  310, 5839 }, -- Stalwart's Tonic
-            {  205, 5840 }, -- Stalwart's Gambir
-            {  410, 5841 }, -- Ascetic's Tonic
-            {  305, 5842 }, -- Ascetic's Gambir
-            {  310, 5843 }, -- Champion's Tonic
-            {  200, 5845 }, -- Fanatic's Tonic
+            { itemId = xi.item.DAEDALUS_WING,              weight =  200 }, -- ダイダロスウィング
+            { itemId = xi.item.BOTTLE_OF_CATHOLICON,       weight =  310 }, -- カトリコン
+            { itemId = xi.item.PINCH_OF_MANA_POWDER,       weight =  305 }, -- マナパウダー
+            { itemId = xi.item.FLASK_OF_HEALING_POWDER,    weight =  410 }, -- ヒールパウダー
+            { itemId = xi.item.BOTTLE_OF_MONARCHS_DRINK,   weight =  205 }, -- 王者の薬
+            { itemId = xi.item.BOTTLE_OF_GNOSTICS_DRINK,   weight =  310 }, -- 賢者の薬
+            { itemId = xi.item.BOTTLE_OF_CLERICS_DRINK,    weight =  190 }, -- 聖者の薬
+            { itemId = xi.item.BOTTLE_OF_VICARS_DRINK,     weight =  210 }, -- 尊者の薬
+            { itemId = xi.item.DUSTY_WING,                 weight =  875 }, -- ダスティウィング
+            { itemId = xi.item.FLASK_OF_HEALING_MIST,      weight = 1200 }, -- ヒールミスト
+            { itemId = xi.item.FLASK_OF_MANA_MIST,         weight = 1900 }, -- マナミスト
+            { itemId = xi.item.PAIR_OF_LUCID_WINGS_I,      weight = 2000 }, -- ルシドウィングス
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_I,    weight =  250 }, -- ヒールオイルI
+            { itemId = xi.item.TUBE_OF_HEALING_SALVE_II,   weight =  690 }, -- ヒールオイルII
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_I,      weight = 1000 }, -- クリアオイルI
+            { itemId = xi.item.TUBE_OF_CLEAR_SALVE_II,     weight =  430 }, -- クリアオイルII
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_TONIC,  weight =  650 }, -- 猛者の霊薬
+            { itemId = xi.item.BOTTLE_OF_STALWARTS_GAMBIR, weight =  320 }, -- 猛者の仙薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_TONIC,   weight =  450 }, -- 験者の霊薬
+            { itemId = xi.item.BOTTLE_OF_ASCETICS_GAMBIR,  weight =  300 }, -- 験者の仙薬
+            { itemId = xi.item.BOTTLE_OF_CHAMPIONS_TONIC,  weight =  500 }, -- 覇者の霊薬
+            { itemId = xi.item.BOTTLE_OF_FANATICS_TONIC,   weight =  900 }, -- 侠者の霊薬
         },
         items =
         {
-        -----------------------------------
-        -- { weight, itemId }
-        -----------------------------------
-            {  720,  1213 }, -- Dst. Bolt Heads
-            { 1020,  1443 }, -- Dried Mugwort
-            {  430,  2459 }, -- Minium
-            { 2200,  2761 }, -- Feyweald Log
-            {  360,  3312 }, -- Percolator
-            { 1500,  4155 }, -- Remedy
-            {  700,  4173 }, -- Hi-Reraiser
-            {  640,  4449 }, -- Reishi Mushroom
-            {  340,  9068 }, -- Barrier Module
+            { itemId = xi.item.HANDFUL_OF_DARKSTEEL_BOLT_HEADS, weight =  720 }, -- ダークボルトの鏃
+            { itemId = xi.item.PINCH_OF_DRIED_MUGWORT,          weight = 1020 }, -- 乾燥マグワート
+            { itemId = xi.item.PINCH_OF_MINIUM,                 weight =  430 }, -- 光明丹
+            { itemId = xi.item.FEYWEALD_LOG,                    weight = 2200 }, -- フェイウィルド原木
+            { itemId = xi.item.REMEDY,                          weight = 1500 }, -- 万能薬
+            { itemId = xi.item.HI_RERAISER,                     weight =  700 }, -- ハイリレイザー
+            { itemId = xi.item.REISHI_MUSHROOM,                 weight =  640 }, -- 霊芝
         },
     },
 }

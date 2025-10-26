@@ -26,7 +26,6 @@
 #include "common/utils.h"
 #include "lua/luautils.h"
 #include "map_networking.h"
-#include "map_server.h"
 
 #include <filesystem>
 #include <fstream>
@@ -105,6 +104,21 @@ namespace moduleutils
         {
             module->OnPushPacket(PChar, packet);
         }
+    }
+
+    auto OnIncomingPacket(MapSession* PSession, CCharEntity* PChar, CBasicPacket& packet) -> bool
+    {
+        TracyZoneScoped;
+
+        for (auto* module : cppModules())
+        {
+            if (module->OnIncomingPacket(PSession, PChar, packet))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     struct Override

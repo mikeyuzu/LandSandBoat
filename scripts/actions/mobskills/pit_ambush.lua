@@ -9,7 +9,10 @@
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
-    if mob:getPool() == 1318 and mob:getLocalVar('AMBUSH') == 1 then
+    if
+        mob:getPool() == xi.mobPools.FEELER_ANTLION and
+        mob:getLocalVar('AMBUSH') == 1
+    then
         return 1
     else
         return 0
@@ -17,6 +20,7 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
 end
 
 mobskillObject.onMobWeaponSkill = function(target, mob, skill)
+    skill:setFinalAnimationSub(1)
     local numhits = 1
     local accmod = 1
     local ftp    = 3.3
