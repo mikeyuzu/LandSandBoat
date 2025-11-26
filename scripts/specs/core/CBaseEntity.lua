@@ -10,8 +10,10 @@ local CBaseEntity = {}
 ---@param p1 integer?
 ---@param p2 integer?
 ---@param p3 integer?
+---@param showName boolean?
+---@param turn boolean?
 ---@return nil
-function CBaseEntity:showText(mob, messageID, p0, p1, p2, p3)
+function CBaseEntity:showText(mob, messageID, p0, p1, p2, p3, showName, turn)
 end
 
 ---@param PLuaBaseEntity CBaseEntity
@@ -1003,6 +1005,12 @@ end
 function CBaseEntity:findItems(itemID, location)
 end
 
+---@nodiscard
+---@param location integer?
+---@return CItem[]
+function CBaseEntity:getItems(location)
+end
+
 ---@param size integer
 ---@param arg1 integer?
 ---@return nil
@@ -1089,8 +1097,9 @@ end
 
 ---@param itemID integer
 ---@param container integer?
+---@param slot integer?
 ---@return nil
-function CBaseEntity:equipItem(itemID, container)
+function CBaseEntity:equipItem(itemID, container, slot)
 end
 
 ---@param itemID integer
@@ -1394,6 +1403,11 @@ end
 ---@param enable boolean
 ---@return nil
 function CBaseEntity:setWallhack(enable)
+end
+
+---@param isFrozen boolean
+---@return nil
+function CBaseEntity:setFreezeFlag(isFrozen)
 end
 
 ---@nodiscard
@@ -2833,10 +2847,11 @@ end
 ---@param subType integer?
 ---@param subPower integer?
 ---@param tier integer?
----@param SourceType integer?
----@param SourceTypeParam integer?
+---@param sourceType integer?
+---@param sourceTypeParam integer?
+---@param originID integer?
 ---@return boolean
-function CBaseEntity:addStatusEffect(effectID, power, tick, duration, subType, subPower, tier, SourceType, SourceTypeParam)
+function CBaseEntity:addStatusEffect(effectID, power, tick, duration, subType, subPower, tier, sourceType, sourceTypeParam, originID)
 end
 
 ---@param effect CStatusEffect
@@ -2844,8 +2859,26 @@ end
 function CBaseEntity:addStatusEffect(effect)
 end
 
--- NOTE: Currently this function allows for an optional last parameter at any position.  This is represented
+-- NOTE: TODO: Currently this function allows for an optional last parameter at any position.  This is represented
 -- in currently-used overloads, but should be standardized in the future and just pass 0-values.
+
+---@param effectID integer
+---@param effectIcon integer
+---@param power number
+---@param tick number
+---@param duration number
+---@param subType integer?
+---@param subPower integer?
+---@param tier integer?
+---@param effectFlag integer?
+---@param sourceType integer?
+---@param sourceTypeParam integer?
+---@param originID integer?
+---@param silent boolean?
+---@return boolean
+function CBaseEntity:addStatusEffectEx(effectID, effectIcon, power, tick, duration, subType, subPower, tier, effectFlag, sourceType, sourceTypeParam, originID, silent)
+end
+
 ---@param effectID integer
 ---@param effectIcon integer
 ---@param power number
@@ -3062,11 +3095,14 @@ end
 ---@param power integer
 ---@param tick integer
 ---@param duration integer
----@param arg6 integer?
----@param arg7 integer?
----@param arg8 integer?
+---@param subType integer
+---@param subPower integer
+---@param tier integer
+---@param sourceType integer
+---@param sourceTypeParam integer
+---@param originID integer
 ---@return boolean
-function CBaseEntity:addCorsairRoll(casterJob, bustDuration, effectID, power, tick, duration, arg6, arg7, arg8)
+function CBaseEntity:addCorsairRoll(casterJob, bustDuration, effectID, power, tick, duration, subType, subPower, tier, sourceType, sourceTypeParam, originID)
 end
 
 ---@nodiscard
@@ -3110,6 +3146,11 @@ end
 
 ---@return nil
 function CBaseEntity:uncharm()
+end
+
+---@nodiscard
+---@return boolean
+function CBaseEntity:isCharmed()
 end
 
 ---@nodiscard
@@ -3253,8 +3294,14 @@ end
 function CBaseEntity:getWeaponHitCount(offhand)
 end
 
+---@nodiscard
+---@return integer
+function CBaseEntity:addDamageFromMultipliers(damage, attackType, weaponSlot, allowProc)
+end
+
 ---@return nil
-function CBaseEntity:removeAmmo()
+---@param ammoUsed integer
+function CBaseEntity:removeAmmo(ammoUsed)
 end
 
 ---@nodiscard
@@ -3300,13 +3347,12 @@ end
 function CBaseEntity:takeWeaponskillDamage(attacker, damage, atkType, dmgType, slot, primary, tpMultiplier, bonusTP, targetTPMultiplier)
 end
 
----@nodiscard
 ---@param caster CBaseEntity
 ---@param spell CSpell
 ---@param damage integer
 ---@param atkType integer
 ---@param dmgType integer
----@return integer
+---@return nil
 function CBaseEntity:takeSpellDamage(caster, spell, damage, atkType, dmgType)
 end
 
@@ -3323,6 +3369,13 @@ end
 ---@param damage integer
 ---@return integer
 function CBaseEntity:checkDamageCap(damage)
+end
+
+---@nodiscard
+---@param damage integer
+---@param isPhysical boolean
+---@return integer
+function CBaseEntity:handleSevereDamage(damage, isPhysical)
 end
 
 ---@param arg0 integer? Optional Pet ID
@@ -3375,11 +3428,6 @@ end
 ---@param value integer?
 ---@return nil
 function CBaseEntity:setTrustTPSkillSettings(trigger, select, value)
-end
-
----@nodiscard
----@return boolean
-function CBaseEntity:hasValidJugPetItem()
 end
 
 ---@nodiscard
@@ -3853,6 +3901,11 @@ end
 
 ---@nodiscard
 ---@return integer
+function CBaseEntity:getCrystalElement()
+end
+
+---@nodiscard
+---@return integer
 function CBaseEntity:getBehavior()
 end
 
@@ -3910,8 +3963,10 @@ end
 
 ---@param skillID integer
 ---@param PLuaBaseEntity CBaseEntity?
+---@param castTimeOverride number?
+---@param ignoreDistance boolean?
 ---@return nil
-function CBaseEntity:useMobAbility(skillID, PLuaBaseEntity)
+function CBaseEntity:useMobAbility(skillID, PLuaBaseEntity, castTimeOverride, ignoreDistance)
 end
 
 ---@return nil

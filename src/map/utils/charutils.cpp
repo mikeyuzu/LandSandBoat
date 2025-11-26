@@ -22,7 +22,6 @@
 #include "common/logging.h"
 #include "common/macros.h"
 #include "common/settings.h"
-#include "common/sql.h"
 #include "common/timer.h"
 #include "common/utils.h"
 #include "common/vana_time.h"
@@ -37,41 +36,33 @@
 #include "ai/states/item_state.h"
 #include "ai/states/range_state.h"
 
-#include "packets/char_abilities.h"
-#include "packets/char_appearance.h"
-#include "packets/char_equip.h"
 #include "packets/char_job_extra.h"
-#include "packets/char_jobs.h"
-#include "packets/char_recast.h"
-#include "packets/char_skills.h"
-#include "packets/char_stats.h"
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
 #include "packets/conquest_map.h"
-#include "packets/inventory_assign.h"
-#include "packets/inventory_count.h"
-#include "packets/inventory_finish.h"
-#include "packets/inventory_item.h"
-#include "packets/inventory_modify.h"
-#include "packets/key_items.h"
-#include "packets/linkshell_equip.h"
-#include "packets/menu_jobpoints.h"
-#include "packets/menu_merit.h"
-#include "packets/message_basic.h"
-#include "packets/message_combat.h"
-#include "packets/message_standard.h"
-#include "packets/monipulator1.h"
-#include "packets/monipulator2.h"
 #include "packets/objective_utility.h"
 #include "packets/quest_mission_log.h"
-#include "packets/roe_questlog.h"
-#include "packets/roe_sparkupdate.h"
-#include "packets/roe_update.h"
-#include "packets/server_ip.h"
+#include "packets/s2c/0x009_message.h"
+#include "packets/s2c/0x00b_logout.h"
+#include "packets/s2c/0x017_chat_std.h"
+#include "packets/s2c/0x01b_job_info.h"
+#include "packets/s2c/0x01d_item_same.h"
+#include "packets/s2c/0x01e_item_num.h"
+#include "packets/s2c/0x01f_item_list.h"
+#include "packets/s2c/0x020_item_attr.h"
+#include "packets/s2c/0x026_item_subcontainer.h"
+#include "packets/s2c/0x02d_battle_message2.h"
+#include "packets/s2c/0x050_equip_list.h"
+#include "packets/s2c/0x051_grap_list.h"
+#include "packets/s2c/0x055_scenarioitem.h"
+#include "packets/s2c/0x061_clistatus.h"
+#include "packets/s2c/0x062_clistatus2.h"
+#include "packets/s2c/0x0ac_command_data.h"
+#include "packets/s2c/0x0e0_group_comlink.h"
+#include "packets/s2c/0x119_abil_recast.h"
 
 #include "ability.h"
 #include "alliance.h"
-#include "aman.h"
 #include "conquest_system.h"
 #include "grades.h"
 #include "ipc_client.h"
@@ -80,7 +71,6 @@
 #include "latent_effect_container.h"
 #include "linkshell.h"
 #include "map_networking.h"
-#include "map_server.h"
 #include "mob_modifier.h"
 #include "recast_container.h"
 #include "roe.h"
@@ -101,13 +91,26 @@
 #include "battleutils.h"
 #include "blueutils.h"
 #include "charutils.h"
+#include "enums/item_lockflg.h"
 #include "itemutils.h"
+#include "job_points.h"
+#include "map_engine.h"
 #include "petutils.h"
 #include "puppetutils.h"
 #include "synthutils.h"
 #include "zoneutils.h"
 
 #include "enums/key_items.h"
+#include "items/item_furnishing.h"
+#include "items/item_linkshell.h"
+#include "packets/s2c/0x029_battle_message.h"
+#include "packets/s2c/0x063_miscdata_job_points.h"
+#include "packets/s2c/0x063_miscdata_merits.h"
+#include "packets/s2c/0x063_miscdata_monstrosity.h"
+#include "packets/s2c/0x063_miscdata_unity.h"
+#include "packets/s2c/0x110_unity.h"
+#include "packets/s2c/0x111_roe_activelog.h"
+#include "packets/s2c/0x112_roe_log.h"
 
 /************************************************************************
  *                                                                       *
@@ -744,7 +747,7 @@ namespace charutils
                 PChar->petZoningInfo.petHP        = petHP;
                 PChar->petZoningInfo.petID        = rset->get<uint8>("pet_id");
                 PChar->petZoningInfo.petMP        = rset->get<int16>("pet_mp");
-                PChar->petZoningInfo.petType      = static_cast<PET_TYPE>(rset->get<uint8>("pet_type"));
+                PChar->petZoningInfo.petType      = rset->get<PET_TYPE>("pet_type");
                 PChar->petZoningInfo.petLevel     = rset->get<uint8>("pet_level");
                 PChar->petZoningInfo.respawnPet   = true;
                 auto jugTimestamp                 = static_cast<uint32>(PChar->getCharVar("jugpet-spawn-time"));
@@ -903,6 +906,12 @@ namespace charutils
         PChar->health.hp = canRestore ? PChar->GetMaxHP() : HP;
         PChar->health.mp = canRestore ? PChar->GetMaxMP() : MP;
         PChar->UpdateHealth();
+
+        // Lazy loading: ensure initial zone is loaded synchronously before OnZoneIn
+        if (zoneutils::IsLazyLoadingEnabled() && !zoneutils::GetZone(PChar->loc.destination))
+        {
+            zoneutils::LoadZones({ PChar->loc.destination });
+        }
 
         luautils::OnZoneIn(PChar);
         luautils::OnGameIn(PChar, zoning == 1);
@@ -1224,24 +1233,24 @@ namespace charutils
     void SendRecordsOfEminenceLog(CCharEntity* PChar)
     {
         // Send spark updates
-        PChar->pushPacket<CRoeSparkUpdatePacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_UNITY>(PChar);
 
         if (settings::get<bool>("main.ENABLE_ROE"))
         {
             // Current RoE quests
-            PChar->pushPacket<CRoeUpdatePacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_ROE_ACTIVELOG>(PChar);
 
             // Players logging in to a new timed record get one-time message
             if (PChar->m_eminenceCache.notifyTimedRecord)
             {
                 PChar->m_eminenceCache.notifyTimedRecord = false;
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, roeutils::GetActiveTimedRecord(), 0, MSGBASIC_ROE_TIMED);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, roeutils::GetActiveTimedRecord(), 0, MSGBASIC_ROE_TIMED);
             }
 
             // 4-part Eminence Completion bitmap
             for (int i = 0; i < 4; i++)
             {
-                PChar->pushPacket<CRoeQuestLogPacket>(PChar, i);
+                PChar->pushPacket<GP_SERV_COMMAND_ROE_LOG>(PChar, i);
             }
         }
     }
@@ -1256,7 +1265,7 @@ namespace charutils
     {
         for (uint8 table = 0; table < MAX_KEYS_TABLE; table++)
         {
-            PChar->pushPacket<CKeyItemsPacket>(PChar, (KEYS_TABLE)table);
+            PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, static_cast<KEYS_TABLE>(table));
         }
     }
 
@@ -1282,7 +1291,7 @@ namespace charutils
                 CItem* PItem = PChar->getStorage(LocationID)->GetItem(slotID);
                 if (PItem != nullptr)
                 {
-                    PChar->pushPacket<CInventoryItemPacket>(PItem, LocationID, slotID);
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, LocationID, slotID);
                 }
             }
         };
@@ -1305,7 +1314,7 @@ namespace charutils
             if (PItem != nullptr)
             {
                 PItem->setSubType(ITEM_LOCKED);
-                PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_NODROP);
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::NoDrop);
             }
         }
 
@@ -1314,9 +1323,9 @@ namespace charutils
         {
             PItem->setSubType(ITEM_LOCKED);
 
-            PChar->pushPacket<CInventoryItemPacket>(PItem, PChar->equipLoc[SLOT_LINK1], PChar->equip[SLOT_LINK1]);
-            PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_LINKSHELL);
-            PChar->pushPacket<CLinkshellEquipPacket>(PChar, 1);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(PChar->equipLoc[SLOT_LINK1]), PChar->equip[SLOT_LINK1]);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::Linkshell);
+            PChar->pushPacket<GP_SERV_COMMAND_GROUP_COMLINK>(PChar, 1);
         }
 
         PItem = PChar->getEquip(SLOT_LINK2);
@@ -1324,12 +1333,84 @@ namespace charutils
         {
             PItem->setSubType(ITEM_LOCKED);
 
-            PChar->pushPacket<CInventoryItemPacket>(PItem, PChar->equipLoc[SLOT_LINK2], PChar->equip[SLOT_LINK2]);
-            PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_LINKSHELL);
-            PChar->pushPacket<CLinkshellEquipPacket>(PChar, 2);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(PChar->equipLoc[SLOT_LINK2]), PChar->equip[SLOT_LINK2]);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::Linkshell);
+            PChar->pushPacket<GP_SERV_COMMAND_GROUP_COMLINK>(PChar, 2);
         }
 
-        PChar->pushPacket<CInventoryFinishPacket>(); // "Finish" type
+        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(); // "Finish" type
+    }
+
+    // Sends all 64 Unity ranking packets to the client (0x063 type 0x07)
+    // Packet sequence:
+    //   - PreviousWeek (resultSet 0x00): 32 packets (types 0x00-0x1F)
+    //   - CurrentWeek  (resultSet 0x01): 32 packets (types 0x00-0x1F)
+    // Client buffers all packets and marks data ready when complete.
+    // Sent on zone-in and when Unity menu is opened.
+    // TODO: Some of it needs further research to determine exact values.
+    void SendUnityPackets(CCharEntity* PChar)
+    {
+        // Query database for unity system data
+        const auto rset = db::preparedStmt("SELECT leader, members_current, points_current, members_prev, points_prev "
+                                           "FROM unity_system");
+
+        std::pair<int32, double> unity_current[11];
+        std::pair<int32, double> unity_previous[11];
+
+        FOR_DB_MULTIPLE_RESULTS(rset)
+        {
+            auto unity_leader = rset->get<int>("leader") - 1;
+            if (unity_leader >= 0 && unity_leader < 11)
+            {
+                unity_current[unity_leader].first   = rset->get<int32>("members_current");
+                unity_current[unity_leader].second  = rset->get<double>("points_current");
+                unity_previous[unity_leader].first  = rset->get<int32>("members_prev");
+                unity_previous[unity_leader].second = rset->get<double>("points_prev");
+            }
+        }
+
+        // Previous week (full results)
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::BASE>(UNITY_RESULTSET::PreviousWeek, UNITY_DATATYPE::Base);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::MEMBERS>(UNITY_RESULTSET::PreviousWeek, unity_previous);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::POINTS>(UNITY_RESULTSET::PreviousWeek, unity_previous);
+        // Types 0x03-0x0F (empty/flag packets)
+        for (int i = 3; i < 0x10; i++)
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::BASE>(UNITY_RESULTSET::PreviousWeek, static_cast<UNITY_DATATYPE>(i));
+        }
+        // Types 0x10-0x1F for PreviousWeek (mostly 0x0008 flags from retail captures)
+        for (int i = 0x10; i < 0x20; i++)
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::PreviousWeek, i, 0x0008);
+        }
+
+        // Current week (partial results)
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::BASE>(UNITY_RESULTSET::CurrentWeek, UNITY_DATATYPE::Base);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::MEMBERS>(UNITY_RESULTSET::CurrentWeek, unity_current);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::POINTS>(UNITY_RESULTSET::CurrentWeek, unity_current);
+        // Types 0x03-0x0F (empty/flag packets)
+        for (int i = 3; i < 0x10; i++)
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::BASE>(UNITY_RESULTSET::CurrentWeek, static_cast<UNITY_DATATYPE>(i));
+        }
+        // Types 0x10-0x1F for CurrentWeek with appropriate values
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x10, 0x2007);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x11, 0x2CC2);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x12, 0x6867); // ASCII 'gh'
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x13, 0x6E6F); // ASCII 'on'
+        // Type 0x14: Personal ranking points (TODO: calculate from player's Unity contributions)
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::PERSONAL>(UNITY_RESULTSET::CurrentWeek, 0);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x15, 0x3605);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x16, 0x2007);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x17, 0x6C6C); // ASCII 'll'
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x18, 0x616E); // ASCII 'na'
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x19, 0x6767); // ASCII 'gg'
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1A, 0x0000);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1B, 0x2007);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1C, 0x2007);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1D, 0x0022);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1E, 0x0004);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1F, 0x2007);
     }
 
     /************************************************************************
@@ -1392,7 +1473,7 @@ namespace charutils
             {
                 if (!silence)
                 {
-                    PChar->pushPacket<CMessageStandardPacket>(PChar, PItem->getID(), 0, MsgStd::ItemEx);
+                    PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(PChar, PItem->getID(), 0, MsgStd::ItemEx);
                 }
                 destroy(PItem);
                 return ERROR_SLOTID;
@@ -1432,8 +1513,8 @@ namespace charutils
                 return ERROR_SLOTID;
             }
 
-            PChar->pushPacket<CInventoryItemPacket>(PItem, LocationID, SlotID);
-            PChar->pushPacket<CInventoryFinishPacket>();
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(LocationID), SlotID);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
         }
         else
         {
@@ -1562,15 +1643,15 @@ namespace charutils
         charutils::SaveCharExp(PChar, PChar->GetMJob());
         PChar->updatemask |= UPDATE_HP;
 
-        PChar->pushPacket<CCharJobsPacket>(PChar);
-        PChar->pushPacket<CCharStatsPacket>(PChar);
-        PChar->pushPacket<CCharSkillsPacket>(PChar);
-        PChar->pushPacket<CCharRecastPacket>(PChar);
-        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_JOB_INFO>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
         PChar->pushPacket<CCharStatusPacket>(PChar);
-        PChar->pushPacket<CMenuMeritPacket>(PChar);
-        PChar->pushPacket<CMonipulatorPacket1>(PChar);
-        PChar->pushPacket<CMonipulatorPacket2>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
         PChar->pushPacket<CCharSyncPacket>(PChar);
     }
 
@@ -1608,8 +1689,8 @@ namespace charutils
                 {
                     PItemContainer->InsertItem(nullptr, SlotID);
 
-                    PChar->pushPacket<CInventoryItemPacket>(nullptr, LocationID, SlotID);
-                    PChar->pushPacket<CInventoryItemPacket>(PItemContainer->GetItem(NewSlotID), LocationID, NewSlotID);
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(LocationID), SlotID);
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItemContainer->GetItem(NewSlotID), static_cast<CONTAINER_ID>(LocationID), NewSlotID);
                     return NewSlotID;
                 }
                 PItemContainer->InsertItem(nullptr, NewSlotID); // We cancel all changes in the container
@@ -1632,7 +1713,7 @@ namespace charutils
         if (PItem == nullptr)
         {
             ShowDebug("UpdateItem: No item in slot %u", slotID);
-            PChar->pushPacket<CInventoryItemPacket>(nullptr, LocationID, slotID);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(LocationID), slotID);
             return 0;
         }
 
@@ -1664,59 +1745,54 @@ namespace charutils
 
         if (newQuantity > 0 || PItem->isType(ITEM_CURRENCY))
         {
-            const char* Query = "UPDATE char_inventory "
-                                "SET quantity = %u "
-                                "WHERE charid = %u AND location = %u AND slot = %u";
-
-            if (_sql->Query(Query, newQuantity, PChar->id, LocationID, slotID) != SQL_ERROR)
-            {
-                PItem->setQuantity(newQuantity);
-                PChar->pushPacket<CInventoryModifyPacket>(LocationID, slotID, newQuantity);
-            }
+            db::preparedStmt("UPDATE char_inventory "
+                             "SET quantity = ? "
+                             "WHERE charid = ? AND location = ? AND slot = ?",
+                             newQuantity, PChar->id, LocationID, slotID);
+            PItem->setQuantity(newQuantity);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_NUM>(static_cast<CONTAINER_ID>(LocationID), slotID, newQuantity);
         }
         else if (newQuantity == 0)
         {
-            const char* Query = "DELETE FROM char_inventory WHERE charid = %u AND location = %u AND slot = %u";
+            db::preparedStmt("DELETE FROM char_inventory "
+                             "WHERE charid = ? AND location = ? AND slot = ?",
+                             PChar->id, LocationID, slotID);
+            PChar->getStorage(LocationID)->InsertItem(nullptr, slotID);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(LocationID), slotID);
 
-            if (_sql->Query(Query, PChar->id, LocationID, slotID) != SQL_ERROR)
+            if (PChar->getStyleLocked() && !HasItem(PChar, ItemID))
             {
-                PChar->getStorage(LocationID)->InsertItem(nullptr, slotID);
-                PChar->pushPacket<CInventoryItemPacket>(nullptr, LocationID, slotID);
-
-                if (PChar->getStyleLocked() && !HasItem(PChar, ItemID))
+                if (PItem->isType(ITEM_WEAPON))
                 {
-                    if (PItem->isType(ITEM_WEAPON))
+                    if (PChar->styleItems[SLOT_MAIN] == ItemID)
                     {
-                        if (PChar->styleItems[SLOT_MAIN] == ItemID)
-                        {
-                            charutils::UpdateWeaponStyle(PChar, SLOT_MAIN, (CItemWeapon*)PChar->getEquip(SLOT_MAIN));
-                        }
-                        else if (PChar->styleItems[SLOT_SUB] == ItemID)
-                        {
-                            charutils::UpdateWeaponStyle(PChar, SLOT_SUB, (CItemWeapon*)PChar->getEquip(SLOT_SUB));
-                        }
+                        charutils::UpdateWeaponStyle(PChar, SLOT_MAIN, (CItemWeapon*)PChar->getEquip(SLOT_MAIN));
                     }
-                    else if (PItem->isType(ITEM_EQUIPMENT))
+                    else if (PChar->styleItems[SLOT_SUB] == ItemID)
                     {
-                        auto equipSlotID = ((CItemEquipment*)PItem)->getSlotType();
-                        if (PChar->styleItems[equipSlotID] == ItemID)
+                        charutils::UpdateWeaponStyle(PChar, SLOT_SUB, (CItemWeapon*)PChar->getEquip(SLOT_SUB));
+                    }
+                }
+                else if (PItem->isType(ITEM_EQUIPMENT))
+                {
+                    auto equipSlotID = ((CItemEquipment*)PItem)->getSlotType();
+                    if (PChar->styleItems[equipSlotID] == ItemID)
+                    {
+                        switch (equipSlotID)
                         {
-                            switch (equipSlotID)
-                            {
-                                case SLOT_HEAD:
-                                case SLOT_BODY:
-                                case SLOT_HANDS:
-                                case SLOT_LEGS:
-                                case SLOT_FEET:
-                                    charutils::UpdateArmorStyle(PChar, equipSlotID);
-                                    break;
-                            }
+                            case SLOT_HEAD:
+                            case SLOT_BODY:
+                            case SLOT_HANDS:
+                            case SLOT_LEGS:
+                            case SLOT_FEET:
+                                charutils::UpdateArmorStyle(PChar, equipSlotID);
+                                break;
                         }
                     }
                 }
-                luautils::OnItemDrop(PChar, PItem);
-                destroy(PItem);
             }
+            luautils::OnItemDrop(PChar, PItem);
+            destroy(PItem);
         }
         return ItemID;
     }
@@ -1727,8 +1803,8 @@ namespace charutils
         if (charutils::UpdateItem(PChar, container, slotID, -quantity) != 0)
         {
             ShowInfo("Player %s DROPPING itemID: %s (%u) quantity: %u", PChar->getName(), itemutils::GetItemPointer(ItemID)->getName(), ItemID, quantity);
-            PChar->pushPacket<CMessageStandardPacket>(nullptr, ItemID, quantity, MsgStd::ThrowAway);
-            PChar->pushPacket<CInventoryFinishPacket>();
+            PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(nullptr, ItemID, quantity, MsgStd::ThrowAway);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
         }
     }
 
@@ -1930,8 +2006,8 @@ namespace charutils
             PChar->PLatentEffectContainer->DelLatentEffects(((CItemEquipment*)PItem)->getReqLvl(), equipSlotID);
             PChar->delPetModifiers(&((CItemEquipment*)PItem)->petModList);
 
-            PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_NORMAL); // ???
-            PChar->pushPacket<CEquipPacket>(0, equipSlotID, LOC_INVENTORY);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::Normal); // ???
+            PChar->pushPacket<GP_SERV_COMMAND_EQUIP_LIST>(0, static_cast<SLOTTYPE>(equipSlotID), LOC_INVENTORY);
 
             switch (equipSlotID)
             {
@@ -2418,7 +2494,7 @@ namespace charutils
 
         if (PChar->getStyleLocked() != isStyleLocked)
         {
-            PChar->pushPacket<CMessageStandardPacket>(isStyleLocked ? MsgStd::StyleLockOn : MsgStd::StyleLockOff);
+            PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(isStyleLocked ? MsgStd::StyleLockOn : MsgStd::StyleLockOff);
         }
         PChar->setStyleLocked(isStyleLocked);
     }
@@ -2675,9 +2751,9 @@ namespace charutils
                 OtherContainer->InsertItem(nullptr, slotID);
 
                 // Send update packets
-                PChar->pushPacket<CInventoryItemPacket>(nullptr, container, slotID);
-                PChar->pushPacket<CInventoryItemPacket>(PItem, LOC_RECYCLEBIN, NewSlotID);
-                PChar->pushPacket<CMessageStandardPacket>(nullptr, PItem->getID(), quantity, MsgStd::ThrowAway);
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(container), slotID);
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, LOC_RECYCLEBIN, NewSlotID);
+                PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(nullptr, PItem->getID(), quantity, MsgStd::ThrowAway);
             }
             else
             {
@@ -2721,15 +2797,15 @@ namespace charutils
             }
 
             // Send update packets
-            PChar->pushPacket<CInventoryItemPacket>(nullptr, container, slotID);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(container), slotID);
             for (int i = 1; i <= 10; ++i)
             {
                 CItem* PUpdatedItem = RecycleBin->GetItem(i);
-                PChar->pushPacket<CInventoryItemPacket>(PUpdatedItem, LOC_RECYCLEBIN, i);
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PUpdatedItem, LOC_RECYCLEBIN, i);
             }
-            PChar->pushPacket<CMessageStandardPacket>(nullptr, PItem->getID(), quantity, MsgStd::ThrowAway);
+            PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(nullptr, PItem->getID(), quantity, MsgStd::ThrowAway);
         }
-        PChar->pushPacket<CInventoryFinishPacket>();
+        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
     }
 
     void EmptyRecycleBin(CCharEntity* PChar)
@@ -2737,11 +2813,8 @@ namespace charutils
         TracyZoneScoped;
 
         CItemContainer* recycleBin = PChar->getStorage(LOC_RECYCLEBIN);
-        const char*     Query      = "DELETE FROM char_inventory WHERE charid = %u AND location = 17";
-        if (_sql->Query(Query, PChar->id) != SQL_ERROR)
-        {
-            recycleBin->Clear();
-        }
+        db::preparedStmt("DELETE FROM char_inventory WHERE charid = ? AND location = 17", PChar->id);
+        recycleBin->Clear();
     }
 
     void SaveJobChangeGear(CCharEntity* PChar)
@@ -2750,26 +2823,6 @@ namespace charutils
         {
             return;
         }
-
-        const char* Query = "REPLACE INTO char_equip_saved SET "
-                            "charid = %u, "
-                            "jobid = %u, "
-                            "main = %u, "
-                            "sub = %u, "
-                            "ranged = %u, "
-                            "ammo = %u, "
-                            "head = %u, "
-                            "body = %u, "
-                            "hands = %u, "
-                            "legs = %u, "
-                            "feet = %u, "
-                            "neck = %u, "
-                            "waist = %u, "
-                            "ear1 = %u, "
-                            "ear2 = %u, "
-                            "ring1 = %u, "
-                            "ring2 = %u, "
-                            "back = %u";
 
         auto getEquipIdFromSlot = [](CCharEntity* PChar, SLOTTYPE slot) -> uint16
         {
@@ -2793,9 +2846,17 @@ namespace charutils
         uint16 ring2  = getEquipIdFromSlot(PChar, SLOT_RING2);
         uint16 back   = getEquipIdFromSlot(PChar, SLOT_BACK);
 
-        _sql->Query(Query, PChar->id, PChar->GetMJob(), main, sub, ranged, ammo,
-                    head, body, hands, legs, feet, neck, waist, ear1, ear2, ring1,
-                    ring2, back);
+        db::preparedStmt("REPLACE INTO char_equip_saved SET "
+                         "charid = ?, jobid = ?, main = ?, sub = ?, "
+                         "ranged = ?, ammo = ?, head = ?, body = ?, "
+                         "hands = ?, legs = ?, feet = ?, neck = ?, "
+                         "waist = ?, ear1 = ?, ear2 = ?, ring1 = ?, "
+                         "ring2 = ?, back = ?",
+                         PChar->id, PChar->GetMJob(), main, sub,
+                         ranged, ammo, head, body,
+                         hands, legs, feet, neck,
+                         waist, ear1, ear2, ring1,
+                         ring2, back);
     }
 
     void LoadJobChangeGear(CCharEntity* PChar)
@@ -2805,15 +2866,17 @@ namespace charutils
             return;
         }
 
-        const char* Query = "SELECT main, sub, ranged, ammo, head, body, hands, legs, feet, neck, waist, ear1, ear2, ring1, ring2, back FROM char_equip_saved AS equip WHERE charid = %u AND jobid = %u";
-
-        if (_sql->Query(Query, PChar->id, PChar->GetMJob()) == SQL_SUCCESS && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        const auto rset = db::preparedStmt("SELECT main, sub, ranged, ammo, head, body, hands, legs, feet, neck, waist, ear1, ear2, ring1, ring2, back "
+                                           "FROM char_equip_saved AS equip "
+                                           "WHERE charid = ? AND jobid = ? LIMIT 1",
+                                           PChar->id, PChar->GetMJob());
+        FOR_DB_SINGLE_RESULT(rset)
         {
-            std::vector<uint8> validContainers = { LOC_INVENTORY, LOC_WARDROBE, LOC_WARDROBE2, LOC_WARDROBE3, LOC_WARDROBE4, LOC_WARDROBE5, LOC_WARDROBE6, LOC_WARDROBE7, LOC_WARDROBE8 };
+            const std::vector<uint8> validContainers = { LOC_INVENTORY, LOC_WARDROBE, LOC_WARDROBE2, LOC_WARDROBE3, LOC_WARDROBE4, LOC_WARDROBE5, LOC_WARDROBE6, LOC_WARDROBE7, LOC_WARDROBE8 };
 
             for (uint8 equipSlot = SLOT_MAIN; equipSlot <= SLOT_BACK; equipSlot++)
             {
-                uint16 itemId = _sql->GetUIntData(equipSlot);
+                const auto itemId = rset->get<uint16>(equipSlot);
 
                 if (itemId > 0)
                 {
@@ -2895,7 +2958,7 @@ namespace charutils
             auto PMainItem   = dynamic_cast<CItemWeapon*>(PChar->getEquip(SLOT_MAIN));
             if (PItemWeapon && PItemWeapon->getSkillType() == SKILL_NONE && (!PMainItem || !PMainItem->isTwoHanded()))
             {
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, 0x200);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, static_cast<MSGBASIC_ID>(0x200));
                 return;
             }
 
@@ -2918,7 +2981,7 @@ namespace charutils
                 RemoveSub(PChar);
             }
 
-            PChar->pushPacket<CEquipPacket>(slotID, equipSlotID, containerID);
+            PChar->pushPacket<GP_SERV_COMMAND_EQUIP_LIST>(slotID, static_cast<SLOTTYPE>(equipSlotID), static_cast<CONTAINER_ID>(containerID));
         }
         else
         {
@@ -2939,7 +3002,7 @@ namespace charutils
 
                         // Do not forget to update the timer when equipping the subject
 
-                        PChar->pushPacket<CInventoryItemPacket>(PItem, containerID, slotID);
+                        PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(containerID), slotID);
                     }
                     PItem->setSubType(ITEM_LOCKED);
 
@@ -2960,8 +3023,8 @@ namespace charutils
                     // Only call the lua onEquip if its a valid equip - e.g. has passed EquipArmor and other checks above
                     luautils::OnItemEquip(PChar, PItem);
 
-                    PChar->pushPacket<CEquipPacket>(slotID, equipSlotID, containerID);
-                    PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_NODROP);
+                    PChar->pushPacket<GP_SERV_COMMAND_EQUIP_LIST>(slotID, static_cast<SLOTTYPE>(equipSlotID), static_cast<CONTAINER_ID>(containerID));
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::NoDrop);
                 }
             }
         }
@@ -2982,7 +3045,7 @@ namespace charutils
             }
 
             BuildingCharWeaponSkills(PChar);
-            PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
         }
 
         charutils::BuildingCharSkillsTable(PChar);
@@ -3050,7 +3113,7 @@ namespace charutils
             CheckUnarmedWeapon(PChar);
         }
 
-        PChar->pushPacket<CCharAppearancePacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_GRAP_LIST>(PChar);
 
         BuildingCharWeaponSkills(PChar);
         PChar->RequestPersist(CHAR_PERSIST::EQUIP);
@@ -3132,7 +3195,8 @@ namespace charutils
             {
                 PItem = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[std::get<0>(slot)]);
 
-                if (PItem)
+                // As of writing, the only unlockable weapons are: wsnm, ksnm, nyzul vigil weapons
+                if (PItem && (!PItem->isUnlockable() || PItem->isUnlocked()))
                 {
                     std::get<1>(slot) = battleutils::GetScaledItemModifier(PChar, PItem, Mod::ADDS_WEAPONSKILL);
                     std::get<2>(slot) = battleutils::GetScaledItemModifier(PChar, PItem, Mod::ADDS_WEAPONSKILL_DYN);
@@ -3181,7 +3245,7 @@ namespace charutils
 
         if (PetID == 0)
         { // technically Fire Spirit but we're using this to null the abilities shown
-            PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
             return;
         }
 
@@ -3245,7 +3309,7 @@ namespace charutils
                 addPetAbility(PChar, abilityid - ABILITY_HEALING_RUBY);
             }
         }
-        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
     }
 
     /************************************************************************
@@ -3718,11 +3782,11 @@ namespace charutils
             if ((SkillID >= 1 && SkillID <= 12) || (SkillID >= 25 && SkillID <= 31))
             // if should effect automaton replace the above with: (SkillID >= 1 && SkillID <= 31)
             {
-                SkillUpChance *= ((100.f + PChar->getMod(Mod::COMBAT_SKILLUP_RATE)) / 100.f);
+                SkillUpChance *= ((100.0f + PChar->getMod(Mod::COMBAT_SKILLUP_RATE)) / 100.0f);
             }
             else if (SkillID >= 32 && SkillID <= 44)
             {
-                SkillUpChance *= ((100.f + PChar->getMod(Mod::MAGIC_SKILLUP_RATE)) / 100.f);
+                SkillUpChance *= ((100.0f + PChar->getMod(Mod::MAGIC_SKILLUP_RATE)) / 100.0f);
             }
 
             if (Diff > 0 && (random < SkillUpChance || forceSkillUp))
@@ -3809,7 +3873,7 @@ namespace charutils
                 }
 
                 PChar->RealSkills.skill[SkillID] += SkillAmount;
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, SkillID, SkillAmount, 38);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, SkillID, SkillAmount, static_cast<MSGBASIC_ID>(38));
 
                 if ((CurSkill / 10) < (CurSkill + SkillAmount) / 10) // if gone up a level
                 {
@@ -3827,8 +3891,8 @@ namespace charutils
                     {
                         PChar->WorkingSkills.skill[SkillID] += 1;
                     }
-                    PChar->pushPacket<CCharSkillsPacket>(PChar);
-                    PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, SkillID, (CurSkill + SkillAmount) / 10, 53);
+                    PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, SkillID, (CurSkill + SkillAmount) / 10, static_cast<MSGBASIC_ID>(53));
 
                     CheckWeaponSkill(PChar, SkillID);
                     /* ignoring this for now
@@ -3871,8 +3935,8 @@ namespace charutils
             if (curSkill == PSkill->getSkillLevel() && (battleutils::CanUseWeaponskill(PChar, PSkill)))
             {
                 addWeaponSkill(PChar, PSkill->getID());
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, PSkill->getID(), PSkill->getID(), 45);
-                PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, PSkill->getID(), PSkill->getID(), static_cast<MSGBASIC_ID>(45));
+                PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
             }
         }
     }
@@ -4101,7 +4165,7 @@ namespace charutils
     void setTitle(CCharEntity* PChar, uint16 Title)
     {
         PChar->profile.title = Title;
-        PChar->pushPacket<CCharStatsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS>(PChar);
 
         addTitle(PChar, Title);
         SaveTitles(PChar);
@@ -4229,36 +4293,29 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const char* fmtQuery = "SELECT r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20 "
-                               "FROM exp_table "
-                               "ORDER BY level ASC "
-                               "LIMIT %u";
+        auto rset = db::preparedStmt("SELECT r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20 "
+                                     "FROM exp_table "
+                                     "ORDER BY level ASC "
+                                     "LIMIT ?",
+                                     ExpTableRowCount);
 
-        int32 ret = _sql->Query(fmtQuery, ExpTableRowCount);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        uint32 x = 0;
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            for (uint32 x = 0; x < ExpTableRowCount && _sql->NextRow() == SQL_SUCCESS; ++x)
+            for (uint32 y = 0; y < 20; ++y)
             {
-                for (uint32 y = 0; y < 20; ++y)
-                {
-                    g_ExpTable[x][y] = (uint16)_sql->GetIntData(y);
-                }
+                g_ExpTable[x][y] = rset->get<uint16>(y);
             }
+
+            ++x;
         }
 
-        ret = _sql->Query("SELECT level, exp FROM exp_base LIMIT 100");
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        rset = db::preparedStmt("SELECT level, exp FROM exp_base LIMIT 100");
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
+            if (const auto level = rset->get<uint8>("level") - 1; level < 100)
             {
-                uint8 level = (uint8)_sql->GetIntData(0) - 1;
-
-                if (level < 100)
-                {
-                    g_ExpPerLevel[level] = (uint16)_sql->GetIntData(1);
-                }
+                g_ExpPerLevel[level] = rset->get<uint16>("exp");
             }
         }
     }
@@ -4365,6 +4422,24 @@ namespace charutils
             gil += std::clamp<uint32>(gBonus, 1, settings::get<uint32>("map.MAX_GIL_BONUS"));
         }
 
+        // TODO: pin down moghancement money which seems to be a % bonus applied individually?
+        // Gilfinder bonus is 1 + (128 + 0..GF level * 16)/256
+        // https://docs.google.com/spreadsheets/d/134YjiVWoqn9UKOFrJFXZPHZChNa6heWzY0xXOGIteC8/edit
+        if (PMob->m_GilfinderLevel > 0)
+        {
+            double multiplier = 1 + ((128 + xirand::GetRandomNumber<uint16_t>(0, PMob->m_GilfinderLevel * 16)) / 256.);
+
+            gil = gil * multiplier;
+        }
+
+        int16 killshotBonus = PChar->getMod(Mod::MOGHANCEMENT_GIL_BONUS_P);
+        if (killshotBonus > 0)
+        {
+            double multiplier = (100.0 + killshotBonus) / 100.0;
+
+            gil = gil * multiplier;
+        }
+
         // Distribute gil to player/party/alliance
         if (PChar->PParty != nullptr)
         {
@@ -4374,7 +4449,7 @@ namespace charutils
             // clang-format off
             PChar->ForAlliance([PMob, &members](CBattleEntity* PPartyMember)
             {
-                if (PPartyMember->getZone() == PMob->getZone() && isWithinDistance(PPartyMember->loc.p, PMob->loc.p, 100.f))
+                if (PPartyMember->getZone() == PMob->getZone() && isWithinDistance(PPartyMember->loc.p, PMob->loc.p, 100.0f)) // TODO: verify range
                 {
                     members.emplace_back((CCharEntity*)PPartyMember);
                 }
@@ -4384,34 +4459,20 @@ namespace charutils
             // all members might not be in range
             if (!members.empty())
             {
-                // Check for highest gilfinder tier
-                uint16 gilFinderActive = 0;
-
-                for (auto PMember : members)
-                {
-                    if (PMember->getMod(Mod::GILFINDER) > gilFinderActive)
-                    {
-                        gilFinderActive = PMember->getMod(Mod::GILFINDER);
-                    }
-                }
-
                 // Calculate gil for each party member.
                 uint32 gilPerPerson = static_cast<uint32>(gil / members.size());
-                gilPerPerson        = gilPerPerson * (100 + gilFinderActive) / 100;
 
                 for (auto PMember : members)
                 {
                     UpdateItem(PMember, LOC_INVENTORY, 0, gilPerPerson);
-                    PMember->pushPacket<CMessageBasicPacket>(PMember, PMember, gilPerPerson, 0, 565);
+                    PMember->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PMember, PMember, gilPerPerson, 0, static_cast<MSGBASIC_ID>(565));
                 }
             }
         }
-        else if (isWithinDistance(PChar->loc.p, PMob->loc.p, 100.f))
+        else if (isWithinDistance(PChar->loc.p, PMob->loc.p, 100.0f))
         {
-            // Check for gilfinder
-            gil += gil * PChar->getMod(Mod::GILFINDER) / 100;
             UpdateItem(PChar, LOC_INVENTORY, 0, static_cast<int32>(gil));
-            PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, static_cast<int32>(gil), 0, 565);
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, static_cast<int32>(gil), 0, static_cast<MSGBASIC_ID>(565));
         }
     }
 
@@ -4517,7 +4578,7 @@ namespace charutils
                         {
                             if (CCharEntity* PChar = dynamic_cast<CCharEntity*>(PMember))
                             {
-                                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, 545);
+                                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, static_cast<MSGBASIC_ID>(545));
                             }
                         }
                     });
@@ -4608,22 +4669,22 @@ namespace charutils
 
                     if (PMob->getMobMod(MOBMOD_EXP_BONUS))
                     {
-                        const float monsterbonus = 1.f + PMob->getMobMod(MOBMOD_EXP_BONUS) / 100.f;
+                        const float monsterbonus = 1.0f + PMob->getMobMod(MOBMOD_EXP_BONUS) / 100.0f;
                         exp *= monsterbonus;
                     }
 
                     // Per monster caps pulled from: https://ffxiclopedia.fandom.com/wiki/Experience_Points
                     if (PMember->GetMLevel() <= 50)
                     {
-                        exp = std::fmin(exp, 400.f);
+                        exp = std::fmin(exp, 400.0f);
                     }
                     else if (PMember->GetMLevel() <= 60)
                     {
-                        exp = std::fmin(exp, 500.f);
+                        exp = std::fmin(exp, 500.0f);
                     }
                     else
                     {
-                        exp = std::fmin(exp, 600.f);
+                        exp = std::fmin(exp, 600.0f);
                     }
 
                     if (mobCheck > EMobDifficulty::DecentChallenge)
@@ -4882,7 +4943,7 @@ namespace charutils
                     // pet or companion exp penalty needs to be added here
                     if (distance(PMember->loc.p, PMob->loc.p) > 100)
                     {
-                        PMember->pushPacket<CMessageBasicPacket>(PMember, PMember, 0, 0, 37);
+                        PMember->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PMember, PMember, 0, 0, static_cast<MSGBASIC_ID>(37));
                         return;
                     }
 
@@ -5023,7 +5084,7 @@ namespace charutils
             }
         }
 
-        capacityPoints *= 1.f + rawBonus / 100;
+        capacityPoints *= 1.0f + rawBonus / 100;
         return capacityPoints;
     }
 
@@ -5051,25 +5112,25 @@ namespace charutils
             {
                 if (PChar->capacityChain.chainNumber != 0)
                 {
-                    PChar->pushPacket<CMessageCombatPacket>(PChar, PChar, capacityPoints, PChar->capacityChain.chainNumber, 735);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, capacityPoints, PChar->capacityChain.chainNumber, 735);
                 }
                 else
                 {
-                    PChar->pushPacket<CMessageCombatPacket>(PChar, PChar, capacityPoints, 0, 718);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, capacityPoints, 0, 718);
                 }
                 PChar->capacityChain.chainNumber++;
             }
             else
             {
-                PChar->pushPacket<CMessageCombatPacket>(PChar, PChar, capacityPoints, 0, 718);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, capacityPoints, 0, 718);
             }
 
             // Add capacity points
             if (PChar->PJobPoints->AddCapacityPoints(capacityPoints))
             {
-                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageCombatPacket>(PChar, PMob, PChar->PJobPoints->GetJobPoints(), 0, 719));
+                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PMob, PChar->PJobPoints->GetJobPoints(), 0, 719));
             }
-            PChar->pushPacket<CMenuJobPointsPacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::JOB_POINTS>(PChar);
 
             if (PMob != PChar) // Only mob kills count for gain EXP records
             {
@@ -5157,14 +5218,14 @@ namespace charutils
                 BuildingCharTraitsTable(PChar);
                 BuildingCharWeaponSkills(PChar);
 
-                PChar->pushPacket<CCharJobsPacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_JOB_INFO>(PChar);
                 PChar->pushPacket<CCharStatusPacket>(PChar);
-                PChar->pushPacket<CCharSkillsPacket>(PChar);
-                PChar->pushPacket<CCharRecastPacket>(PChar);
-                PChar->pushPacket<CCharAbilitiesPacket>(PChar);
-                PChar->pushPacket<CMenuMeritPacket>(PChar);
-                PChar->pushPacket<CMonipulatorPacket1>(PChar);
-                PChar->pushPacket<CMonipulatorPacket2>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, false);
                 PChar->pushPacket<CCharSyncPacket>(PChar);
@@ -5183,7 +5244,7 @@ namespace charutils
                     PChar->PParty->ReloadParty();
                 }
 
-                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageCombatPacket>(PChar, PChar, PChar->jobs.job[PChar->GetMJob()], 0, 11));
+                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, PChar->jobs.job[PChar->GetMJob()], 0, 11));
                 luautils::OnPlayerLevelDown(PChar);
                 PChar->updatemask |= UPDATE_HP;
             }
@@ -5198,7 +5259,7 @@ namespace charutils
         }
 
         SaveCharExp(PChar, PChar->GetMJob());
-        PChar->pushPacket<CCharStatsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS>(PChar);
     }
 
     /************************************************************************
@@ -5245,22 +5306,22 @@ namespace charutils
                 {
                     if (onLimitMode)
                     {
-                        PChar->pushPacket<CMessageCombatPacket>(PChar, PChar, exp, PChar->expChain.chainNumber, 372);
+                        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, exp, PChar->expChain.chainNumber, 372);
                     }
                     else
                     {
-                        PChar->pushPacket<CMessageCombatPacket>(PChar, PChar, exp, PChar->expChain.chainNumber, 253);
+                        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, exp, PChar->expChain.chainNumber, 253);
                     }
                 }
                 else
                 {
                     if (onLimitMode)
                     {
-                        PChar->pushPacket<CMessageCombatPacket>(PChar, PChar, exp, 0, 371);
+                        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, exp, 0, 371);
                     }
                     else
                     {
-                        PChar->pushPacket<CMessageCombatPacket>(PChar, PChar, exp, 0, 8);
+                        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, exp, 0, 8);
                     }
                 }
                 PChar->expChain.chainNumber++;
@@ -5269,11 +5330,11 @@ namespace charutils
             {
                 if (onLimitMode)
                 {
-                    PChar->pushPacket<CMessageCombatPacket>(PChar, PChar, exp, 0, 371);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, exp, 0, 371);
                 }
                 else
                 {
-                    PChar->pushPacket<CMessageCombatPacket>(PChar, PChar, exp, 0, 8);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PChar, exp, 0, 8);
                 }
             }
         }
@@ -5283,7 +5344,7 @@ namespace charutils
             // add limit points
             if (PChar->PMeritPoints->AddLimitPoints(exp))
             {
-                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageCombatPacket>(PChar, PMob, PChar->PMeritPoints->GetMeritPoints(), 0, 50));
+                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PMob, PChar->PMeritPoints->GetMeritPoints(), 0, 50));
             }
         }
         else
@@ -5397,18 +5458,20 @@ namespace charutils
                             SaveCharJob(PChar, PChar->GetSJob());
                             SaveCharExp(PChar, PChar->GetSJob());
 
-                            PChar->pushPacket<CCharJobsPacket>(PChar);
+                            PChar->pushPacket<GP_SERV_COMMAND_JOB_INFO>(PChar);
                             PChar->pushPacket<CCharStatusPacket>(PChar);
-                            PChar->pushPacket<CCharSkillsPacket>(PChar);
-                            PChar->pushPacket<CCharRecastPacket>(PChar);
-                            PChar->pushPacket<CCharAbilitiesPacket>(PChar);
-                            PChar->pushPacket<CMenuMeritPacket>(PChar);
+                            PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
+                            PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
+                            PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
+                            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+                            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+                            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
                             PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
-                            PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
+                            PChar->pushPacket<CCharJobExtraPacket>(PChar, false);
                             PChar->pushPacket<CCharSyncPacket>(PChar);
 
-                            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageCombatPacket>(PChar, PMob, PChar->jobs.job[sjob], 0, 9));
-                            PChar->pushPacket<CCharStatsPacket>(PChar);
+                            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PMob, PChar->jobs.job[sjob], 0, 11));
+                            PChar->pushPacket<CCharStatusPacket>(PChar);
 
                             luautils::OnPlayerLevelUp(PChar);
                             roeutils::event(ROE_EVENT::ROE_LEVELUP, PChar, RoeDatagramList{});
@@ -5468,7 +5531,7 @@ namespace charutils
                 if (!expFromRaise)
                 {
                     // Level up animation and message
-                    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageCombatPacket>(PChar, PMob, PChar->jobs.job[PChar->GetMJob()], 0, 9));
+                    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PMob, PChar->jobs.job[PChar->GetMJob()], 0, 9));
                     // Set HP and MP to max range
                     PChar->health.hp = PChar->GetMaxHP();
                     PChar->health.mp = PChar->GetMaxMP();
@@ -5478,18 +5541,18 @@ namespace charutils
                 SaveCharJob(PChar, PChar->GetMJob());
                 SaveCharExp(PChar, PChar->GetMJob());
 
-                PChar->pushPacket<CCharJobsPacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_JOB_INFO>(PChar);
                 PChar->pushPacket<CCharStatusPacket>(PChar);
-                PChar->pushPacket<CCharSkillsPacket>(PChar);
-                PChar->pushPacket<CCharRecastPacket>(PChar);
-                PChar->pushPacket<CCharAbilitiesPacket>(PChar);
-                PChar->pushPacket<CMenuMeritPacket>(PChar);
-                PChar->pushPacket<CMonipulatorPacket1>(PChar);
-                PChar->pushPacket<CMonipulatorPacket2>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                 PChar->pushPacket<CCharSyncPacket>(PChar);
-                PChar->pushPacket<CCharStatsPacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS>(PChar);
 
                 luautils::OnPlayerLevelUp(PChar);
                 roeutils::event(ROE_EVENT::ROE_LEVELUP, PChar, RoeDatagramList{});
@@ -5501,13 +5564,13 @@ namespace charutils
         SaveCharStats(PChar);
         SaveCharJob(PChar, PChar->GetMJob());
         SaveCharExp(PChar, PChar->GetMJob());
-        PChar->pushPacket<CCharStatsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS>(PChar);
 
         if (onLimitMode)
         {
-            PChar->pushPacket<CMenuMeritPacket>(PChar);
-            PChar->pushPacket<CMonipulatorPacket1>(PChar);
-            PChar->pushPacket<CMonipulatorPacket2>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
         }
 
         if (PMob != PChar) // Only mob kills count for gain EXP records
@@ -5535,16 +5598,15 @@ namespace charutils
             return;
         }
 
-        const char* Query = "UPDATE chars "
-                            "SET "
-                            "pos_rot = %u,"
-                            "pos_x = %.3f,"
-                            "pos_y = %.3f,"
-                            "pos_z = %.3f,"
-                            "boundary = %u "
-                            "WHERE charid = %u";
-
-        _sql->Query(Query, PChar->loc.p.rotation, PChar->loc.p.x, PChar->loc.p.y, PChar->loc.p.z, PChar->loc.boundary, PChar->id);
+        db::preparedStmt("UPDATE chars "
+                         "SET "
+                         "pos_rot = ?,"
+                         "pos_x = ?,"
+                         "pos_y = ?,"
+                         "pos_z = ?,"
+                         "boundary = ? "
+                         "WHERE charid = ?",
+                         PChar->loc.p.rotation, PChar->loc.p.x, PChar->loc.p.y, PChar->loc.p.z, PChar->loc.boundary, PChar->id);
     }
 
     /* TODO: Move linkshell persistence here
@@ -5581,28 +5643,27 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const char* Query = "UPDATE char_profile "
-                            "SET "
-                            "fame_sandoria = %u,"
-                            "fame_bastok = %u,"
-                            "fame_windurst = %u,"
-                            "fame_norg = %u,"
-                            "fame_jeuno = %u,"
-                            "fame_aby_konschtat = %u,"
-                            "fame_aby_tahrongi = %u,"
-                            "fame_aby_latheine = %u,"
-                            "fame_aby_misareaux = %u,"
-                            "fame_aby_vunkerl = %u,"
-                            "fame_aby_attohwa = %u,"
-                            "fame_aby_altepa = %u,"
-                            "fame_aby_grauberg = %u,"
-                            "fame_aby_uleguerand = %u,"
-                            "fame_adoulin = %u "
-                            "WHERE charid = %u";
-
-        _sql->Query(Query, PChar->profile.fame[0], PChar->profile.fame[1], PChar->profile.fame[2], PChar->profile.fame[3], PChar->profile.fame[4],
-                    PChar->profile.fame[5], PChar->profile.fame[6], PChar->profile.fame[7], PChar->profile.fame[8], PChar->profile.fame[9],
-                    PChar->profile.fame[10], PChar->profile.fame[11], PChar->profile.fame[12], PChar->profile.fame[13], PChar->profile.fame[14], PChar->id);
+        db::preparedStmt("UPDATE char_profile "
+                         "SET "
+                         "fame_sandoria = ?,"
+                         "fame_bastok = ?,"
+                         "fame_windurst = ?,"
+                         "fame_norg = ?,"
+                         "fame_jeuno = ?,"
+                         "fame_aby_konschtat = ?,"
+                         "fame_aby_tahrongi = ?,"
+                         "fame_aby_latheine = ?,"
+                         "fame_aby_misareaux = ?,"
+                         "fame_aby_vunkerl = ?,"
+                         "fame_aby_attohwa = ?,"
+                         "fame_aby_altepa = ?,"
+                         "fame_aby_grauberg = ?,"
+                         "fame_aby_uleguerand = ?,"
+                         "fame_adoulin = ? "
+                         "WHERE charid = ?",
+                         PChar->profile.fame[0], PChar->profile.fame[1], PChar->profile.fame[2], PChar->profile.fame[3], PChar->profile.fame[4],
+                         PChar->profile.fame[5], PChar->profile.fame[6], PChar->profile.fame[7], PChar->profile.fame[8], PChar->profile.fame[9],
+                         PChar->profile.fame[10], PChar->profile.fame[11], PChar->profile.fame[12], PChar->profile.fame[13], PChar->profile.fame[14], PChar->id);
     }
 
     /************************************************************************
@@ -5666,40 +5727,38 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const char* Query = "UPDATE char_storage "
-                            "SET "
-                            "inventory = %u,"
-                            "safe = %u,"
-                            "locker = %u,"
-                            "satchel = %u,"
-                            "sack = %u, "
-                            "`case` = %u, "
-                            "wardrobe = %u, "
-                            "wardrobe2 = %u, "
-                            "wardrobe3 = %u, "
-                            "wardrobe4 = %u, "
-                            "wardrobe5 = %u, "
-                            "wardrobe6 = %u, "
-                            "wardrobe7 = %u, "
-                            "wardrobe8 = %u "
-                            "WHERE charid = %u";
-
-        _sql->Query(Query,
-                    PChar->getStorage(LOC_INVENTORY)->GetSize(),
-                    PChar->getStorage(LOC_MOGSAFE)->GetSize(),
-                    PChar->getStorage(LOC_MOGLOCKER)->GetSize(),
-                    PChar->getStorage(LOC_MOGSATCHEL)->GetSize(),
-                    PChar->getStorage(LOC_MOGSACK)->GetSize(),
-                    PChar->getStorage(LOC_MOGCASE)->GetSize(),
-                    PChar->getStorage(LOC_WARDROBE)->GetSize(),
-                    PChar->getStorage(LOC_WARDROBE2)->GetSize(),
-                    PChar->getStorage(LOC_WARDROBE3)->GetSize(),
-                    PChar->getStorage(LOC_WARDROBE4)->GetSize(),
-                    PChar->getStorage(LOC_WARDROBE5)->GetSize(),
-                    PChar->getStorage(LOC_WARDROBE6)->GetSize(),
-                    PChar->getStorage(LOC_WARDROBE7)->GetSize(),
-                    PChar->getStorage(LOC_WARDROBE8)->GetSize(),
-                    PChar->id);
+        db::preparedStmt("UPDATE char_storage "
+                         "SET "
+                         "inventory = ?,"
+                         "safe = ?,"
+                         "locker = ?,"
+                         "satchel = ?,"
+                         "sack = ?, "
+                         "`case` = ?, "
+                         "wardrobe = ?, "
+                         "wardrobe2 = ?, "
+                         "wardrobe3 = ?, "
+                         "wardrobe4 = ?, "
+                         "wardrobe5 = ?, "
+                         "wardrobe6 = ?, "
+                         "wardrobe7 = ?, "
+                         "wardrobe8 = ? "
+                         "WHERE charid = ?",
+                         PChar->getStorage(LOC_INVENTORY)->GetSize(),
+                         PChar->getStorage(LOC_MOGSAFE)->GetSize(),
+                         PChar->getStorage(LOC_MOGLOCKER)->GetSize(),
+                         PChar->getStorage(LOC_MOGSATCHEL)->GetSize(),
+                         PChar->getStorage(LOC_MOGSACK)->GetSize(),
+                         PChar->getStorage(LOC_MOGCASE)->GetSize(),
+                         PChar->getStorage(LOC_WARDROBE)->GetSize(),
+                         PChar->getStorage(LOC_WARDROBE2)->GetSize(),
+                         PChar->getStorage(LOC_WARDROBE3)->GetSize(),
+                         PChar->getStorage(LOC_WARDROBE4)->GetSize(),
+                         PChar->getStorage(LOC_WARDROBE5)->GetSize(),
+                         PChar->getStorage(LOC_WARDROBE6)->GetSize(),
+                         PChar->getStorage(LOC_WARDROBE7)->GetSize(),
+                         PChar->getStorage(LOC_WARDROBE8)->GetSize(),
+                         PChar->id);
     }
 
     /************************************************************************
@@ -5779,13 +5838,15 @@ namespace charutils
         {
             if (PChar->equip[i] == 0)
             {
-                _sql->Query("DELETE FROM char_equip WHERE charid = %u AND  equipslotid = %u LIMIT 1", PChar->id, i);
+                db::preparedStmt("DELETE FROM char_equip WHERE charid = ? AND equipslotid = ? LIMIT 1", PChar->id, i);
             }
             else
             {
-                const char* fmtQuery = "INSERT INTO char_equip SET charid = %u, equipslotid = %u , slotid  = %u, containerid = %u ON DUPLICATE KEY UPDATE "
-                                       "slotid  = %u, containerid = %u";
-                _sql->Query(fmtQuery, PChar->id, i, PChar->equip[i], PChar->equipLoc[i], PChar->equip[i], PChar->equipLoc[i]);
+                db::preparedStmt("INSERT INTO char_equip "
+                                 "SET charid = ?, equipslotid = ?, slotid = ?, containerid = ? "
+                                 "ON DUPLICATE KEY UPDATE slotid  = ?, containerid = ?",
+                                 PChar->id, i, PChar->equip[i], PChar->equipLoc[i],
+                                 PChar->equip[i], PChar->equipLoc[i]);
             }
         }
     }
@@ -5794,24 +5855,22 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const char* Query = "UPDATE char_look "
-                            "SET head = %u, body = %u, hands = %u, legs = %u, feet = %u, main = %u, sub = %u, ranged = %u "
-                            "WHERE charid = %u";
-
         look_t* look = (PChar->getStyleLocked() ? &PChar->mainlook : &PChar->look);
-        _sql->Query(Query, look->head, look->body, look->hands, look->legs, look->feet, look->main, look->sub, look->ranged, PChar->id);
+        db::preparedStmt("UPDATE char_look "
+                         "SET head = ?, body = ?, hands = ?, legs = ?, feet = ?, main = ?, sub = ?, ranged = ? "
+                         "WHERE charid = ?",
+                         look->head, look->body, look->hands, look->legs, look->feet, look->main, look->sub, look->ranged, PChar->id);
 
-        _sql->Query("UPDATE chars SET isstylelocked = %u WHERE charid = %u", PChar->getStyleLocked() ? 1 : 0, PChar->id);
+        db::preparedStmt("UPDATE chars SET isstylelocked = ? WHERE charid = ?", PChar->getStyleLocked() ? 1 : 0, PChar->id);
 
-        Query = "INSERT INTO char_style (charid, head, body, hands, legs, feet, main, sub, ranged) "
-                "VALUES (%u, %u, %u, %u, %u, %u, %u, %u, %u) ON DUPLICATE KEY UPDATE "
-                "charid = VALUES(charid), head = VALUES(head), body = VALUES(body), "
-                "hands = VALUES(hands), legs = VALUES(legs), feet = VALUES(feet), "
-                "main = VALUES(main), sub = VALUES(sub), ranged = VALUES(ranged)";
-
-        _sql->Query(Query, PChar->id, PChar->styleItems[SLOT_HEAD], PChar->styleItems[SLOT_BODY], PChar->styleItems[SLOT_HANDS],
-                    PChar->styleItems[SLOT_LEGS], PChar->styleItems[SLOT_FEET], PChar->styleItems[SLOT_MAIN], PChar->styleItems[SLOT_SUB],
-                    PChar->styleItems[SLOT_RANGED]);
+        db::preparedStmt("INSERT INTO char_style (charid, head, body, hands, legs, feet, main, sub, ranged) "
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE "
+                         "charid = VALUES(charid), head = VALUES(head), body = VALUES(body), "
+                         "hands = VALUES(hands), legs = VALUES(legs), feet = VALUES(feet), "
+                         "main = VALUES(main), sub = VALUES(sub), ranged = VALUES(ranged)",
+                         PChar->id, PChar->styleItems[SLOT_HEAD], PChar->styleItems[SLOT_BODY],
+                         PChar->styleItems[SLOT_HANDS], PChar->styleItems[SLOT_LEGS], PChar->styleItems[SLOT_FEET],
+                         PChar->styleItems[SLOT_MAIN], PChar->styleItems[SLOT_SUB], PChar->styleItems[SLOT_RANGED]);
     }
 
     /************************************************************************
@@ -5824,17 +5883,16 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const char* Query = "UPDATE char_stats "
-                            "SET hp = %u, mp = %u, mhflag = %u, mjob = %u, sjob = %u, "
-                            "pet_id = %u, pet_type = %u, pet_hp = %u, pet_mp = %u, pet_level = %u "
-                            "WHERE charid = %u";
-
-        _sql->Query(Query, PChar->health.hp, PChar->health.mp, PChar->profile.mhflag, PChar->GetMJob(), PChar->GetSJob(),
-                    PChar->petZoningInfo.petID, static_cast<uint8>(PChar->petZoningInfo.petType), PChar->petZoningInfo.petHP, PChar->petZoningInfo.petMP, PChar->petZoningInfo.petLevel, PChar->id);
+        db::preparedStmt("UPDATE char_stats "
+                         "SET hp = ?, mp = ?, mhflag = ?, mjob = ?, sjob = ?, "
+                         "pet_id = ?, pet_type = ?, pet_hp = ?, pet_mp = ?, pet_level = ? "
+                         "WHERE charid = ?",
+                         PChar->health.hp, PChar->health.mp, PChar->profile.mhflag, PChar->GetMJob(), PChar->GetSJob(),
+                         PChar->petZoningInfo.petID, static_cast<uint8>(PChar->petZoningInfo.petType), PChar->petZoningInfo.petHP, PChar->petZoningInfo.petMP, PChar->petZoningInfo.petLevel, PChar->id);
 
         // These two are jug only variables. We should probably move pet char stats into its own table, but in the meantime
         // we use charvars for jug specific things
-        auto jugTimestamp = earth_time::timestamp(timer::to_utc(PChar->petZoningInfo.jugSpawnTime));
+        const auto jugTimestamp = earth_time::timestamp(timer::to_utc(PChar->petZoningInfo.jugSpawnTime));
         PChar->setCharVar("jugpet-spawn-time", jugTimestamp);
         PChar->setCharVar("jugpet-duration-seconds", static_cast<int32>(timer::count_seconds(PChar->petZoningInfo.jugDuration)));
     }
@@ -5918,9 +5976,7 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const char* Query = "UPDATE chars SET languages = %u WHERE charid = %u";
-
-        _sql->Query(Query, PChar->search.language, PChar->id);
+        db::preparedStmt("UPDATE chars SET languages = ? WHERE charid = ?", PChar->search.language, PChar->id);
     }
 
     /************************************************************************
@@ -5933,11 +5989,10 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const char* Query = "UPDATE chars "
-                            "SET nation = %u "
-                            "WHERE charid = %u";
-
-        _sql->Query(Query, PChar->profile.nation, PChar->id);
+        db::preparedStmt("UPDATE chars "
+                         "SET nation = ? "
+                         "WHERE charid = ?",
+                         PChar->profile.nation, PChar->id);
     }
 
     /************************************************************************
@@ -5946,15 +6001,14 @@ namespace charutils
      *                                                                       *
      ************************************************************************/
 
-    void SaveCampaignAllegiance(CCharEntity* PChar)
+    void SaveCampaignAllegiance(const CCharEntity* PChar)
     {
         TracyZoneScoped;
 
-        const char* Query = "UPDATE chars "
-                            "SET campaign_allegiance = %u "
-                            "WHERE charid = %u";
-
-        _sql->Query(Query, PChar->profile.campaign_allegiance, PChar->id);
+        db::preparedStmt("UPDATE chars "
+                         "SET campaign_allegiance = ? "
+                         "WHERE charid = ?",
+                         PChar->profile.campaign_allegiance, PChar->id);
     }
 
     /************************************************************************
@@ -5963,15 +6017,14 @@ namespace charutils
      *                                                                       *
      ************************************************************************/
 
-    void SaveCharMoghancement(CCharEntity* PChar)
+    void SaveCharMoghancement(const CCharEntity* PChar)
     {
         TracyZoneScoped;
 
-        const char* Query = "UPDATE chars "
-                            "SET moghancement = %u "
-                            "WHERE charid = %u";
-
-        _sql->Query(Query, PChar->m_moghancementID, PChar->id);
+        db::preparedStmt("UPDATE chars "
+                         "SET moghancement = ? "
+                         "WHERE charid = ?",
+                         PChar->m_moghancementID, PChar->id);
     }
 
     /************************************************************************
@@ -5980,13 +6033,13 @@ namespace charutils
      *                                                                       *
      ************************************************************************/
 
-    void SaveCharJob(CCharEntity* PChar, JOBTYPE job)
+    void SaveCharJob(const CCharEntity* PChar, const JOBTYPE job)
     {
         TracyZoneScoped;
 
         if (job == JOB_NON || job >= MAX_JOBTYPE)
         {
-            ShowWarning("Attempt to save Invalid Job with JOBTYPE %d.", job);
+            ShowWarningFmt("Attempt to save Invalid Job with JOBTYPE {}.", job);
             return;
         }
 
@@ -5996,90 +6049,91 @@ namespace charutils
             return;
         }
 
-        const char* fmtQuery = "";
+        std::string fmtQuery = "";
 
         switch (job)
         {
             case JOB_WAR:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, war = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, war = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_MNK:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, mnk = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, mnk = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_WHM:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, whm = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, whm = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_BLM:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, blm = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, blm = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_RDM:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, rdm = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, rdm = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_THF:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, thf = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, thf = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_PLD:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, pld = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, pld = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_DRK:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, drk = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, drk = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_BST:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, bst = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, bst = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_BRD:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, brd = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, brd = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_RNG:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, rng = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, rng = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_SAM:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, sam = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, sam = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_NIN:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, nin = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, nin = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_DRG:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, drg = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, drg = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_SMN:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, smn = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, smn = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_BLU:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, blu = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, blu = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_COR:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, cor = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, cor = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_PUP:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, pup = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, pup = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_DNC:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, dnc = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, dnc = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_SCH:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, sch = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, sch = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_GEO:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, geo = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, geo = ? WHERE charid = ? LIMIT 1";
                 break;
             case JOB_RUN:
-                fmtQuery = "UPDATE char_jobs SET unlocked = %u, run = %u WHERE charid = %u LIMIT 1";
+                fmtQuery = "UPDATE char_jobs SET unlocked = ?, run = ? WHERE charid = ? LIMIT 1";
                 break;
             default:
                 fmtQuery = "";
                 break;
         }
-        _sql->Query(fmtQuery, PChar->jobs.unlocked, PChar->jobs.job[job], PChar->id);
+
+        db::preparedStmt(fmtQuery, PChar->jobs.unlocked, PChar->jobs.job[job], PChar->id);
     }
 
-    void SaveCharExp(CCharEntity* PChar, JOBTYPE job)
+    void SaveCharExp(const CCharEntity* PChar, const JOBTYPE job)
     {
         TracyZoneScoped;
 
         if (job == JOB_NON || job >= MAX_JOBTYPE)
         {
-            ShowWarning("Attempt to save Char XP with invalid JOBTYPE %d.", job);
+            ShowWarningFmt("Attempt to save Char XP with invalid JOBTYPE {}.", job);
             return;
         }
 
@@ -6089,103 +6143,99 @@ namespace charutils
             return;
         }
 
-        const char* Query = "";
+        std::string query = "";
 
         switch (job)
         {
             case JOB_WAR:
-                Query = "UPDATE char_exp SET war = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET war = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_MNK:
-                Query = "UPDATE char_exp SET mnk = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET mnk = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_WHM:
-                Query = "UPDATE char_exp SET whm = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET whm = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_BLM:
-                Query = "UPDATE char_exp SET blm = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET blm = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_RDM:
-                Query = "UPDATE char_exp SET rdm = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET rdm = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_THF:
-                Query = "UPDATE char_exp SET thf = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET thf = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_PLD:
-                Query = "UPDATE char_exp SET pld = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET pld = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_DRK:
-                Query = "UPDATE char_exp SET drk = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET drk = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_BST:
-                Query = "UPDATE char_exp SET bst = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET bst = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_BRD:
-                Query = "UPDATE char_exp SET brd = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET brd = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_RNG:
-                Query = "UPDATE char_exp SET rng = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET rng = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_SAM:
-                Query = "UPDATE char_exp SET sam = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET sam = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_NIN:
-                Query = "UPDATE char_exp SET nin = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET nin = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_DRG:
-                Query = "UPDATE char_exp SET drg = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET drg = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_SMN:
-                Query = "UPDATE char_exp SET smn = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET smn = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_BLU:
-                Query = "UPDATE char_exp SET blu = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET blu = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_COR:
-                Query = "UPDATE char_exp SET cor = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET cor = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_PUP:
-                Query = "UPDATE char_exp SET pup = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET pup = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_DNC:
-                Query = "UPDATE char_exp SET dnc = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET dnc = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_SCH:
-                Query = "UPDATE char_exp SET sch = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET sch = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_GEO:
-                Query = "UPDATE char_exp SET geo = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET geo = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             case JOB_RUN:
-                Query = "UPDATE char_exp SET run = %u, merits = %u, limits = %u WHERE charid = %u";
+                query = "UPDATE char_exp SET run = ?, merits = ?, limits = ? WHERE charid = ?";
                 break;
             default:
-                Query = "";
+                query = "";
                 break;
         }
-        _sql->Query(Query, PChar->jobs.exp[job], PChar->PMeritPoints->GetMeritPoints(), PChar->PMeritPoints->GetLimitPoints(), PChar->id);
+
+        db::preparedStmt(query, PChar->jobs.exp[job], PChar->PMeritPoints->GetMeritPoints(), PChar->PMeritPoints->GetLimitPoints(), PChar->id);
     }
 
-    void SaveCharSkills(CCharEntity* PChar, uint8 SkillID)
+    void SaveCharSkills(const CCharEntity* PChar, const uint8 skillID)
     {
         TracyZoneScoped;
 
-        if (SkillID >= MAX_SKILLTYPE)
+        if (skillID >= MAX_SKILLTYPE)
         {
-            ShowWarning("charutils::SaveCharSkills() - SkillID is greated than MAX_SKILLTYPE.");
+            ShowWarningFmt("charutils::SaveCharSkills() - skillID >= MAX_SKILLTYPE.");
             return;
         }
 
-        const char* Query = "INSERT INTO char_skills "
-                            "SET "
-                            "charid = %u,"
-                            "skillid = %u,"
-                            "value = %u,"
-                            "rank = %u "
-                            "ON DUPLICATE KEY UPDATE value = %u, rank = %u";
-
-        _sql->Query(Query, PChar->id, SkillID, PChar->RealSkills.skill[SkillID], PChar->RealSkills.rank[SkillID], PChar->RealSkills.skill[SkillID],
-                    PChar->RealSkills.rank[SkillID]);
+        db::preparedStmt("INSERT INTO char_skills "
+                         "SET charid = ?, skillid = ?, value = ?, rank = ? "
+                         "ON DUPLICATE KEY UPDATE value = ?, rank = ?",
+                         PChar->id, skillID, PChar->RealSkills.skill[skillID], PChar->RealSkills.rank[skillID],
+                         PChar->RealSkills.skill[skillID], PChar->RealSkills.rank[skillID]);
     }
 
     /************************************************************************
@@ -6397,7 +6447,7 @@ namespace charutils
         ELEMENT petElement       = static_cast<ELEMENT>(PPet->m_Element);
         uint8   petElementIdx    = static_cast<uint8>(petElement) - 1;
         ELEMENT dayElement       = battleutils::GetDayElement();
-        WEATHER weather          = battleutils::GetWeather(PChar, false);
+        auto    weather          = battleutils::GetWeather(PChar, false);
         int16   perpReduction    = PChar->getMod(Mod::PERPETUATION_REDUCTION);
         int16   dayReduction     = PChar->getMod(Mod::DAY_REDUCTION);     // As seen on Summoner's Doublet (Depending On Day: Avatar perpetuation cost -3) etc.
         int16   weatherReduction = PChar->getMod(Mod::WEATHER_REDUCTION); // As seen on Summoner's Horn (Weather: Avatar perpetuation cost -3) etc.
@@ -6405,8 +6455,8 @@ namespace charutils
         static const Mod strong[8] = { Mod::FIRE_AFFINITY_PERP, Mod::ICE_AFFINITY_PERP, Mod::WIND_AFFINITY_PERP, Mod::EARTH_AFFINITY_PERP,
                                        Mod::THUNDER_AFFINITY_PERP, Mod::WATER_AFFINITY_PERP, Mod::LIGHT_AFFINITY_PERP, Mod::DARK_AFFINITY_PERP };
 
-        static const WEATHER weatherStrong[8] = { WEATHER_HOT_SPELL, WEATHER_SNOW, WEATHER_WIND, WEATHER_DUST_STORM,
-                                                  WEATHER_THUNDER, WEATHER_RAIN, WEATHER_AURORAS, WEATHER_GLOOM };
+        static const Weather weatherStrong[8] = { Weather::HotSpell, Weather::Snow, Weather::Wind, Weather::DustStorm,
+                                                  Weather::Thunder, Weather::Rain, Weather::Auroras, Weather::Gloom };
 
         // If you wear a fire staff, you have +2 perp affinity reduction for fire, but -2 for ice as mods.
         perpReduction += PChar->getMod(strong[petElementIdx]);
@@ -6417,8 +6467,8 @@ namespace charutils
             perpReduction += dayReduction;
         }
 
-        // TODO: Whats the deal with the +1 to weather result here?
-        if (weather == weatherStrong[petElementIdx] || weather == weatherStrong[petElementIdx] + 1)
+        // Match against both tier of weather for element
+        if (weather == weatherStrong[petElementIdx] || weather == static_cast<Weather>(static_cast<uint16_t>(weatherStrong[petElementIdx]) + 1))
         {
             perpReduction += weatherReduction;
         }
@@ -6436,19 +6486,18 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const char* fmtQuery          = "UPDATE char_stats SET death = %u WHERE charid = %u LIMIT 1";
-        uint32      secondsSinceDeath = static_cast<uint32>(timer::count_seconds(PChar->GetTimeSinceDeath()));
-        _sql->Query(fmtQuery, secondsSinceDeath, PChar->id);
+        uint32 secondsSinceDeath = static_cast<uint32>(timer::count_seconds(PChar->GetTimeSinceDeath()));
+        db::preparedStmt("UPDATE char_stats SET death = ? WHERE charid = ? LIMIT 1", secondsSinceDeath, PChar->id);
     }
 
     void SavePlayTime(CCharEntity* PChar)
     {
         TracyZoneScoped;
 
-        timer::duration playDuration = PChar->GetPlayTime();
-        uint32          playtime     = static_cast<uint32>(timer::count_seconds(playDuration));
+        const timer::duration playDuration = PChar->GetPlayTime();
+        const uint32          playtime     = static_cast<uint32>(timer::count_seconds(playDuration));
 
-        _sql->Query("UPDATE chars SET playtime = '%u' WHERE charid = '%u' LIMIT 1", playtime, PChar->id);
+        db::preparedStmt("UPDATE chars SET playtime = ? WHERE charid = ? LIMIT 1", playtime, PChar->id);
 
         // Removes new player icon if played for more than 240 hours
         if (PChar->isNewPlayer() && playDuration >= 240h)
@@ -6650,26 +6699,24 @@ namespace charutils
 
         CItemContainer* Temp = PChar->getStorage(LOC_TEMPITEMS);
 
-        const char* Query = "DELETE FROM char_inventory WHERE charid = %u AND location = 3";
-
-        if (_sql->Query(Query, PChar->id) != SQL_ERROR)
-        {
-            Temp->Clear();
-        }
+        db::preparedStmt("DELETE FROM char_inventory WHERE charid = ? AND location = 3", PChar->id);
+        Temp->Clear();
     }
 
     void ReloadParty(CCharEntity* PChar)
     {
         TracyZoneScoped;
 
-        int ret = _sql->Query("SELECT partyid, allianceid, partyflag & %d FROM accounts_sessions s JOIN accounts_parties p ON "
-                              "s.charid = p.charid WHERE p.charid = %u",
-                              (PARTY_SECOND | PARTY_THIRD), PChar->id);
-        if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        const auto rset = db::preparedStmt("SELECT partyid, allianceid, partyflag & ? AS partyflag "
+                                           "FROM accounts_sessions s JOIN accounts_parties p ON "
+                                           "s.charid = p.charid "
+                                           "WHERE p.charid = ? LIMIT 1",
+                                           (PARTY_SECOND | PARTY_THIRD), PChar->id);
+        FOR_DB_SINGLE_RESULT(rset)
         {
-            uint32 partyid     = _sql->GetUIntData(0);
-            uint32 allianceid  = _sql->GetUIntData(1);
-            uint32 partynumber = _sql->GetUIntData(2);
+            auto       partyid     = rset->get<uint32>("partyid");
+            auto       allianceid  = rset->get<uint32>("allianceid");
+            const auto partynumber = rset->get<uint32>("partyflag");
 
             // first, parties and alliances must be created or linked if the character's current party has changed
             // for example, joining a party from another server
@@ -6684,13 +6731,18 @@ namespace charutils
             {
                 // find if party exists on this server already
                 CParty* PParty = nullptr;
+                // clang-format off
                 zoneutils::ForEachZone([partyid, &PParty](CZone* PZone)
-                                       { PZone->ForEachChar([partyid, &PParty](CCharEntity* PChar)
-                                                            {
+                {
+                    PZone->ForEachChar([partyid, &PParty](const CCharEntity* PChar)
+                    {
                         if (PChar->PParty && PChar->PParty->GetPartyID() == partyid)
                         {
                             PParty = PChar->PParty;
-                        } }); });
+                        }
+                    });
+                });
+                // clang-format on
 
                 // create new party if it doesn't exist already
                 if (!PParty)
@@ -6706,7 +6758,7 @@ namespace charutils
                 PSyncTarget->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_SYNC) &&
                 PSyncTarget->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC)->GetDuration() == 0s)
             {
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, PSyncTarget->GetMLevel(), 540);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, PSyncTarget->GetMLevel(), static_cast<MSGBASIC_ID>(540));
                 PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_LEVEL_SYNC, EFFECT_LEVEL_SYNC, PSyncTarget->GetMLevel(), 0s, 0s), EffectNotice::Silent);
                 PChar->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DISPELABLE);
             }
@@ -6817,7 +6869,7 @@ namespace charutils
 
             roeutils::UpdateUnityTrust(PChar, true);
 
-            PChar->pushPacket<CCharStatsPacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS>(PChar);
         }
     }
 
@@ -6851,7 +6903,7 @@ namespace charutils
 
         if (strcmp(type, "spark_of_eminence") == 0)
         {
-            PChar->pushPacket<CRoeSparkUpdatePacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_UNITY>(PChar);
         }
     }
 
@@ -6907,38 +6959,34 @@ namespace charutils
     {
         TracyZoneScoped;
 
+        if (PChar->PSession->blowfish.status == BLOWFISH_PENDING_ZONE)
+        {
+            return;
+        }
+
         auto ipp = IPP(zoneutils::GetZoneIPP(zoneId));
         if (ipp.getIP() == 0)
         {
-            ShowError("charutils::SendToZone : Invalid zoneId %u", zoneId);
+            ShowErrorFmt("charutils::SendToZone : Invalid zoneId {}", zoneId);
             return;
         }
 
         auto ip   = ipp.getIP();
         auto port = ipp.getPort();
-        _sql->Query("UPDATE accounts_sessions SET server_addr = %u, server_port = %u WHERE charid = %u",
-                    ip, port, PChar->id);
+        db::preparedStmt("UPDATE accounts_sessions "
+                         "SET server_addr = ?, server_port = ? "
+                         "WHERE charid = ?",
+                         ip, port, PChar->id);
 
-        const char* Query = "UPDATE chars "
-                            "SET "
-                            "pos_zone = %u,"
-                            "pos_prevzone = %u,"
-                            "pos_rot = %u,"
-                            "pos_x = %.3f,"
-                            "pos_y = %.3f,"
-                            "pos_z = %.3f,"
-                            "moghouse = %u,"
-                            "boundary = %u "
-                            "WHERE charid = %u";
-
-        _sql->Query(Query, PChar->loc.destination,
-                    (PChar->m_moghouseID || PChar->loc.destination == PChar->getZone()) ? PChar->loc.prevzone : PChar->getZone(), PChar->loc.p.rotation,
-                    PChar->loc.p.x, PChar->loc.p.y, PChar->loc.p.z, PChar->m_moghouseID, PChar->loc.boundary, PChar->id);
-
-        message::send(ipc::CharZone{
-            .charId            = PChar->id,
-            .destinationZoneId = PChar->loc.destination,
-        });
+        db::preparedStmt("UPDATE chars "
+                         "SET pos_zone = ?, pos_prevzone = ?, pos_rot = ?,"
+                         "pos_x = ?, pos_y = ?, pos_z = ?,"
+                         "moghouse = ?, boundary = ? "
+                         "WHERE charid = ?",
+                         PChar->loc.destination, (PChar->m_moghouseID || PChar->loc.destination == PChar->getZone()) ? PChar->loc.prevzone : PChar->getZone(), PChar->loc.p.rotation,
+                         PChar->loc.p.x, PChar->loc.p.y, PChar->loc.p.z,
+                         PChar->m_moghouseID, PChar->loc.boundary,
+                         PChar->id);
 
         if (PChar->shouldPetPersistThroughZoning())
         {
@@ -6955,9 +7003,19 @@ namespace charutils
             charutils::forceSynthCritFail("SendToZone", PChar);
         }
 
-        PChar->pushPacket<CServerIPPacket>(PChar, 2, IPP(ipp));
+        PChar->requestedZoneChange = true;
+        PChar->requestedWarp       = false; // a previous warp can get us here, which could infinitely loop. So un-request warp.
 
-        removeCharFromZone(PChar);
+        PChar->PSession->zone_ipp = {};
+        PChar->pushPacket<GP_SERV_COMMAND_LOGOUT>(GP_GAME_LOGOUT_STATE::ZONECHANGE, IPP(ipp));
+
+        PChar->status = STATUS_TYPE::DISAPPEAR;
+
+        // Save pet if any
+        if (PChar->shouldPetPersistThroughZoning())
+        {
+            PChar->setPetZoningInfo();
+        }
     }
 
     void SendDisconnect(CCharEntity* PChar)
@@ -6965,20 +7023,24 @@ namespace charutils
         TracyZoneScoped;
 
         SaveCharPosition(PChar);
+        PChar->clearPacketList();
 
-        message::send(ipc::CharZone{
-            .charId            = PChar->id,
-            .destinationZoneId = 0xFFFF, // Clear cache
-        });
+        PChar->loc.destination     = 0xFFFF;
+        PChar->status              = STATUS_TYPE::SHUTDOWN;
+        PChar->requestedZoneChange = true;
 
-        PChar->pushPacket<CServerIPPacket>(PChar, 1, IPP());
+        // Save pet if any
+        if (PChar->shouldPetPersistThroughZoning())
+        {
+            PChar->setPetZoningInfo();
+        }
 
-        removeCharFromZone(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_LOGOUT>(GP_GAME_LOGOUT_STATE::LOGOUT, IPP());
     }
 
+    // This is just an alias for SendDisconnect?
     void ForceLogout(CCharEntity* PChar)
     {
-        PChar->status = STATUS_TYPE::SHUTDOWN;
         charutils::SendDisconnect(PChar);
     }
 
@@ -6990,7 +7052,13 @@ namespace charutils
 
         PChar->clearPacketList();
 
-        SendToZone(PChar, PChar->loc.destination);
+        PChar->requestedZoneChange = true;
+
+        // Save pet if any
+        if (PChar->shouldPetPersistThroughZoning())
+        {
+            PChar->setPetZoningInfo();
+        }
     }
 
     void HomePoint(CCharEntity* PChar, bool resetHPMP)
@@ -7033,8 +7101,10 @@ namespace charutils
             if (PWeapon->addWsPoints(wspoints))
             {
                 // weapon is now broken
+                charutils::BuildingCharWeaponSkills(PChar);
                 PChar->PLatentEffectContainer->CheckLatentsWeaponBreak(slotid);
-                PChar->pushPacket<CCharStatsPacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
             }
 
             db::preparedStmt("UPDATE char_inventory SET extra = ? WHERE charid = ? AND location = ? AND slot = ? LIMIT 1",
@@ -7047,13 +7117,13 @@ namespace charutils
                 if (trial_ws_points >= final_ws_points)
                 {
                     const std::string msg = settings::get<std::string>("map.TRIAL_FINISH_MESSAGE");
-                    PChar->pushPacket<CChatMessagePacket>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, msg.c_str(), "");
+                    PChar->pushPacket<GP_SERV_COMMAND_CHAT_STD>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, msg.c_str(), "");
                 }
                 else
                 {
                     const std::string msg_fmt = settings::get<std::string>("map.TRIAL_WS_POINT_MESSAGE");
                     const std::string msg     = fmt::sprintf(msg_fmt, trial_ws_points, final_ws_points);
-                    PChar->pushPacket<CChatMessagePacket>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, msg.c_str(), "");
+                    PChar->pushPacket<GP_SERV_COMMAND_CHAT_STD>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, msg.c_str(), "");
                 }
             }
             return true;
@@ -7272,15 +7342,13 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        auto fmtQuery = "SELECT UNIX_TIMESTAMP(traverser_start) FROM char_unlocks WHERE charid = %u";
-
-        auto ret = _sql->Query(fmtQuery, PChar->id);
-        if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        const auto rset = db::preparedStmt("SELECT UNIX_TIMESTAMP(traverser_start) AS start FROM char_unlocks WHERE charid = ? LIMIT 1", PChar->id);
+        FOR_DB_SINGLE_RESULT(rset)
         {
-            return earth_time::time_point(std::chrono::seconds(_sql->GetUIntData(0)));
+            return earth_time::time_point(std::chrono::seconds(rset->get<uint32>("start")));
         }
 
-        return earth_time::time_point::min();
+        return earth_time::time_point(std::chrono::seconds(0));
     }
 
     // TODO: Perhaps allow for optional argument to support GM Commands
@@ -7295,12 +7363,10 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        auto fmtQuery = "SELECT traverser_claimed FROM char_unlocks WHERE charid = %u";
-
-        auto ret = _sql->Query(fmtQuery, PChar->id);
-        if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        const auto rset = db::preparedStmt("SELECT traverser_claimed FROM char_unlocks WHERE charid = ? LIMIT 1", PChar->id);
+        FOR_DB_SINGLE_RESULT(rset)
         {
-            return _sql->GetUIntData(0);
+            return rset->get<uint32>("traverser_claimed");
         }
 
         return 0;
@@ -7324,18 +7390,17 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        auto                   fmtQuery         = "SELECT UNIX_TIMESTAMP(traverser_start), traverser_claimed FROM char_unlocks WHERE charid = %u";
         earth_time::time_point traverserEpoch   = earth_time::time_point::min();
         uint32                 traverserClaimed = 0;
 
-        auto ret = _sql->Query(fmtQuery, PChar->id);
-        if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        const auto rset = db::preparedStmt("SELECT UNIX_TIMESTAMP(traverser_start) AS start, traverser_claimed FROM char_unlocks WHERE charid = ? LIMIT 1", PChar->id);
+        FOR_DB_SINGLE_RESULT(rset)
         {
-            traverserEpoch   = earth_time::time_point(std::chrono::seconds(_sql->GetUIntData(0)));
-            traverserClaimed = _sql->GetUIntData(1);
+            traverserEpoch   = earth_time::time_point(std::chrono::seconds(rset->get<uint32>("start")));
+            traverserClaimed = rset->get<uint32>("traverser_claimed");
         }
 
-        if (traverserEpoch == earth_time::time_point::min())
+        if (traverserEpoch == earth_time::time_point(std::chrono::seconds(0)))
         {
             // Players cannot accrue Traverser Stones until the epoch has been set.  This is not possible
             // in quests, but is always displayed in player currencies.
@@ -7367,45 +7432,34 @@ namespace charutils
             return;
         }
 
-        auto fmtQuery = "SELECT "
-                        "enemies_defeated, "  // 0
-                        "times_knocked_out, " // 1
-                        "mh_entrances, "      // 2
-                        "joined_parties, "    // 3
-                        "joined_alliances, "  // 4
-                        "spells_cast, "       // 5
-                        "abilities_used, "    // 6
-                        "ws_used, "           // 7
-                        "items_used, "        // 8
-                        "chats_sent, "        // 9
-                        "npc_interactions, "  // 10
-                        "battles_fought, "    // 11
-                        "gm_calls, "          // 12
-                        "distance_travelled " // 13
-                        "FROM char_history "
-                        "WHERE charid = %u";
-
-        auto ret = _sql->Query(fmtQuery, PChar->id);
-        if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        const auto rset = db::preparedStmt("SELECT enemies_defeated, times_knocked_out, mh_entrances, " // 2
+                                           "joined_parties, joined_alliances, spells_cast, "
+                                           "abilities_used, ws_used, items_used, "
+                                           "chats_sent, npc_interactions, battles_fought, "
+                                           "gm_calls, distance_travelled "
+                                           "FROM char_history "
+                                           "WHERE charid = ? LIMIT 1",
+                                           PChar->id);
+        FOR_DB_SINGLE_RESULT(rset)
         {
-            PChar->m_charHistory.enemiesDefeated   = _sql->GetUIntData(0);
-            PChar->m_charHistory.timesKnockedOut   = _sql->GetUIntData(1);
-            PChar->m_charHistory.mhEntrances       = _sql->GetUIntData(2);
-            PChar->m_charHistory.joinedParties     = _sql->GetUIntData(3);
-            PChar->m_charHistory.joinedAlliances   = _sql->GetUIntData(4);
-            PChar->m_charHistory.spellsCast        = _sql->GetUIntData(5);
-            PChar->m_charHistory.abilitiesUsed     = _sql->GetUIntData(6);
-            PChar->m_charHistory.wsUsed            = _sql->GetUIntData(7);
-            PChar->m_charHistory.itemsUsed         = _sql->GetUIntData(8);
-            PChar->m_charHistory.chatsSent         = _sql->GetUIntData(9);
-            PChar->m_charHistory.npcInteractions   = _sql->GetUIntData(10);
-            PChar->m_charHistory.battlesFought     = _sql->GetUIntData(11);
-            PChar->m_charHistory.gmCalls           = _sql->GetUIntData(12);
-            PChar->m_charHistory.distanceTravelled = _sql->GetUIntData(13);
+            PChar->m_charHistory.enemiesDefeated   = rset->get<uint32>("enemies_defeated");
+            PChar->m_charHistory.timesKnockedOut   = rset->get<uint32>("times_knocked_out");
+            PChar->m_charHistory.mhEntrances       = rset->get<uint32>("mh_entrances");
+            PChar->m_charHistory.joinedParties     = rset->get<uint32>("joined_parties");
+            PChar->m_charHistory.joinedAlliances   = rset->get<uint32>("joined_alliances");
+            PChar->m_charHistory.spellsCast        = rset->get<uint32>("spells_cast");
+            PChar->m_charHistory.abilitiesUsed     = rset->get<uint32>("abilities_used");
+            PChar->m_charHistory.wsUsed            = rset->get<uint32>("ws_used");
+            PChar->m_charHistory.itemsUsed         = rset->get<uint32>("items_used");
+            PChar->m_charHistory.chatsSent         = rset->get<uint32>("chats_sent");
+            PChar->m_charHistory.npcInteractions   = rset->get<uint32>("npc_interactions");
+            PChar->m_charHistory.battlesFought     = rset->get<uint32>("battles_fought");
+            PChar->m_charHistory.gmCalls           = rset->get<uint32>("gm_calls");
+            PChar->m_charHistory.distanceTravelled = rset->get<uint32>("distance_travelled");
         }
     }
 
-    void WriteHistory(CCharEntity* PChar)
+    void WriteHistory(const CCharEntity* PChar)
     {
         TracyZoneScoped;
 
@@ -7415,48 +7469,25 @@ namespace charutils
         }
 
         // Replace will also handle insert if it doesn't exist
-        auto fmtQuery = "REPLACE INTO char_history "
-                        "(charid, enemies_defeated, times_knocked_out, mh_entrances, joined_parties, joined_alliances, spells_cast, "
-                        "abilities_used, ws_used, items_used, chats_sent, npc_interactions, battles_fought, gm_calls, distance_travelled) "
-                        "VALUES("
-                        "%u, " // charid
-                        "%u, " // 0 enemies_defeated
-                        "%u, " // 1 times_knocked_out
-                        "%u, " // 2 mh_entrances
-                        "%u, " // 3 joined_parties
-                        "%u, " // 4 joined_alliances
-                        "%u, " // 5 spells_cast
-                        "%u, " // 6 abilities_used
-                        "%u, " // 7 ws_used
-                        "%u, " // 8 items_used
-                        "%u, " // 9 chats_sent
-                        "%u, " // 10 npc_interactions
-                        "%u, " // 11 battles_fought
-                        "%u, " // 12 gm_calls
-                        "%u"   // 13 distance_travelled
-                        ")";
-
-        auto ret = _sql->Query(fmtQuery,
-                               PChar->id,
-                               PChar->m_charHistory.enemiesDefeated,
-                               PChar->m_charHistory.timesKnockedOut,
-                               PChar->m_charHistory.mhEntrances,
-                               PChar->m_charHistory.joinedParties,
-                               PChar->m_charHistory.joinedAlliances,
-                               PChar->m_charHistory.spellsCast,
-                               PChar->m_charHistory.abilitiesUsed,
-                               PChar->m_charHistory.wsUsed,
-                               PChar->m_charHistory.itemsUsed,
-                               PChar->m_charHistory.chatsSent,
-                               PChar->m_charHistory.npcInteractions,
-                               PChar->m_charHistory.battlesFought,
-                               PChar->m_charHistory.gmCalls,
-                               PChar->m_charHistory.distanceTravelled);
-
-        if (ret == SQL_ERROR)
-        {
-            ShowError("Error writing char history for: '%s'", PChar->name.c_str());
-        }
+        db::preparedStmt("REPLACE INTO char_history "
+                         "(charid, enemies_defeated, times_knocked_out, mh_entrances, joined_parties, joined_alliances, spells_cast, "
+                         "abilities_used, ws_used, items_used, chats_sent, npc_interactions, battles_fought, gm_calls, distance_travelled) "
+                         "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                         PChar->id,
+                         PChar->m_charHistory.enemiesDefeated,
+                         PChar->m_charHistory.timesKnockedOut,
+                         PChar->m_charHistory.mhEntrances,
+                         PChar->m_charHistory.joinedParties,
+                         PChar->m_charHistory.joinedAlliances,
+                         PChar->m_charHistory.spellsCast,
+                         PChar->m_charHistory.abilitiesUsed,
+                         PChar->m_charHistory.wsUsed,
+                         PChar->m_charHistory.itemsUsed,
+                         PChar->m_charHistory.chatsSent,
+                         PChar->m_charHistory.npcInteractions,
+                         PChar->m_charHistory.battlesFought,
+                         PChar->m_charHistory.gmCalls,
+                         PChar->m_charHistory.distanceTravelled);
     }
 
     uint8 getMaxItemLevel(CCharEntity* PChar)
@@ -7494,7 +7525,7 @@ namespace charutils
 
         if (highestItem > 99)
         {
-            itemLevelDiff += (highestItem - 99) / 2.f;
+            itemLevelDiff += (highestItem - 99) / 2.0f;
         }
 
         for (uint8 slotID = 4; slotID < 9; ++slotID)
@@ -7503,7 +7534,7 @@ namespace charutils
 
             if (PItem && PItem->getILvl() > 99)
             {
-                itemLevelDiff += (PItem->getILvl() - 99) / 10.f;
+                itemLevelDiff += (PItem->getILvl() - 99) / 10.0f;
             }
         }
 
@@ -7837,7 +7868,7 @@ namespace charutils
                             ShowWarning("Invalid Mannequin placed (race of 0 in exdata, when races start at 1). It will be unusable.");
                         }
 
-                        PChar->pushPacket<CInventoryCountPacket>(safeContainerId, slotIndex, headId, bodyId, handsId, legId, feetId, mainId, subId, rangeId);
+                        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SUBCONTAINER>(safeContainerId, slotIndex, headId, bodyId, handsId, legId, feetId, mainId, subId, rangeId);
                     }
                 }
             }

@@ -9,7 +9,7 @@ local quest = Quest:new(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_ROAD_TO_AHT_URH
 
 quest.reward =
 {
-    fame = 30,
+    fame     = 30,
     fameArea = xi.fameArea.JEUNO,
 }
 
@@ -70,11 +70,11 @@ local advancedSingleList =
 
 local function handleEventUpdate(player, csid, option, npc)
     if option == 10 then
-        player:updateEvent(537, 538, 539, 540, 541, 542, 0, 0)
+        player:updateEvent(xi.item.DAMSELFLY_WORM, xi.item.MAGICKED_SKULL, xi.item.CRAB_APRON, xi.item.BLOODY_ROBE, xi.item.CUP_OF_DHALMEL_SALIVA, xi.item.WILD_RABBIT_TAIL, 0, 0)
     elseif option == 12 then
-        player:updateEvent(1532, 1533, 1535, 0, 0, 0, 0, 0)
+        player:updateEvent(xi.item.JADE_CRYPTEX, xi.item.SILVER_ENGRAVING, xi.item.THIRTEEN_KNOT_QUIPU, 0, 0, 0, 0, 0)
     elseif option == 13 then
-        player:updateEvent(1692, 1693, 1694, 0, 0, 0, 0, 0)
+        player:updateEvent(xi.item.CARMINE_CHIP, xi.item.CYAN_CHIP, xi.item.GRAY_CHIP, 0, 0, 0, 0, 0)
     elseif option == 14 then
         player:updateEvent(1, 1, 1, 1, 1, 1, player:getGil(), 1)
     end
@@ -100,7 +100,6 @@ local function handleSelectionEventFinish(player, csid, option, npc)
             player:delGil(500000)
             quest:setVar(player, 'Prog', 2)
             quest:setMustZone(player)
-            quest:setVar(player, 'Timer', VanadielUniqueDay())
         end
     end
 end
@@ -153,8 +152,7 @@ quest.sections =
 
                 onTrigger = function(player, npc)
                     local questProgress = quest:getVar(player, 'Prog')
-                    local timePassed = quest:getVar(player, 'Timer') <= VanadielUniqueDay() and not quest:getMustZone(player)
-                    local onRovMission = player:getCurrentMission(xi.mission.log_id.ROV) == xi.mission.id.rov.INESCAPABLE_BINDS and 1 or 0
+                    local onRovMission  = player:getCurrentMission(xi.mission.log_id.ROV) == xi.mission.id.rov.INESCAPABLE_BINDS and 1 or 0
 
                     -- Initial Quest Dialogues
                     if questProgress == 0 then
@@ -164,7 +162,7 @@ quest.sections =
 
                     -- Purchased the Boarding Permit
                     elseif questProgress == 2 then
-                        if timePassed then
+                        if true then
                             return quest:progressEvent(10067)
                         else
                             return quest:progressEvent(10066)
@@ -172,7 +170,7 @@ quest.sections =
 
                     -- Traded Items for Boarding Permit
                     elseif questProgress == 3 then
-                        if timePassed then
+                        if true then
                             return quest:progressEvent(10070)
                         else
                             return quest:progressEvent(10072)
@@ -209,7 +207,6 @@ quest.sections =
                     player:confirmTrade()
                     quest:setMustZone(player)
                     quest:setVar(player, 'Prog', 3)
-                    quest:setVar(player, 'Timer', VanadielUniqueDay())
                 end,
 
                 [10070] = function(player, csid, option, npc)
@@ -223,12 +220,9 @@ quest.sections =
         [xi.zone.WAJAOM_WOODLANDS] =
         {
             afterZoneIn = function(player)
-                -- Player won't see these messages due to teleporting at the
-                -- end of the cutscene if awarded then. Display after they zone in.
+                -- Player won't see these messages due to teleporting at the end of the cutscene if awarded then. Display after they zone in.
                 -- NOTE: Prog value of 4 is set immediately before teleporting the player.
-                if
-                    quest:getVar(player, 'Prog') == 4
-                then
+                if quest:getVar(player, 'Prog') == 4 then
                     npcUtil.giveKeyItem(player, xi.ki.BOARDING_PERMIT)
                     npcUtil.giveKeyItem(player, xi.ki.MAP_OF_WAJAOM_WOODLANDS)
                     quest:setVar(player, 'Prog', 5)

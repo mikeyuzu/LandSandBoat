@@ -11,6 +11,11 @@ end
 
 ---@nodiscard
 ---@return integer
+function CMobSkill:getMobHP()
+end
+
+---@nodiscard
+---@return integer
 function CMobSkill:getMobHPP()
 end
 
@@ -67,4 +72,14 @@ end
 ---@nodiscard
 ---@return integer
 function CMobSkill:getPrimaryTargetID()
+end
+
+---@param newAnimationSub integer
+---@return nil
+function CMobSkill:setFinalAnimationSub(newAnimationSub)
+end
+
+---@param newAnimationTime integer
+---@return nil
+function CMobSkill:setAnimationTime(newAnimationTime)
 end

@@ -51,8 +51,10 @@ quest.sections =
             return xi.settings.main.ENABLE_TRUST_QUESTS == 1 and
                 xi.trust.hasPermit(player) and
                 not player:hasSpell(xi.magic.spell.PRISHE) and
-                (player:getCurrentMission(xi.mission.log_id.COP) > xi.mission.id.cop.DAWN and
-                xi.mission.getVar(player, xi.mission.log_id.COP, xi.mission.id.cop.DAWN, 'Status') >= 5)
+                ((player:getCurrentMission(xi.mission.log_id.COP) > xi.mission.id.cop.DAWN and
+                 xi.mission.getVar(player, xi.mission.log_id.COP, xi.mission.id.cop.DAWN, 'Status') >= 5) or
+                (player:getCurrentMission(xi.mission.log_id.COP) == xi.mission.id.cop.THE_LAST_VERSE and
+                 xi.mission.getVar(player, xi.mission.log_id.COP, xi.mission.id.cop.DAWN, 'Status') == 0))
                 -- TODO: Additional conditions
         end,
 

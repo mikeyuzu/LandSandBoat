@@ -226,7 +226,6 @@ mission.sections =
         check = function(player, currentMission, missionStatus, vars)
             return currentMission == mission.missionId and
                 vars.Status == 4 and
-                vars.Timer == 0 and
                 utils.mask.getBit(vars.Option, 0)
         end,
 
@@ -284,7 +283,6 @@ mission.sections =
         check = function(player, currentMission, missionStatus, vars)
             return currentMission == mission.missionId and
                 vars.Status == 4 and
-                vars.Timer == 0 and
                 (utils.mask.getBit(vars.Option, 1) or vars.coloredDropId > 0)
         end,
 
@@ -345,7 +343,6 @@ mission.sections =
         check = function(player, currentMission, missionStatus, vars)
             return currentMission == mission.missionId and
                 vars.Status == 4 and
-                vars.Timer == 0 and
                 utils.mask.getBit(vars.Option, 2)
         end,
 
@@ -369,7 +366,6 @@ mission.sections =
         check = function(player, currentMission, missionStatus, vars)
             return currentMission == mission.missionId and
                 vars.Status == 4 and
-                vars.Timer == 0 and
                 utils.mask.getBit(vars.Option, 3)
         end,
 
@@ -393,7 +389,6 @@ mission.sections =
         check = function(player, currentMission, missionStatus, vars)
             return currentMission == mission.missionId and
                 vars.Status == 4 and
-                vars.Timer == 0 and
                 utils.mask.getBit(vars.Option, 4)
         end,
 
@@ -415,8 +410,7 @@ mission.sections =
         check = function(player, currentMission, missionStatus, vars)
             return ((currentMission == mission.missionId and
                 vars.Status >= 6) or
-                player:hasCompletedMission(mission.areaId, mission.missionId)) and
-                vars.Timer == 0
+                player:hasCompletedMission(mission.areaId, mission.missionId))
         end,
 
         [xi.zone.UPPER_JEUNO] =

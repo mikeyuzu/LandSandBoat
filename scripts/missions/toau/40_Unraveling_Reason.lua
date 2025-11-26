@@ -38,8 +38,7 @@ mission.sections =
                 onTrigger = function(player, npc)
                     if player:getMissionStatus(mission.areaId) == 0 then
                         if
-                            not mission:getMustZone(player) and
-                            VanadielUniqueDay() >= mission:getVar(player, 'Timer')
+                            true
                         then
                             return mission:progressEvent(10098) -- Ship is ready.
 

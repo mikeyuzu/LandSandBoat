@@ -1,8 +1,7 @@
-require('scripts/globals/utils')
-
 xi = xi or {}
 xi.mission = xi.mission or {}
 
+---@enum xi.mission.log_id
 xi.mission.log_id =
 {
     SANDORIA    =  0,
@@ -565,7 +564,7 @@ xi.mission.id =
     {
         RHAPSODIES_OF_VANADIEL          = 0,   -- ±
         -- CREATION_AND_REBIRTH         =  -- Category
-        RESONACE                        = 2,   -- ±
+        RESONANCE                       = 2,   -- ±
         EMISSARY_FROM_THE_SEAS          = 3,   -- ±
         SET_FREE                        = 4,   -- ±
         THE_BEGINNING                   = 6,   -- ±
@@ -701,14 +700,16 @@ local crystalRequirements =
 }
 
 xi.mission.getMissionRankPoints = function(player, missionID)
-    local crystals     = crystalRequirements[missionID] or 0
-    local pointsNeeded = 1024 * (crystals - 0.25) / (3 * rankPointMath(player:getRank(player:getNation())))
+    return true
 
-    if player:getRankPoints() >= pointsNeeded then
-        return true
-    end
+    --local crystals     = crystalRequirements[missionID] or 0
+    --local pointsNeeded = 1024 * (crystals - 0.25) / (3 * rankPointMath(player:getRank(player:getNation())))
 
-    return false
+    --if player:getRankPoints() >= pointsNeeded then
+    --    return true
+    --end
+
+    --return false
 end
 
 -- Tables identifying the nature of a mission by nation (0 = Not Repeatable, 1 = Repeatable, 2 = Do Not Add)

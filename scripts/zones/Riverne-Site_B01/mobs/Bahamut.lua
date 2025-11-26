@@ -23,16 +23,16 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 50)
     -- base damage scaled down from Bahamut v2 (wyrmking decends) value based on level difference
     -- base damage of 136 = (lvl 83 + 2) + 51
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 51)
+    --Lv75Т▓Ро mob:setMobMod(xi.mobMod.WEAPON_BONUS, 51)
     -- Note baha has a job trait with fast cast of 15% so 75% total
     mob:setMod(xi.mod.UFASTCAST, 60)
     -- ATT scaled down from Bahamut v2 (wyrmking decends) value based on level difference
-    mob:setMod(xi.mod.ATT, 425)
+    --Lv75Т▓Ро mob:setMod(xi.mod.ATT, 425)
     -- should use mob skill every ~60 sec (without TP feed)
     mob:addMod(xi.mod.REGAIN, 50)
     mob:addMod(xi.mod.REGEN, 50)
     -- MDEF bonus scaled down from Bahamut v2 (wyrmking decends) value based on level difference
-    mob:setMod(xi.mod.MDEF, 55)
+    --Lv75Т▓Ро mob:setMod(xi.mod.MDEF, 55)
     mob:addStatusEffect(xi.effect.PHALANX, 35, 0, 180)
     mob:addStatusEffect(xi.effect.STONESKIN, 350, 0, 300)
     mob:addStatusEffect(xi.effect.PROTECT, 175, 0, 1800)

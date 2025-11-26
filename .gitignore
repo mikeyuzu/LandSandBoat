@@ -136,6 +136,7 @@ UpgradeLog*.XML
 /xi_connect*
 /xi_map*
 /xi_search*
+/xi_test*
 /xi_world*
 
 # Generated files, mostly autotools-related
@@ -160,7 +161,6 @@ src/common/stamp-h1
 # Misc, such as vim swap files
 *.sw?
 
-logmeshes/*.obj
 navmeshes/*.nav
 tags
 log/xi.leaks
@@ -257,5 +257,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-/settings/upd_db.sql
-/settings/custom_db.sql
+
+# Test artifacts
+*.ctrf.json

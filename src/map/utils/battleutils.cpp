@@ -23,7 +23,6 @@
 
 #include "common/database.h"
 #include "common/logging.h"
-#include "common/sql.h"
 #include "common/timer.h"
 #include "common/utils.h"
 
@@ -32,10 +31,8 @@
 #include <cstring>
 #include <unordered_map>
 
-#include "packets/char_health.h"
 #include "packets/char_status.h"
-#include "packets/inventory_finish.h"
-#include "packets/message_basic.h"
+#include "packets/s2c/0x01d_item_same.h"
 
 #include "lua/luautils.h"
 
@@ -43,9 +40,7 @@
 #include "ai/ai_container.h"
 #include "ai/controllers/pet_controller.h"
 #include "ai/controllers/player_charm_controller.h"
-#include "ai/controllers/player_controller.h"
 #include "ai/states/magic_state.h"
-#include "alliance.h"
 #include "attack.h"
 #include "attackutils.h"
 #include "charutils.h"
@@ -54,23 +49,25 @@
 #include "entities/mobentity.h"
 #include "entities/petentity.h"
 #include "entities/trustentity.h"
+#include "enums/msg_std.h"
+#include "enums/weather.h"
 #include "item_container.h"
 #include "items.h"
 #include "items/item_weapon.h"
 #include "job_points.h"
 #include "los/zone_los.h"
-#include "map_server.h"
+#include "map_engine.h"
 #include "mob_modifier.h"
 #include "mobskill.h"
 #include "modifier.h"
 #include "navmesh.h"
 #include "notoriety_container.h"
-#include "packets/char_abilities.h"
-#include "packets/char_recast.h"
-#include "packets/char_sync.h"
-#include "packets/lock_on.h"
 #include "packets/pet_sync.h"
-#include "packets/position.h"
+#include "packets/s2c/0x029_battle_message.h"
+#include "packets/s2c/0x058_assist.h"
+#include "packets/s2c/0x05b_wpos.h"
+#include "packets/s2c/0x0ac_command_data.h"
+#include "packets/s2c/0x119_abil_recast.h"
 #include "party.h"
 #include "petskill.h"
 #include "recast_container.h"
@@ -106,40 +103,51 @@ namespace battleutils
 
     void LoadSkillTable()
     {
-        const char* fmtQuery = "SELECT r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13 "
-                               "FROM skill_caps "
-                               "ORDER BY level "
-                               "LIMIT 100";
+        uint32 x    = 0;
+        auto   rset = db::preparedStmt("SELECT r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13 "
+                                         "FROM skill_caps "
+                                         "ORDER BY level "
+                                         "LIMIT 100");
 
-        int32 ret = _sql->Query(fmtQuery);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            for (uint32 x = 0; x < 100 && _sql->NextRow() == SQL_SUCCESS; ++x)
+            for (uint32 y = 0; y < 14; ++y)
             {
-                for (uint32 y = 0; y < 14; ++y)
-                {
-                    g_SkillTable[x][y] = (uint16)_sql->GetIntData(y);
-                }
+                g_SkillTable[x][y] = rset->get<uint16>(std::format("r{}", y));
             }
+
+            ++x;
         }
 
-        fmtQuery = "SELECT skillid,war,mnk,whm,blm,rdm,thf,pld,drk,bst,brd,rng,sam,nin,drg,smn,blu,cor,pup,dnc,sch,geo,run FROM skill_ranks LIMIT 64";
-
-        ret = _sql->Query(fmtQuery);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        rset = db::preparedStmt("SELECT skillid,war,mnk,whm,blm,rdm,thf,pld,drk,bst,brd,rng,sam,nin,drg,smn,blu,cor,pup,dnc,sch,geo,run "
+                                "FROM skill_ranks LIMIT 64");
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            for (uint32 x = 0; x < MAX_SKILLTYPE && _sql->NextRow() == SQL_SUCCESS; ++x)
-            {
-                auto SkillID = std::clamp<uint8>(_sql->GetIntData(0), 0, MAX_SKILLTYPE - 1);
+            const auto SkillID = std::clamp<uint8>(rset->get<uint8>("skillid"), 0, MAX_SKILLTYPE - 1);
 
-                // NOTE: Skip over Monstrosity, they re-use other jobs ranks
-                for (uint32 y = 1; y < JOB_MON; ++y)
-                {
-                    g_SkillRanks[SkillID][y] = std::clamp<uint8>(_sql->GetIntData(y), 0, 11);
-                }
-            }
+            // NOTE: Skip over Monstrosity, they re-use other jobs ranks
+            g_SkillRanks[SkillID][JOB_WAR] = std::clamp<uint8>(rset->get<uint8>("war"), 0, 11);
+            g_SkillRanks[SkillID][JOB_MNK] = std::clamp<uint8>(rset->get<uint8>("mnk"), 0, 11);
+            g_SkillRanks[SkillID][JOB_WHM] = std::clamp<uint8>(rset->get<uint8>("whm"), 0, 11);
+            g_SkillRanks[SkillID][JOB_BLM] = std::clamp<uint8>(rset->get<uint8>("blm"), 0, 11);
+            g_SkillRanks[SkillID][JOB_RDM] = std::clamp<uint8>(rset->get<uint8>("rdm"), 0, 11);
+            g_SkillRanks[SkillID][JOB_THF] = std::clamp<uint8>(rset->get<uint8>("thf"), 0, 11);
+            g_SkillRanks[SkillID][JOB_PLD] = std::clamp<uint8>(rset->get<uint8>("pld"), 0, 11);
+            g_SkillRanks[SkillID][JOB_DRK] = std::clamp<uint8>(rset->get<uint8>("drk"), 0, 11);
+            g_SkillRanks[SkillID][JOB_BST] = std::clamp<uint8>(rset->get<uint8>("bst"), 0, 11);
+            g_SkillRanks[SkillID][JOB_BRD] = std::clamp<uint8>(rset->get<uint8>("brd"), 0, 11);
+            g_SkillRanks[SkillID][JOB_RNG] = std::clamp<uint8>(rset->get<uint8>("rng"), 0, 11);
+            g_SkillRanks[SkillID][JOB_SAM] = std::clamp<uint8>(rset->get<uint8>("sam"), 0, 11);
+            g_SkillRanks[SkillID][JOB_NIN] = std::clamp<uint8>(rset->get<uint8>("nin"), 0, 11);
+            g_SkillRanks[SkillID][JOB_DRG] = std::clamp<uint8>(rset->get<uint8>("drg"), 0, 11);
+            g_SkillRanks[SkillID][JOB_SMN] = std::clamp<uint8>(rset->get<uint8>("smn"), 0, 11);
+            g_SkillRanks[SkillID][JOB_BLU] = std::clamp<uint8>(rset->get<uint8>("blu"), 0, 11);
+            g_SkillRanks[SkillID][JOB_COR] = std::clamp<uint8>(rset->get<uint8>("cor"), 0, 11);
+            g_SkillRanks[SkillID][JOB_PUP] = std::clamp<uint8>(rset->get<uint8>("pup"), 0, 11);
+            g_SkillRanks[SkillID][JOB_DNC] = std::clamp<uint8>(rset->get<uint8>("dnc"), 0, 11);
+            g_SkillRanks[SkillID][JOB_SCH] = std::clamp<uint8>(rset->get<uint8>("sch"), 0, 11);
+            g_SkillRanks[SkillID][JOB_GEO] = std::clamp<uint8>(rset->get<uint8>("geo"), 0, 11);
+            g_SkillRanks[SkillID][JOB_RUN] = std::clamp<uint8>(rset->get<uint8>("run"), 0, 11);
         }
     }
 
@@ -151,154 +159,135 @@ namespace battleutils
 
     void LoadWeaponSkillsList()
     {
-        const char* fmtQuery = "SELECT weaponskillid, name, jobs, type, skilllevel, element, animation, "
-                               "animationTime, `range`, aoe, primary_sc, secondary_sc, tertiary_sc, main_only, unlock_id "
-                               "FROM weapon_skills "
-                               "WHERE weaponskillid < %u "
-                               "ORDER BY type, skilllevel ASC";
-
-        int32 ret = _sql->Query(fmtQuery, MAX_WEAPONSKILL_ID);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        const auto rset = db::preparedStmt("SELECT weaponskillid, name, jobs, type, skilllevel, element, animation, "
+                                           "animationTime, `range`, aoe, primary_sc, secondary_sc, tertiary_sc, main_only, unlock_id "
+                                           "FROM weapon_skills "
+                                           "WHERE weaponskillid < ? "
+                                           "ORDER BY type, skilllevel ASC",
+                                           MAX_WEAPONSKILL_ID);
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
-            {
-                CWeaponSkill* PWeaponSkill = new CWeaponSkill(_sql->GetIntData(0));
+            auto* PWeaponSkill = new CWeaponSkill(rset->get<uint16>("weaponskillid"));
 
-                PWeaponSkill->setName(_sql->GetStringData(1));
-                PWeaponSkill->setJob(_sql->GetData(2));
-                PWeaponSkill->setType(_sql->GetIntData(3));
-                PWeaponSkill->setSkillLevel(_sql->GetIntData(4));
-                PWeaponSkill->setElement(_sql->GetIntData(5));
-                PWeaponSkill->setAnimationId(_sql->GetIntData(6));
-                PWeaponSkill->setAnimationTime(std::chrono::milliseconds(_sql->GetUIntData(7)));
-                PWeaponSkill->setRange(_sql->GetIntData(8));
-                PWeaponSkill->setAoe(_sql->GetIntData(9));
-                PWeaponSkill->setPrimarySkillchain(_sql->GetIntData(10));
-                PWeaponSkill->setSecondarySkillchain(_sql->GetIntData(11));
-                PWeaponSkill->setTertiarySkillchain(_sql->GetIntData(12));
-                PWeaponSkill->setMainOnly(_sql->GetIntData(13));
-                PWeaponSkill->setUnlockId(_sql->GetIntData(14));
+            PWeaponSkill->setName(rset->get<std::string>("name"));
 
-                g_PWeaponSkillList[PWeaponSkill->getID()] = PWeaponSkill;
-                g_PWeaponSkillsList[PWeaponSkill->getType()].emplace_back(PWeaponSkill);
+            // Jobs are stored in DB as 22 entries.
+            // Index 0 is reserved for NON, index 23 for MON (both left as 0).
+            std::array<uint8, MAX_JOBTYPE> jobs{};
+            std::array<uint8, 22>          tempJobs{};
+            db::extractFromBlob(rset, "jobs", tempJobs);
+            std::memcpy(&jobs[1], tempJobs.data(), 22);
+            PWeaponSkill->setJob(jobs);
 
-                auto filename = fmt::format("./scripts/actions/weaponskills/{}.lua", PWeaponSkill->getName());
-                luautils::CacheLuaObjectFromFile(filename);
-            }
+            PWeaponSkill->setType(rset->get<uint8>("type"));
+            PWeaponSkill->setSkillLevel(rset->get<uint16>("skilllevel"));
+            PWeaponSkill->setElement(rset->get<uint8>("element"));
+            PWeaponSkill->setAnimationId(rset->get<uint8>("animation"));
+            PWeaponSkill->setAnimationTime(std::chrono::milliseconds(rset->get<uint32>("animationTime")));
+            PWeaponSkill->setRange(rset->get<uint8>("range"));
+            PWeaponSkill->setAoe(rset->get<uint8>("aoe"));
+            PWeaponSkill->setPrimarySkillchain(rset->get<uint8>("primary_sc"));
+            PWeaponSkill->setSecondarySkillchain(rset->get<uint8>("secondary_sc"));
+            PWeaponSkill->setTertiarySkillchain(rset->get<uint8>("tertiary_sc"));
+            PWeaponSkill->setMainOnly(rset->get<uint8>("main_only"));
+            PWeaponSkill->setUnlockId(rset->get<uint8>("unlock_id"));
+
+            g_PWeaponSkillList[PWeaponSkill->getID()] = PWeaponSkill;
+            g_PWeaponSkillsList[PWeaponSkill->getType()].emplace_back(PWeaponSkill);
+
+            auto filename = fmt::format("./scripts/actions/weaponskills/{}.lua", PWeaponSkill->getName());
+            luautils::CacheLuaObjectFromFile(filename);
         }
     }
 
     void LoadMobSkillsList()
     {
         // Load all mob skills
-        const char* specialQuery = "SELECT mob_skill_id, mob_anim_id, mob_skill_name, "
-                                   "mob_skill_aoe, mob_skill_aoe_radius, mob_skill_distance, mob_anim_time, mob_prepare_time, "
-                                   "mob_valid_targets, mob_skill_flag, mob_skill_param, knockback, primary_sc, secondary_sc, tertiary_sc "
-                                   "FROM mob_skills";
-
-        int32 ret = _sql->Query(specialQuery);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        auto rset = db::preparedStmt("SELECT mob_skill_id, mob_anim_id, mob_skill_name, "
+                                     "mob_skill_aoe, mob_skill_aoe_radius, mob_skill_distance, mob_anim_time, mob_prepare_time, "
+                                     "mob_valid_targets, mob_skill_flag, mob_skill_param, knockback, primary_sc, secondary_sc, tertiary_sc "
+                                     "FROM mob_skills");
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
-            {
-                CMobSkill* PMobSkill = new CMobSkill(_sql->GetIntData(0));
-                PMobSkill->setAnimationID(_sql->GetIntData(1));
-                PMobSkill->setName(_sql->GetStringData(2));
-                PMobSkill->setAoe(_sql->GetIntData(3));
-                PMobSkill->setAoeRadius(_sql->GetIntData(4));
-                PMobSkill->setDistance(_sql->GetFloatData(5));
-                PMobSkill->setAnimationTime(std::chrono::milliseconds(_sql->GetIntData(6)));
-                PMobSkill->setActivationTime(std::chrono::milliseconds(_sql->GetIntData(7)));
-                PMobSkill->setValidTargets(_sql->GetIntData(8));
-                PMobSkill->setFlag(_sql->GetIntData(9));
-                PMobSkill->setParam(_sql->GetIntData(10));
-                PMobSkill->setKnockback(_sql->GetUIntData(11));
-                PMobSkill->setPrimarySkillchain(_sql->GetUIntData(12));
-                PMobSkill->setSecondarySkillchain(_sql->GetUIntData(13));
-                PMobSkill->setTertiarySkillchain(_sql->GetUIntData(14));
-                PMobSkill->setMsg(185); // standard damage message. Scripters will change this.
-                g_PMobSkillList[PMobSkill->getID()] = PMobSkill;
+            auto* PMobSkill = new CMobSkill(rset->get<uint16>("mob_skill_id"));
 
-                auto filename = fmt::format("./scripts/actions/mobskills/{}.lua", PMobSkill->getName());
-                luautils::CacheLuaObjectFromFile(filename);
-            }
+            PMobSkill->setAnimationID(rset->get<uint16>("mob_anim_id"));
+            PMobSkill->setName(rset->get<std::string>("mob_skill_name"));
+            PMobSkill->setAoe(rset->get<uint8>("mob_skill_aoe"));
+            PMobSkill->setAoeRadius(rset->get<float>("mob_skill_aoe_radius"));
+            PMobSkill->setDistance(rset->get<float>("mob_skill_distance"));
+            PMobSkill->setAnimationTime(std::chrono::milliseconds(rset->get<uint32>("mob_anim_time")));
+            PMobSkill->setActivationTime(std::chrono::milliseconds(rset->get<uint32>("mob_prepare_time")));
+            PMobSkill->setValidTargets(rset->get<uint16>("mob_valid_targets"));
+            PMobSkill->setFlag(rset->get<uint8>("mob_skill_flag"));
+            PMobSkill->setParam(rset->get<int16>("mob_skill_param"));
+            PMobSkill->setKnockback(rset->get<uint8>("knockback"));
+            PMobSkill->setPrimarySkillchain(rset->get<uint8>("primary_sc"));
+            PMobSkill->setSecondarySkillchain(rset->get<uint8>("secondary_sc"));
+            PMobSkill->setTertiarySkillchain(rset->get<uint8>("tertiary_sc"));
+            PMobSkill->setMsg(185); // standard damage message. Scripters will change this.
+            g_PMobSkillList[PMobSkill->getID()] = PMobSkill;
+
+            auto filename = fmt::format("./scripts/actions/mobskills/{}.lua", PMobSkill->getName());
+            luautils::CacheLuaObjectFromFile(filename);
         }
 
-        const char* fmtQuery = "SELECT skill_list_id, mob_skill_id FROM mob_skill_lists";
-
-        ret = _sql->Query(fmtQuery);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        rset = db::preparedStmt("SELECT skill_list_id, mob_skill_id FROM mob_skill_lists");
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
-            {
-                int16 skillListId = _sql->GetIntData(0);
+            const auto skillListId = rset->get<uint16>("skill_list_id");
+            auto       skillId     = rset->get<uint16>("mob_skill_id");
 
-                uint16 skillId = _sql->GetIntData(1);
-
-                g_PMobSkillLists[skillListId].emplace_back(skillId);
-            }
+            g_PMobSkillLists[skillListId].emplace_back(skillId);
         }
     }
 
     void LoadPetSkillsList()
     {
         // Load all pet skills
-        const char* specialQuery = "SELECT pet_skill_id, pet_anim_id, pet_skill_name, "
-                                   "pet_skill_aoe, pet_skill_distance, pet_anim_time, pet_prepare_time, "
-                                   "pet_valid_targets, pet_message, pet_skill_flag, pet_skill_param, pet_skill_finish_category, knockback, primary_sc, secondary_sc, tertiary_sc, mob_skill_id "
-                                   "FROM pet_skills";
-
-        int32 ret = _sql->Query(specialQuery);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        const auto rset = db::preparedStmt("SELECT pet_skill_id, pet_anim_id, pet_skill_name, "
+                                           "pet_skill_aoe, pet_skill_distance, pet_anim_time, pet_prepare_time, "
+                                           "pet_valid_targets, pet_message, pet_skill_flag, pet_skill_param, pet_skill_finish_category, knockback, primary_sc, secondary_sc, tertiary_sc, mob_skill_id "
+                                           "FROM pet_skills");
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
-            {
-                CPetSkill* PPetSkill = new CPetSkill(_sql->GetIntData(0));
-                PPetSkill->setAnimationID(_sql->GetIntData(1));
-                PPetSkill->setName(_sql->GetStringData(2));
-                PPetSkill->setAoe(_sql->GetIntData(3));
-                PPetSkill->setDistance(_sql->GetFloatData(4));
-                PPetSkill->setAnimationTime(std::chrono::milliseconds(_sql->GetIntData(5)));
-                PPetSkill->setActivationTime(std::chrono::milliseconds(_sql->GetIntData(6)));
-                PPetSkill->setValidTargets(_sql->GetIntData(7));
-                PPetSkill->setMsg(_sql->GetIntData(8));
-                PPetSkill->setFlag(_sql->GetIntData(9));
-                PPetSkill->setParam(_sql->GetIntData(10));
-                PPetSkill->setSkillFinishCategory(_sql->GetIntData(11));
-                PPetSkill->setKnockback(_sql->GetUIntData(12));
-                PPetSkill->setPrimarySkillchain(_sql->GetUIntData(13));
-                PPetSkill->setSecondarySkillchain(_sql->GetUIntData(14));
-                PPetSkill->setTertiarySkillchain(_sql->GetUIntData(15));
-                PPetSkill->setMobSkillID(_sql->GetUIntData(16));
-                g_PPetSkillList[PPetSkill->getID()] = PPetSkill;
+            auto* PPetSkill = new CPetSkill(rset->get<uint16>("pet_skill_id"));
 
-                auto filename = fmt::format("./scripts/actions/abilities/pet/{}.lua", PPetSkill->getName());
-                luautils::CacheLuaObjectFromFile(filename);
-            }
+            PPetSkill->setAnimationID(rset->get<uint16>("pet_anim_id"));
+            PPetSkill->setName(rset->get<std::string>("pet_skill_name"));
+            PPetSkill->setAoe(rset->get<uint8>("pet_skill_aoe"));
+            PPetSkill->setDistance(rset->get<float>("pet_skill_distance"));
+            PPetSkill->setAnimationTime(std::chrono::milliseconds(rset->get<uint32>("pet_anim_time")));
+            PPetSkill->setActivationTime(std::chrono::milliseconds(rset->get<uint32>("pet_prepare_time")));
+            PPetSkill->setValidTargets(rset->get<uint16>("pet_valid_targets"));
+            PPetSkill->setMsg(rset->get<uint16>("pet_message"));
+            PPetSkill->setFlag(rset->get<uint8>("pet_skill_flag"));
+            PPetSkill->setParam(rset->get<int16>("pet_skill_param"));
+            PPetSkill->setSkillFinishCategory(rset->get<uint8>("pet_skill_finish_category"));
+            PPetSkill->setKnockback(rset->get<uint8>("knockback"));
+            PPetSkill->setPrimarySkillchain(rset->get<uint8>("primary_sc"));
+            PPetSkill->setSecondarySkillchain(rset->get<uint8>("secondary_sc"));
+            PPetSkill->setTertiarySkillchain(rset->get<uint8>("tertiary_sc"));
+            PPetSkill->setMobSkillID(rset->get<uint16>("mob_skill_id"));
+            g_PPetSkillList[PPetSkill->getID()] = PPetSkill;
+
+            auto filename = fmt::format("./scripts/actions/abilities/pet/{}.lua", PPetSkill->getName());
+            luautils::CacheLuaObjectFromFile(filename);
         }
     }
 
     void LoadSkillChainDamageModifiers()
     {
-        const char* fmtQuery = "SELECT chain_level, chain_count, initial_modifier, magic_burst_modifier "
-                               "FROM skillchain_damage_modifiers "
-                               "ORDER BY chain_level, chain_count";
-
-        int32 ret = _sql->Query(fmtQuery);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        const auto rset = db::preparedStmt("SELECT chain_level, chain_count, initial_modifier, magic_burst_modifier "
+                                           "FROM skillchain_damage_modifiers "
+                                           "ORDER BY chain_level, chain_count");
+        FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
-            {
-                uint16 level                              = (uint16)_sql->GetIntData(0);
-                uint16 count                              = (uint16)_sql->GetIntData(1);
-                uint16 value                              = (uint16)_sql->GetIntData(2);
-                g_SkillChainDamageModifiers[level][count] = value;
-            }
+            const auto level = rset->get<uint16>("chain_level");
+            const auto count = rset->get<uint16>("chain_count");
+            const auto value = rset->get<uint16>("initial_modifier");
+
+            g_SkillChainDamageModifiers[level][count] = value;
         }
     }
 
@@ -659,21 +648,21 @@ namespace battleutils
         }
 
         // matching day 10% bonus, matching weather 10% or 25% for double weather
-        float   dBonus  = 1.0;
-        float   resist  = 1.0;
-        uint32  WeekDay = static_cast<uint8>(vanadiel_time::get_weekday());
-        WEATHER weather = GetWeather(PAttacker, false);
+        float  dBonus  = 1.0;
+        float  resist  = 1.0;
+        uint32 WeekDay = static_cast<uint8>(vanadiel_time::get_weekday());
+        auto   weather = GetWeather(PAttacker, false);
 
         DAYTYPE strongDay[8]           = { FIRESDAY, ICEDAY, WINDSDAY, EARTHSDAY, LIGHTNINGDAY, WATERSDAY, LIGHTSDAY, DARKSDAY };
         DAYTYPE weakDay[8]             = { WATERSDAY, FIRESDAY, ICEDAY, WINDSDAY, EARTHSDAY, LIGHTNINGDAY, DARKSDAY, LIGHTSDAY };
-        WEATHER strongWeatherSingle[8] = { WEATHER_HOT_SPELL, WEATHER_SNOW, WEATHER_WIND, WEATHER_DUST_STORM,
-                                           WEATHER_THUNDER, WEATHER_RAIN, WEATHER_AURORAS, WEATHER_GLOOM };
-        WEATHER strongWeatherDouble[8] = { WEATHER_HEAT_WAVE, WEATHER_BLIZZARDS, WEATHER_GALES, WEATHER_SAND_STORM,
-                                           WEATHER_THUNDERSTORMS, WEATHER_SQUALL, WEATHER_STELLAR_GLARE, WEATHER_DARKNESS };
-        WEATHER weakWeatherSingle[8]   = { WEATHER_RAIN, WEATHER_HOT_SPELL, WEATHER_SNOW, WEATHER_WIND,
-                                           WEATHER_DUST_STORM, WEATHER_THUNDER, WEATHER_GLOOM, WEATHER_AURORAS };
-        WEATHER weakWeatherDouble[8]   = { WEATHER_SQUALL, WEATHER_HEAT_WAVE, WEATHER_BLIZZARDS, WEATHER_GALES,
-                                           WEATHER_SAND_STORM, WEATHER_THUNDERSTORMS, WEATHER_DARKNESS, WEATHER_STELLAR_GLARE };
+        Weather strongWeatherSingle[8] = { Weather::HotSpell, Weather::Snow, Weather::Wind, Weather::DustStorm,
+                                           Weather::Thunder, Weather::Rain, Weather::Auroras, Weather::Gloom };
+        Weather strongWeatherDouble[8] = { Weather::HeatWave, Weather::Blizzards, Weather::Gales, Weather::SandStorm,
+                                           Weather::Thunderstorms, Weather::Squall, Weather::StellarGlare, Weather::Darkness };
+        Weather weakWeatherSingle[8]   = { Weather::Rain, Weather::HotSpell, Weather::Snow, Weather::Wind,
+                                           Weather::DustStorm, Weather::Thunder, Weather::Gloom, Weather::Auroras };
+        Weather weakWeatherDouble[8]   = { Weather::Squall, Weather::HeatWave, Weather::Blizzards, Weather::Gales,
+                                           Weather::SandStorm, Weather::Thunderstorms, Weather::Darkness, Weather::StellarGlare };
         uint32  obi[8]                 = { 15435, 15436, 15437, 15438, 15439, 15440, 15441, 15442 };
         Mod     resistarray[8]         = { Mod::FIRE_MEVA, Mod::ICE_MEVA, Mod::WIND_MEVA, Mod::EARTH_MEVA,
                                            Mod::THUNDER_MEVA, Mod::WATER_MEVA, Mod::LIGHT_MEVA, Mod::DARK_MEVA };
@@ -770,7 +759,7 @@ namespace battleutils
 
         if (PDefender->getMod(Mod::SPIKES_DMG_BONUS) > 0)
         {
-            damage *= 1 + (PDefender->getMod(Mod::SPIKES_DMG_BONUS) / 100.f);
+            damage *= 1 + (PDefender->getMod(Mod::SPIKES_DMG_BONUS) / 100.0f);
         }
 
         if (static_cast<SPIKES>(Action->spikesEffect) == SPIKES::SPIKE_DREAD)
@@ -833,7 +822,7 @@ namespace battleutils
                 bool crit = battleutils::GetCritHitRate(PDefender, PAttacker, true) > xirand::GetRandomNumber(100);
 
                 // Dmg math.
-                float  DamageRatio = GetDamageRatio(PDefender, PAttacker, crit, 1.f, skilltype, SLOT_MAIN, false);
+                float  DamageRatio = GetDamageRatio(PDefender, PAttacker, crit, 1.0f, skilltype, SLOT_MAIN, false);
                 uint16 dmg         = (uint32)((PDefender->GetMainWeaponDmg() + battleutils::GetFSTR(PDefender, PAttacker, SLOT_MAIN)) * DamageRatio);
                 dmg                = attackutils::CheckForDamageMultiplier(((CCharEntity*)PDefender), dynamic_cast<CItemWeapon*>(PDefender->m_Weapons[SLOT_MAIN]), dmg,
                                                                            PHYSICAL_ATTACK_TYPE::NORMAL, SLOT_MAIN);
@@ -1172,38 +1161,38 @@ namespace battleutils
                             THdiff = PMob->m_THLvl - playerTH;
                         }
 
-                        float procRate = 0.04f / std::pow<float>(2.f, std::max<int16>(0, THdiff)); // Numbers below diff of -1 (i.e. TH 10 vs mobs TH8 level) are not known. Assume no extra bonus for now.
+                        float procRate = 0.04f / std::pow<float>(2.0f, std::max<int16>(0, THdiff)); // Numbers below diff of -1 (i.e. TH 10 vs mobs TH8 level) are not known. Assume no extra bonus for now.
 
                         // Not known if Feint and Gifts are multiplicative or additive. Currently assuming additive
                         // The mob has an evasion down from feint that applies this mod.
                         // The player has job point gifts that apply this mod.
-                        float procRateBonus = 1.f + (PChar->getMod(Mod::TREASURE_HUNTER_PROC) + PMob->getMod(Mod::TREASURE_HUNTER_PROC)) / 100.f;
+                        float procRateBonus = 1.0f + (PChar->getMod(Mod::TREASURE_HUNTER_PROC) + PMob->getMod(Mod::TREASURE_HUNTER_PROC)) / 100.0f;
 
                         // It's unlikely that SATA bonus is multiplicative SA * TA bonus -- the rate would be astronomically higher if it was
                         // Add the two together if they exist
-                        float sneakAttackTrickAttackBonus = 0.f;
+                        float sneakAttackTrickAttackBonus = 0.0f;
 
                         // BG wiki claims 10x bonus for SA
                         if (attack.IsSneakAttack())
                         {
-                            sneakAttackTrickAttackBonus += 10.f;
+                            sneakAttackTrickAttackBonus += 10.0f;
                         }
 
                         // BG wiki claims 10x bonus for TA
                         if (attack.IsTrickAttack())
                         {
-                            sneakAttackTrickAttackBonus += 10.f;
+                            sneakAttackTrickAttackBonus += 10.0f;
                         }
 
                         // way greater than epsilon just in case...
-                        if (sneakAttackTrickAttackBonus > 1.f)
+                        if (sneakAttackTrickAttackBonus > 1.0f)
                         {
                             procRateBonus *= sneakAttackTrickAttackBonus;
                         }
 
                         procRate *= procRateBonus;
 
-                        if (xirand::GetRandomNumber<float>(0.f, 1.f) <= procRate)
+                        if (xirand::GetRandomNumber<float>(0.0f, 1.0f) <= procRate)
                         {
                             PMob->m_THLvl++;
 
@@ -1701,7 +1690,7 @@ namespace battleutils
 
         uint8 weaponType = targ_weapon->getSkillType();
 
-        auto levelCorrectionFunc = lua["xi"]["combat"]["levelCorrection"]["isLevelCorrectedZone"];
+        auto levelCorrectionFunc = lua["xi"]["data"]["levelCorrection"]["isLevelCorrectedZone"];
         auto rangedPDIFFunc      = lua["xi"]["combat"]["physical"]["calculateRangedPDIF"];
 
         if (rangedPDIFFunc.valid() && levelCorrectionFunc.valid())
@@ -1736,27 +1725,27 @@ namespace battleutils
         int16 x = 1;
         if (delay <= 180)
         {
-            x = (int16)(61 + ((delay - 180) * 63.f) / 360);
+            x = (int16)(61 + ((delay - 180) * 63.0f) / 360);
         }
         else if (delay <= 540)
         {
-            x = (int16)(61 + ((delay - 180) * 88.f) / 360);
+            x = (int16)(61 + ((delay - 180) * 88.0f) / 360);
         }
         else if (delay <= 630)
         {
-            x = (int16)(149 + ((delay - 540) * 20.f) / 360);
+            x = (int16)(149 + ((delay - 540) * 20.0f) / 360);
         }
         else if (delay <= 720)
         {
-            x = (int16)(154 + ((delay - 630) * 28.f) / 360);
+            x = (int16)(154 + ((delay - 630) * 28.0f) / 360);
         }
         else if (delay <= 900)
         {
-            x = (int16)(161 + ((delay - 720) * 24.f) / 360);
+            x = (int16)(161 + ((delay - 720) * 24.0f) / 360);
         }
         else
         {
-            x = (int16)(173 + ((delay - 900) * 28.f) / 360);
+            x = (int16)(173 + ((delay - 900) * 28.0f) / 360);
         }
         return x;
     }
@@ -1764,8 +1753,9 @@ namespace battleutils
     bool TryInterruptSpell(CBattleEntity* PAttacker, CBattleEntity* PDefender, CSpell* PSpell)
     {
         // Exceptions.
-        if (PDefender->objtype == TYPE_TRUST ||                                   // Caster is a trust.
-            PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_MANAFONT) || // Caster has Manafont.
+        if ((PSpell->getSpellGroup() == SPELLGROUP_TRUST && settings::get<bool>("map.UNINTERRUPTIBLE_TRUST_CASTING")) || // Spell is a Trust spell.
+            PDefender->objtype == TYPE_TRUST ||                                                                          // Caster is a trust.
+            PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_MANAFONT) ||                                        // Caster has Manafont.
             (SKILLTYPE)PSpell->getSkillType() == SKILL_SINGING)                   // Spell is a song.
         {
             return false;
@@ -2252,17 +2242,17 @@ namespace battleutils
 
                     if (reprisalEffect != nullptr)
                     {
-                        float spikesBonus   = 1.f + (PDefender->getMod(Mod::REPRISAL_SPIKES_BONUS) / 100.f);
+                        float spikesBonus   = 1.0f + (PDefender->getMod(Mod::REPRISAL_SPIKES_BONUS) / 100.0f);
                         int16 effectPower   = (int16)(reprisalEffect->GetPower() * spikesBonus);
                         int32 blockedDamage = (damage * (100 - absorb)) / 100;
                         int32 spikesDamage  = 0;
 
                         if (PDefender->StatusEffectContainer->HasStatusEffect({ EFFECT_INVINCIBLE, EFFECT_SENTINEL }))
                         {
-                            blockedDamage = (baseDamage * (100.f - absorb)) / 100.f;
+                            blockedDamage = (baseDamage * (100.0f - absorb)) / 100.0f;
                         }
 
-                        spikesDamage = blockedDamage * (effectPower / 100.f);
+                        spikesDamage = blockedDamage * (effectPower / 100.0f);
 
                         // Set Reprisal spike damage
                         PDefender->setModifier(Mod::SPIKES_DMG, spikesDamage);
@@ -2659,7 +2649,7 @@ namespace battleutils
      *                                                                       *
      ************************************************************************/
 
-    int32 TakeSpellDamage(CBattleEntity* PDefender, CBattleEntity* PAttacker, CSpell* PSpell, int32 damage, ATTACK_TYPE attackType, DAMAGE_TYPE damageType)
+    void TakeSpellDamage(CBattleEntity* PDefender, CBattleEntity* PAttacker, CSpell* PSpell, int32 damage, ATTACK_TYPE attackType, DAMAGE_TYPE damageType)
     {
         // Scarlet Delirium: Updates status effect power with damage bonus
         battleutils::HandleScarletDelirium(PDefender, damage);
@@ -2685,8 +2675,6 @@ namespace battleutils
                 PDefender->addTP(tpGainFunc(damage, PAttacker, PDefender));
             }
         }
-
-        return damage;
     }
 
     /************************************************************************
@@ -3044,7 +3032,7 @@ namespace battleutils
     {
         float pDIF = 1.0f;
 
-        auto levelCorrectionFunc = lua["xi"]["combat"]["levelCorrection"]["isLevelCorrectedZone"];
+        auto levelCorrectionFunc = lua["xi"]["data"]["levelCorrection"]["isLevelCorrectedZone"];
         auto meleePDIFFunc       = lua["xi"]["combat"]["physical"]["calculateMeleePDIF"];
 
         if (meleePDIFFunc.valid() && levelCorrectionFunc.valid())
@@ -3871,7 +3859,9 @@ namespace battleutils
     }
 
     // This whole thing need re-evaluated
-    int16 GetSkillchainMinimumResistance(SKILLCHAIN_ELEMENT element, CBattleEntity* PDefender, ELEMENT* appliedEle)
+    // TODO: move skillchains to lua
+    // This is horrible...
+    int16 GetSkillchainMinimumResistance(SKILLCHAIN_ELEMENT element, CBattleEntity* PDefender, ELEMENT& appliedEle)
     {
         static const Mod resistances[][4] = {
             { Mod::NONE, Mod::NONE, Mod::NONE, Mod::NONE },        // SC_NONE
@@ -3893,6 +3883,48 @@ namespace battleutils
             { Mod::ICE_SDT, Mod::EARTH_SDT, Mod::WATER_SDT, Mod::DARK_SDT },    // SC_DARKNESS
             { Mod::FIRE_SDT, Mod::WIND_SDT, Mod::THUNDER_SDT, Mod::LIGHT_SDT }, // SC_LIGHT
             { Mod::ICE_SDT, Mod::EARTH_SDT, Mod::WATER_SDT, Mod::DARK_SDT },    // SC_DARKNESS_II
+        };
+
+        auto resRankToAbsorbMod = [](const Mod resistanceRank) -> Mod
+        {
+            switch (resistanceRank)
+            {
+                case Mod::FIRE_RES_RANK:
+                    return Mod::FIRE_ABSORB;
+                case Mod::ICE_RES_RANK:
+                    return Mod::ICE_ABSORB;
+                case Mod::WIND_RES_RANK:
+                    return Mod::WIND_ABSORB;
+                case Mod::EARTH_RES_RANK:
+                    return Mod::EARTH_ABSORB;
+                case Mod::THUNDER_RES_RANK:
+                    return Mod::LTNG_ABSORB;
+                case Mod::WATER_RES_RANK:
+                    return Mod::WATER_ABSORB;
+                case Mod::LIGHT_RES_RANK:
+                    return Mod::LIGHT_ABSORB;
+                case Mod::DARK_RES_RANK:
+                    return Mod::DARK_ABSORB;
+                default:
+                    return Mod::NONE;
+            }
+        };
+
+        auto getAbsorbElementOrDefault = [&](const Mod resRanks[4], const Mod fallback) -> Mod
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                if (resRanks[i] == Mod::NONE)
+                {
+                    continue;
+                }
+
+                if (PDefender->getMod(resRankToAbsorbMod(resRanks[i])) > 0)
+                {
+                    return resRanks[i];
+                }
+            }
+            return fallback;
         };
 
         Mod defMod = Mod::NONE;
@@ -3955,31 +3987,33 @@ namespace battleutils
                 break;
         }
 
+        defMod = getAbsorbElementOrDefault(resistances[element], defMod);
+
         switch (defMod)
         {
-            case Mod::FIRE_SDT:
-                *appliedEle = ELEMENT_FIRE;
+            case Mod::FIRE_RES_RANK:
+                appliedEle = ELEMENT_FIRE;
                 break;
-            case Mod::ICE_SDT:
-                *appliedEle = ELEMENT_ICE;
+            case Mod::ICE_RES_RANK:
+                appliedEle = ELEMENT_ICE;
                 break;
-            case Mod::WIND_SDT:
-                *appliedEle = ELEMENT_WIND;
+            case Mod::WIND_RES_RANK:
+                appliedEle = ELEMENT_WIND;
                 break;
-            case Mod::EARTH_SDT:
-                *appliedEle = ELEMENT_EARTH;
+            case Mod::EARTH_RES_RANK:
+                appliedEle = ELEMENT_EARTH;
                 break;
-            case Mod::THUNDER_SDT:
-                *appliedEle = ELEMENT_THUNDER;
+            case Mod::THUNDER_RES_RANK:
+                appliedEle = ELEMENT_THUNDER;
                 break;
-            case Mod::WATER_SDT:
-                *appliedEle = ELEMENT_WATER;
+            case Mod::WATER_RES_RANK:
+                appliedEle = ELEMENT_WATER;
                 break;
-            case Mod::LIGHT_SDT:
-                *appliedEle = ELEMENT_LIGHT;
+            case Mod::LIGHT_RES_RANK:
+                appliedEle = ELEMENT_LIGHT;
                 break;
-            case Mod::DARK_SDT:
-                *appliedEle = ELEMENT_DARK;
+            case Mod::DARK_RES_RANK:
+                appliedEle = ELEMENT_DARK;
                 break;
             default:
                 break;
@@ -4052,7 +4086,7 @@ namespace battleutils
         uint16             chainLevel = PEffect->GetTier();
         uint16             chainCount = PEffect->GetSubPower();
         ELEMENT            appliedEle = ELEMENT_NONE;
-        int16              resistance = GetSkillchainMinimumResistance(skillchain, PDefender, &appliedEle);
+        int16              resistance = GetSkillchainMinimumResistance(skillchain, PDefender, appliedEle);
 
         if (chainLevel <= 0 || chainLevel > 4 || chainCount <= 0 || chainCount > 5)
         {
@@ -4067,28 +4101,30 @@ namespace battleutils
         //            TODO:     × (1 + Day/Weather bonuses)
         //            TODO:     × (1 + Staff Affinity)
 
-        const auto closingDamage      = (double)(abs(lastSkillDamage));
+        const auto closingDamage      = static_cast<float>(abs(lastSkillDamage));
         const auto skillchainLevel    = g_SkillChainDamageModifiers[chainLevel][chainCount] / 1000.0f;
-        const auto skillchainBonus    = (100 + PAttacker->getMod(Mod::SKILLCHAINBONUS)) / 100.0f;
-        const auto skillchainDmgBonus = (10000 + PAttacker->getMod(Mod::SKILLCHAINDMG)) / 10000.0f;
+        const auto skillchainBonus    = (100.0f + PAttacker->getMod(Mod::SKILLCHAINBONUS)) / 100.0f;
+        const auto skillchainDmgBonus = (10000.0f + PAttacker->getMod(Mod::SKILLCHAINDMG)) / 10000.0f;
         const auto dayWeatherBonus    = 1.0f; // TODO: Implement day/weather bonuses
         const auto staffAffinity      = 1.0f; // TODO: Implement staff affinity
 
-        auto damage = (int32)floor(closingDamage * skillchainLevel * skillchainBonus * skillchainDmgBonus * dayWeatherBonus * staffAffinity);
+        int32 damage = std::floor(closingDamage * skillchainLevel * skillchainBonus * skillchainDmgBonus * dayWeatherBonus * staffAffinity);
 
         auto* PChar = dynamic_cast<CCharEntity*>(PAttacker);
         if (PChar && PChar->StatusEffectContainer->HasStatusEffect(EFFECT_INNIN) && behind(PChar->loc.p, PDefender->loc.p, 64))
         {
-            damage = (int32)(damage * (1.f + PChar->PMeritPoints->GetMeritValue(MERIT_INNIN_EFFECT, PChar) / 100.f));
+            damage = std::floor(static_cast<float>(damage) * (1.0f + PChar->PMeritPoints->GetMeritValue(MERIT_INNIN_EFFECT, PChar) / 100.0f));
         }
 
         if (PDefender->getMod(Mod::SENGIKORI_SC_DMG_DEBUFF) > 0)
         {
-            damage = static_cast<int32>(damage * (1.f + PDefender->getMod(Mod::SENGIKORI_SC_DMG_DEBUFF) / 100.f));
+            damage = std::floor(static_cast<float>(damage) * (1.0f + PDefender->getMod(Mod::SENGIKORI_SC_DMG_DEBUFF) / 100.0f));
             PDefender->setModifier(Mod::SENGIKORI_SC_DMG_DEBUFF, 0); // Consume the effect
         }
 
-        damage = damage * (10000 - resistance) / 10000;
+        float damageReductionMult = (10000.0f - static_cast<float>(resistance)) / 10000.0f;
+
+        damage = std::floor(static_cast<float>(damage) * damageReductionMult);
         damage = MagicDmgTaken(PDefender, damage, appliedEle);
         if (damage > 0)
         {
@@ -4122,7 +4158,7 @@ namespace battleutils
 
             case TYPE_MOB:
             {
-                ((CMobEntity*)PDefender)->PEnmityContainer->UpdateEnmityFromDamage(taChar ? taChar : PAttacker, (uint16)damage);
+                static_cast<CMobEntity*>(PDefender)->PEnmityContainer->UpdateEnmityFromDamage(taChar ? taChar : PAttacker, std::abs(damage)); // assume negative damage (healing) deals the same enmity as dealing damage
             }
             break;
             default:
@@ -4278,7 +4314,7 @@ namespace battleutils
             {
                 // Futae Takes 2 of Your Tools
                 charutils::UpdateItem(PChar, LOC_INVENTORY, SlotID, -2);
-                PChar->pushPacket<CInventoryFinishPacket>();
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
             }
             else
             {
@@ -4294,7 +4330,7 @@ namespace battleutils
                 if (ConsumeTool && xirand::GetRandomNumber(100) > chance)
                 {
                     charutils::UpdateItem(PChar, LOC_INVENTORY, SlotID, -1);
-                    PChar->pushPacket<CInventoryFinishPacket>();
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
                 }
             }
         }
@@ -4707,7 +4743,7 @@ namespace battleutils
             {
                 charutils::BuildingCharAbilityTable(PChar);
                 std::memset(&PChar->m_PetCommands, 0, sizeof(PChar->m_PetCommands));
-                PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
                 PChar->pushPacket<CCharStatusPacket>(PChar);
                 PChar->pushPacket<CPetSyncPacket>(PChar);
             }
@@ -4955,11 +4991,11 @@ namespace battleutils
 
     int32 BreathDmgTaken(CBattleEntity* PDefender, int32 damage)
     {
-        float resist = 1.0f + PDefender->getMod(Mod::UDMGBREATH) / 10000.f;
-        resist       = std::max(resist, 0.f);
+        float resist = 1.0f + PDefender->getMod(Mod::UDMGBREATH) / 10000.0f;
+        resist       = std::max(resist, 0.0f);
         damage       = (int32)(damage * resist);
 
-        resist = 1.0f + PDefender->getMod(Mod::DMGBREATH) / 10000.f + PDefender->getMod(Mod::DMG) / 10000.f;
+        resist = 1.0f + PDefender->getMod(Mod::DMGBREATH) / 10000.0f + PDefender->getMod(Mod::DMG) / 10000.0f;
         resist = std::clamp(resist, 0.5f, 1.5f); // assuming if its floored at .5f its capped at 1.5f but who's stacking +dmgtaken equip anyway???
         damage = (int32)(damage * resist);
 
@@ -5004,14 +5040,14 @@ namespace battleutils
             return (int32)(damage * liement);
         }
 
-        float resist = 1.f + PDefender->getMod(Mod::UDMGMAGIC) / 10000.f;
-        resist       = std::max(resist, 0.f);
+        float resist = 1.0f + PDefender->getMod(Mod::UDMGMAGIC) / 10000.0f;
+        resist       = std::max(resist, 0.0f);
         damage       = (int32)(damage * resist);
 
-        resist = 1.f + PDefender->getMod(Mod::DMGMAGIC) / 10000.f + PDefender->getMod(Mod::DMG) / 10000.f;
+        resist = 1.0f + PDefender->getMod(Mod::DMGMAGIC) / 10000.0f + PDefender->getMod(Mod::DMG) / 10000.0f;
         resist = std::max(resist, 0.5f);
 
-        resist += PDefender->getMod(Mod::DMGMAGIC_II) / 10000.f;
+        resist += PDefender->getMod(Mod::DMGMAGIC_II) / 10000.0f;
         resist = std::max(resist, 0.125f); // Total cap with MDT-% II included is 87.5%
         damage = (int32)(damage * resist);
 
@@ -5047,13 +5083,13 @@ namespace battleutils
 
     int32 PhysicalDmgTaken(CBattleEntity* PDefender, int32 damage, DAMAGE_TYPE damageType, bool IsCovered)
     {
-        float resist = 1.f + PDefender->getMod(Mod::UDMGPHYS) / 10000.f;
-        resist       = std::max(resist, 0.f);
+        float resist = 1.0f + PDefender->getMod(Mod::UDMGPHYS) / 10000.0f;
+        resist       = std::max(resist, 0.0f);
         damage       = (int32)(damage * resist);
 
-        resist = 1.f + PDefender->getMod(Mod::DMGPHYS) / 10000.f + PDefender->getMod(Mod::DMG) / 10000.f;
-        resist = std::max(resist, 0.5f);                        // PDT caps at -50%
-        resist += PDefender->getMod(Mod::DMGPHYS_II) / 10000.f; // Add Burtgang reduction after 50% cap. Extends cap to -68%
+        resist = 1.0f + PDefender->getMod(Mod::DMGPHYS) / 10000.0f + PDefender->getMod(Mod::DMG) / 10000.0f;
+        resist = std::max(resist, 0.5f);                         // PDT caps at -50%
+        resist += PDefender->getMod(Mod::DMGPHYS_II) / 10000.0f; // Add Burtgang reduction after 50% cap. Extends cap to -68%
         damage = (int32)(damage * resist);
 
         if (damage > 0 && PDefender->objtype == TYPE_PET && PDefender->getMod(Mod::AUTO_STEAM_JACKET) > 0)
@@ -5096,11 +5132,11 @@ namespace battleutils
 
     int32 RangedDmgTaken(CBattleEntity* PDefender, int32 damage, DAMAGE_TYPE damageType, bool IsCovered)
     {
-        float resist = 1.0f + PDefender->getMod(Mod::UDMGRANGE) / 10000.f;
-        resist       = std::max(resist, 0.f);
+        float resist = 1.0f + PDefender->getMod(Mod::UDMGRANGE) / 10000.0f;
+        resist       = std::max(resist, 0.0f);
         damage       = (int32)(damage * resist);
 
-        resist = 1.0f + PDefender->getMod(Mod::DMGRANGE) / 10000.f + PDefender->getMod(Mod::DMG) / 10000.f;
+        resist = 1.0f + PDefender->getMod(Mod::DMGRANGE) / 10000.0f + PDefender->getMod(Mod::DMG) / 10000.0f;
         resist = std::max(resist, 0.5f);
         damage = (int32)(damage * resist);
 
@@ -5229,7 +5265,7 @@ namespace battleutils
 
     float HandleTranquilHeart(CBattleEntity* PEntity)
     {
-        float reductionPercent = 0.f;
+        float reductionPercent = 0.0f;
 
         if (PEntity->objtype == TYPE_PC && charutils::hasTrait((CCharEntity*)PEntity, TRAIT_TRANQUIL_HEART))
         {
@@ -5242,7 +5278,7 @@ namespace battleutils
                 reductionPercent = 25;
             }
 
-            reductionPercent = reductionPercent / 100.f;
+            reductionPercent = reductionPercent / 100.0f;
         }
 
         return reductionPercent;
@@ -5298,10 +5334,11 @@ namespace battleutils
         return damage;
     }
 
-    int32 HandleSevereDamage(CBattleEntity* PDefender, int32 damage, bool isPhysical)
+    auto HandleSevereDamage(CBattleEntity* PDefender, int32 damage, bool isPhysical) -> int32
     {
         damage = HandleSevereDamageEffect(PDefender, EFFECT_MIGAWARI, damage, true);
-        // In the future, handle other Severe Damage Effects like Earthen Armor here
+        // TODO: Earthen Armor effect
+        // TODO: Sentinel's Scherzo effect
 
         if (isPhysical && PDefender->objtype == TYPE_PET && PDefender->getMod(Mod::AUTO_SCHURZEN) != 0 && damage >= PDefender->health.hp &&
             ((CPetEntity*)PDefender)->PMaster->StatusEffectContainer->GetEffectsCount(EFFECT_EARTH_MANEUVER) >= 1)
@@ -5339,17 +5376,18 @@ namespace battleutils
         if (effectScarDel && effectScarDel->GetPower() == 0)
         {
             // Damage to Max HP Ratio
-            int8 bonus    = std::floor(((damage * 100) / PDefender->GetMaxHP()) / 2);
-            int8 jpValue  = effectScarDel->GetSubPower();
-            auto duration = 90s + std::chrono::seconds(jpValue);
+            float  hppRatio = std::clamp<float>(static_cast<float>(damage) / static_cast<float>(PDefender->GetMaxHP()) / 2.0f, 0.0f, 0.5f);
+            uint16 power    = std::floor(hppRatio * 1000);
+            uint16 jpValue  = effectScarDel->GetSubPower();
+            auto   duration = 90s + std::chrono::seconds(jpValue);
 
             // Convert status effect from "Absorb damage" mode to "Provide damage bonus" mode
             PDefender->StatusEffectContainer->DelStatusEffectSilent(EFFECT_SCARLET_DELIRIUM);
-            PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SCARLET_DELIRIUM_1, EFFECT_SCARLET_DELIRIUM_1, bonus, 0s, duration), EffectNotice::Silent);
+            PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SCARLET_DELIRIUM_1, EFFECT_SCARLET_DELIRIUM_1, power, 0s, duration), EffectNotice::Silent);
         }
     }
 
-    int32 HandleSevereDamageEffect(CBattleEntity* PDefender, EFFECT effect, int32 damage, bool removeEffect)
+    auto HandleSevereDamageEffect(CBattleEntity* PDefender, EFFECT effect, int32 damage, bool removeEffect) -> int32
     {
         if (PDefender->StatusEffectContainer->HasStatusEffect(effect))
         {
@@ -5397,13 +5435,13 @@ namespace battleutils
                 if (EntityToLockon != nullptr)
                 {
                     // lock on to the new target!
-                    PChar->pushPacket<CLockOnPacket>(PChar, EntityToLockon);
+                    PChar->pushPacket<GP_SERV_COMMAND_ASSIST>(PChar, EntityToLockon);
                 }
             }
             else if (EntityToAssist->GetBattleTargetID() != 0)
             {
                 // lock on to the new target!
-                PChar->pushPacket<CLockOnPacket>(PChar, EntityToAssist->GetBattleTarget());
+                PChar->pushPacket<GP_SERV_COMMAND_ASSIST>(PChar, EntityToAssist->GetBattleTarget());
             }
         }
     }
@@ -5497,68 +5535,68 @@ namespace battleutils
         }
     }
 
-    WEATHER GetWeather(CBattleEntity* PEntity, bool ignoreScholar)
+    auto GetWeather(CBattleEntity* PEntity, bool ignoreScholar) -> Weather
     {
         if (PEntity == nullptr || zoneutils::GetZone(PEntity->getZone()) == nullptr)
         {
-            return WEATHER_NONE;
+            return Weather::None;
         }
 
         return GetWeather(PEntity, ignoreScholar, zoneutils::GetZone(PEntity->getZone())->GetWeather());
     }
 
-    WEATHER GetWeather(CBattleEntity* PEntity, bool ignoreScholar, uint16 zoneWeather)
+    auto GetWeather(CBattleEntity* PEntity, bool ignoreScholar, Weather zoneWeather) -> Weather
     {
         if (PEntity == nullptr)
         {
-            return WEATHER_NONE;
+            return Weather::None;
         }
 
-        WEATHER scholarSpell = WEATHER_NONE;
+        auto scholarSpell = Weather::None;
 
         if (!ignoreScholar) // Do not need to check for status effects if we're ignoring scholar spells
         {
             if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_FIRESTORM))
             {
-                scholarSpell = WEATHER_HOT_SPELL;
+                scholarSpell = Weather::HotSpell;
             }
             if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_RAINSTORM))
             {
-                scholarSpell = WEATHER_RAIN;
+                scholarSpell = Weather::Rain;
             }
             if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_SANDSTORM))
             {
-                scholarSpell = WEATHER_DUST_STORM;
+                scholarSpell = Weather::DustStorm;
             }
             if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_WINDSTORM))
             {
-                scholarSpell = WEATHER_WIND;
+                scholarSpell = Weather::Wind;
             }
             if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_HAILSTORM))
             {
-                scholarSpell = WEATHER_SNOW;
+                scholarSpell = Weather::Snow;
             }
             if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_THUNDERSTORM))
             {
-                scholarSpell = WEATHER_THUNDER;
+                scholarSpell = Weather::Thunder;
             }
             if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_AURORASTORM))
             {
-                scholarSpell = WEATHER_AURORAS;
+                scholarSpell = Weather::Auroras;
             }
             if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_VOIDSTORM))
             {
-                scholarSpell = WEATHER_GLOOM;
+                scholarSpell = Weather::Gloom;
             }
         }
 
-        if (ignoreScholar || scholarSpell == WEATHER_NONE || zoneWeather == (scholarSpell + 1))
+        if (ignoreScholar || scholarSpell == Weather::None || static_cast<uint16_t>(zoneWeather) == (static_cast<uint16_t>(scholarSpell) + 1))
         { // Strong weather overwrites scholar spell weak weather
-            return (WEATHER)zoneWeather;
+            return zoneWeather;
         }
         else if (scholarSpell == zoneWeather)
         {
-            return (WEATHER)(zoneWeather + 1); // Storm spells stack with weather
+            return static_cast<Weather>(static_cast<uint16_t>(zoneWeather) + 1); // Storm spells stack with weather
         }
         else
         {
@@ -5566,7 +5604,7 @@ namespace battleutils
         }
     }
 
-    bool WeatherMatchesElement(WEATHER weather, uint8 element)
+    auto WeatherMatchesElement(const Weather weather, const uint8 element) -> bool
     {
         switch (element)
         {
@@ -5576,8 +5614,8 @@ namespace battleutils
             case ELEMENT_FIRE:
                 switch (weather)
                 {
-                    case WEATHER_HOT_SPELL:
-                    case WEATHER_HEAT_WAVE:
+                    case Weather::HotSpell:
+                    case Weather::HeatWave:
                         return true;
                         break;
                     default:
@@ -5587,8 +5625,8 @@ namespace battleutils
             case ELEMENT_ICE:
                 switch (weather)
                 {
-                    case WEATHER_SNOW:
-                    case WEATHER_BLIZZARDS:
+                    case Weather::Snow:
+                    case Weather::Blizzards:
                         return true;
                         break;
                     default:
@@ -5598,8 +5636,8 @@ namespace battleutils
             case ELEMENT_WIND:
                 switch (weather)
                 {
-                    case WEATHER_WIND:
-                    case WEATHER_GALES:
+                    case Weather::Wind:
+                    case Weather::Gales:
                         return true;
                         break;
                     default:
@@ -5609,8 +5647,8 @@ namespace battleutils
             case ELEMENT_EARTH:
                 switch (weather)
                 {
-                    case WEATHER_DUST_STORM:
-                    case WEATHER_SAND_STORM:
+                    case Weather::DustStorm:
+                    case Weather::SandStorm:
                         return true;
                         break;
                     default:
@@ -5620,8 +5658,8 @@ namespace battleutils
             case ELEMENT_THUNDER:
                 switch (weather)
                 {
-                    case WEATHER_THUNDER:
-                    case WEATHER_THUNDERSTORMS:
+                    case Weather::Thunder:
+                    case Weather::Thunderstorms:
                         return true;
                         break;
                     default:
@@ -5631,8 +5669,8 @@ namespace battleutils
             case ELEMENT_WATER:
                 switch (weather)
                 {
-                    case WEATHER_RAIN:
-                    case WEATHER_SQUALL:
+                    case Weather::Rain:
+                    case Weather::Squall:
                         return true;
                         break;
                     default:
@@ -5642,8 +5680,8 @@ namespace battleutils
             case ELEMENT_LIGHT:
                 switch (weather)
                 {
-                    case WEATHER_AURORAS:
-                    case WEATHER_STELLAR_GLARE:
+                    case Weather::Auroras:
+                    case Weather::StellarGlare:
                         return true;
                         break;
                     default:
@@ -5653,8 +5691,8 @@ namespace battleutils
             case ELEMENT_DARK:
                 switch (weather)
                 {
-                    case WEATHER_GLOOM:
-                    case WEATHER_DARKNESS:
+                    case Weather::Gloom:
+                    case Weather::Darkness:
                         return true;
                         break;
                     default:
@@ -5666,18 +5704,24 @@ namespace battleutils
         }
     }
 
-    void DrawIn(CBattleEntity* PTarget, position_t pos, float offset, float degrees)
+    void DrawIn(CBattleEntity* PTarget, const position_t pos, const float offset, const float degrees)
     {
-        float      radian     = degrees * (M_PI / 180.0f);
-        position_t nearEntity = nearPosition(pos, offset, radian);
+        const float radian     = degrees * (M_PI / 180.0f);
+        position_t  nearEntity = nearPosition(pos, offset, radian);
+
+        // Target may be in the middle of zoning (Alliance-based Draw-In)
+        if (!PTarget->loc.zone)
+        {
+            return;
+        }
 
         // Make sure we can raycast to that position
         // from the position's "eyeline" to the ground where we want to draw players in to
         if (PTarget->loc.zone->lineOfSight)
         {
-            auto entityHeight = 2.0f;
-            auto posEyeline   = position_t{ pos.x, pos.y - entityHeight, pos.z, 0, 0 };
-            if (auto optHit = PTarget->loc.zone->lineOfSight->Raycast(posEyeline, nearEntity))
+            const auto entityHeight = 2.0f;
+            const auto posEyeline   = position_t{ pos.x, pos.y - entityHeight, pos.z, 0, 0 };
+            if (const auto optHit = PTarget->loc.zone->lineOfSight->Raycast(posEyeline, nearEntity))
             {
                 auto hit   = *optHit;
                 nearEntity = { hit.x, hit.y, hit.z, 0, 0 };
@@ -5704,12 +5748,10 @@ namespace battleutils
             else
             {
                 // draw in!
-                PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE_SELF, std::make_unique<CPositionPacket>(PTarget, nearEntity));
-                PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE_SELF, std::make_unique<CMessageBasicPacket>(PTarget, PTarget, 0, 0, 232));
+                PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_WPOS>(PTarget, nearEntity));
+                PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(PTarget, PTarget, 0, 0, static_cast<MSGBASIC_ID>(232)));
             }
         }
-
-        return;
     }
 
     /************************************************************************
@@ -5875,7 +5917,7 @@ namespace battleutils
                     if (auto PCharTarget = dynamic_cast<CCharEntity*>(PTarget))
                     {
                         // Update target's recast state: caster's will be handled in CCharEntity::OnAbility.
-                        PCharTarget->pushPacket<CCharRecastPacket>(PCharTarget);
+                        PCharTarget->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PCharTarget);
                     }
                 }
                 return true;
@@ -5906,7 +5948,7 @@ namespace battleutils
                 if (auto PCharTarget = dynamic_cast<CCharEntity*>(PTarget))
                 {
                     // Update target's recast state: caster's will be handled in CCharEntity::OnAbility.
-                    PCharTarget->pushPacket<CCharRecastPacket>(PCharTarget);
+                    PCharTarget->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PCharTarget);
                 }
             }
 
@@ -5964,7 +6006,7 @@ namespace battleutils
             VelocityShotReductionPercent = 15 + battleEntity->getMod(Mod::VELOCITY_SNAPSHOT_BONUS);
         }
 
-        return (int16)(delay * ((100 - SnapShotReductionPercent) / 100.f) * ((100 - VelocityShotReductionPercent) / 100.f));
+        return (int16)(delay * ((100 - SnapShotReductionPercent) / 100.0f) * ((100 - VelocityShotReductionPercent) / 100.0f));
     }
 
     /************************************************************************
@@ -6310,7 +6352,7 @@ namespace battleutils
             uncappedFastCast = std::clamp<int16>(uncappedFastCast + PEntity->getMod(Mod::DIVINE_BENISON), -100, 100);
         }
 
-        float sumFastCast = std::clamp<float>((float)(fastCast + uncappedFastCast + inspirationFastCast), -100.f, 100.f);
+        float sumFastCast = std::clamp<float>((float)(fastCast + uncappedFastCast + inspirationFastCast), -100.0f, 100.0f);
 
         return std::chrono::floor<std::chrono::milliseconds>(cast * ((100.0f - sumFastCast) / 100.0f));
     }
@@ -6377,6 +6419,39 @@ namespace battleutils
             cost = 0;
         }
         return std::clamp<int16>(cost, 0, 9999);
+    }
+
+    bool CanAffordSpell(CBattleEntity* PEntity, CSpell* PSpell, uint8 flags)
+    {
+        if (PEntity == nullptr)
+        {
+            return false;
+        }
+
+        // Check if entity bypasses MP costs
+        if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_MANAFONT) ||
+            (flags & MAGICFLAGS_IGNORE_MP))
+        {
+            return true;
+        }
+
+        // Special handling for mobs with NO_SPELL_COST modifier
+        if (auto PMob = dynamic_cast<CMobEntity*>(PEntity))
+        {
+            if (PMob->getMobMod(MOBMOD_NO_SPELL_COST) > 0)
+            {
+                return true;
+            }
+        }
+
+        // Check if spell has MP cost and if entity has enough MP
+        if (PSpell->hasMPCost())
+        {
+            uint16 spellCost = CalculateSpellCost(PEntity, PSpell);
+            return PEntity->health.mp >= spellCost;
+        }
+
+        return true; // No MP cost required
     }
 
     timer::duration CalculateSpellRecastTime(CBattleEntity* PEntity, CSpell* PSpell)
@@ -6508,7 +6583,7 @@ namespace battleutils
             if (PEntity->StatusEffectContainer->HasStatusEffect({ EFFECT_LIGHT_ARTS, EFFECT_ADDENDUM_WHITE }))
             {
                 // Add any "Grimoire: Reduces spellcasting time" bonuses + Light Arts bonus
-                recast = std::chrono::floor<std::chrono::milliseconds>(recast * ((100.f + PEntity->getMod(Mod::WHITE_MAGIC_RECAST) + PEntity->getMod(Mod::GRIMOIRE_SPELLCASTING)) / 100.0f));
+                recast = std::chrono::floor<std::chrono::milliseconds>(recast * ((100.0f + PEntity->getMod(Mod::WHITE_MAGIC_RECAST) + PEntity->getMod(Mod::GRIMOIRE_SPELLCASTING)) / 100.0f));
             }
             else
             {
@@ -6550,7 +6625,7 @@ namespace battleutils
                 CCharEntity* PChar = static_cast<CCharEntity*>(PEntity);
                 if (charutils::hasTrait(PChar, TRAIT_OCCULT_ACUMEN))
                 {
-                    return static_cast<int16>(PSpell->getMPCost() * PChar->getMod(Mod::OCCULT_ACUMEN) / 100.f * (1 + (PChar->getMod(Mod::STORETP) / 100.f)));
+                    return static_cast<int16>(PSpell->getMPCost() * PChar->getMod(Mod::OCCULT_ACUMEN) / 100.0f * (1 + (PChar->getMod(Mod::STORETP) / 100.0f)));
                 }
             }
         }
@@ -6625,13 +6700,13 @@ namespace battleutils
                 charutils::UnequipItem(PChar, SLOT_AMMO);
                 PChar->RequestPersist(CHAR_PERSIST::EQUIP);
                 charutils::UpdateItem(PChar, loc, slot, -quantity);
-                PChar->pushPacket<CInventoryFinishPacket>();
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
                 return true;
             }
             else
             {
                 charutils::UpdateItem(PChar, PChar->equipLoc[SLOT_AMMO], PChar->equip[SLOT_AMMO], -quantity);
-                PChar->pushPacket<CInventoryFinishPacket>();
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
                 return false;
             }
         }
@@ -6910,5 +6985,54 @@ namespace battleutils
             }
         }
         return 1.0;
+    }
+
+    void addEcosystemKillerEffects(CBattleEntity* PBattleEntity)
+    {
+        // Killer Effect
+        switch (PBattleEntity->m_EcoSystem)
+        {
+            case ECOSYSTEM::AMORPH:
+                PBattleEntity->addModifier(Mod::BIRD_KILLER, 5);
+                break;
+            case ECOSYSTEM::AQUAN:
+                PBattleEntity->addModifier(Mod::AMORPH_KILLER, 5);
+                break;
+            case ECOSYSTEM::ARCANA:
+                PBattleEntity->addModifier(Mod::UNDEAD_KILLER, 5);
+                break;
+            case ECOSYSTEM::BEAST:
+                PBattleEntity->addModifier(Mod::LIZARD_KILLER, 5);
+                break;
+            case ECOSYSTEM::BIRD:
+                PBattleEntity->addModifier(Mod::AQUAN_KILLER, 5);
+                break;
+            case ECOSYSTEM::DEMON:
+                PBattleEntity->addModifier(Mod::DRAGON_KILLER, 5);
+                break;
+            case ECOSYSTEM::DRAGON:
+                PBattleEntity->addModifier(Mod::DEMON_KILLER, 5);
+                break;
+            case ECOSYSTEM::LIZARD:
+                PBattleEntity->addModifier(Mod::VERMIN_KILLER, 5);
+                break;
+            case ECOSYSTEM::LUMINION:
+                PBattleEntity->addModifier(Mod::LUMINIAN_KILLER, 5);
+                break;
+            case ECOSYSTEM::LUMINIAN:
+                PBattleEntity->addModifier(Mod::LUMINION_KILLER, 5);
+                break;
+            case ECOSYSTEM::PLANTOID:
+                PBattleEntity->addModifier(Mod::BEAST_KILLER, 5);
+                break;
+            case ECOSYSTEM::UNDEAD:
+                PBattleEntity->addModifier(Mod::ARCANA_KILLER, 5);
+                break;
+            case ECOSYSTEM::VERMIN:
+                PBattleEntity->addModifier(Mod::PLANTOID_KILLER, 5);
+                break;
+            default:
+                break;
+        }
     }
 }; // namespace battleutils

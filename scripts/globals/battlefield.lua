@@ -183,7 +183,7 @@ xi.battlefield.id =
     WHOM_WILT_THOU_CALL                        = 132,
     SHADOW_LORD_BATTLE                         = 160,
     WHERE_TWO_PATHS_CONVERGE                   = 161,
-    KINDRED_SPIRITS                            = 162,
+    KINDRED_SPIRITS                            = 162, -- Experimental
     SURVIVAL_OF_THE_WISEST                     = 163,
     SMASH_A_MALEVOLENT_MENACE                  = 164, -- Experimental
     THROUGH_THE_QUICKSAND_CAVES                = 192, -- Converted
@@ -1104,6 +1104,24 @@ function Battlefield:onBattlefieldEnter(player, battlefield)
         end
     end
 
+    -- Handle mob initial spell casts (blaze spikes, protect, etc)
+    if player:getID() == initiatorId then
+        local mobs = battlefield:getMobs(true, true)
+        for _, mob in pairs(mobs) do
+            if mob:isSpawned() then
+                -- wait until initiator is out of cutscene
+                mob:addListener('ROAM_TICK', 'FIRST_CAST', function(mobArg)
+                    local firstPlayer = GetPlayerByID(initiatorId)
+                    if firstPlayer and not firstPlayer:isInEvent() then
+                        mobArg:castSpell()
+
+                        mobArg:removeListener('FIRST_CAST')
+                    end
+                end)
+            end
+        end
+    end
+
     local ID = zones[self.zoneId]
     player:messageSpecial(ID.text.ENTERING_THE_BATTLEFIELD_FOR, 0, self.index)
 
@@ -1244,50 +1262,17 @@ end
 
 function Battlefield:handleLootRolls(battlefield, lootTable, npc)
     local players = battlefield:getPlayers()
+    local firstPlayer = players[1]
 
-    for i = 1, #lootTable, 1 do
-        local lootGroup = lootTable[i]
+    local selectedLoot = utils.selectFromLootGroups(firstPlayer, lootTable)
+    for _, entry in ipairs(selectedLoot) do
+        if entry.itemId ~= xi.item.GIL then
+            firstPlayer:addTreasure(entry.itemId, npc)
+        else
+            local gilPerPlayer = entry.amount / #players
 
-        if lootGroup then
-            local max = 0
-
-            for _, entry in pairs(lootGroup) do
-                if type(entry) == 'table' then
-                    max = max + entry.weight
-                end
-            end
-
-            local quantity = lootGroup.quantity or 1
-
-            for j = 1, quantity do
-                local roll    = math.random(max)
-                local current = 0
-
-                for _, entry in pairs(lootGroup) do
-                    if type(entry) == 'table' then
-                        current = current + entry.weight
-
-                        if current >= roll then
-                            if entry.item == 0 then
-                                break
-                            end
-
-                            if entry.item == 65535 then
-                                local gil = entry.amount / #players
-
-                                for k = 1, #players, 1 do
-                                    npcUtil.giveCurrency(players[k], 'gil', gil)
-                                end
-
-                                break
-                            end
-
-                            players[1]:addTreasure(entry.item, npc)
-
-                            break
-                        end
-                    end
-                end
+            for _, player in ipairs(players) do
+                npcUtil.giveCurrency(player, 'gil', gilPerPlayer)
             end
         end
     end
@@ -1440,7 +1425,7 @@ function BattlefieldMission:onEventFinishWin(player, csid, option, npc)
 
     -- Only grant mission XP once per JP midnight
     if self.grantXP and self:getVar(player, 'XP') <= GetSystemTime() then
-        self:setVar(player, 'XP', getMidnight())
+        self:setVar(player, 'XP', JstMidnight())
         player:addExp(self.grantXP)
     end
 end

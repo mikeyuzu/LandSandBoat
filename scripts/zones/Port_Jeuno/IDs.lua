@@ -31,7 +31,7 @@ zones[xi.zone.PORT_JEUNO] =
         COUNTER_NPC                   = 7085, -- I think the airships are a subtle form of pressure on the other three nations. That way, Jeuno can maintain the current balance of power.
         DEPARTURE_NPC                 = 7094, -- Have a safe flight!
         ARRIVAL_NPC                   = 7095, -- Enjoy your stay in Jeuno!
-        CONFISCATED                   = 7102, -- Your <ketitem> have been confiscated. You are temporarily suspended from boarding airships in Jeuno.
+        CONFISCATED                   = 7102, -- Your <keyitem> have been confiscated. You are temporarily suspended from boarding airships in Jeuno.
         CLEARED_CUSTOMS               = 7106, -- You have cleared customs.
         DAPOL_DIALOG                  = 7108, -- Welcome to Port Jeuno, the busiest airship hub anywhere! You can't miss the awe-inspiring view of airships in flight!
         SECURITY_DIALOG               = 7111, -- Port Jeuno must remain secure. After all, if anything happened to the archduke, it would change the world!
@@ -50,10 +50,12 @@ zones[xi.zone.PORT_JEUNO] =
         DRYEYES_3                     = 8188, -- Hey, you already got <item>. What you tryin' to pull here? Save some for my other customers, eh?
         DRYEYES_4                     = 8203, -- Huh? You don't got enough beastmen's seals! You tryin' to waste my time? Take a hike!
         DRYEYES_5                     = 8204, -- Huh? You don't got enough gil! You tryin' to waste my time? Take a hike!
+        WOULD_YE_MIND                 = 8408, -- Sorry, [mate/lass], but would ye mind leavin' me in peace?
         OBTAINED_NUM_KEYITEMS         = 8478, -- Obtained key item: <number> <keyitem>!
         CHEST_IS_EMPTY                = 8676, -- The chest is empty.
         KINDLIX_SHOP_DIALOG           = 8695, -- Our fam'ly peddle sky flowers. You want have nice scenery? Send fireworks sky high! It's great feeling. Bwee hee hee.
         PYROPOX_SHOP_DIALOG           = 8699, -- Bwee hee. I get fireworks from all 'round globe. Kindlix never sell more than me.
+        STRANGE_DEVICE                = 9413, -- There is a strange device here.
     },
     mob =
     {
