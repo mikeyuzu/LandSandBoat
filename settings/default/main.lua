@@ -212,6 +212,7 @@ xi.settings.main =
     PRISMATIC_HOURGLASS_COST    = 50000,    -- デュナミスの七色の砂時計のコスト。
     CURRENCY_EXCHANGE_RATE      = 100,      -- X枚のTier 1古代通貨 -> 1枚のTier 2、以下同様。特定の値はショップアイテムと競合する可能性があります。198を超えないように設計されています。
     ENABLE_EXCHANGE_100S_TO_1S  = false,    -- true/false。1万枚を100枚に交換できるように、100枚を1枚に交換することを許可します。
+    RELIC_1ND_UPGRADE_WAIT_VANADAY = true,  -- レリックの1回目の強化（ステージ1 -> ステージ2）のヴァナ日付またぎ
     RELIC_2ND_UPGRADE_WAIT_TIME = 7200,     -- レリックの2回目の強化（ステージ2 -> ステージ3）の待機時間（秒）。7200秒 = 2時間。
     RELIC_3RD_UPGRADE_WAIT_TIME = 3600,     -- レリックの3回目の強化（ステージ3 -> ステージ4）の待機時間（秒）。3600秒 = 1時間。
     FREE_COP_DYNAMIS            = 0,        -- ジラートミッションを完了せずにCOPダイナミスへの入場を許可する（1 = 有効、0 = 無効）。
