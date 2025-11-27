@@ -877,7 +877,11 @@ entity.onTrade = function(player, npc, trade)
 
         if currentStage ~= 4 and tradeHasRequiredCurrency(trade, currentRelic) then
             if currentStage == 1 then
-                player:setCharVar('RELIC_DUE_AT', getVanaMidnight())
+                if xi.settings.main.RELIC_1ND_UPGRADE_WAIT_VANADAY then
+                    player:setCharVar('RELIC_DUE_AT', getVanaMidnight())
+                else
+                    player:setCharVar('RELIC_DUE_AT', GetSystemTime())
+                end
             elseif currentStage == 2 then
                 player:setCharVar('RELIC_DUE_AT', GetSystemTime() + xi.settings.main.RELIC_2ND_UPGRADE_WAIT_TIME)
             elseif currentStage == 3 then
