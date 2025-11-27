@@ -5283,6 +5283,7 @@ namespace charutils
         }
         uint16 currentExp  = PChar->jobs.exp[PChar->GetMJob()];
         bool   onLimitMode = false;
+        auto   exp_unified = settings::get<bool>("map.EXP_UNIFIED");
 
         // Incase player de-levels to 74 on the field
         if (PChar->MeritMode && PChar->jobs.job[PChar->GetMJob()] > 74 && !expFromRaise)
@@ -5351,6 +5352,18 @@ namespace charutils
         {
             // add normal exp
             PChar->jobs.exp[PChar->GetMJob()] += exp;
+            if (exp_unified)
+            {
+                // 取得済みのジョブすべての経験値とレベルをメインジョブと同じにする
+                for (uint8 job = JOB_WAR; job < (MAX_JOBTYPE - 1); ++job)
+                {
+                    if (job != PChar->GetMJob() && PChar->jobs.job[job] > 0)
+                    {
+                        PChar->jobs.exp[job] = PChar->jobs.exp[PChar->GetMJob()];
+                        PChar->jobs.job[job] = PChar->jobs.job[PChar->GetMJob()];
+                    }
+                }
+            }
         }
 
         if (!expFromRaise)
@@ -5488,6 +5501,18 @@ namespace charutils
             if (PChar->jobs.job[PChar->GetMJob()] >= PChar->jobs.genkai)
             {
                 PChar->jobs.exp[PChar->GetMJob()] = GetExpNEXTLevel(PChar->jobs.job[PChar->GetMJob()]) - 1;
+                if (exp_unified)
+                {
+                    // 取得済みのジョブすべての経験値とレベルをメインジョブと同じにする
+                    for (uint8 job = JOB_WAR; job < (MAX_JOBTYPE - 1); ++job)
+                    {
+                        if (job != PChar->GetMJob() && PChar->jobs.job[job] > 0)
+                        {
+                            PChar->jobs.exp[job] = PChar->jobs.exp[PChar->GetMJob()];
+                            PChar->jobs.job[job] = PChar->jobs.job[PChar->GetMJob()];
+                        }
+                    }
+                }
                 if (PChar->PParty && PChar->PParty->GetSyncTarget() == PChar)
                 {
                     PChar->PParty->SetSyncTarget("", MsgStd::LevelSyncRemoveIneligibleExp);
@@ -5501,6 +5526,18 @@ namespace charutils
                     PChar->jobs.exp[PChar->GetMJob()] = GetExpNEXTLevel(PChar->jobs.job[PChar->GetMJob()] + 1) - 1;
                 }
                 PChar->jobs.job[PChar->GetMJob()] += 1;
+                if (exp_unified)
+                {
+                    // 取得済みのジョブのすべてのレベルをメインジョブのレベルと同じにする
+                    for (uint8 job = JOB_WAR; job < (MAX_JOBTYPE - 1); ++job)
+                    {
+                        if (job != PChar->GetMJob() && PChar->jobs.job[job] > 0)
+                        {
+                            PChar->jobs.exp[job] = PChar->jobs.exp[PChar->GetMJob()];
+                            PChar->jobs.job[job] = PChar->jobs.job[PChar->GetMJob()];
+                        }
+                    }
+                }
 
                 if (PChar->m_LevelRestriction == 0 || PChar->m_LevelRestriction > PChar->GetMLevel())
                 {
@@ -5540,6 +5577,18 @@ namespace charutils
                 SaveCharStats(PChar);
                 SaveCharJob(PChar, PChar->GetMJob());
                 SaveCharExp(PChar, PChar->GetMJob());
+                if (exp_unified)
+                {
+                    // 取得済みのジョブのすべてのレベルをメインジョブのレベルと同じにする
+                    for (uint8 job = JOB_WAR; job < (MAX_JOBTYPE - 1); ++job)
+                    {
+                        if (job != PChar->GetMJob() && PChar->jobs.job[job] > 0)
+                        {
+                            SaveCharJob(PChar, static_cast<JOBTYPE>(job));
+                            SaveCharExp(PChar, static_cast<JOBTYPE>(job));
+                        }
+                    }
+                }
 
                 PChar->pushPacket<GP_SERV_COMMAND_JOB_INFO>(PChar);
                 PChar->pushPacket<CCharStatusPacket>(PChar);
@@ -5564,6 +5613,18 @@ namespace charutils
         SaveCharStats(PChar);
         SaveCharJob(PChar, PChar->GetMJob());
         SaveCharExp(PChar, PChar->GetMJob());
+        if (exp_unified)
+        {
+            // 取得済みのジョブのすべてのレベルをメインジョブのレベルと同じにする
+            for (uint8 job = JOB_WAR; job < (MAX_JOBTYPE - 1); ++job)
+            {
+                if (job != PChar->GetMJob() && PChar->jobs.job[job] > 0)
+                {
+                    SaveCharJob(PChar, static_cast<JOBTYPE>(job));
+                    SaveCharExp(PChar, static_cast<JOBTYPE>(job));
+                }
+            }
+        }
         PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS>(PChar);
 
         if (onLimitMode)
