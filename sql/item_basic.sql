@@ -4529,7 +4529,7 @@ INSERT INTO `item_basic` VALUES (4688,82,'scroll_of_recall-pashh','recall-pashh'
 INSERT INTO `item_basic` VALUES (4689,83,'scroll_of_recall-meriph','recall-meriph',@USABLE_TYPE,1,1676,@WHITE_MAGIC,2290);
 INSERT INTO `item_basic` VALUES (4690,84,'scroll_of_baramnesia','baramnesia',@USABLE_TYPE,1,34444,@WHITE_MAGIC,1680);
 INSERT INTO `item_basic` VALUES (4691,85,'scroll_of_baramnesra','baramnesra',@USABLE_TYPE,1,34444,@WHITE_MAGIC,1722);
-INSERT INTO `item_basic` VALUES (4692,847,'scroll_of_haste_ii','haste_ii',@USABLE_TYPE,1,34444,@WHITE_MAGIC,9250); -- DAT missing SCROLL flag
+INSERT INTO `item_basic` VALUES (4692,511,'scroll_of_haste_ii','haste_ii',@USABLE_TYPE,1,34444,@WHITE_MAGIC,9250);
 INSERT INTO `item_basic` VALUES (4694,86,'scroll_of_barsleepra','barsleepra',@USABLE_TYPE,1,1676,@WHITE_MAGIC,241);
 INSERT INTO `item_basic` VALUES (4695,87,'scroll_of_barpoisonra','barpoisonra',@USABLE_TYPE,1,1676,@WHITE_MAGIC,399);
 INSERT INTO `item_basic` VALUES (4696,88,'scroll_of_barparalyzra','barparalyzra',@USABLE_TYPE,1,1676,@WHITE_MAGIC,518);
