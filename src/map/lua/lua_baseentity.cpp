@@ -6794,6 +6794,16 @@ void CLuaBaseEntity::unlockJob(uint8 JobID)
             PChar->jobs.job[JobID] = 1;
         }
 
+        if (settings::get<bool>("map.EXP_UNIFIED"))
+        {
+            uint16 mainJobExp = PChar->jobs.exp[PChar->GetMJob()];
+            uint8  mainJobLvl = PChar->jobs.job[PChar->GetMJob()];
+
+            PChar->jobs.exp[JobID] = mainJobExp;
+            PChar->jobs.job[JobID] = mainJobLvl;
+            charutils::SaveCharExp(PChar, static_cast<JOBTYPE>(JobID));
+        }
+
         charutils::SaveCharJob(PChar, static_cast<JOBTYPE>(JobID));
         PChar->pushPacket<GP_SERV_COMMAND_JOB_INFO>(PChar);
     }

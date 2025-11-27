@@ -303,6 +303,9 @@ xi.settings.map =
     -- 1.0でメインジョブと同じ値の経験値を得る
     SUPPORT_JOB_EXP_RATE = 0.0,
 
+    -- すべてのジョブで経験値を統一する
+    EXP_UNIFIED = false,
+
     -- 印章のドロップ率とリキャスト時間
     SEAL_DROP_RATE = 20,
     SEAL_RECAST_TIME = 300,
