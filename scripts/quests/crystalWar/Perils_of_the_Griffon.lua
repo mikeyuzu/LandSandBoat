@@ -31,19 +31,14 @@ quest.sections =
 
                     if questProgress == 0 then
                         if
-                            quest:getVar(player, 'Timer') <= VanadielUniqueDay() and
-                            not quest:getMustZone(player)
+                            quest:getVar(player, 'Timer') <= VanadielUniqueDay()
                         then
                             return quest:progressEvent(629)
                         else
                             return quest:event(49)
                         end
                     elseif questProgress == 1 then
-                        if not quest:getMustZone(player) then
-                            return quest:progressEvent(630)
-                        else
-                            return quest:event(634)
-                        end
+                        return quest:progressEvent(630)
                     elseif questProgress == 2 then
                         return quest:event(635)
                     elseif questProgress == 3 then
