@@ -39,7 +39,6 @@ quest.sections =
             {
                 [47] = function(player, csid, option, npc)
                     quest:begin(player)
-                    quest:setMustZone(player)
                 end,
             },
         },
@@ -56,7 +55,6 @@ quest.sections =
             {
                 onTrigger = function(player, npc)
                     if
-                        not quest:getMustZone(player) and
                         quest:getVar(player, 'Prog') == 0
                     then
                         return quest:progressEvent(48)

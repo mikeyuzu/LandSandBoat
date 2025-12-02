@@ -19,7 +19,7 @@ quest.sections =
     {
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_AVAILABLE and
-                player:getCurrentMission(xi.mission.log_id.WOTG) == xi.mission.id.wotg.CAIT_SITH
+                player:getCurrentMission(xi.mission.log_id.WOTG) >= xi.mission.id.wotg.CAIT_SITH
         end,
 
         [xi.zone.SOUTHERN_SAN_DORIA_S] =
