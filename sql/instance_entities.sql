@@ -2560,6 +2560,24 @@ INSERT INTO `instance_entities` VALUES (9300,17158396); -- csnpc
 INSERT INTO `instance_entities` VALUES (9300,17158397); -- csnpc
 INSERT INTO `instance_entities` VALUES (9300,17158398); -- csnpc
 
+-- Fire in the Hole(9301)
+INSERT INTO `instance_entities` VALUES (9301,17158219); -- Adelheid
+INSERT INTO `instance_entities` VALUES (9301,17158220); -- Quadav Turret
+INSERT INTO `instance_entities` VALUES (9301,17158221); -- Ancient Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158222); -- Gold Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158223); -- Ancient Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158224); -- Gold Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158225); -- Iron Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158226); -- Iron Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158227); -- Ancient Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158228); -- Magnes Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158229); -- Gold Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158231); -- Iron Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158232); -- Iron Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158233); -- Magnes Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158234); -- Magnes Quadav
+INSERT INTO `instance_entities` VALUES (9301,17158235); -- Magnes Quadav
+
 -- ------------------------------------------------------------
 -- Ghoyus Reverie (Zone 129)
 -- ------------------------------------------------------------
@@ -2591,6 +2609,59 @@ INSERT INTO `instance_entities` VALUES (12901,17305922); -- _3l2
 INSERT INTO `instance_entities` VALUES (12901,17305923); -- _3l3
 INSERT INTO `instance_entities` VALUES (12901,17305930); -- _3la
 INSERT INTO `instance_entities` VALUES (12901,17305933); -- _3ld
+
+-- IN_A_HAZE_OF_GLORY (12902)
+INSERT INTO `instance_entities` VALUES (12902,17305713); -- Goblin Poisoner
+INSERT INTO `instance_entities` VALUES (12902,17305714); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305715); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305716); -- Goblin Poisoner
+INSERT INTO `instance_entities` VALUES (12902,17305717); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305718); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305719); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305720); -- Goblin Poisoner
+INSERT INTO `instance_entities` VALUES (12902,17305721); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305722); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305723); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305724); -- Goblin Poisoner
+INSERT INTO `instance_entities` VALUES (12902,17305725); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305726); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305727); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305728); -- Goblin Poisoner
+INSERT INTO `instance_entities` VALUES (12902,17305729); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305730); -- Goblin Poisoner
+INSERT INTO `instance_entities` VALUES (12902,17305731); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305732); -- Goblin Poisoner
+INSERT INTO `instance_entities` VALUES (12902,17305733); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305734); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305735); -- Goblin Poisoner
+INSERT INTO `instance_entities` VALUES (12902,17305736); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305737); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305738); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305739); -- Goblin Poisoner
+INSERT INTO `instance_entities` VALUES (12902,17305740); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305741); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305742); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305743); -- Virulent Flask
+INSERT INTO `instance_entities` VALUES (12902,17305744); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305746); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305747); -- Virulent Flask
+INSERT INTO `instance_entities` VALUES (12902,17305748); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305750); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305751); -- Virulent Flask
+INSERT INTO `instance_entities` VALUES (12902,17305752); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305753); -- Virulent Flask
+INSERT INTO `instance_entities` VALUES (12902,17305754); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305756); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305757); -- Virulent Flask
+INSERT INTO `instance_entities` VALUES (12902,17305758); -- Orcish Hexspinner
+INSERT INTO `instance_entities` VALUES (12902,17305759); -- Virulent Flask
+INSERT INTO `instance_entities` VALUES (12902,17305760); -- Orcish Footsoldier
+INSERT INTO `instance_entities` VALUES (12902,17305761); -- Virulent Flask
+INSERT INTO `instance_entities` VALUES (12902,17305762); -- Orcish Turret
+INSERT INTO `instance_entities` VALUES (12902,17305763); -- Effluvial Grenade
+INSERT INTO `instance_entities` VALUES (12902,17305865); -- 2nd Legion Scout
+INSERT INTO `instance_entities` VALUES (12902,17305870); -- 2nd Legion Scout
+INSERT INTO `instance_entities` VALUES (12902,17305871); -- 2nd Legion Scout
 
 -- ------------------------------------------------------------
 -- Rala Waterways (Zone 258)

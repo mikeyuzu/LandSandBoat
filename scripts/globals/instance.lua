@@ -210,7 +210,7 @@ xi.instance.lookup =
         { 12901, {   235, 0, 0, 28 }, {   235, 540 }, {   235, 4 } }, -- A Manifest Problem (WOTG Bastok Quest 2)
         -- A Feast for Gnats
         -- A Manifest Problem
-        -- In a Haze of Glory
+        { 12902, {    40, 0, 0, 38 }, {    40, 550 }, {    40, 4 } }, -- In a Haze of Glory (WOTG Sandoria Quest 6)
         -- Sins of the Mothers
         -- Campaign Ops:
         -- Brave Dawn I (Windurst)
