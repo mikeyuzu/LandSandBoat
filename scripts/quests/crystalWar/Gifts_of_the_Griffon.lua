@@ -67,8 +67,7 @@ quest.sections =
                     if questProgress == 0 then
                         return quest:progressEvent(21)
                     elseif
-                        questProgress == 1 and
-                        not quest:getMustZone(player)
+                        questProgress == 1
                     then
                         return quest:progressEvent(22)
                     end
