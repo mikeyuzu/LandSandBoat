@@ -7,7 +7,10 @@
 local entity = {}
 
 entity.onTrigger = function(player, npc)
-    xi.instance.onTrigger(player, npc, xi.zones.RUHOTZ_SILVERMINES)
+    if not xi.instance.onTrigger(player, npc, xi.zone.RUHOTZ_SILVERMINES) then
+        player:messageSpecial(ID.text.NOTHING_OUT_OF_ORDINARY)
+    end
+    --xi.instance.onTrigger(player, npc, xi.zones.RUHOTZ_SILVERMINES)
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)
