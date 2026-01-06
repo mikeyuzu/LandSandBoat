@@ -30,12 +30,14 @@
 
 namespace
 {
-    const std::set validBells = {
-        DREAM_BELL,
-        DREAM_BELL_P1,
-        LADY_BELL,
-        LADY_BELL_P1,
-    };
+
+const std::set validBells = {
+    DREAM_BELL,
+    DREAM_BELL_P1,
+    LADY_BELL,
+    LADY_BELL_P1,
+};
+
 } // namespace
 
 auto GP_CLI_COMMAND_MOTION::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
@@ -49,7 +51,7 @@ void GP_CLI_COMMAND_MOTION::process(MapSession* PSession, CCharEntity* PChar) co
 {
     if (jailutils::InPrison(PChar))
     {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MSGBASIC_CANNOT_USE_IN_AREA);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CANNOT_USE_IN_AREA);
         return;
     }
 

@@ -33,33 +33,35 @@
 
 namespace
 {
-    const std::set validCrystals = {
-        FIRE_CRYSTAL,
-        ICE_CRYSTAL,
-        WIND_CRYSTAL,
-        EARTH_CRYSTAL,
-        LIGHTNING_CRYSTAL,
-        WATER_CRYSTAL,
-        LIGHT_CRYSTAL,
-        DARK_CRYSTAL,
-        DARK_CLUSTER,
-        INFERNO_CRYSTAL,
-        GLACIER_CRYSTAL,
-        CYCLONE_CRYSTAL,
-        TERRA_CRYSTAL,
-        PLASMA_CRYSTAL,
-        TORRENT_CRYSTAL,
-        AURORA_CRYSTAL,
-        TWILIGHT_CRYSTAL,
-        PYRE_CRYSTAL,
-        FROST_CRYSTAL,
-        VORTEX_CRYSTAL,
-        GEO_CRYSTAL,
-        BOLT_CRYSTAL,
-        FLUID_CRYSTAL,
-        GLIMMER_CRYSTAL,
-        SHADOW_CRYSTAL,
-    };
+
+const std::set validCrystals = {
+    FIRE_CRYSTAL,
+    ICE_CRYSTAL,
+    WIND_CRYSTAL,
+    EARTH_CRYSTAL,
+    LIGHTNING_CRYSTAL,
+    WATER_CRYSTAL,
+    LIGHT_CRYSTAL,
+    DARK_CRYSTAL,
+    DARK_CLUSTER,
+    INFERNO_CRYSTAL,
+    GLACIER_CRYSTAL,
+    CYCLONE_CRYSTAL,
+    TERRA_CRYSTAL,
+    PLASMA_CRYSTAL,
+    TORRENT_CRYSTAL,
+    AURORA_CRYSTAL,
+    TWILIGHT_CRYSTAL,
+    PYRE_CRYSTAL,
+    FROST_CRYSTAL,
+    VORTEX_CRYSTAL,
+    GEO_CRYSTAL,
+    BOLT_CRYSTAL,
+    FLUID_CRYSTAL,
+    GLIMMER_CRYSTAL,
+    SHADOW_CRYSTAL,
+};
+
 }
 
 auto GP_CLI_COMMAND_COMBINE_ASK::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
@@ -78,7 +80,7 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
     if (jailutils::InPrison(PChar))
     {
         // Prevent crafting in prison
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MSGBASIC_CANNOT_USE_IN_AREA);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CANNOT_USE_IN_AREA);
         return;
     }
 
@@ -88,7 +90,7 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
     // See SYNTH_SPEED_XXX mods
     if (PChar->m_LastSynthTime + 15s > timer::now())
     {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MSGBASIC_WAIT_LONGER);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::WAIT_LONGER);
         return;
     }
 
@@ -110,7 +112,9 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
         if (PTarget)
         {
             ShowDebug("%s trade request with %s was canceled because %s tried to craft.",
-                      PChar->getName(), PTarget->getName(), PChar->getName());
+                      PChar->getName(),
+                      PTarget->getName(),
+                      PChar->getName());
 
             PTarget->TradePending.clean();
             PTarget->UContainer->Clean();
@@ -132,7 +136,7 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
     {
         // Detect invalid crystal usage
         // Prevent crafting exploit to crash on container size > 8
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MSGBASIC_CANNOT_USE_IN_AREA);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CANNOT_USE_IN_AREA);
         return;
     }
 

@@ -28,25 +28,27 @@
 
 namespace
 {
-    const std::set validContainers = {
-        LOC_INVENTORY,
-        LOC_TEMPITEMS,
-        LOC_WARDROBE,
-        LOC_WARDROBE2,
-        LOC_WARDROBE3,
-        LOC_WARDROBE4,
-        LOC_WARDROBE5,
-        LOC_WARDROBE6,
-        LOC_WARDROBE7,
-        LOC_WARDROBE8
-    };
+
+const std::set validContainers = {
+    LOC_INVENTORY,
+    LOC_TEMPITEMS,
+    LOC_WARDROBE,
+    LOC_WARDROBE2,
+    LOC_WARDROBE3,
+    LOC_WARDROBE4,
+    LOC_WARDROBE5,
+    LOC_WARDROBE6,
+    LOC_WARDROBE7,
+    LOC_WARDROBE8
+};
+
 }
 
 auto GP_CLI_COMMAND_ITEM_USE::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .isNotMonstrosity(PChar)
-        .mustEqual(PChar->m_moghouseID, 0, "Player is in moghouse")
+        .mustEqual(PChar->inMogHouse(), false, "Player is in moghouse")
         .mustEqual(ItemNum, 0, "ItemNum not 0")
         .oneOf("Category", static_cast<CONTAINER_ID>(Category), validContainers);
 }
@@ -63,7 +65,7 @@ void GP_CLI_COMMAND_ITEM_USE::process(MapSession* PSession, CCharEntity* PChar) 
     // TODO: Test more items
     if (distance(PChar->loc.p, PEntity->loc.p) > 12.0f)
     {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PEntity, 0, 0, MSGBASIC_TOO_FAR_AWAY);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PEntity, 0, 0, MsgBasic::TOO_FAR_AWAY);
         return;
     }
 
@@ -74,6 +76,6 @@ void GP_CLI_COMMAND_ITEM_USE::process(MapSession* PSession, CCharEntity* PChar) 
     }
     else
     {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MSGBASIC_UNABLE_TO_USE_ITEM);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UNABLE_TO_USE_ITEM);
     }
 }
