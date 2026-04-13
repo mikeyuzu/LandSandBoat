@@ -12,11 +12,11 @@ xi.settings = xi.settings or {}
 xi.settings.main =
 {
     -- サーバー名 (15文字以内)
-    SERVER_NAME = "Nameless",
+    SERVER_NAME = 'Nameless',
 
     SERVER_MESSAGE =
-        "Please visit https://github.com/LandSandBoat/server for the latest information on the project.\n" ..
-        "Thank you, and we hope you enjoy sailing the sands!",
+        'Please visit https://github.com/LandSandBoat/server for the latest information on the project.\n' ..
+        'Thank you, and we hope you enjoy sailing the sands!',
 
     -- 下記で定義された拡張コンテンツをより正確にロックするための設定。
     -- これにより、選択した拡張コンテンツがより正確に表現され、
@@ -145,11 +145,28 @@ xi.settings.main =
     ITEM_POWER      = 1.000, -- ポーションやエーテルなどのアイテムの効果に倍率をかける。
     WEAPON_SKILL_POWER  = 1.000, -- ウェポンスキルのダメージに倍率をかける。
 
-    USE_ADOULIN_WEAPON_SKILL_CHANGES = true,  -- true/false。アドゥリンの新しいウェポンスキルダメージ計算を切り替えます。
-    DISABLE_PARTY_EXP_PENALTY        = false, -- true/false。パーティ経験値ペナルティを無効にするかどうか。
-    ENABLE_IMMUNOBREAK               = true,  -- true/false。耐性突破を許可/禁止する。
-    USE_PRE_2013_DEX_MULTIPLIER      = false, -- true/false. False uses 75% of DEX for accuracy calculation. Prior to 2013 50% of DEX was used.
-    USE_PRE_2013_STR_MULTIPLIER      = false, -- true/false. False uses STR multiplier of 1.0 for two handed, one handed main, and ranged attacks, 0.75 for H2H, and 0.5 for one handed in sub slot. True uses 0.5 of STR across the board and is how the game was from release to mid 2013.
+    -- STR:ATT/RATT比。プレイヤーのみ。Mobは0.5に固定されている。
+    TWO_HANDED_STR_ATTACK_MULTIPLIER         = 1.0,  -- 1.0: 1 STR = 1 攻撃力。以前の時代では 0.5 と 0.75 でした。
+    HAND_TO_HAND_STR_ATTACK_MULTIPLIER       = 1.0,  -- 1.0：1 STR = 1 攻撃力。以前の時代では0.5と0.625でした。
+    ONE_HAND_MAIN_HAND_STR_ATTACK_MULTIPLIER = 0.75, -- 0.75: 1 STR = 0.75 攻撃力。以前の時代では 0.5 でした。
+    ONE_HAND_OFF_HAND_STR_ATTACK_MULTIPLIER  = 0.5,  -- 0.5: 1 STR = 0.5 攻撃力。これは常に 0.5 ですが、とにかく提供されます。
+    RANGED_STR_ATTACK_MULTIPLIER             = 1.0,  -- 1.0: 1 STR = 1.0 遠隔攻撃力。以前の時代では、0.5 と 0.75 でした。
+
+    -- DEX:ACC ratios. For players only. Mobs are hardcoded to 0.5
+    TWO_HANDED_DEX_ACCURACY_MULTIPLIER         = 0.75, -- 0.75: 1 DEX = 0.75 Accuracy. This has been 0.5 and 0.75 in previous eras
+    HAND_TO_HAND_DEX_ACCURACY_MULTIPLIER       = 0.75, -- 0.75: 1 DEX = 0.75 Accuracy. This has been 0.5 in previous eras.
+    ONE_HAND_MAIN_HAND_DEX_ACCURACY_MULTIPLIER = 0.75, -- 0.75: 1 DEX = 0.75 Accuracy. This has been 0.5 in previous eras.
+    ONE_HAND_OFF_HAND_DEX_ACCURACY_MULTIPLIER  = 0.75, -- 0.75: 1 DEX = 0.75 Accuracy. This has been 0.5 in previous eras.
+
+    -- AGI:RACC ratio. Mobs are hardcoded to 0.5
+    RANGED_AGI_ACCURACY_MULTIPLIER = 0.75, -- 0.75: 1 AGI = 0.75 Ranged Accuracy. This has been 0.5 in previous eras.
+
+    -- VIT:DEF ratio. Applies to everything but mobs and charmed mobs. Those are hardcoded to 0.5.
+    PLAYER_ALLIES_VIT_DEF_MULTIPLIER = 1.5, -- 1.5: 1 VIT = 1.5 DEF. This has been 0.5 in previous eras.
+
+    USE_ADOULIN_WEAPON_SKILL_CHANGES = true,  -- true/false. Change to toggle new Adoulin weapon skill damage calculations
+    DISABLE_PARTY_EXP_PENALTY        = false, -- true/false.
+    ENABLE_IMMUNOBREAK               = true,  -- true/false. Allow/Disallow immunobreaks to happen.
 
     -- フェイス
     ENABLE_TRUST_CASTING           = 1, -- フェイスの魔法詠唱を許可する
@@ -162,14 +179,14 @@ xi.settings.main =
     ENABLE_TRUST_ALTER_EGO_EXPO_ANNOUNCE         = 0, -- 0 = 無効, 1 = プレイヤーログイン時にアナウンスを追加
 
     TRUST_ALTER_EGO_EXTRAVAGANZA_MESSAGE =
-        "\n \n" .. -- The space between these newlines is intentional
-        "\129\153\129\154 The Alter Ego Extravaganza Campaign is active! \129\154\129\153\n" ..
-        "This is an excellent time to fill out your roster of Trusts!",
+        '\n \n' .. -- The space between these newlines is intentional
+        '\129\153\129\154 The Alter Ego Extravaganza Campaign is active! \129\154\129\153\n' ..
+        'This is an excellent time to fill out your roster of Trusts!',
 
     TRUST_ALTER_EGO_EXPO_MESSAGE =
-        "\n \n" .. -- The space between these newlines is intentional
-        "\129\153\129\154 The Alter Ego Expo Campaign is active! \129\154\129\153\n" ..
-        "Trusts gain the benefits of Increased HP, MP, and Status Resistances!",
+        '\n \n' .. -- The space between these newlines is intentional
+        '\129\153\129\154 The Alter Ego Expo Campaign is active! \129\154\129\153\n' ..
+        'Trusts gain the benefits of Increased HP, MP, and Status Resistances!',
 
     HARVESTING_BREAK_CHANCE = 33, -- 収穫中に草刈鎌が壊れる確率(%)。0～100の値を設定します。
     EXCAVATION_BREAK_CHANCE = 33, -- 採掘中につるはしが壊れる確率(%)。0～100の値を設定します。
@@ -317,6 +334,7 @@ xi.settings.main =
     FORCE_SPAWN_QM_RESET_TIME    = 300,   -- 強制ポップするモンスターが消滅した後、「??？」が隠されたままになる時間（秒）。
     EQUIP_FROM_OTHER_CONTAINERS  = false, -- true/false。モグサッチェル、サック、ケースからのアイテムの装備を許可します。クライアントアドオンを使用した場合にのみ可能です。
     REGIME_REWARD_THRESHOLD      = 15,    -- プレイヤーが推奨レベル範囲の最低レベルよりNレベル以上低い場合、経験値は付与されません。
+    PERSIST_SEAL_TIMERS          = false, -- ゾーン変更およびログアウト後も、持続シール（ビーストマン/キンドレッド）の再キャスト タイマーが継続します。
 
     -- システム
     DISABLE_INACTIVITY_WATCHDOG = false, -- true/false。有効にすると、メインループがティックされていないことを検出するウォッチドッグがプロセスを強制終了できなくなります。

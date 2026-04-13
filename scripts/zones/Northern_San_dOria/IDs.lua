@@ -82,6 +82,7 @@ zones[xi.zone.NORTHERN_SAN_DORIA] =
         AIVEDOIR_DIALOG               = 11541, -- That's funny. I could have sworn she asked me to meet her here...
         CAPIRIA_DIALOG                = 11542, -- He's late! I do hope he hasn't forgotten.
         BERTENONT_DIALOG              = 11543, -- Stars are more beautiful up close. Don't you agree?
+        ITS_LOCKED                    = 11552, -- It's locked.
         GILIPESE_DIALOG               = 11564, -- Nothing to report!
         DOGGOMEHR_SHOP_DIALOG         = 11577, -- Welcome to the Blacksmiths' Guild shop.
         LUCRETIA_SHOP_DIALOG          = 11578, -- Blacksmiths' Guild shop, at your service!
@@ -125,11 +126,11 @@ zones[xi.zone.NORTHERN_SAN_DORIA] =
         THANK_YOU                     = 13095, -- Thank you...
         EGG_HUNT_OFFSET               = 13130, -- Egg-cellent! Here's your prize, kupo! Now if only somebody would bring me a super combo... Oh, egg-scuse me! Forget I said that, kupo!
         FFR_LOOKS_CURIOUSLY_BASE      = 13419, -- Coullene looks over curiously for a moment.
-        FRAGMENT_FAR_TOO_SMALL        = 18127, -- You obtain <keyitem>. However, it is far too small to house an adequate amount of energy. Alone, it serves no purpose.
-        FRAGMENTS_MELD                = 18128, -- The tiny fragments of Lilisette's memory meld together to form <keyitem>!
-        RETRIEVE_DIALOG_ID            = 18163, -- You retrieve <item> from the porter moogle's care.
-        COMMON_SENSE_SURVIVAL         = 18509, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
-        MAP_MARKER_TUTORIAL           = 18631, -- Selecting Map from the main menu opens the map of the area in which you currently reside. Select Markers and press the right arrow key to see all the markers placed on your map.
+        FRAGMENT_FAR_TOO_SMALL        = 18130, -- You obtain <keyitem>. However, it is far too small to house an adequate amount of energy. Alone, it serves no purpose.
+        FRAGMENTS_MELD                = 18131, -- The tiny fragments of Lilisette's memory meld together to form <keyitem>!
+        RETRIEVE_DIALOG_ID            = 18166, -- You retrieve <item> from the porter moogle's care.
+        COMMON_SENSE_SURVIVAL         = 18512, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        MAP_MARKER_TUTORIAL           = 18634, -- Selecting Map from the main menu opens the map of the area in which you currently reside. Select Markers and press the right arrow key to see all the markers placed on your map.
     },
     mob =
     {

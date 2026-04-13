@@ -58,7 +58,9 @@ quest.sections =
             onEventFinish =
             {
                 [113] = function(player, csid, option, npc)
-                    quest:begin(player)
+                    if option == 1 then
+                        quest:begin(player)
+                    end
                 end,
             },
         },

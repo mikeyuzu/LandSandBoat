@@ -85,7 +85,7 @@ mission.sections =
             onZoneIn = function(player, prevZone)
                 local missionStatus = player:getMissionStatus(mission.areaId)
                 local seenCS = utils.mask.getBit(missionStatus, 0)
-                if not seenCS and not player:isInMogHouse() then
+                if not seenCS and not player:inMogHouse() then
                     return 878
                 end
             end,
@@ -105,7 +105,7 @@ mission.sections =
             onZoneIn = function(player, prevZone)
                 local missionStatus = player:getMissionStatus(mission.areaId)
                 local seenCS = utils.mask.getBit(missionStatus, 1)
-                if not seenCS and not player:isInMogHouse() then
+                if not seenCS and not player:inMogHouse() then
                     return 22
                 end
             end,
@@ -125,7 +125,7 @@ mission.sections =
             onZoneIn = function(player, prevZone)
                 local missionStatus = player:getMissionStatus(mission.areaId)
                 local seenCS = utils.mask.getBit(missionStatus, 2)
-                if not seenCS and not player:isInMogHouse() then
+                if not seenCS and not player:inMogHouse() then
                     return 839
                 end
             end,

@@ -34,6 +34,9 @@ xi.settings.map =
     -- lightluggage を検出するために使用する 0x3A パケットの最小数 (無効にする場合は 0 を設定)
     LIGHTLUGGAGE_BLOCK = 4,
 
+    -- アイテムをインベントリ コンテナから別のコンテナに移動するときに、クライアントへのアイテムの extdata の漏洩を有効または無効にします。Retail では移動時に extdata が漏洩しますが、これは武器のスキル ポイントなどのエッジ ケースに役立ちます。
+    LEAK_EXT_DATA_ON_ITEM_MOVE = true,
+
     -- アイテムのごみ箱を有効または無効にする (false に設定すると、アイテムはすぐにドロップされます)
     ENABLE_ITEM_RECYCLE_BIN = true,
 
@@ -93,7 +96,7 @@ xi.settings.map =
     -- レベルキャップ/同期効果がプレイヤーに適用されているときに、より高いレベルの装備を装備する機能を無効にします。
     DISABLE_GEAR_SCALING = false,
 
-    -- Disables Treasure Hunter procs (Era behavior wants this true)
+    -- トレジャーハンターのプロックを無効にします（エラの動作ではこれが真であることを望んでいます）
     DISABLE_TREASURE_HUNTER_PROCS = false,
 
     -- Luaで自動攻撃ダメージ計算を有効にする
@@ -316,6 +319,9 @@ xi.settings.map =
     -- 魔封門の札を受け取れるタイミングをそれぞれの正義クリア時に変更する
     AMULETTE_DE_PORTAIL_MISSION_TO_EACH_HIS_OWN_RIGHT = true,
 
+    -- ウィンダスミッション 試験の行方 報告受付開始時間（公式ヴァナ時間23時間後）
+    A_TESTING_TIME_report_start_time = 23,
+
     -- 暗黒ジョブ取得クエスト
     CHAOSBRINGER_KILLS = 100,   -- カオスブリンガーでエネミーのとどめを刺す数
     -- カオスブレイカーの途中経過メッセージを表示するか
@@ -343,9 +349,6 @@ xi.settings.map =
     -- 魔封門の札を受け取れるタイミングをそれぞれの正義クリア時に変更する
     AMULETTE_DE_PORTAIL_MISSION_TO_EACH_HIS_OWN_RIGHT = false,
 
-    -- ウィンダスミッション 試験の行方 報告受付開始時間（公式ヴァナ時間23時間後）
-    A_TESTING_TIME_report_start_time = 23,
-
     -- カスタムインベントリを有効にする
     CUSTOM_INVENTORY = false,
     -- カスタムインベントリのメッセージ：を合成倉庫に入れた
@@ -365,9 +368,9 @@ xi.settings.map =
     -- 迷のアニマの効果時間
     BOTTLE_OF_HYSTEROANIMA_DURATION = 40,
 
-    -- プロミヴォンのワープの仕様を100%にする
-    PROMYVION_WARP_100_PERCENT = false,
-
     -- フェイス詠唱中に攻撃を受けても中断しない
     UNINTERRUPTIBLE_TRUST_CASTING = false,
+
+    -- プロミヴォンのワープの仕様を100%にする
+    PROMYVION_WARP_100_PERCENT = false,
 }

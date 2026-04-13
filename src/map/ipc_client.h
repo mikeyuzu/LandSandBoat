@@ -27,7 +27,9 @@
 #include "common/mmo.h"
 #include "common/zmq_dealer_wrapper.h"
 
-#include <nonstd/jthread.hpp>
+#include <atomic>
+#include <thread>
+
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
 
@@ -119,13 +121,15 @@ extern std::unique_ptr<IPCClient> ipcClient_;
 
 namespace message
 {
-    void init(MapNetworking& networking);
 
-    template <typename T>
-    void send(const T& message)
-    {
-        ipcClient_->sendMessage(message);
-    }
+void init(MapNetworking& networking);
 
-    void handle_incoming();
+template <typename T>
+void send(const T& message)
+{
+    ipcClient_->sendMessage(message);
+}
+
+void handle_incoming();
+
 } // namespace message

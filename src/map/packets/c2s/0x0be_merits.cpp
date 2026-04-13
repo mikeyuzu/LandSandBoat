@@ -22,7 +22,6 @@
 #include "0x0be_merits.h"
 
 #include "entities/charentity.h"
-#include "packets/char_job_extra.h"
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
 #include "packets/s2c/0x029_battle_message.h"
@@ -62,7 +61,7 @@ void GP_CLI_COMMAND_MERITS::process(MapSession* PSession, CCharEntity* PChar) co
 
         case GP_CLI_COMMAND_MERITS_KIND::EditMode:
         {
-            if (PChar->m_moghouseID) // Note: This has been verified as allowed in a shared mog house.
+            if (PChar->inMogHouse()) // Note: This has been verified as allowed in a shared mog house.
             {
                 if (const auto merit = static_cast<MERIT_TYPE>(Param2 << 1); PChar->PMeritPoints->IsMeritExist(merit))
                 {
@@ -72,11 +71,11 @@ void GP_CLI_COMMAND_MERITS::process(MapSession* PSession, CCharEntity* PChar) co
                     {
                         case GP_CLI_COMMAND_MERITS_PARAM1::Lower:
                             PChar->PMeritPoints->LowerMerit(merit);
-                            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, Param2, PMerit->count, MSGBASIC_MERIT_DECREASE);
+                            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, Param2, PMerit->count, MsgBasic::MERIT_DECREASE);
                             break;
                         case GP_CLI_COMMAND_MERITS_PARAM1::Raise:
                             PChar->PMeritPoints->RaiseMerit(merit);
-                            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, Param2, PMerit->count, MSGBASIC_MERIT_INCREASE);
+                            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, Param2, PMerit->count, MsgBasic::MERIT_INCREASE);
                             break;
                     }
 
@@ -102,8 +101,7 @@ void GP_CLI_COMMAND_MERITS::process(MapSession* PSession, CCharEntity* PChar) co
                     PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
                     PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
                     PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
-                    PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
-                    PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
+                    charutils::SendExtendedJobPackets(PChar);
                     PChar->pushPacket<CCharSyncPacket>(PChar);
                 }
             }

@@ -24,7 +24,7 @@ mission.sections[1] = -- REMEMBER: Lua is 1-indexed!
 
         return currentMission == mission.missionId and
             xi.settings.main.ENABLE_AMK == 1 and
-            xi.moghouse.isInMogHouseInHomeNation(player) and
+            xi.moghouse.inMogHouseInHomeNation(player) and
             player:getMainLvl() >= 10 and
             player:getCharVar('HQuest[moghouseExpo]notSeen') == 0 and custom_check
     end,

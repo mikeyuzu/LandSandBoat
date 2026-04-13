@@ -19,7 +19,8 @@ quest.sections =
     {
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_AVAILABLE and
-                player:getCurrentMission(xi.mission.log_id.WOTG) >= xi.mission.id.wotg.CAIT_SITH
+                player:getCurrentMission(xi.mission.log_id.WOTG) >= xi.mission.id.wotg.CAIT_SITH and             -- WotG mission requirement.
+                player:hasCompletedQuest(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.CLAWS_OF_THE_GRIFFON)   -- WotG nation quest requirement.
         end,
 
         [xi.zone.SOUTHERN_SAN_DORIA_S] =

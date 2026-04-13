@@ -45,35 +45,35 @@ CItemWeapon* PUnarmedItem;
 CItemWeapon* PUnarmedH2HItem;
 
 DropItem_t::DropItem_t(uint8 DropType, uint16 ItemID, uint16 DropRate)
-: DropType(DropType)
-, ItemID(ItemID)
-, DropRate(DropRate)
-, hasFixedRate(false)
+    : DropType(DropType)
+    , ItemID(ItemID)
+    , DropRate(DropRate)
+    , hasFixedRate(false)
 {
 }
 
 DropItem_t::DropItem_t(uint8 DropType, uint16 ItemID, uint16 DropRate, bool hasFixedRate)
-: DropType(DropType)
-, ItemID(ItemID)
-, DropRate(DropRate)
-, hasFixedRate(hasFixedRate)
+    : DropType(DropType)
+    , ItemID(ItemID)
+    , DropRate(DropRate)
+    , hasFixedRate(hasFixedRate)
 {
 }
 
 DropGroup_t::DropGroup_t(uint16 GroupRate)
-: GroupRate(GroupRate)
-, hasFixedRate(false)
+    : GroupRate(GroupRate)
+    , hasFixedRate(false)
 {
 }
 
 DropGroup_t::DropGroup_t(uint16 GroupRate, bool hasFixedRate)
-: GroupRate(GroupRate)
-, hasFixedRate(hasFixedRate)
+    : GroupRate(GroupRate)
+    , hasFixedRate(hasFixedRate)
 {
 }
 
 LootContainer::LootContainer(DropList_t* dropList)
-: dropList(dropList)
+    : dropList(dropList)
 {
 }
 
@@ -111,6 +111,7 @@ void LootContainer::ForEachItem(const std::function<void(const DropItem_t&)>& fu
 
 namespace itemutils
 {
+
     /************************************************************************
      *                                                                       *
      *  Create an empty instance of the item by ID (private method)          *
@@ -121,27 +122,27 @@ namespace itemutils
     {
         switch (itemType)
         {
-            case ItemType::General:
-                return new CItemGeneral(itemId);
-            case ItemType::Linkshell:
-                return new CItemLinkshell(itemId);
-            case ItemType::Furnishing:
-                return new CItemFurnishing(itemId);
-            case ItemType::Puppet:
-                return new CItemPuppet(itemId);
-            case ItemType::Usable:
-                return new CItemUsable(itemId);
-            case ItemType::Equipment:
-                return new CItemEquipment(itemId);
-            case ItemType::Weapon:
-                return new CItemWeapon(itemId);
-            case ItemType::Currency:
-                return new CItemCurrency(itemId);
-            default:
-            {
-                ShowErrorFmt("CreateItem({}): Unknown item type {}", itemId, static_cast<uint8>(itemType));
-                return new CItemGeneral(itemId);
-            }
+        case ItemType::General:
+            return new CItemGeneral(itemId);
+        case ItemType::Linkshell:
+            return new CItemLinkshell(itemId);
+        case ItemType::Furnishing:
+            return new CItemFurnishing(itemId);
+        case ItemType::Puppet:
+            return new CItemPuppet(itemId);
+        case ItemType::Usable:
+            return new CItemUsable(itemId);
+        case ItemType::Equipment:
+            return new CItemEquipment(itemId);
+        case ItemType::Weapon:
+            return new CItemWeapon(itemId);
+        case ItemType::Currency:
+            return new CItemCurrency(itemId);
+        default:
+        {
+            ShowErrorFmt("CreateItem({}): Unknown item type {}", itemId, static_cast<uint8>(itemType));
+            return new CItemGeneral(itemId);
+        }
         }
     }
 
@@ -289,26 +290,26 @@ namespace itemutils
     void LoadItemList()
     {
         auto rset = db::preparedStmt("SELECT "
-                                     "b.itemId,b.name,b.type,b.stackSize,b.flags,"
-                                     "b.aH,b.BaseSell,b.subid,"
-                                     "u.validTargets,u.activation,u.animation,u.animationTime,"
-                                     "u.maxCharges,u.useDelay,u.reuseDelay,u.aoe,"
-                                     "a.level,a.ilevel,a.jobs,a.MId,"
-                                     "a.shieldSize,a.scriptType,a.slot,a.rslot,"
-                                     "a.su_level,a.rslotlook,"
-                                     "w.skill,w.subskill,w.ilvl_skill,w.ilvl_parry,"
-                                     "w.ilvl_macc,w.delay,w.dmg,w.dmgType,"
-                                     "w.hit,w.unlock_points,"
-                                     "f.storage,f.moghancement,f.element,f.aura,"
-                                     "p.slot AS pup_slot,p.element AS pup_element "
-                                     "FROM item_basic AS b "
-                                     "LEFT JOIN item_usable AS u USING (itemId) "
-                                     "LEFT JOIN item_equipment  AS a USING (itemId) "
-                                     "LEFT JOIN item_weapon AS w USING (itemId) "
-                                     "LEFT JOIN item_furnishing AS f USING (itemId) "
-                                     "LEFT JOIN item_puppet AS p USING (itemId) "
-                                     "WHERE itemId < ?",
-                                     MAX_ITEMID);
+            "b.itemId,b.name,b.type,b.stackSize,b.flags,"
+            "b.aH,b.BaseSell,b.subid,"
+            "u.validTargets,u.activation,u.animation,u.animationTime,"
+            "u.maxCharges,u.useDelay,u.reuseDelay,u.aoe,"
+            "a.level,a.ilevel,a.jobs,a.MId,"
+            "a.shieldSize,a.scriptType,a.slot,a.rslot,"
+            "a.su_level,a.rslotlook,"
+            "w.skill,w.subskill,w.ilvl_skill,w.ilvl_parry,"
+            "w.ilvl_macc,w.delay,w.dmg,w.dmgType,"
+            "w.hit,w.unlock_points,"
+            "f.storage,f.moghancement,f.element,f.aura,"
+            "p.slot AS pup_slot,p.element AS pup_element "
+            "FROM item_basic AS b "
+            "LEFT JOIN item_usable AS u USING (itemId) "
+            "LEFT JOIN item_equipment  AS a USING (itemId) "
+            "LEFT JOIN item_weapon AS w USING (itemId) "
+            "LEFT JOIN item_furnishing AS f USING (itemId) "
+            "LEFT JOIN item_puppet AS p USING (itemId) "
+            "WHERE itemId < ?",
+            MAX_ITEMID);
         FOR_DB_MULTIPLE_RESULTS(rset)
         {
             CItem* PItem = CreateItem(rset->get<uint16>("itemId"), rset->get<ItemType>("type"));
@@ -400,7 +401,7 @@ namespace itemutils
                         static_cast<CItemWeapon*>(PItem)->setTotalUnlockPointsNeeded(unclock_point);
                     }
 
-                    int        dmg   = rset->get<uint16>("dmg");
+                    int        dmg = rset->get<uint16>("dmg");
                     int        delay = rset->get<uint16>("delay");
                     const bool isH2H = static_cast<CItemWeapon*>(PItem)->getSkillType() == SKILL_HAND_TO_HAND;
 
@@ -410,9 +411,9 @@ namespace itemutils
                         {
                             delay -= 240; // base h2h delay per fist is 240 when used in DPS calculation. We store Delay in the database as Weapon Delay+(240*2).
                             dmg += 3;     // add 3 base damage for DPS calculation. This base damage addition appears to come from "base" h2h damage of 3.
-                                          // See Ninzas +2 in polutils/bg wiki: https://www.bg-wiki.com/ffxi/Ninzas_%2B2
-                                          // The DPS field is in the DAT itself and is calculated by SE as follows:
-                                          // ((104+3)*60)/(81+240) = 20
+                            // See Ninzas +2 in polutils/bg wiki: https://www.bg-wiki.com/ffxi/Ninzas_%2B2
+                            // The DPS field is in the DAT itself and is calculated by SE as follows:
+                            // ((104+3)*60)/(81+240) = 20
                         }
 
                         // calculate DPS
@@ -442,14 +443,14 @@ namespace itemutils
         }
 
         rset = db::preparedStmt("SELECT itemId, modId, value "
-                                "FROM item_mods "
-                                "WHERE itemId IN "
-                                "(SELECT itemId FROM item_basic LEFT JOIN item_equipment USING (itemId))");
+            "FROM item_mods "
+            "WHERE itemId IN "
+            "(SELECT itemId FROM item_basic LEFT JOIN item_equipment USING (itemId))");
         FOR_DB_MULTIPLE_RESULTS(rset)
         {
             const auto ItemID = rset->get<uint16>("itemId");
-            const auto modID  = rset->get<Mod>("modId");
-            const auto value  = rset->get<int16>("value");
+            const auto modID = rset->get<Mod>("modId");
+            const auto value = rset->get<int16>("value");
 
             if ((g_pItemList[ItemID] != nullptr) && g_pItemList[ItemID]->isType(ITEM_EQUIPMENT))
             {
@@ -458,14 +459,14 @@ namespace itemutils
         }
 
         rset = db::preparedStmt("SELECT itemId, modId, value, petType "
-                                "FROM item_mods_pet "
-                                "WHERE itemId IN "
-                                "(SELECT itemId FROM item_basic LEFT JOIN item_equipment USING (itemId))");
+            "FROM item_mods_pet "
+            "WHERE itemId IN "
+            "(SELECT itemId FROM item_basic LEFT JOIN item_equipment USING (itemId))");
         FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            const auto ItemID  = rset->get<uint16>("itemId");
-            const auto modID   = rset->get<Mod>("modId");
-            const auto value   = rset->get<int16>("value");
+            const auto ItemID = rset->get<uint16>("itemId");
+            const auto modID = rset->get<Mod>("modId");
+            const auto value = rset->get<int16>("value");
             const auto petType = rset->get<PetModType>("petType");
 
             if ((g_pItemList[ItemID]) && g_pItemList[ItemID]->isType(ITEM_EQUIPMENT))
@@ -475,15 +476,15 @@ namespace itemutils
         }
 
         rset = db::preparedStmt("SELECT itemId, modId, value, latentId, latentParam "
-                                "FROM item_latents "
-                                "WHERE itemId IN "
-                                "(SELECT itemId FROM item_basic LEFT JOIN item_equipment USING (itemId))");
+            "FROM item_latents "
+            "WHERE itemId IN "
+            "(SELECT itemId FROM item_basic LEFT JOIN item_equipment USING (itemId))");
         FOR_DB_MULTIPLE_RESULTS(rset)
         {
-            const auto ItemID      = rset->get<uint16>("itemId");
-            const auto modID       = rset->get<Mod>("modId");
-            const auto value       = rset->get<int16>("value");
-            const auto latentId    = rset->get<LATENT>("latentId");
+            const auto ItemID = rset->get<uint16>("itemId");
+            const auto modID = rset->get<Mod>("modId");
+            const auto value = rset->get<int16>("value");
+            const auto latentId = rset->get<LATENT>("latentId");
             const auto latentParam = rset->get<uint16>("latentParam");
 
             if ((g_pItemList[ItemID] != nullptr) && g_pItemList[ItemID]->isType(ITEM_EQUIPMENT))
@@ -502,8 +503,8 @@ namespace itemutils
     void LoadDropList()
     {
         const auto rset = db::preparedStmt("SELECT dropId, itemId, dropType, itemRate, groupId, groupRate "
-                                           "FROM mob_droplist WHERE dropid < ?",
-                                           MAX_DROPID);
+            "FROM mob_droplist WHERE dropid < ?",
+            MAX_DROPID);
         FOR_DB_MULTIPLE_RESULTS(rset)
         {
             const auto DropID = rset->get<uint16>("dropId");
@@ -515,13 +516,13 @@ namespace itemutils
 
             DropList_t* dropList = g_pDropList[DropID];
 
-            auto ItemID   = rset->get<uint16>("itemId");
+            auto ItemID = rset->get<uint16>("itemId");
             auto DropType = rset->get<uint8>("dropType");
             auto DropRate = rset->get<uint16>("itemRate");
 
             if (DropType == DROP_GROUPED)
             {
-                const auto GroupId   = rset->get<uint8>("groupId");
+                const auto GroupId = rset->get<uint8>("groupId");
                 auto       GroupRate = rset->get<uint16>("groupRate");
                 while (GroupId > dropList->Groups.size())
                 {
@@ -575,6 +576,16 @@ namespace itemutils
         PUnarmedH2HItem->setDmgType(DAMAGE_TYPE::HTH);
         PUnarmedH2HItem->setSkillType(SKILL_HAND_TO_HAND);
         PUnarmedH2HItem->setDamage(0);
+
+        // load magian trial data AFTER items
+        auto registerTrialListeners = lua["xi"]["magian"]["registerTrialListeners"];
+        if (!registerTrialListeners.valid())
+        {
+            ShowError("xi.magians.registerTrialListeners not valid!");
+        }
+
+        ShowInfo("do_init: loading Magian trial listeners");
+        registerTrialListeners();
     }
 
     /************************************************************************
@@ -597,4 +608,5 @@ namespace itemutils
             g_pDropList[DropID] = nullptr;
         }
     }
+
 }; // namespace itemutils

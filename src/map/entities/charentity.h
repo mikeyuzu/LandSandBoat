@@ -388,7 +388,7 @@ public:
     std::vector<CTrustEntity*> PTrusts; // Active trusts
 
     template <typename F, typename... Args>
-    void ForPartyWithTrusts(F const& func, Args&&... args)
+    void ForPartyWithTrusts(const F& func, Args&&... args)
     {
         if (PParty)
         {
@@ -456,6 +456,7 @@ public:
     bool   isPacketFiltered(std::unique_ptr<CBasicPacket>& packet);
 
     bool pendingPositionUpdate;
+    bool sendServerStatus_ = false;
 
     virtual void HandleErrorMessage(std::unique_ptr<CBasicPacket>&) override;
 
@@ -517,6 +518,8 @@ public:
 
     location_t m_previousLocation{};
 
+    uint32 m_PrevZonelineID; // The ID of the previous zoneline the player went through.
+
     timer::duration   m_PlayTime;
     timer::time_point m_SaveTime;
 
@@ -530,6 +533,9 @@ public:
     bool   m_jobMasterDisplay; // Job Master Stars display
     uint32 m_moghouseID;
     uint16 m_moghancementID;
+
+    // The character is in ANY Mog House (their own or someone else's)
+    auto inMogHouse() const -> bool;
 
     CharHistory_t m_charHistory{};
 
@@ -636,7 +642,7 @@ public:
     virtual void           OnEngage(CAttackState&) override;
     virtual void           OnDisengage(CAttackState&) override;
     virtual void           OnCastFinished(CMagicState&, action_t&) override;
-    virtual void           OnCastInterrupted(CMagicState&, action_t&, MSGBASIC_ID msg, bool blockedCast) override;
+    virtual void           OnCastInterrupted(CMagicState&, action_t&, MsgBasic msg, bool blockedCast) override;
     virtual void           OnWeaponSkillFinished(CWeaponSkillState&, action_t&) override;
     virtual void           OnAbility(CAbilityState&, action_t&) override;
     virtual void           OnRangedAttack(CRangeState&, action_t&) override;
@@ -645,14 +651,14 @@ public:
 
     virtual void OnItemFinish(CItemState&, action_t&);
 
-    auto getCharVar(std::string const& varName) const -> int32;
-    auto getCharVarsWithPrefix(std::string const& prefix) -> std::vector<std::pair<std::string, int32>>;
-    void setCharVar(std::string const& varName, int32 value, uint32 expiry = 0);
-    void setVolatileCharVar(std::string const& varName, int32 value, uint32 expiry = 0);
-    void updateCharVarCache(std::string const& varName, int32 value, uint32 expiry = 0);
-    void removeFromCharVarCache(std::string const& varName);
+    auto getCharVar(const std::string& varName) const -> int32;
+    auto getCharVarsWithPrefix(const std::string& prefix) -> std::vector<std::pair<std::string, int32>>;
+    void setCharVar(const std::string& varName, int32 value, uint32 expiry = 0);
+    void setVolatileCharVar(const std::string& varName, int32 value, uint32 expiry = 0);
+    void updateCharVarCache(const std::string& varName, int32 value, uint32 expiry = 0);
+    void removeFromCharVarCache(const std::string& varName);
 
-    void clearCharVarsWithPrefix(std::string const& prefix);
+    void clearCharVarsWithPrefix(const std::string& prefix);
 
     bool m_Locked{}; // Is the player locked in a cutscene
 
@@ -667,7 +673,8 @@ protected:
     void TrackArrowUsageForScavenge(CItemWeapon* PAmmo);
 
 private:
-    xi::lazy<CAMANContainer> m_AMAN;
+    // Lazily initialized AMAN data
+    xi::optional<CAMANContainer> m_AMAN;
 
     std::unique_ptr<CItemContainer> m_Inventory;
     std::unique_ptr<CItemContainer> m_Mogsafe;

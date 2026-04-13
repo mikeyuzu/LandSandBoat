@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2025 LandSandBoat Dev Teams
@@ -30,17 +30,19 @@
 
 namespace
 {
-    constexpr auto mogHouseZoneLine = 1903324538;
 
-    const auto denyZone = [](CCharEntity* PChar)
-    {
-        PChar->loc.p.rotation += 128;
+constexpr auto mogHouseZoneLine = 1903324538;
 
-        PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, MsgStd::CouldNotEnter);
-        PChar->pushPacket<GP_SERV_COMMAND_WPOS2>(PChar, PChar->loc.p, POSMODE::RESET);
+const auto denyZone = [](CCharEntity* PChar)
+{
+    PChar->loc.p.rotation += 128;
 
-        PChar->status = STATUS_TYPE::NORMAL;
-    };
+    PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, MsgStd::CouldNotEnter);
+    PChar->pushPacket<GP_SERV_COMMAND_WPOS2>(PChar, PChar->loc.p, POSMODE::RESET);
+
+    PChar->status = STATUS_TYPE::NORMAL;
+};
+
 } // namespace
 
 auto GP_CLI_COMMAND_MAPRECT::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
@@ -114,16 +116,20 @@ void GP_CLI_COMMAND_MAPRECT::process(MapSession* PSession, CCharEntity* PChar) c
                     break;
             }
 
-            bool moghouseExitRegular          = MyRoomExitMode == static_cast<uint8>(GP_CLI_COMMAND_MAPRECT_MYROOMEXITMODE::AreaEnteredFrom) && PChar->m_moghouseID > 0;
+            bool moghouseExitRegular          = MyRoomExitMode == static_cast<uint8>(GP_CLI_COMMAND_MAPRECT_MYROOMEXITMODE::AreaEnteredFrom) && PChar->inMogHouse();
             bool requestedMoghouseFloorChange = startingZone == destinationZone && (MyRoomExitMode == static_cast<uint8>(GP_CLI_COMMAND_MAPRECT_MYROOMEXITMODE::Mog1F) || MyRoomExitMode == static_cast<uint8>(GP_CLI_COMMAND_MAPRECT_MYROOMEXITMODE::Mog2F));
             bool moghouse2FUnlocked           = PChar->profile.mhflag & 0x20;
             auto startingRegion               = zoneutils::GetCurrentRegion(startingZone);
             auto destinationRegion            = zoneutils::GetCurrentRegion(destinationZone);
             auto moghouseExitRegions          = { REGION_TYPE::SANDORIA, REGION_TYPE::BASTOK, REGION_TYPE::WINDURST, REGION_TYPE::JEUNO, REGION_TYPE::WEST_AHT_URHGAN, REGION_TYPE::ADOULIN_ISLANDS };
-            auto moghouseSameRegion           = std::any_of(moghouseExitRegions.begin(), moghouseExitRegions.end(),
-                                                            [&destinationRegion](const REGION_TYPE acceptedReg)
-                                                            { return destinationRegion == acceptedReg; });
-            auto moghouseQuestComplete        = PChar->profile.mhflag & (MyRoomExitBit ? 0x01 << (MyRoomExitBit - 1) : 0);
+            auto moghouseSameRegion           = std::any_of(
+                moghouseExitRegions.begin(),
+                moghouseExitRegions.end(),
+                [&destinationRegion](const REGION_TYPE acceptedReg)
+                {
+                    return destinationRegion == acceptedReg;
+                });
+            auto moghouseQuestComplete = PChar->profile.mhflag & (MyRoomExitBit ? 0x01 << (MyRoomExitBit - 1) : 0);
 
             if (startingRegion == REGION_TYPE::ADOULIN_ISLANDS)
             {
@@ -133,11 +139,11 @@ void GP_CLI_COMMAND_MAPRECT::process(MapSession* PSession, CCharEntity* PChar) c
 
             bool moghouseExitQuestZoneline = moghouseQuestComplete &&
                                              startingRegion == destinationRegion &&
-                                             PChar->m_moghouseID > 0 &&
+                                             PChar->inMogHouse() &&
                                              moghouseSameRegion &&
                                              !requestedMoghouseFloorChange;
 
-            bool moghouseExitMogGardenZoneline = destinationZone == ZONE_MOG_GARDEN && PChar->m_moghouseID > 0;
+            bool moghouseExitMogGardenZoneline = destinationZone == ZONE_MOG_GARDEN && PChar->inMogHouse();
 
             // Validate travel
             if (moghouseExitRegular || moghouseExitQuestZoneline || moghouseExitMogGardenZoneline)
@@ -206,11 +212,15 @@ void GP_CLI_COMMAND_MAPRECT::process(MapSession* PSession, CCharEntity* PChar) c
                     PChar->m_moghouseID    = PChar->id;
                     PChar->loc.p           = PZoneLine->m_toPos;
                     PChar->loc.destination = PChar->getZone();
+
+                    charutils::SavePrevZoneLineID(PChar, PZoneLine->m_zoneLineID);
                 }
                 else
                 {
                     PChar->loc.destination = PZoneLine->m_toZone;
                     PChar->loc.p           = PZoneLine->m_toPos;
+
+                    charutils::SavePrevZoneLineID(PChar, PZoneLine->m_zoneLineID);
                 }
             }
         }
