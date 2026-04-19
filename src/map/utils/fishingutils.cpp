@@ -834,7 +834,7 @@ lsbret_t CalculateBreakChance(uint8 catchType, uint8 fishingSkill, uint8 maxSkil
     lsb.failReason          = FISHINGFAILTYPE_NONE;
     lsb.chance              = 0;
 
-    if (!rod->breakable)
+    if (!rod->breakable || !settings::get<bool>("map.FISHING_ROD_BREAKABLE"))
     {
         return lsb;
     }
@@ -862,7 +862,8 @@ lsbret_t CalculateBreakChance(uint8 catchType, uint8 fishingSkill, uint8 maxSkil
     {
         uint8 strDuraDiff = ranking - (rod->maxRank + levelDiffBonus + legendaryBonus);
         lsb.failReason    = FISHINGFAILTYPE_RODBREAK;
-        lsb.chance        = std::clamp<uint8>((uint8)std::floor((strDuraDiff + sizePenalty) * 1.3f), 0, 55);
+        float baseChance  = (strDuraDiff + sizePenalty) * 1.3f;
+        lsb.chance        = std::clamp<uint8>((uint8)std::floor(baseChance * settings::get<float>("map.FISHING_ROD_BREAK_CHANCE_MULTIPLIER")), 0, 55);
     }
 
     return lsb;
@@ -1873,6 +1874,13 @@ void FishingSkillup(CCharEntity* PChar, uint8 catchLevel, uint8 successType)
         if (xirand::GetRandomNumber(bonusChanceRoll) == 1)
         {
             skillAmount = xirand::GetRandomNumber(1, maxSkillAmount);
+        }
+
+        skillAmount = (int32)std::floor(skillAmount * settings::get<float>("map.FISHING_SKILL_AMOUNT_MULTIPLIER"));
+
+        if (settings::get<float>("map.FISHING_SKILL_AMOUNT_MULTIPLIER") > 1.0f)
+        {
+            skillAmount = std::min(skillAmount, 9);
         }
 
         if ((skillAmount + charSkill) > maxSkill)
