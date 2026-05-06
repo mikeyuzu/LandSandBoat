@@ -206,6 +206,81 @@ def get_guild_shops():
         print(f"Error connecting to MariaDB: {e}")
     return guild_items
 
+def get_synth_recipes():
+    """
+    Fetches synthesis recipes from synth_recipes table.
+    Returns a dict: { itemid: "formatted_synth_info" }
+    """
+    item_to_synth = {}
+    
+    ranks = ["素人", "見習", "徒弟", "下級職人", "名取", "目録", "印可", "高弟", "皆伝", "師範", "高級職人"]
+    skills_map = [
+        ("Wood", "木工"),
+        ("Smith", "鍛冶"),
+        ("Gold", "彫金"),
+        ("Cloth", "裁縫"),
+        ("Leather", "革細工"),
+        ("Bone", "骨細工"),
+        ("Alchemy", "錬金術"),
+        ("Cook", "調理"),
+    ]
+
+    try:
+        conn = mariadb.connect(**DB_CONFIG)
+        # Use dictionary cursor if possible, else use positional
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM synth_recipes")
+        
+        # Get column names
+        columns = [desc[0] for desc in cur.description]
+        
+        for row_tuple in cur:
+            row = dict(zip(columns, row_tuple))
+            
+            # Result columns
+            results = [row['Result'], row['ResultHQ1'], row['ResultHQ2'], row['ResultHQ3']]
+            
+            # Skills
+            recipe_skills = []
+            for col, jp_name in skills_map:
+                level = row.get(col, 0)
+                if level > 0:
+                    # Skill rank changes every 10 levels: 1-10 素人, 11-20 見習, etc.
+                    rank_idx = (level + 9) // 10 - 1
+                    rank_idx = max(0, min(len(ranks) - 1, rank_idx))
+                    rank_name = ranks[rank_idx]
+                    recipe_skills.append({
+                        "level": level,
+                        "text": f"［{jp_name}：{rank_name}（レシピスキル：{level}）］"
+                    })
+            
+            if not recipe_skills:
+                continue
+                
+            # Sort skills by level descending
+            recipe_skills.sort(key=lambda x: x["level"], reverse=True)
+            synth_str = "\\n".join(s["text"] for s in recipe_skills)
+            
+            # Add to all result items
+            for item_id in set(results):
+                if item_id > 0:
+                    if item_id not in item_to_synth:
+                        item_to_synth[item_id] = []
+                    if synth_str not in item_to_synth[item_id]:
+                        item_to_synth[item_id].append(synth_str)
+        
+        conn.close()
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB: {e}")
+
+    # Final string assembly
+    final_map = {}
+    for item_id, synth_list in item_to_synth.items():
+        # Join multiple recipes with a newline
+        final_map[item_id] = "\\n".join(synth_list)
+        
+    return final_map
+
 def read_file_safe(file_path):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
@@ -569,6 +644,9 @@ def main():
     print("Fetching guild shop data from DB...")
     guild_shops_db = get_guild_shops()
 
+    print("Fetching synthesis recipes from DB...")
+    item_synth_acq = get_synth_recipes()
+
     print("Extracting battlefield loot...")
     item_to_battlefields = extract_battlefield_loot(enums, jp_battlefields)
     
@@ -738,7 +816,7 @@ def main():
     # Track which magic IDs we have already handled via item scrolls
     handled_magic_ids = set()
     
-    all_item_ids = sorted(set(list(item_to_shops.keys()) + list(item_to_quests.keys()) + list(item_mob_acq.keys()) + list(item_to_battlefields.keys()) + list(manual_item_acq.keys())))
+    all_item_ids = sorted(set(list(item_to_shops.keys()) + list(item_to_quests.keys()) + list(item_mob_acq.keys()) + list(item_to_battlefields.keys()) + list(manual_item_acq.keys()) + list(item_synth_acq.keys())))
     
     zone_order = {zone_id: i for i, zone_id in enumerate(zone_list)}
     
@@ -755,6 +833,7 @@ def main():
     item_lua_output.append("--     steal = \"盗む情報\",")
     item_lua_output.append("--     chest = \"宝箱情報\",")
     item_lua_output.append("--     mining = \"採掘/採取情報\",")
+    item_lua_output.append("--     synth = \"合成情報\",")
     item_lua_output.append("--     content = \"コンテンツ報酬情報\",")
     item_lua_output.append("--     acquisition = \"その他入手方法（上記に当てはまらない場合）\" ")
     item_lua_output.append("-- }")
@@ -774,6 +853,7 @@ def main():
     magic_lua_output.append("--     steal = \"盗む情報\",")
     magic_lua_output.append("--     chest = \"宝箱情報\",")
     magic_lua_output.append("--     mining = \"採掘/採取情報\",")
+    magic_lua_output.append("--     synth = \"合成情報\",")
     magic_lua_output.append("--     content = \"コンテンツ報酬情報\",")
     magic_lua_output.append("--     acquisition = \"その他入手方法（上記に当てはまらない場合）\" ")
     magic_lua_output.append("-- }")
@@ -857,9 +937,12 @@ def main():
         final_name = jp_data.get("name", item_name).replace("\"", "\\\"")
         final_desc = jp_data.get("description", "").replace("\"", "\\\"")
 
+        # Synth info
+        synth_info_str = item_synth_acq.get(item_id, "").replace("\"", "\\\"")
+
         # We skip adding the item to item_definitions if it doesn't exist in item_basic 
         # (meaning it's likely a Spell ID from manual_acq)
-        is_item = item_id in item_basics or any(item_id in d for d in [item_to_shops, item_to_quests, item_mob_acq, item_to_battlefields])
+        is_item = item_id in item_basics or any(item_id in d for d in [item_to_shops, item_to_quests, item_mob_acq, item_to_battlefields, item_synth_acq])
         
         if is_item:
             item_lua_output.append(f"    [{item_id}] = {{")
@@ -899,6 +982,7 @@ def main():
                 
             item_lua_output.append(f"        chest = \"{chest_str}\",")
             item_lua_output.append(f"        mining = \"{mining_str}\",")
+            item_lua_output.append(f"        synth = \"{synth_info_str}\",")
             item_lua_output.append(f"        content = \"{content_info_str}\",")
             item_lua_output.append(f"        acquisition = \"{acq_str}\",")
             item_lua_output.append("    },")
@@ -949,10 +1033,12 @@ def main():
                 
                 magic_lua_output.append(f"        chest = \"{magic_chest}\",")
                 magic_lua_output.append(f"        mining = \"{magic_mining}\",")
+                magic_lua_output.append(f"        synth = \"{synth_info_str}\",")
                 magic_lua_output.append(f"        content = \"{content_info_str}\",")
                 magic_lua_output.append(f"        acquisition = \"{magic_acq_str}\",")
                 magic_lua_output.append("    },")
                 magic_count += 1
+
     
     # Add any remaining magic entries from manual_magic_acq that weren't handled (e.g. Learned via Erlene)
     for magic_id, extra in manual_magic_acq.items():
