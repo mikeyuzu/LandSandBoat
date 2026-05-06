@@ -159,10 +159,10 @@ def get_mob_acquisitions():
             JOIN mob_groups g ON d.dropId = g.dropid
             JOIN mob_pools p ON g.poolid = p.poolid
             LEFT JOIN (
-                SELECT groupid, MAX(polutils_name) as polutils_name
+                SELECT mobname, MAX(polutils_name) as polutils_name
                 FROM mob_spawn_points
-                GROUP BY groupid
-            ) sp ON g.groupid = sp.groupid
+                GROUP BY mobname
+            ) sp ON g.name = sp.mobname
             LEFT JOIN zone_settings zs ON g.zoneid = zs.zoneid
             LEFT JOIN japanese_zone jz ON g.zoneid = jz.zoneid
         """
