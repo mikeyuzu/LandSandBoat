@@ -10,7 +10,7 @@
 -- Effect with enhancing equipment (Note: these are latents on gear with the effect)
 -- Atk +50
 -- Def +30
--- Double Attack +5%
+-- Double Attack +2
 -----------------------------------
 ---@type TItemFood
 local itemObject = {}
@@ -20,7 +20,7 @@ itemObject.onItemCheck = function(target, item, param, caster)
 end
 
 itemObject.onItemUse = function(target, user, item, action)
-    target:addStatusEffect(xi.effect.FOOD, 0, 0, 3600, 0, 0, 0, xi.effectSourceType.FOOD, item:getID(), user:getID())
+    target:addStatusEffect(xi.effect.FOOD, { duration = 3600, origin = user, sourceType = xi.effectSourceType.FOOD, sourceTypeParam = item:getID() })
 end
 
 itemObject.onEffectGain = function(target, effect)

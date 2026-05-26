@@ -25,7 +25,6 @@ return {
     ['Hayah_Dahbalesahma'] = { event = 263 },
     ['Hlif']               = { event = 434 },
     ['Hohl_Nhaesin']       = { event = 342 },
-    ['Istvan']             = { event = 692 },
     ['Iya_Rihyo']          = { event = 419 },
     ['Kapeh_Myohrye']      = { event = 340 }, -- There is at current an unknown mission/quest/status that alters their dialog. Windurst citizens get something different than other nations.
     ['Khomi_Tibariah']     = { event = 262 },
@@ -65,6 +64,6 @@ return {
     ['Three_of_Spades']    = { event = 270 },
     ['Two_of_Spades']      = { event = 271 },
     ['Uuroro']             = { event = 272 },
-    ['Verun']              = { event = 432 },
+    ['Varun']              = { event = 432 },
     ['Zahsa_Syalmhaia']    = { event = 797 },
 }

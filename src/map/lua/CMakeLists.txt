@@ -13,6 +13,8 @@ set(LUA_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_instance.h
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_item.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_item.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua_item_puppet.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua_item_puppet.h
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_loot.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_loot.h
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_mobskill.cpp
@@ -29,6 +31,8 @@ set(LUA_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_treasure_pool.h
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_trigger_area.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_trigger_area.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua_weaponskill.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua_weaponskill.h
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_zone.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/lua_zone.h
     ${CMAKE_CURRENT_SOURCE_DIR}/luautils.cpp

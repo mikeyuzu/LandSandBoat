@@ -57,9 +57,6 @@ INSERT INTO `mob_pool_mods` VALUES (370,28,5,1); -- EXP_BONUS: 5
 -- Biast
 INSERT INTO `mob_pool_mods` VALUES (410,236,20,0); -- HUMANOID_KILLER: 20
 
--- Bladmall
-INSERT INTO `mob_pool_mods` VALUES (444,23,23,1); -- IMMUNITY: 23
-
 -- Bloodlapper
 INSERT INTO `mob_pool_mods` VALUES (459,23,50,0);  -- ATT: 50
 INSERT INTO `mob_pool_mods` VALUES (459,73,25,0);  -- STORETP: 25
@@ -120,17 +117,11 @@ INSERT INTO `mob_pool_mods` VALUES (1234,4,4,1); -- SIGHT_RANGE: 4
 -- Exoplates
 INSERT INTO `mob_pool_mods` VALUES (1270,39,-1,1); -- SHARE_POS: -1
 
--- Fafnir
-INSERT INTO `mob_pool_mods` VALUES (1280,368,70,0); -- REGAIN: 70
-
 -- Faust
 INSERT INTO `mob_pool_mods` VALUES (1306,4,30,1); -- SIGHT_RANGE: 30
 
 -- Frostmane
 INSERT INTO `mob_pool_mods` VALUES (1429,28,10,1); -- EXP_BONUS: 10
-
--- Gambilox Wanderling
-INSERT INTO `mob_pool_mods` VALUES (1456,368,20,0); -- REGAIN: 20
 
 -- Gargantua
 INSERT INTO `mob_pool_mods` VALUES (1461,4,4,1); -- SIGHT_RANGE: 4
@@ -157,9 +148,6 @@ INSERT INTO `mob_pool_mods` VALUES (1750,56,1,1); -- HP_STANDBACK: 1
 
 -- Goliath
 INSERT INTO `mob_pool_mods` VALUES (1754,4,4,1); -- SIGHT_RANGE: 4
-
--- Gration
-INSERT INTO `mob_pool_mods` VALUES (1792,368,70,0); -- REGAIN: 70
 
 -- Greater Manticore
 INSERT INTO `mob_pool_mods` VALUES (1806,28,10,1); -- EXP_BONUS: 10
@@ -201,23 +189,11 @@ INSERT INTO `mob_pool_mods` VALUES (2271,165,15,0); -- CRITHITRATE: 15
 -- Ladon
 INSERT INTO `mob_pool_mods` VALUES (2314,28,23,1); -- EXP_BONUS: 23
 
--- Maats Avatar
-INSERT INTO `mob_pool_mods` VALUES (2461,61,25,1); -- HP_SCALE: 25
-
--- Maats Pet
-INSERT INTO `mob_pool_mods` VALUES (2462,61,25,1); -- HP_SCALE: 25
-
--- Maats Wyvern
-INSERT INTO `mob_pool_mods` VALUES (2463,61,20,1); -- HP_SCALE: 20
-
 -- Mammet-19 Epsilon
 INSERT INTO `mob_pool_mods` VALUES (2499,240,90,0); -- SLEEPRES: 90
 
 -- Minotaur
 INSERT INTO `mob_pool_mods` VALUES (2675,4,25,1); -- SIGHT_RANGE: 25
-
--- Mischievous Micholas
-INSERT INTO `mob_pool_mods` VALUES (2677,288,55,0); -- DOUBLE_ATTACK: 55
 
 -- Morbolger
 INSERT INTO `mob_pool_mods` VALUES (2742,37,1,1); -- ALWAYS_AGGRO: 1
@@ -228,17 +204,8 @@ INSERT INTO `mob_pool_mods` VALUES (2745,28,23,1); -- EXP_BONUS: 23
 -- Morion Worm
 INSERT INTO `mob_pool_mods` VALUES (2748,370,5,0); -- REGEN: 5
 
--- Mysticmaker Profblix
-INSERT INTO `mob_pool_mods` VALUES (2790,168,50,0); -- SPELLINTERRUPT: 50
-INSERT INTO `mob_pool_mods` VALUES (2790,240,7,0);  -- SLEEPRES: 7
-INSERT INTO `mob_pool_mods` VALUES (2790,244,7,0);  -- SILENCERES: 7
-
 -- Mythril Golem
 INSERT INTO `mob_pool_mods` VALUES (2793,4,4,1); -- SIGHT_RANGE: 4
-
--- Nepionic Soulflayer
-INSERT INTO `mob_pool_mods` VALUES (2834,368,250,0); -- REGAIN: 250
-INSERT INTO `mob_pool_mods` VALUES (2834,574,100,0); -- WSD+% (Backhand Blow): 100
 
 -- Nidhogg
 INSERT INTO `mob_pool_mods` VALUES (2840,368,70,0); -- REGAIN: 70
@@ -255,12 +222,6 @@ INSERT INTO `mob_pool_mods` VALUES (3099,23,23,1); -- IMMUNITY: 23
 
 -- Polar Hare
 INSERT INTO `mob_pool_mods` VALUES (3168,28,10,1); -- EXP_BONUS: 10
-
--- Promathia
-INSERT INTO `mob_pool_mods` VALUES (3205,1,250,0);  -- DEF: 250
-INSERT INTO `mob_pool_mods` VALUES (3205,29,30,0);  -- MDEF: 30
-INSERT INTO `mob_pool_mods` VALUES (3205,288,25,0); -- DOUBLE_ATTACK: 25
-INSERT INTO `mob_pool_mods` VALUES (3205,366,25,0); -- MAIN_DMG_RATING: 25
 
 -- Proto-Omega
 INSERT INTO `mob_pool_mods` VALUES (3208,370,20,0); -- REGEN: 20
@@ -515,12 +476,6 @@ INSERT INTO `mob_pool_mods` VALUES (4837,62,1,1); -- NO_STANDBACK: 1
 -- Maat Bst
 INSERT INTO `mob_pool_mods` VALUES (4932,30,1017,1); -- SPECIAL_SKILL: 1017
 INSERT INTO `mob_pool_mods` VALUES (4932,33,50,1);   -- SPECIAL_COOL: 50
-
--- Promathia
-INSERT INTO `mob_pool_mods` VALUES (5106,1,250,0);  -- DEF: 250
-INSERT INTO `mob_pool_mods` VALUES (5106,29,30,0);  -- MDEF: 30
-INSERT INTO `mob_pool_mods` VALUES (5106,288,25,0); -- DOUBLE_ATTACK: 25
-INSERT INTO `mob_pool_mods` VALUES (5106,366,10,0); -- MAIN_DMG_RATING: 10
 
 -- Maat Nin
 INSERT INTO `mob_pool_mods` VALUES (5403,62,1,1); -- NO_STANDBACK: 1

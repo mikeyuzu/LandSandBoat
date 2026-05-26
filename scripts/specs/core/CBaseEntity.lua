@@ -87,7 +87,7 @@ end
 ---@param speaker CBaseEntity?
 ---@param p0 integer
 ---@param p1 integer
----@param message integer
+---@param message xi.msg.basic
 ---@return nil
 function CBaseEntity:messageCombat(speaker, p0, p1, message)
 end
@@ -555,6 +555,17 @@ end
 function CBaseEntity:setCarefulPathing(careful)
 end
 
+---@nodiscard
+---@param target CBaseEntity
+---@return boolean
+function CBaseEntity:canSee(target)
+end
+
+---@nodiscard
+---@return boolean
+function CBaseEntity:inWater()
+end
+
 ---@param seconds integer?
 ---@return nil
 function CBaseEntity:openDoor(seconds)
@@ -638,8 +649,9 @@ end
 ---@param target CBaseEntity
 ---@param emID integer
 ---@param emMode integer
+---@param othersOnly boolean
 ---@return nil
-function CBaseEntity:sendEmote(target, emID, emMode)
+function CBaseEntity:sendEmote(target, emID, emMode, othersOnly)
 end
 
 ---@nodiscard
@@ -896,6 +908,28 @@ end
 function CBaseEntity:setHomePoint()
 end
 
+---@param voucherId integer
+---@return nil
+function CBaseEntity:learnMazeVoucher(voucherId)
+end
+
+---@nodiscard
+---@param voucherId integer
+---@return boolean
+function CBaseEntity:hasMazeVoucher(voucherId)
+end
+
+---@param runeId integer
+---@return nil
+function CBaseEntity:learnMazeRune(runeId)
+end
+
+---@nodiscard
+---@param runeId integer
+---@return boolean
+function CBaseEntity:hasMazeRune(runeId)
+end
+
 ---@param charName string
 ---@return nil
 function CBaseEntity:resetPlayer(charName)
@@ -950,6 +984,7 @@ end
 
 -- TODO: This one is going to be really messy, might be better to create multiple definitions
 -- for readability.
+---@return CItem?
 function CBaseEntity:addItem(...)
 end
 
@@ -1053,14 +1088,25 @@ end
 function CBaseEntity:addLinkpearl(lsname, equip)
 end
 
----@nodiscard
----@param name string
----@param interestData integer
----@param zeni integer
----@param skillIndex integer
----@param fp integer
----@return CItem?
-function CBaseEntity:addSoulPlate(name, interestData, zeni, skillIndex, fp)
+---@class LinkshellConciergeSlot
+---@field groupId integer
+---@field groupKey integer
+---@field color integer
+---@field flag integer
+---@field name string
+---@field lang integer
+---@field membersGoal integer
+---@field activeTier integer
+---@field characteristics integer
+
+---@class LinkshellConciergeView
+---@field yourSlot integer?
+---@field postedDays integer?
+---@field slots table<integer, LinkshellConciergeSlot>?
+
+---@param data LinkshellConciergeView
+---@return nil
+function CBaseEntity:sendLinkshellConcierge(data)
 end
 
 ---@nodiscard
@@ -1247,6 +1293,11 @@ end
 ---@param look table
 ---@return nil
 function CBaseEntity:setLook(look)
+end
+
+---@nodiscard
+---@return table
+function CBaseEntity:getEquipmentModelIds()
 end
 
 ---@nodiscard
@@ -2819,6 +2870,12 @@ end
 function CBaseEntity:resetEnmity(PEntity)
 end
 
+---@param PEntity CBaseEntity
+---@param active boolean
+---@return nil
+function CBaseEntity:setEnmityActive(PEntity, active)
+end
+
 ---@param entity CBaseEntity
 ---@return nil
 function CBaseEntity:updateClaim(entity)
@@ -2845,79 +2902,30 @@ end
 function CBaseEntity:clearEnmityForEntity(PEntity)
 end
 
----@param effectID integer|CStatusEffect
----@param power number
----@param tick number
----@param duration number
----@param subType integer?
----@param subPower integer?
----@param tier integer?
----@param sourceType integer?
----@param sourceTypeParam integer?
----@param originID integer?
+---@class StatusEffectParams
+---@field origin CBaseEntity
+---@field power number?
+---@field duration number?
+---@field tick number?
+---@field icon xi.effect? Defaults to effectId if not set
+---@field subType integer?
+---@field subPower number?
+---@field subIcon? xi.effect? Defaults to effectId if not set
+---@field tier integer?
+---@field flag xi.effectFlag?
+---@field sourceType xi.effectSourceType?
+---@field sourceTypeParam integer?
+---@field silent boolean?
+
+---@param effectId xi.effect
+---@param params StatusEffectParams
 ---@return boolean
-function CBaseEntity:addStatusEffect(effectID, power, tick, duration, subType, subPower, tier, sourceType, sourceTypeParam, originID)
+function CBaseEntity:addStatusEffect(effectId, params)
 end
 
 ---@param effect CStatusEffect
 ---@return boolean
-function CBaseEntity:addStatusEffect(effect)
-end
-
--- NOTE: TODO: Currently this function allows for an optional last parameter at any position.  This is represented
--- in currently-used overloads, but should be standardized in the future and just pass 0-values.
-
----@param effectID integer
----@param effectIcon integer
----@param power number
----@param tick number
----@param duration number
----@param subType integer?
----@param subPower integer?
----@param tier integer?
----@param effectFlag integer?
----@param sourceType integer?
----@param sourceTypeParam integer?
----@param originID integer?
----@param silent boolean?
----@return boolean
-function CBaseEntity:addStatusEffectEx(effectID, effectIcon, power, tick, duration, subType, subPower, tier, effectFlag, sourceType, sourceTypeParam, originID, silent)
-end
-
----@param effectID integer
----@param effectIcon integer
----@param power number
----@param tick number
----@param duration number
----@param subType integer?
----@param subPower integer?
----@param tier integer?
----@param effectFlag integer?
----@param silent boolean?
----@return boolean
-function CBaseEntity:addStatusEffectEx(effectID, effectIcon, power, tick, duration, subType, subPower, tier, effectFlag, silent)
-end
-
----@param effectID integer
----@param effectIcon integer
----@param power number
----@param tick number
----@param duration number
----@param silent boolean?
----@return boolean
-function CBaseEntity:addStatusEffectEx(effectID, effectIcon, power, tick, duration, silent)
-end
-
----@param effectID integer
----@param effectIcon integer
----@param power number
----@param tick number
----@param duration number
----@param subType integer
----@param subPower integer
----@param silent boolean?
----@return boolean
-function CBaseEntity:addStatusEffectEx(effectID, effectIcon, power, tick, duration, subType, subPower, silent)
+function CBaseEntity:copyStatusEffect(effect)
 end
 
 ---@nodiscard
@@ -2936,7 +2944,7 @@ function CBaseEntity:getStatusEffectBySource(StatusID, SourceType, SourceTypePar
 end
 
 ---@nodiscard
----@return table
+---@return CStatusEffect[]
 function CBaseEntity:getStatusEffects()
 end
 
@@ -3053,6 +3061,13 @@ end
 ---@param modId integer
 ---@return integer
 function CBaseEntity:getMaxGearMod(modId)
+end
+
+---@nodiscard
+---@param slot xi.slot
+---@param modId integer
+---@return integer
+function CBaseEntity:getGearModFromSlot(slot, modId)
 end
 
 ---@param condID integer
@@ -3455,6 +3470,11 @@ function CBaseEntity:isAvatar()
 end
 
 ---@nodiscard
+---@return boolean
+function CBaseEntity:isJugPet()
+end
+
+---@nodiscard
 ---@return CBaseEntity?
 function CBaseEntity:getMaster()
 end
@@ -3552,25 +3572,25 @@ function CBaseEntity:getAutomatonName()
 end
 
 ---@nodiscard
----@return integer
+---@return xi.automaton.frame?
 function CBaseEntity:getAutomatonFrame()
 end
 
 ---@nodiscard
----@param itemId integer
+---@param frame xi.automaton.frame
 ---@return nil
-function CBaseEntity:setAutomatonFrame(itemId)
+function CBaseEntity:setAutomatonFrame(frame)
 end
 
 ---@nodiscard
----@return integer
+---@return xi.automaton.head?
 function CBaseEntity:getAutomatonHead()
 end
 
 ---@nodiscard
----@param itemId integer
+---@param head xi.automaton.head
 ---@return nil
-function CBaseEntity:setAutomatonHead(itemId)
+function CBaseEntity:setAutomatonHead(head)
 end
 
 ---@param itemID integer
@@ -3591,13 +3611,6 @@ end
 function CBaseEntity:removeAllManeuvers()
 end
 
----@nodiscard
----@param slotId integer
----@return CItem?
-function CBaseEntity:getAttachment(slotId)
-end
-
----@nodiscard
 ---@param itemId integer
 ---@param slotId integer
 ---@return nil
@@ -3605,7 +3618,7 @@ function CBaseEntity:setAttachment(itemId, slotId)
 end
 
 ---@nodiscard
----@return CItem[]
+---@return table
 function CBaseEntity:getAttachments()
 end
 
@@ -3657,8 +3670,21 @@ function CBaseEntity:removeAllRunes()
 end
 
 ---@param level integer
+---@param recover boolean?
 ---@return nil
-function CBaseEntity:setMobLevel(level)
+function CBaseEntity:setMobLevel(level, recover)
+end
+
+---@nodiscard
+---@param statType integer
+---@return integer
+function CBaseEntity:getStatRank(statType)
+end
+
+---@param statType integer
+---@param rank integer
+---@return nil
+function CBaseEntity:setStatRank(statType, rank)
 end
 
 ---@nodiscard
@@ -3668,12 +3694,12 @@ end
 
 ---@nodiscard
 ---@return integer
-function CBaseEntity:getSuperFamily()
+function CBaseEntity:getFamily()
 end
 
 ---@nodiscard
 ---@return integer
-function CBaseEntity:getFamily()
+function CBaseEntity:getSpecies()
 end
 
 ---@nodiscard
@@ -3697,7 +3723,6 @@ end
 function CBaseEntity:getModelSize()
 end
 
----@nodiscard
 ---@param newSize number
 ---@return nil
 function CBaseEntity:setModelSize(newSize)
@@ -3708,7 +3733,6 @@ end
 function CBaseEntity:getHitboxSize()
 end
 
----@nodiscard
 ---@param newSize number
 ---@return nil
 function CBaseEntity:setHitboxSize(newSize)
@@ -3734,6 +3758,11 @@ end
 ---@param flags integer
 ---@return nil
 function CBaseEntity:setNpcFlags(flags)
+end
+
+---@param alwaysRelevant boolean
+---@return nil
+function CBaseEntity:setNpcAlwaysRelevant(alwaysRelevant)
 end
 
 ---@param despawnSec integer?
@@ -3860,6 +3889,16 @@ end
 ---@param state boolean
 ---@return nil
 function CBaseEntity:setAutoAttackEnabled(state)
+end
+
+---@param state boolean
+---@return nil
+function CBaseEntity:setRangedAttackEnabled(state)
+end
+
+---@nodiscard
+---@return boolean
+function CBaseEntity:isRangedAttackEnabled()
 end
 
 ---@param state boolean
@@ -4083,14 +4122,14 @@ end
 function CBaseEntity:getDespoilDebuff(itemID)
 end
 
----@nodiscard
----@return boolean
-function CBaseEntity:itemStolen()
+---@param stolen boolean
+---@return nil
+function CBaseEntity:itemStolen(stolen)
 end
 
----@nodiscard
----@return boolean
-function CBaseEntity:itemDespoiled()
+---@param despoiled boolean
+---@return nil
+function CBaseEntity:itemDespoiled(despoiled)
 end
 
 ---@nodiscard

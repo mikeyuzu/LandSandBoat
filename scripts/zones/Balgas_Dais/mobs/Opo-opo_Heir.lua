@@ -9,7 +9,6 @@ local entity = {}
 entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
-    mob:setMobMod(xi.mobMod.SUPERLINK, 1)
 end
 
 -- Doesn't fight until Monarch is defeated.
@@ -38,7 +37,7 @@ entity.onMobFight = function(mob, target)
         mob:setTP(3000)
         mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
         mob:setMod(xi.mod.REGAIN, 300)
-        mob:addStatusEffect(xi.effect.MAGIC_SHIELD, 1, 0, 900)
+        mob:addStatusEffect(xi.effect.MAGIC_SHIELD, { power = 1, duration = 900, origin = mob })
     end
 end
 

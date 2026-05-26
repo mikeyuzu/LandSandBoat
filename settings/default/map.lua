@@ -29,10 +29,6 @@ xi.settings.map =
     -- Game settings
     -- --------------------------------
 
-    -- PacketGuard will block and report any packets that aren't in the allow-list for a
-    -- player's current state.
-    PACKETGUARD_ENABLED = true,
-
     -- Minimal number of 0x3A packets which uses for detect lightluggage (set 0 for disable)
     LIGHTLUGGAGE_BLOCK = 4,
 
@@ -42,6 +38,10 @@ xi.settings.map =
 
     -- Enable or disable Recycle Bin (Set to false for items to be dropped immediately)
     ENABLE_ITEM_RECYCLE_BIN = true,
+
+    -- Self-unstuck feature (sends player to homepoint via Help Desk command)
+    SELF_UNSTUCK_ENABLED  = false,
+    SELF_UNSTUCK_COOLDOWN = 86400, -- Cooldown in seconds (default: 24 hours)
 
     -- AH fee structure, defaults are retail.
     AH_BASE_FEE_SINGLE = 1,
@@ -177,16 +177,14 @@ xi.settings.map =
     TRUST_TP_MULTIPLIER  = 1.0,
     FELLOW_TP_MULTIPLIER = 1.0,
 
-    -- Adjust max HP pool for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1.
+    -- Adjust max HP pool for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1. Valid range: 0.1 to 2.0
     NM_HP_MULTIPLIER        = 1.0,
     MOB_HP_MULTIPLIER       = 1.0,
-    PLAYER_HP_MULTIPLIER    = 1.0,
     ALTER_EGO_HP_MULTIPLIER = 1.0,
 
-    -- Adjust max MP pool for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1.
+    -- Adjust max MP pool for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1. Valid range: 0.1 to 2.0
     NM_MP_MULTIPLIER        = 1.0,
     MOB_MP_MULTIPLIER       = 1.0,
-    PLAYER_MP_MULTIPLIER    = 1.0,
     ALTER_EGO_MP_MULTIPLIER = 1.0,
 
     -- Sets the fraction of MP a subjob provides to the main job. Retail is half and this acts as a divisor so default is 2
@@ -202,10 +200,9 @@ xi.settings.map =
     -- Also adjust monsters subjob in ratio adjustments? 1 = true / 0 = false
     INCLUDE_MOB_SJ = false,
 
-    -- Adjust base stats (str/vit/etc.) for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1.
+    -- Adjust base stats (str/vit/etc.) for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1.0. Valid range: 0.1 to 2.0
     NM_STAT_MULTIPLIER        = 1.0,
     MOB_STAT_MULTIPLIER       = 1.0,
-    PLAYER_STAT_MULTIPLIER    = 1.0,
     ALTER_EGO_STAT_MULTIPLIER = 1.0,
 
     -- Adjust skill caps for trusts/fellows. Acts as a multiplier, so default is 1.
@@ -213,6 +210,9 @@ xi.settings.map =
 
     -- Adjust the recast time for abilities. Acts as a multiplier, so default is 1
     ABILITY_RECAST_MULTIPLIER = 1.0,
+
+    -- Maximum spell recast reduction percentage. Current retail is 80. Older eras used 50.
+    SPELL_RECAST_REDUCTION_CAP = 80,
 
     -- Enable/disable shared blood pact timer
     BLOOD_PACT_SHARED_TIMER = false,
@@ -289,6 +289,9 @@ xi.settings.map =
     AUDIT_PLAYER_BAZAAR = false,
     AUDIT_PLAYER_DBOX   = false,
     AUDIT_PLAYER_VENDOR = false,
+
+    -- Maximum number of in-flight items (slots) allowed in a player's delivery box for PC-to-PC transfers.
+    DELIVERY_BOX_MAX_INFLIGHT = 128,
 
     -- Seconds between healing ticks. Default is 10
     HEALING_TICK_DELAY = 10,

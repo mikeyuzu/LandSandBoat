@@ -36,15 +36,16 @@ const std::set<uint8_t> validPlantCategories = { LOC_MOGSAFE, LOC_MOGSAFE2 };
 
 auto GP_CLI_COMMAND_MYROOM_PLANT_CHECK::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    return PacketValidator()
-        .mustNotEqual(MyroomPlantItemNo, 0, "MyroomPlantItemNo must not be 0")
-        .oneOf("MyroomPlantCategory", MyroomPlantCategory, validPlantCategories);
+    return PacketValidator(PChar)
+        .blockedBy({ BlockedState::InEvent })
+        .mustNotEqual(this->MyroomPlantItemNo, 0, "MyroomPlantItemNo must not be 0")
+        .oneOf("MyroomPlantCategory", this->MyroomPlantCategory, validPlantCategories);
 }
 
 void GP_CLI_COMMAND_MYROOM_PLANT_CHECK::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    CItemContainer* PItemContainer = PChar->getStorage(MyroomPlantCategory);
-    auto*           PItem          = static_cast<CItemFlowerpot*>(PItemContainer->GetItem(MyroomPlantItemIndex));
+    CItemContainer* PItemContainer = PChar->getStorage(this->MyroomPlantCategory);
+    auto*           PItem          = static_cast<CItemFlowerpot*>(PItemContainer->GetItem(this->MyroomPlantItemIndex));
     if (PItem == nullptr)
     {
         return;
@@ -52,18 +53,18 @@ void GP_CLI_COMMAND_MYROOM_PLANT_CHECK::process(MapSession* PSession, CCharEntit
 
     if (PItem->isPlanted())
     {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, CItemFlowerpot::getSeedID(PItem->getPlant()), 0, MsgBasic::GARDENING_SEED_SOWN);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, CItemFlowerpot::getSeedID(PItem->getPlant()), 0, MsgBasic::GardeningSeedSown);
         if (PItem->isTree())
         {
             if (PItem->getStage() > FLOWERPOT_STAGE_FIRST_SPROUTS_CRYSTAL)
             {
                 if (PItem->getExtraCrystalFeed() != FLOWERPOT_ELEMENT_NONE)
                 {
-                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, CItemFlowerpot::getItemFromElement(PItem->getExtraCrystalFeed()), 0, MsgBasic::GARDENING_CRYSTAL_USED);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, CItemFlowerpot::getItemFromElement(PItem->getExtraCrystalFeed()), 0, MsgBasic::GardeningCrystalUsed);
                 }
                 else
                 {
-                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::GARDENING_CRYSTAL_NONE);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::GardeningCrystalNone);
                 }
             }
         }
@@ -71,11 +72,11 @@ void GP_CLI_COMMAND_MYROOM_PLANT_CHECK::process(MapSession* PSession, CCharEntit
         {
             if (PItem->getCommonCrystalFeed() != FLOWERPOT_ELEMENT_NONE)
             {
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, CItemFlowerpot::getItemFromElement(PItem->getCommonCrystalFeed()), 0, MsgBasic::GARDENING_CRYSTAL_USED);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, CItemFlowerpot::getItemFromElement(PItem->getCommonCrystalFeed()), 0, MsgBasic::GardeningCrystalUsed);
             }
             else
             {
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::GARDENING_CRYSTAL_NONE);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::GardeningCrystalNone);
             }
         }
 
@@ -91,5 +92,5 @@ void GP_CLI_COMMAND_MYROOM_PLANT_CHECK::process(MapSession* PSession, CCharEntit
         }
     }
 
-    PChar->pushPacket<GP_SERV_COMMAND_MYROOM_OPERATION>(PItem, static_cast<CONTAINER_ID>(MyroomPlantCategory), MyroomPlantItemIndex);
+    PChar->pushPacket<GP_SERV_COMMAND_MYROOM_OPERATION>(PItem, static_cast<CONTAINER_ID>(this->MyroomPlantCategory), this->MyroomPlantItemIndex);
 }

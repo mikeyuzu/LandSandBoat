@@ -1,5 +1,7 @@
 set(PACKET_C2S_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/base.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/rate_limiter.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/rate_limiter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/validation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/validation.h
         ${CMAKE_CURRENT_SOURCE_DIR}/0x00a_login.cpp
@@ -147,6 +149,8 @@ set(PACKET_C2S_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/0x0bf_job_points_spend.h
         ${CMAKE_CURRENT_SOURCE_DIR}/0x0c0_job_points_req.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/0x0c0_job_points_req.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/0x0c1_alter_ego_points.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/0x0c1_alter_ego_points.h
         ${CMAKE_CURRENT_SOURCE_DIR}/0x0c3_group_comlink_make.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/0x0c3_group_comlink_make.h
         ${CMAKE_CURRENT_SOURCE_DIR}/0x0c4_group_comlink_active.cpp

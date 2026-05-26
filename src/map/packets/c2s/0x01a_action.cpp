@@ -53,29 +53,101 @@ const auto actionToStr = [](const GP_CLI_COMMAND_ACTION_ACTIONID actionIn)
 
 auto GP_CLI_COMMAND_ACTION::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_ACTION_ACTIONID>(ActionID)
-        .custom([&](PacketValidator& pv)
+    return PacketValidator(PChar)
+        .oneOf<GP_CLI_COMMAND_ACTION_ACTIONID>(this->ActionID)
+        .custom(
+            [&](PacketValidator& pv)
+            {
+                switch (this->ActionID)
                 {
-                    switch (static_cast<GP_CLI_COMMAND_ACTION_ACTIONID>(ActionID))
+                    // Assist, /blockaid and /help are almost never blocked.
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Assist:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Blockaid:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Help:
                     {
-                        // /assist and /blockaid can be performed while healing
-                        // Talking to an NPC is allowed but clears /heal and returns early if crafting (handled in process())
-                        // Everything else is blocked.
-                        case GP_CLI_COMMAND_ACTION_ACTIONID::Assist:
-                        case GP_CLI_COMMAND_ACTION_ACTIONID::Blockaid:
-                        case GP_CLI_COMMAND_ACTION_ACTIONID::Talk:
-                            return;
-                        default:
-                            pv.isNotResting(PChar)
-                                .isNotCrafting(PChar);
+                        break;
                     }
-                });
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Talk:
+                    {
+                        // Talking to NPC has several blocked states checked a little later as they send a release packet.
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::AttackOff:
+                    {
+                        // You can disengage while slept.
+                        pv.blockedBy({ BlockedState::Charmed })
+                            .isEngaged();
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::ChangeTarget:
+                    {
+                        pv.blockedBy({ BlockedState::PreventAction })
+                            .isEngaged();
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::HomepointMenu:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::RaiseMenu:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::TractorMenu:
+                    {
+                        pv.mustEqual(PChar->isDead(), true, "Character is not dead.");
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Attack:
+                    {
+                        // Note: It is possible to attack while fishing on retail and is disabled here on purpose.
+                        pv.blockedBy({ BlockedState::Healing, BlockedState::Sitting, BlockedState::Crafting, BlockedState::Fishing, BlockedState::PreventAction });
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::CastMagic:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::JobAbility:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Shoot:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Weaponskill:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::MonsterSkill: // MonsterSkill is entirely assumed
+                    {
+                        pv.blockedBy({ BlockedState::Healing, BlockedState::Crafting, BlockedState::Fishing, BlockedState::PreventAction, BlockedState::Mounted })
+                            .mustEqual(PChar->animation == ANIMATION_NONE || PChar->animation == ANIMATION_ATTACK, true, "Character in invalid animation state.");
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Fish:
+                    {
+                        pv.blockedBy({ BlockedState::Healing, BlockedState::Sitting, BlockedState::Crafting, BlockedState::Fishing, BlockedState::PreventAction, BlockedState::Mounted });
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Mount:
+                    {
+                        pv.blockedBy({ BlockedState::Healing, BlockedState::Sitting, BlockedState::Crafting, BlockedState::Fishing });
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Dismount:
+                    {
+                        pv.blockedBy({ BlockedState::PreventAction })
+                            .mustEqual(PChar->isMounted(), true, "Character is not mounted.");
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::ChocoboDig:
+                    {
+                        pv.blockedBy({ BlockedState::PreventAction })
+                            .mustEqual(PChar->isMounted(), true, "Character is not mounted.");
+                        break;
+                    }
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::SendResRdy:
+                    {
+                        break;
+                    }
+                    // Unimplemented Ballista actions
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Quarry:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Sprint:
+                    case GP_CLI_COMMAND_ACTION_ACTIONID::Scout:
+                    {
+                        break;
+                    }
+                }
+            });
 }
 
 void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    const auto actionStr = fmt::format("Player Action: {}: {} -> ActIndex: {}", PChar->getName(), actionToStr(static_cast<GP_CLI_COMMAND_ACTION_ACTIONID>(ActionID)), ActIndex);
+    const auto actionStr = fmt::format("Player Action: {}: {} -> ActIndex: {}", PChar->getName(), actionToStr(static_cast<GP_CLI_COMMAND_ACTION_ACTIONID>(this->ActionID)), this->ActIndex);
     ShowTrace(actionStr);
     DebugActions(actionStr);
 
@@ -84,7 +156,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
     {
         for (uint8 equipSlotID = 0; equipSlotID < 16; ++equipSlotID)
         {
-            if (PChar->equip[equipSlotID] != 0)
+            if (PChar->getEquip(static_cast<SLOTTYPE>(equipSlotID)))
             {
                 PChar->PLatentEffectContainer->CheckLatentsEquip(equipSlotID);
             }
@@ -92,7 +164,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         PChar->retriggerLatents = false; // reset as we have retriggered the latents somewhere
     }
 
-    switch (static_cast<GP_CLI_COMMAND_ACTION_ACTIONID>(ActionID))
+    switch (this->ActionID)
     {
         case GP_CLI_COMMAND_ACTION_ACTIONID::Talk:
         {
@@ -103,22 +175,66 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 return;
             }
 
-            if (PChar->StatusEffectContainer->HasPreventActionEffect())
-            {
-                return;
-            }
-
             // Talking to an NPC cancels /heal
             PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_HEALING);
 
-            // Return early if crafting
-            if (PChar->m_Costume != 0 || PChar->animation == ANIMATION_SYNTH || (PChar->CraftContainer && PChar->CraftContainer->getItemsCount() > 0))
+            // Talking to an NPC force disengages
+            if (PChar->PAI->IsEngaged())
+            {
+                PChar->PAI->Disengage();
+            }
+
+            // Blocked states send release packet
+            if (PChar->m_Costume != 0 ||
+                PChar->isCrafting() ||
+                PChar->isMounted() ||
+                PChar->isDead() ||
+                PChar->isFishing())
             {
                 PChar->pushPacket<GP_SERV_COMMAND_EVENTUCOFF>(PChar, GP_SERV_COMMAND_EVENTUCOFF_MODE::Standard);
                 return;
             }
 
-            const CBaseEntity* PNpc = PChar->GetEntity(ActIndex, TYPE_NPC | TYPE_MOB);
+            CBaseEntity* PNpc = PChar->GetEntity(this->ActIndex, TYPE_NPC | TYPE_MOB | TYPE_TRUST);
+            if (!PNpc)
+            {
+                return;
+            }
+
+            // Releasing a trust
+            if (auto* PTrust = dynamic_cast<CTrustEntity*>(PNpc); PTrust && !PTrust->isReleased)
+            {
+                uint32_t trustTargId = PTrust->targid;
+
+                PTrust->isReleased = true;
+
+                // Emit despawn message
+                // TODO: probably change off OnMobDespawn to a listener or a trust specific OnPartyLeave callback
+                // note: this will get called a second time later, but PTrust->PMaster is nullptr by the time that happens so the despawn message is never emitted.
+                luautils::OnMobDespawn(PTrust);
+
+                PChar->PAI->QueueAction(
+                    queueAction_t(
+                        2s,
+                        false,
+                        [trustTargId](CBaseEntity* CharEntity)
+                        {
+                            // We can't trust using a pointer here in case somehow the trust has been usurped
+                            // So use the POD of the trusts's targID, look it back up, and check the PChar is still it's master
+                            auto PDelayedTrust = dynamic_cast<CTrustEntity*>(CharEntity->GetEntity(trustTargId, TYPE_TRUST));
+                            auto PDelayedChar  = dynamic_cast<CCharEntity*>(CharEntity);
+
+                            if (PDelayedTrust && PDelayedChar && PDelayedTrust->PMaster == PDelayedChar)
+                            {
+                                // For some reason they use ANIMATION_DEATH to play the special despawn.
+                                PDelayedTrust->animation = ANIMATION_DEATH;
+                                PDelayedTrust->updatemask |= UPDATE_HP;
+
+                                PDelayedChar->RemoveTrust(PDelayedTrust);
+                            }
+                        }));
+                return;
+            }
 
             // MONs are allowed to use doors, but nothing else
             if (PChar->m_PMonstrosity != nullptr &&
@@ -131,16 +247,10 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
             }
 
             // NOTE: Moogles inside of mog houses are the exception for not requiring Spawned or Status checks.
-            if (PNpc != nullptr && distance(PNpc->loc.p, PChar->loc.p) <= 6.0f && ((PNpc->PAI->IsSpawned() && PNpc->status == STATUS_TYPE::NORMAL) || PChar->inMogHouse()))
+            if (distance(PNpc->loc.p, PChar->loc.p) <= 6.0f && ((PNpc->PAI->IsSpawned() && PNpc->status == STATUS_TYPE::NORMAL) || PChar->inMogHouse()))
             {
                 PNpc->PAI->Trigger(PChar);
                 PChar->m_charHistory.npcInteractions++;
-            }
-
-            // Releasing a trust
-            if (auto* PTrust = dynamic_cast<CTrustEntity*>(PChar->GetEntity(ActIndex, TYPE_TRUST)))
-            {
-                PChar->RemoveTrust(PTrust);
             }
 
             if (!PChar->isNpcLocked())
@@ -157,7 +267,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_MOUNTED);
             }
 
-            PChar->PAI->Engage(ActIndex);
+            PChar->PAI->Engage(this->ActIndex);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::CastMagic:
@@ -167,16 +277,16 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
             // clang-format off
             const position_t actionOffset =
             {
-                std::clamp(CastMagic.PosX, -19.0f, 19.0f),
-                std::clamp(CastMagic.PosZ, -19.0f, 19.0f),
-                std::clamp(CastMagic.PosY, -19.0f, 19.0f),
+                std::clamp(this->CastMagic.PosX, -19.0f, 19.0f),
+                std::clamp(this->CastMagic.PosZ, -19.0f, 19.0f),
+                std::clamp(this->CastMagic.PosY, -19.0f, 19.0f),
                 0, // moving (packet only contains x/y/z)
                 0, // rotation (packet only contains x/y/z)
             };
             // clang-format on
 
-            const auto spellId = static_cast<SpellID>(CastMagic.SpellId);
-            PChar->PAI->Cast(ActIndex, spellId);
+            const auto spellId = static_cast<SpellID>(this->CastMagic.SpellId);
+            PChar->PAI->Cast(this->ActIndex, spellId);
 
             // target offset used only for luopan placement as of now
             if (spellId >= SpellID::Geo_Regen && spellId <= SpellID::Geo_Gravity)
@@ -186,7 +296,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
 
                 // Need to set the target position plus offset for positioning correctly
 
-                if (const auto* PTarget = dynamic_cast<CBattleEntity*>(PChar->GetEntity(ActIndex)); PTarget != nullptr)
+                if (const auto* PTarget = dynamic_cast<CBattleEntity*>(PChar->GetEntity(this->ActIndex)); PTarget != nullptr)
                 {
                     PChar->m_ActionOffsetPos = {
                         PTarget->loc.p.x + actionOffset.x,
@@ -201,74 +311,56 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::AttackOff:
         {
-            if (!PChar->StatusEffectContainer->HasStatusEffect({ EFFECT_CHARM, EFFECT_CHARM_II }))
-            {
-                PChar->PAI->Disengage();
-            }
+            PChar->PAI->Disengage();
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Help:
         {
-            if (PChar->StatusEffectContainer->HasPreventActionEffect())
-            {
-                return;
-            }
-
+            // TODO: C4H applies to ALL claimed enemies on which you (personally) have enmity. This does NOT require you to be engaged.
             if (auto* PMob = dynamic_cast<CMobEntity*>(PChar->GetBattleTarget()))
             {
                 if (!PMob->GetCallForHelpFlag() && PMob->PEnmityContainer->HasID(PChar->id) && !PMob->m_CallForHelpBlocked)
                 {
                     PMob->SetCallForHelpFlag(true);
-                    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CFH));
+                    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CallForHelp));
                     return;
                 }
             }
 
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CANNOT_CFH);
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotCallForHelp);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Weaponskill:
         {
             if (!PChar->PAI->IsEngaged() && settings::get<bool>("map.PREVENT_UNENGAGED_WS")) // Prevent Weaponskill usage if player isn't engaged.
             {
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UNABLE_TO_USE_WS);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToUseWeaponskill);
                 return;
             }
 
-            PChar->PAI->WeaponSkill(ActIndex, Weaponskill.SkillId);
+            PChar->PAI->WeaponSkill(this->ActIndex, this->Weaponskill.SkillId);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::JobAbility:
         {
-            if (PChar->animation != ANIMATION_NONE && PChar->animation != ANIMATION_ATTACK)
-            {
-                ShowWarning("GP_CLI_COMMAND_ACTION: Player %s trying to use a Job Ability from invalid state", PChar->getName());
-                return;
-            }
-
             // Don't allow BST to use ready before level 25
             if (PChar->PPet != nullptr && (!charutils::hasAbility(PChar, ABILITY_READY) || !PChar->PPet->PAI->IsEngaged()))
             {
-                if (JobAbility.SkillId >= ABILITY_FOOT_KICK && JobAbility.SkillId <= ABILITY_PENTAPECK) // Is this a BST ability?
+                if (this->JobAbility.SkillId >= ABILITY_FOOT_KICK && this->JobAbility.SkillId <= ABILITY_PENTAPECK) // Is this a BST ability?
                 {
-                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UNABLE_TO_USE_JA2);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToUseJobAbility2);
                     return;
                 }
             }
 
-            PChar->PAI->Ability(ActIndex, JobAbility.SkillId);
+            PChar->PAI->Ability(this->ActIndex, this->JobAbility.SkillId);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::HomepointMenu:
         {
-            if (!PChar->isDead())
-            {
-                return;
-            }
-
             if (PChar->m_PMonstrosity)
             {
-                monstrosity::HandleDeathMenu(PChar, HomepointMenu.StatusId);
+                monstrosity::HandleDeathMenu(PChar, this->HomepointMenu.StatusId);
                 return;
             }
 
@@ -278,7 +370,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Assist:
         {
-            battleutils::assistTarget(PChar, ActIndex);
+            battleutils::assistTarget(PChar, this->ActIndex);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::RaiseMenu:
@@ -288,7 +380,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 return;
             }
 
-            if (HomepointMenu.StatusId == GP_CLI_COMMAND_ACTION_HOMEPOINTMENU::Accept)
+            if (this->HomepointMenu.StatusId == GP_CLI_COMMAND_ACTION_HOMEPOINTMENU::Accept)
             {
                 PChar->Raise();
             }
@@ -307,35 +399,23 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 return;
             }
 
-            if (PChar->StatusEffectContainer->HasPreventActionEffect())
-            {
-                return;
-            }
-
             fishingutils::StartFishing(PChar);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::ChangeTarget:
         {
-            PChar->PAI->ChangeTarget(ActIndex);
+            PChar->PAI->ChangeTarget(this->ActIndex);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Shoot:
         {
-            if (PChar->animation != ANIMATION_NONE && PChar->animation != ANIMATION_ATTACK)
-            {
-                ShowWarning("GP_CLI_COMMAND_ACTION: Player %s trying to Ranged Attack from invalid state", PChar->getName());
-                return;
-            }
-
-            PChar->PAI->RangedAttack(ActIndex);
+            PChar->PAI->RangedAttack(this->ActIndex);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::ChocoboDig:
         {
-            // Mounted Check.
             // Only rented and personal chocobos can dig.
-            if (!PChar->isMounted() || PChar->m_mountId != MOUNT_CHOCOBO)
+            if (PChar->m_mountId != MOUNT_CHOCOBO)
             {
                 return;
             }
@@ -347,22 +427,31 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 return;
             }
 
+            const auto* PGysahl = PChar->getStorage(LOC_INVENTORY)->GetItem(slotID);
+            if (!PGysahl)
+            {
+                PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(GYSAHL_GREENS, 0, MsgStd::YouDontHaveAny);
+                return;
+            }
+
+            if (PGysahl->isSubType(ITEM_LOCKED) || PGysahl->getReserve() > 0)
+            {
+                ShowWarningFmt("GP_CLI_COMMAND_ACTION: {} trying to use invalid gysahl greens (locked/reserved)", PChar->getName());
+                PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(GYSAHL_GREENS, 0, MsgStd::YouDontHaveAny);
+                return;
+            }
+
             // Consume Gysahl Green and push animation on dig attempt.
             if (luautils::OnChocoboDig(PChar))
             {
                 charutils::UpdateItem(PChar, LOC_INVENTORY, slotID, -1);
-                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
                 PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_DIG>(PChar));
             }
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Dismount:
         {
-            if (PChar->StatusEffectContainer->HasPreventActionEffect() || !PChar->isMounted())
-            {
-                return;
-            }
-
             PChar->animation = ANIMATION_NONE;
             PChar->updatemask |= UPDATE_HP;
             PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_MOUNTED);
@@ -370,7 +459,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::TractorMenu:
         {
-            if (TractorMenu.StatusId == GP_CLI_COMMAND_ACTION_TRACTORMENU::Accept && PChar->m_hasTractor != 0)
+            if (this->TractorMenu.StatusId == GP_CLI_COMMAND_ACTION_TRACTORMENU::Accept && PChar->m_hasTractor != 0)
             {
                 PChar->loc.p           = PChar->m_StartActionPos;
                 PChar->loc.destination = PChar->getZone();
@@ -407,17 +496,17 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         {
             if (!PChar->StatusEffectContainer->HasStatusEffect(EFFECT_ALLIED_TAGS))
             {
-                if (BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Disable && PChar->getBlockingAid())
+                if (this->BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Disable && PChar->getBlockingAid())
                 {
                     PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, MsgStd::BlockaidCanceled);
                     PChar->setBlockingAid(false);
                 }
-                else if (BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Enable && !PChar->getBlockingAid())
+                else if (this->BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Enable && !PChar->getBlockingAid())
                 {
                     PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, MsgStd::BlockaidActivated);
                     PChar->setBlockingAid(true);
                 }
-                else if (BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Toggle)
+                else if (this->BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Toggle)
                 {
                     PChar->setBlockingAid(!PChar->getBlockingAid());
                     PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, PChar->getBlockingAid() ? MsgStd::BlockaidCurrentlyActive : MsgStd::BlockaidCurrentlyInactive);
@@ -436,25 +525,25 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Mount:
         {
-            const auto mountKeyItem = static_cast<KeyItem>(static_cast<uint16_t>(KeyItem::CHOCOBO_COMPANION) + Mount.MountId);
+            const auto mountKeyItem = static_cast<KeyItem>(static_cast<uint16_t>(KeyItem::CHOCOBO_COMPANION) + this->Mount.MountId);
 
-            if (PChar->animation != ANIMATION_NONE)
+            if (PChar->animation != ANIMATION_NONE || PChar->StatusEffectContainer->HasPreventActionEffect())
             {
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CANNOT_PERFORM_ACTION);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotPerformAction);
             }
             else if (!PChar->loc.zone->CanUseMisc(MISC_MOUNT))
             {
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CANNOT_USE_IN_AREA);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseInArea);
             }
             else if (PChar->GetMLevel() < 20)
             {
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 20, 0, MsgBasic::MOUNT_REQUIRED_LEVEL);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 20, 0, MsgBasic::MountRequiredLevel);
             }
             else if (charutils::hasKeyItem(PChar, mountKeyItem))
             {
                 if (PChar->PRecastContainer->HasRecast(RECAST_ABILITY, Recast::Mount, 60s))
                 {
-                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::WAIT_LONGER);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::WaitLonger);
 
                     // add recast timer
                     // PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, 202);
@@ -463,15 +552,15 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
 
                 if (PChar->hasEnmityEXPENSIVE())
                 {
-                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::YOUR_MOUNT_REFUSES);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::YourMountRefuses);
                     return;
                 }
 
-                PChar->m_mountId = Mount.MountId ? Mount.MountId + 1 : 0;
+                PChar->m_mountId = this->Mount.MountId ? this->Mount.MountId + 1 : 0;
                 PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(
                                                                   EFFECT_MOUNTED,
                                                                   EFFECT_MOUNTED,
-                                                                  Mount.MountId ? Mount.MountId + 1 : 0,
+                                                                  this->Mount.MountId ? this->Mount.MountId + 1 : 0,
                                                                   0s,
                                                                   30min,
                                                                   0,

@@ -22,14 +22,14 @@ entity.onMobFight = function(mob, target)
     local hpp = mob:getHPP()
 
     if hpp < 20 then
-        mob:setDelay(1100)
+        mob:setDelay(110)
         mob:setMod(xi.mod.ATTP, 100)
     elseif hpp < 60 then
-        mob:setDelay(2100)
+        mob:setDelay(210)
     end
 end
 
-entity.onMobMobskillChoose = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target, skillId)
     local hpp      = mob:getHPP()
     local tpSkills = {}
 

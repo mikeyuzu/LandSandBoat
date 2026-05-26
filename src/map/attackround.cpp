@@ -76,7 +76,7 @@ CAttackRound::CAttackRound(CBattleEntity* attacker, CBattleEntity* defender)
         }
     }
 
-    if (PSub && attacker->m_dualWield)
+    if (PSub && attacker->IsDualWielding())
     {
         CreateAttacks(PSub, LEFTATTACK);
     }
@@ -435,8 +435,9 @@ void CAttackRound::ProcFollowUpAttacks()
 
                         if (PAmmo && PAmmo->getID() == virtueStone && PAmmo->getQuantity() > 0)
                         {
-                            uint8 loc  = PChar->equipLoc[SLOT_AMMO];
-                            uint8 slot = PChar->equip[SLOT_AMMO];
+                            auto  eloc = PChar->equipLocation(SLOT_AMMO);
+                            uint8 loc  = eloc ? static_cast<uint8>(eloc->Container) : 0;
+                            uint8 slot = eloc ? eloc->Slot : 0;
 
                             if (AddFollowUpAttack(direction))
                             {
@@ -447,7 +448,7 @@ void CAttackRound::ProcFollowUpAttacks()
                                 }
 
                                 charutils::UpdateItem(PChar, loc, slot, -1);
-                                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
+                                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
                             }
                         }
                     }

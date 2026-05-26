@@ -103,6 +103,7 @@ xi.animationString =
     EFFECT_SWEATING           = 'hitl',
     EFFECT_SILENCE            = 'sils',
     EFFECT_RAISE_PLAYER       = 'stnd',
+    EFFECT_HOME_POINT         = 'bind', -- Home Point Set animation, only used in a module
 
     -- Status
     STATUS_VISIBLE            = 'deru',
@@ -142,4 +143,7 @@ xi.animationString =
     SYNERGY_LIGHT_FEWELL      = 'ef97',
     SYNERGY_DARK_FEWELL       = 'ef98',
     SYNERGY_STEAM             = 'efa0',
+
+    -- QM animations
+    SHIMMER                   = 'efon',
 }
