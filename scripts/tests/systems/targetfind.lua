@@ -43,8 +43,8 @@ describe('TargetFind', function()
         -- Force Flail to always hit
         local m = stub('xi.mobskills.mobPhysicalMove',
             {
-                dmg        = 100,
-                hitslanded = 3,
+                damage     = 100,
+                hitsLanded = 3,
                 isCritical = false,
             })
         -- All of them should go to Fafnir
@@ -85,8 +85,8 @@ describe('TargetFind', function()
         -- Force Flail to always hit
         local m = stub('xi.mobskills.mobPhysicalMove',
             {
-                dmg        = 100,
-                hitslanded = 3,
+                damage     = 100,
+                hitsLanded = 3,
                 isCritical = false,
             })
 

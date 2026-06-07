@@ -59,8 +59,8 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = xi.jsa.MEIKYO_SHISUI, hpp = math.random(65, 70) },
-            { id = xi.jsa.MEIKYO_SHISUI, hpp = math.random(35, 40) },
+            { id = xi.mobSkill.MEIKYO_SHISUI_1, hpp = math.random(65, 70) },
+            { id = xi.mobSkill.MEIKYO_SHISUI_1, hpp = math.random(35, 40) },
         },
     })
 
@@ -101,7 +101,7 @@ entity.onMobFight = function(mob)
     end
 end
 
-entity.onMobMobskillChoose = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target, skillId)
     local form = mob:getAnimationSub()
     local tpMoves = { xi.mobSkill.REACTOR_COOL }
 

@@ -53,7 +53,7 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = xi.jsa.MANAFONT, hpp = math.random(50, 80) },
+            { id = xi.mobSkill.MANAFONT_1, hpp = math.random(50, 80) },
         },
     })
 end
@@ -91,7 +91,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobMobskillChoose = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target, skillId)
     local form = mob:getAnimationSub()
     local tpMoves = { xi.mobSkill.REACTOR_COOL }
 
@@ -117,7 +117,7 @@ entity.onMobMobskillChoose = function(mob, target)
     return tpMoves[math.random(1, #tpMoves)]
 end
 
-entity.onMobWeaponSkill = function(target, mob, skill)
+entity.onMobWeaponSkill = function(mob, target, skill, action)
     -- Handle healing completion
     if skill:getID() == xi.mobSkill.OPTIC_INDURATION_CHARGE then
         local chargeCount = mob:getLocalVar('chargeCount')

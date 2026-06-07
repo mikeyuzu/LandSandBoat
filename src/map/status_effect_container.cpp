@@ -66,43 +66,17 @@ namespace effects
 // Default effect of statuses are overwrite if equal or higher
 struct EffectParams_t
 {
-    uint32      Flag;
-    std::string Name;
-    // type will erase all other effects that match
-    // example: en- spells, spikes
-    uint16 Type;
-    // Negative means the new effect can only land if the negative id is weaker
-    // example: haste, slow
-    EFFECT NegativeId;
-    // only overwrite its self if the new effect is equal or higher / higher than current
-    // example: protect, blind
-    EFFECTOVERWRITE Overwrite;
-    // If this status effect is on the user, it will not take effect
-    // example: lullaby will not take effect with sleep I
-    EFFECT BlockId;
-    // Will always remove this effect when landing
-    EFFECT RemoveId;
-    // status effect element, used in resistances
-    uint8 Element;
-
-    // minimum duration. IE: stun cannot last less than 1 second
-    timer::duration MinDuration;
-
-    // Order in which the status effect should be displayed for the player
-    uint16 SortKey;
-
-    EffectParams_t()
-    : Flag(0)
-    , Type(0)
-    , NegativeId((EFFECT)0)
-    , Overwrite(EFFECTOVERWRITE::EQUAL_HIGHER)
-    , BlockId((EFFECT)0)
-    , RemoveId((EFFECT)0)
-    , Element(0)
-    , MinDuration(0s)
-    , SortKey(0)
-    {
-    }
+    uint32          Flag{ 0 };
+    std::string     Name{};
+    uint16          Type{ 0 };                                  // type will erase all other effects that match. Examples: En- spells, Spikes.
+    EFFECT          NegativeId{ 0 };                            // Negative means the new effect can only land if the negative id is weaker. Example: Haste, Slow
+    EFFECTOVERWRITE Overwrite{ EFFECTOVERWRITE::EQUAL_HIGHER }; // only overwrite its self if the new effect is equal or higher / higher than current. Example: Protect, Blind
+    EFFECT          BlockId{ 0 };                               // If this status effect is on the user, it will not take effect. Example: lullaby will not take effect with sleep I
+    EFFECT          RemoveId{ 0 };                              // Will always remove this effect when landing
+    uint8           Element{ 0 };                               // status effect element, used in resistances
+    timer::duration MinDuration{ 0s };                          // minimum duration. IE: stun cannot last less than 1 second
+    uint16          SortKey{ 0 };                               // Order in which the status effect should be displayed for the player
+    MsgStd          WearOffMessageId{ MsgStd::EffectWearsOff }; // Message ID for when effect wears off
 };
 
 std::array<EffectParams_t, MAX_EFFECTID> EffectsParams;
@@ -116,7 +90,7 @@ void LoadEffectsParameters()
 
     const auto rset = db::preparedStmt("SELECT id, name, flags, type, "
                                        "negative_id, overwrite, block_id, remove_id, "
-                                       "element, min_duration, sort_key "
+                                       "element, min_duration, sort_key, wear_off_message_id "
                                        "FROM status_effects "
                                        "WHERE id < ?",
                                        MAX_EFFECTID);
@@ -124,19 +98,18 @@ void LoadEffectsParameters()
     {
         const auto EffectID = rset->get<uint16>("id");
 
-        EffectsParams[EffectID].Name       = rset->get<std::string>("name");
-        EffectsParams[EffectID].Flag       = rset->get<uint32>("flags");
-        EffectsParams[EffectID].Type       = rset->get<uint16>("type");
-        EffectsParams[EffectID].NegativeId = rset->get<EFFECT>("negative_id");
-        EffectsParams[EffectID].Overwrite  = rset->get<EFFECTOVERWRITE>("overwrite");
-        EffectsParams[EffectID].BlockId    = rset->get<EFFECT>("block_id");
-        EffectsParams[EffectID].RemoveId   = rset->get<EFFECT>("remove_id");
-
-        EffectsParams[EffectID].Element     = rset->get<uint16>("element");
-        EffectsParams[EffectID].MinDuration = std::chrono::seconds(rset->get<uint32>("min_duration"));
-
-        const auto sortKey              = rset->get<uint16>("sort_key");
-        EffectsParams[EffectID].SortKey = sortKey == 0 ? 10000 : sortKey; // default to high number to such that effects without a sort key aren't first
+        EffectsParams[EffectID].Name             = rset->get<std::string>("name");
+        EffectsParams[EffectID].Flag             = rset->get<uint32>("flags");
+        EffectsParams[EffectID].Type             = rset->get<uint16>("type");
+        EffectsParams[EffectID].NegativeId       = rset->get<EFFECT>("negative_id");
+        EffectsParams[EffectID].Overwrite        = rset->get<EFFECTOVERWRITE>("overwrite");
+        EffectsParams[EffectID].BlockId          = rset->get<EFFECT>("block_id");
+        EffectsParams[EffectID].RemoveId         = rset->get<EFFECT>("remove_id");
+        EffectsParams[EffectID].Element          = rset->get<uint16>("element");
+        EffectsParams[EffectID].MinDuration      = std::chrono::seconds(rset->get<uint32>("min_duration"));
+        const auto sortKey                       = rset->get<uint16>("sort_key");
+        EffectsParams[EffectID].SortKey          = sortKey == 0 ? 10000 : sortKey; // default to high number to such that effects without a sort key aren't first
+        EffectsParams[EffectID].WearOffMessageId = rset->getOrDefault<MsgStd>("wear_off_message_id", MsgStd::EffectWearsOff);
 
         auto filename = fmt::format("./scripts/effects/{}.lua", EffectsParams[EffectID].Name);
         luautils::CacheLuaObjectFromFile(filename);
@@ -611,7 +584,7 @@ void CStatusEffectContainer::DeleteStatusEffects()
     }
 }
 
-void CStatusEffectContainer::RemoveStatusEffect(CStatusEffect* PStatusEffect, EffectNotice notice)
+void CStatusEffectContainer::RemoveStatusEffect(CStatusEffect* PStatusEffect, const EffectNotice notice)
 {
     if (!PStatusEffect->deleted)
     {
@@ -622,26 +595,50 @@ void CStatusEffectContainer::RemoveStatusEffect(CStatusEffect* PStatusEffect, Ef
         m_POwner->delModifiers(&PStatusEffect->modList);
         if (m_POwner->objtype == TYPE_PC)
         {
-            CCharEntity* PChar = (CCharEntity*)m_POwner;
+            auto* PChar = static_cast<CCharEntity*>(m_POwner);
 
-            if (PStatusEffect->GetIcon() != 0)
+            if (notice != EffectNotice::Silent && PStatusEffect->GetIcon() != 0 && !(PStatusEffect->HasEffectFlag(EFFECTFLAG_NO_LOSS_MESSAGE)))
             {
-                if (notice != EffectNotice::Silent && !(PStatusEffect->HasEffectFlag(EFFECTFLAG_NO_LOSS_MESSAGE)))
+                const auto effectId  = PStatusEffect->GetStatusID();
+                const auto messageId = effectId < MAX_EFFECTID ? effects::EffectsParams[effectId].WearOffMessageId : MsgStd::EffectWearsOff;
+
+                // Notify owner that they lost their buff.
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, PStatusEffect->GetIcon(), 0, messageId);
+
+                // Notify origin entity if they are in the same zone, and we are in their spawn list.
+                const auto originId = PStatusEffect->GetOriginID();
+                if (originId != 0 && originId != PChar->id && m_POwner->loc.zone)
                 {
-                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, PStatusEffect->GetIcon(), 0, MsgStd::EffectWearsOff);
+                    auto* POriginEntity = m_POwner->loc.zone->GetCharByID(originId);
+                    if (POriginEntity && charutils::hasEntitySpawned(POriginEntity, PChar))
+                    {
+                        POriginEntity->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(POriginEntity, PChar, PStatusEffect->GetIcon(), 0, messageId);
+                    }
                 }
             }
 
             if (PStatusEffect->GetStatusID() >= EFFECT_FIRE_MANEUVER && PStatusEffect->GetStatusID() <= EFFECT_DARK_MANEUVER)
             {
-                puppetutils::CheckAttachmentsForManeuver((CCharEntity*)m_POwner, PStatusEffect->GetStatusID(), false);
+                puppetutils::CheckAttachmentsForManeuver(static_cast<CCharEntity*>(m_POwner), PStatusEffect->GetStatusID(), false);
             }
         }
         else
         {
-            if (notice != EffectNotice::Silent && PStatusEffect->GetIcon() != 0 && (!(PStatusEffect->HasEffectFlag(EFFECTFLAG_NO_LOSS_MESSAGE))) && !m_POwner->isDead())
+            if (notice != EffectNotice::Silent && PStatusEffect->GetIcon() != 0 && !(PStatusEffect->HasEffectFlag(EFFECTFLAG_NO_LOSS_MESSAGE)) && !m_POwner->isDead())
             {
-                m_POwner->loc.zone->PushPacket(m_POwner, CHAR_INRANGE, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(m_POwner, m_POwner, PStatusEffect->GetIcon(), 0, MsgStd::EffectWearsOff));
+                const auto effectId  = PStatusEffect->GetStatusID();
+                const auto messageId = effectId < MAX_EFFECTID ? effects::EffectsParams[effectId].WearOffMessageId : MsgStd::EffectWearsOff;
+
+                // Notify origin entity if they are in the same zone, and we are in their spawn list.
+                const auto originId = PStatusEffect->GetOriginID();
+                if (originId != 0 && m_POwner->loc.zone)
+                {
+                    auto* POriginEntity = m_POwner->loc.zone->GetCharByID(originId);
+                    if (POriginEntity && charutils::hasEntitySpawned(POriginEntity, m_POwner))
+                    {
+                        POriginEntity->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(POriginEntity, m_POwner, PStatusEffect->GetIcon(), 0, messageId);
+                    }
+                }
             }
         }
     }
@@ -1592,7 +1589,7 @@ auto CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect) -> voi
     {
         if (effectSourceType == EffectSourceType::SOURCE_EQUIPPED_ITEM)
         {
-            auto PItem = itemutils::GetItemPointer(effectSourceTypeParam);
+            auto PItem = xi::items::lookup(effectSourceTypeParam);
             if (PItem != nullptr)
             {
                 // get the item lua script and check if it has valid functions
@@ -1613,7 +1610,7 @@ auto CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect) -> voi
         }
         else if (effectSourceType == EffectSourceType::SOURCE_FOOD)
         {
-            auto PItem = itemutils::GetItemPointer(StatusEffect->GetSourceTypeParam());
+            auto PItem = xi::items::lookup(StatusEffect->GetSourceTypeParam());
             if (PItem != nullptr)
             {
                 // get the item lua script and check if it has valid functions
@@ -1650,7 +1647,7 @@ auto CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect) -> voi
     // Known use cases: Enchantments without an effect source.
     else
     {
-        CItem* Ptem = itemutils::GetItemPointer(subType);
+        const CItem* Ptem = xi::items::lookup(subType);
         if (Ptem != nullptr && subType > 0)
         {
             name.insert(0, "items/");
@@ -1879,13 +1876,12 @@ void CStatusEffectContainer::HandleAura(CStatusEffect* PStatusEffect)
 
     CBattleEntity* PEntity    = m_POwner;
     AURA_TARGET    auraTarget = static_cast<AURA_TARGET>(PStatusEffect->GetTier());
+    float          aura_range = 6.0f + (PEntity->getMod(Mod::AURA_SIZE) / 100.0f); // Adding to this mod should be the value you want * 100
 
     if (PEntity->objtype == TYPE_PET || PEntity->objtype == TYPE_TRUST)
     {
         PEntity = PEntity->PMaster;
     }
-
-    float aura_range = 6.0f + (PEntity->getMod(Mod::AURA_SIZE) / 100); // Adding to this mod should be the value you want * 100
 
     if (PEntity->objtype == TYPE_PC)
     {
@@ -1921,8 +1917,10 @@ void CStatusEffectContainer::HandleAura(CStatusEffect* PStatusEffect)
                     }
                     else
                     {
+                        uint16 icon = PStatusEffect->GetSubIcon() > 0 ? PStatusEffect->GetSubIcon() : PStatusEffect->GetSubID();
+
                         PEffect = new CStatusEffect(static_cast<EFFECT>(PStatusEffect->GetSubID()), // Effect ID
-                                                    PStatusEffect->GetSubID(),                      // Effect Icon (Associated with ID)
+                                                    icon,                                           // Effect Icon
                                                     PStatusEffect->GetSubPower(),                   // Power
                                                     3s,                                              // Tick
                                                     4s);                                             // Duration
@@ -1963,8 +1961,10 @@ void CStatusEffectContainer::HandleAura(CStatusEffect* PStatusEffect)
                     }
                     else
                     {
+                        uint16 icon = PStatusEffect->GetSubIcon() > 0 ? PStatusEffect->GetSubIcon() : PStatusEffect->GetSubID();
+
                         PEffect = new CStatusEffect(static_cast<EFFECT>(PStatusEffect->GetSubID()), // Effect ID
-                                                    PStatusEffect->GetSubID(),                      // Effect Icon (Associated with ID)
+                                                    icon,                                           // Effect Icon
                                                     PStatusEffect->GetSubPower(),                   // Power
                                                     3s,                                             // Tick
                                                     4s);                                            // Duration
@@ -2008,8 +2008,10 @@ void CStatusEffectContainer::HandleAura(CStatusEffect* PStatusEffect)
                     }
                     else
                     {
+                        uint16 icon = PStatusEffect->GetSubIcon() > 0 ? PStatusEffect->GetSubIcon() : PStatusEffect->GetSubID();
+
                         PEffect = new CStatusEffect(static_cast<EFFECT>(PStatusEffect->GetSubID()), // Effect ID
-                                                    PStatusEffect->GetSubID(),                      // Effect Icon (Associated with ID)
+                                                    icon,                                           // Effect Icon
                                                     PStatusEffect->GetSubPower(),                   // Power
                                                     3s,                                              // Tick
                                                     4s);                                             // Duration
@@ -2053,8 +2055,10 @@ void CStatusEffectContainer::HandleAura(CStatusEffect* PStatusEffect)
                     }
                     else
                     {
+                        uint16 icon = PStatusEffect->GetSubIcon() > 0 ? PStatusEffect->GetSubIcon() : PStatusEffect->GetSubID();
+
                         PEffect = new CStatusEffect(static_cast<EFFECT>(PStatusEffect->GetSubID()), // Effect ID
-                                                    PStatusEffect->GetSubID(),                      // Effect Icon (Associated with ID)
+                                                    icon,                                           // Effect Icon
                                                     PStatusEffect->GetSubPower(),                   // Power
                                                     3s,                                             // Tick
                                                     4s);                                            // Duration
@@ -2166,16 +2170,29 @@ void CStatusEffectContainer::TickRegen(timer::time_point tick)
             {
                 CPetEntity* PPet          = (CPetEntity*)m_POwner->PPet;
                 ELEMENT     petElement    = static_cast<ELEMENT>(PPet->m_Element);
-                uint8       petElementIdx = static_cast<uint8>(petElement) - 1;
+                bool        elementValid  = petElement >= ELEMENT_FIRE && petElement <= ELEMENT_DARK; // Check if the element is not 0 (None) or out of bounds
+                uint8       petElementIdx = 0;
                 ELEMENT     dayElement    = battleutils::GetDayElement();
                 auto        weather       = battleutils::GetWeather(PChar, false);
+
+                if (!elementValid)
+                {
+                    ShowWarning("CStatusEffectContainer::TickRegen() - Pet %s (PetID %u) has invalid element %u for avatar perpetuation. Check pet_list.sql.",
+                                PPet->getName(),
+                                PPet->m_PetID,
+                                PPet->m_Element);
+                }
+                else
+                {
+                    petElementIdx = static_cast<uint8>(petElement) - 1;
+                }
 
                 static const Mod     strong[8]        = { Mod::FIRE_AFFINITY_PERP, Mod::ICE_AFFINITY_PERP, Mod::WIND_AFFINITY_PERP, Mod::EARTH_AFFINITY_PERP, Mod::THUNDER_AFFINITY_PERP, Mod::WATER_AFFINITY_PERP, Mod::LIGHT_AFFINITY_PERP, Mod::DARK_AFFINITY_PERP };
                 static const Weather weatherStrong[8] = { Weather::HotSpell, Weather::Snow, Weather::Wind, Weather::DustStorm, Weather::Thunder, Weather::Rain, Weather::Auroras, Weather::Gloom };
 
                 // Day / Weather elemental matches.
-                bool dayMatch     = dayElement == petElement;
-                bool weatherMatch = weather == weatherStrong[petElementIdx] || weather == static_cast<Weather>(static_cast<uint16_t>(weatherStrong[petElementIdx]) + 1);
+                bool dayMatch     = elementValid && dayElement == petElement;
+                bool weatherMatch = elementValid && (weather == weatherStrong[petElementIdx] || weather == static_cast<Weather>(static_cast<uint16_t>(weatherStrong[petElementIdx]) + 1));
 
                 // Halve perpetuation cost before all regular reductions.
                 bool halfFromCarby   = PChar->getMod(Mod::HALF_PERPETUATION_CARBUNCLE) != 0 && PPet->m_PetID == PETID_CARBUNCLE;
@@ -2191,7 +2208,10 @@ void CStatusEffectContainer::TickRegen(timer::time_point tick)
                 perpetuationCost = perpetuationCost - PChar->getMod(Mod::PERPETUATION_REDUCTION);
 
                 // Apply elemental affinity perpetuation bonus/penalty.
-                perpetuationCost = perpetuationCost - PChar->getMod(strong[petElementIdx]);
+                if (elementValid)
+                {
+                    perpetuationCost = perpetuationCost - PChar->getMod(strong[petElementIdx]);
+                }
 
                 // Apply day element perpetuation reduction.
                 if (dayMatch)

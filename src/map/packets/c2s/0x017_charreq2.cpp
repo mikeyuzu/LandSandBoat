@@ -26,10 +26,18 @@
 auto GP_CLI_COMMAND_CHARREQ2::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     // Not implemented.
-    return PacketValidator();
+    return PacketValidator(PChar)
+        .blockedBy({ BlockedState::InEvent });
 }
 
 void GP_CLI_COMMAND_CHARREQ2::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    ShowWarning("GP_CLI_COMMAND_CHARREQ2: Incorrect NPC(%u,%u) type(%u)", ActIndex, UniqueNo2, Flg);
+    if (PChar->isInEvent())
+    {
+        ShowWarningFmt("GP_CLI_COMMAND_CHARREQ2: Incorrect NPC({},{}) type({}) event({})", this->ActIndex, this->UniqueNo2, this->Flg, PChar->currentEvent->eventId);
+    }
+    else
+    {
+        ShowWarningFmt("GP_CLI_COMMAND_CHARREQ2: Incorrect NPC({},{}) type({})", this->ActIndex, this->UniqueNo2, this->Flg);
+    }
 }

@@ -115,7 +115,7 @@ mission.sections =
 
         [xi.zone.VALLEY_OF_SORROWS] =
         {
-            ['qm2'] =
+            ['qm1'] =
             {
                 onTrigger = function(player, npc)
                     if player:getMissionStatus(mission.areaId) == 1 then
@@ -212,8 +212,11 @@ mission.sections =
                 currentMission ~= xi.mission.id.sandoria.THE_HEIR_TO_THE_LIGHT
         end,
 
-        ['Curilla'] = mission:event(16):replaceDefault(),
-        ['Rahal']   = mission:event(37):replaceDefault(),
+        [xi.zone.CHATEAU_DORAGUILLE] =
+        {
+            ['Curilla'] = mission:event(16):replaceDefault(),
+            ['Rahal']   = mission:event(37):replaceDefault(),
+        },
     },
 }
 

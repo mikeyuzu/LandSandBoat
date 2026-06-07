@@ -40,43 +40,46 @@ quest.sections =
             return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
-        ['Westerly_Breeze'] =
+        [xi.zone.WESTERN_ADOULIN] =
         {
-            onTrade = function(player, npc, trade)
-                if npcUtil.tradeHasExactly(trade, xi.item.BOTTLE_OF_GOBLIN_DRINK) then
-                    return quest:progressEvent(3007)
-                elseif
-                    trade:getItemCount() == 1 and
-                    trade:getGil() == 0
-                then
-                    local itemObj = trade:getItem(0)
-                    local auctionCategory = itemObj:getAHCat()
+            ['Westerly_Breeze'] =
+            {
+                onTrade = function(player, npc, trade)
+                    if npcUtil.tradeHasExactly(trade, xi.item.BOTTLE_OF_GOBLIN_DRINK) then
+                        return quest:progressEvent(3007)
+                    elseif
+                        trade:getItemCount() == 1 and
+                        trade:getGil() == 0
+                    then
+                        local itemObj = trade:getItem(0)
+                        local auctionCategory = itemObj:getAHCat()
 
-                    if auctionCategory == xi.itemAHCategory.DRINKS then
-                        return quest:event(3008)
+                        if auctionCategory == xi.itemAHCategory.DRINKS then
+                            return quest:event(3008)
+                        else
+                            return quest:event(3006)
+                        end
                     else
                         return quest:event(3006)
                     end
-                else
-                    return quest:event(3006)
-                end
-            end,
+                end,
 
-            onTrigger = quest:event(3006),
-        },
+                onTrigger = quest:event(3006),
+            },
 
-        onEventFinish =
-        {
-            [3007] = function(player, csid, option, npc)
-                if quest:complete(player) then
-                    xi.quest.setMustZone(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.ALWAYS_MORE_QUOTH_THE_RAVENOUS)
-                    xi.quest.setVar(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.ALWAYS_MORE_QUOTH_THE_RAVENOUS, 'Timer', VanadielUniqueDay())
-                end
-            end,
+            onEventFinish =
+            {
+                [3007] = function(player, csid, option, npc)
+                    if quest:complete(player) then
+                        xi.quest.setMustZone(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.ALWAYS_MORE_QUOTH_THE_RAVENOUS)
+                        xi.quest.setVar(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.ALWAYS_MORE_QUOTH_THE_RAVENOUS, 'Timer', VanadielUniqueDay())
+                    end
+                end,
 
-            [3008] = function(player, csid, option, npc)
-                player:confirmTrade()
-            end,
+                [3008] = function(player, csid, option, npc)
+                    player:confirmTrade()
+                end,
+            },
         },
     },
 }

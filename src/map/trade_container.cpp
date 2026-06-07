@@ -71,7 +71,7 @@ uint32 CTradeContainer::getConfirmedStatus(uint8 slotID)
     {
         return m_confirmed[slotID];
     }
-    return false;
+    return 0;
 }
 
 uint32 CTradeContainer::getItemQuantity(uint16 itemID)
@@ -245,16 +245,6 @@ void CTradeContainer::setType(uint8 type)
     m_type = type;
 }
 
-uint8 CTradeContainer::getCraftType() const
-{
-    return m_craftType;
-}
-
-void CTradeContainer::setCraftType(uint8 craftType)
-{
-    m_craftType = craftType;
-}
-
 void CTradeContainer::unreserveUnconfirmed()
 {
     for (uint8 slotID = 0; slotID < CONTAINER_SIZE; ++slotID)
@@ -278,16 +268,7 @@ void CTradeContainer::unreserveUnconfirmed()
 
 void CTradeContainer::Clean()
 {
-    for (auto* PItem : m_PItem)
-    {
-        if (PItem)
-        {
-            PItem->setReserve(0);
-            PItem->setSubType(ITEM_UNLOCKED);
-        }
-    }
     m_type       = 0;
-    m_craftType  = 0;
     m_ItemsCount = 0;
     m_exSize     = 0;
 

@@ -63,28 +63,6 @@ quest.sections =
             return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
-        ['Leigon-Moigon'] =
-        {
-            onTrigger = function(player, npc)
-                if player:hasKeyItem(xi.ki.SHANTOTTOS_NEW_SPELL) then
-                    return quest:event(107)
-                elseif quest:getVar(player, 'Prog') == 2 then
-                    return quest:event(112)
-                end
-            end,
-        },
-
-        ['Potete'] =
-        {
-            onTrigger = function(player, npc)
-                if player:hasKeyItem(xi.ki.SHANTOTTOS_NEW_SPELL) then
-                    return quest:event(106)
-                elseif quest:getVar(player, 'Prog') == 2 then
-                    return quest:event(111)
-                end
-            end,
-        },
-
         [xi.zone.BEAUCEDINE_GLACIER] =
         {
             ['Torino-Samarino'] =
@@ -165,6 +143,28 @@ quest.sections =
 
         [xi.zone.WINDURST_WALLS] =
         {
+            ['Leigon-Moigon'] =
+            {
+                onTrigger = function(player, npc)
+                    if player:hasKeyItem(xi.ki.SHANTOTTOS_NEW_SPELL) then
+                        return quest:event(107)
+                    elseif quest:getVar(player, 'Prog') == 2 then
+                        return quest:event(112)
+                    end
+                end,
+            },
+
+            ['Potete'] =
+            {
+                onTrigger = function(player, npc)
+                    if player:hasKeyItem(xi.ki.SHANTOTTOS_NEW_SPELL) then
+                        return quest:event(106)
+                    elseif quest:getVar(player, 'Prog') == 2 then
+                        return quest:event(111)
+                    end
+                end,
+            },
+
             ['Shantotto'] =
             {
                 onTrigger = function(player, npc)

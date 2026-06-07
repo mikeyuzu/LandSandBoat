@@ -11,7 +11,6 @@ local content = Battlefield:new({
     battlefieldId    = xi.battlefield.id.COMPLIMENTS_TO_THE_CHEF,
     allowTrusts      = true,
     maxPlayers       = 6,
-    levelCap         = 75,
     timeLimit        = utils.minutes(30),
     index            = 1,
     entryNpc         = '_1l0',

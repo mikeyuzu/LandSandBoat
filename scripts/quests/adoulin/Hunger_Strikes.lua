@@ -39,43 +39,46 @@ quest.sections =
             return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
-        ['Westerly_Breeze'] =
+        [xi.zone.WESTERN_ADOULIN] =
         {
-            onTrade = function(player, npc, trade)
-                if npcUtil.tradeHasExactly(trade, xi.item.BOWL_OF_WISDOM_SOUP) then
-                    return quest:progressEvent(2532)
-                elseif
-                    trade:getItemCount() == 1 and
-                    trade:getGil() == 0
-                then
-                    local itemObj = trade:getItem(0)
-                    local auctionCategory = itemObj:getAHCat()
-
-                    if
-                        auctionCategory >= xi.itemAHCategory.MEAT_EGGS and
-                        auctionCategory <= xi.itemAHCategory.SWEETS
+            ['Westerly_Breeze'] =
+            {
+                onTrade = function(player, npc, trade)
+                    if npcUtil.tradeHasExactly(trade, xi.item.BOWL_OF_WISDOM_SOUP) then
+                        return quest:progressEvent(2532)
+                    elseif
+                        trade:getItemCount() == 1 and
+                        trade:getGil() == 0
                     then
-                        return quest:event(2533)
+                        local itemObj = trade:getItem(0)
+                        local auctionCategory = itemObj:getAHCat()
+
+                        if
+                            auctionCategory >= xi.itemAHCategory.MEAT_EGGS and
+                            auctionCategory <= xi.itemAHCategory.SWEETS
+                        then
+                            return quest:event(2533)
+                        end
                     end
-                end
-            end,
+                end,
 
-            onTrigger = quest:event(2531),
-        },
+                onTrigger = quest:event(2531),
+            },
 
-        onEventFinish =
-        {
-            [2532] = function(player, csid, option, npc)
-                if quest:complete(player) then
+            onEventFinish =
+            {
+                [2532] = function(player, csid, option, npc)
+                    if quest:complete(player) then
+                        player:confirmTrade()
+
+                        xi.quest.setVar(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.THE_STARVING, 'Timer', VanadielUniqueDay())
+                    end
+                end,
+
+                [2533] = function(player, csid, option, npc)
                     player:confirmTrade()
-
-                    xi.quest.setVar(player, xi.questLog.ADOULIN, xi.quest.id.adoulin.THE_STARVING, 'Timer', VanadielUniqueDay())
-                end
-            end,
-
-            [2533] = function(player, csid, option, npc)
-                player:confirmTrade()
-            end,
+                end,
+            },
         },
     },
 }

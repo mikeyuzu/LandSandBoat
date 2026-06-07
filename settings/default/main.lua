@@ -144,6 +144,7 @@ xi.settings.main =
     DARK_POWER      = 1.000, -- 暗黒魔法の吸収量に倍率をかける。
     ITEM_POWER      = 1.000, -- ポーションやエーテルなどのアイテムの効果に倍率をかける。
     WEAPON_SKILL_POWER  = 1.000, -- ウェポンスキルのダメージに倍率をかける。
+    DELAY_REDUCTION_CAP = 0.80,  -- 近接攻撃の攻撃速度上昇効果の上限を設定します。（0.80 = 実機版の遅延短縮率最大80%、0.93 = ToAU版の遅延短縮率最大93%
 
     -- STR:ATT/RATT比。プレイヤーのみ。Mobは0.5に固定されている。
     TWO_HANDED_STR_ATTACK_MULTIPLIER         = 1.0,  -- 1.0: 1 STR = 1 攻撃力。以前の時代では 0.5 と 0.75 でした。
@@ -172,6 +173,8 @@ xi.settings.main =
     ENABLE_TRUST_CASTING           = 1, -- フェイスの魔法詠唱を許可する
     ENABLE_TRUST_QUESTS            = 1, -- フェイス関連クエストを有効にする
     ENABLE_TRUST_CUSTOM_ENGAGEMENT = 0, -- フェイスのカスタム戦闘開始条件を有効にする
+
+    ENABLE_LIMITED_TIME_TRUST = 0, -- 0 = 無効、1 = コーネリア、2 = 松井P、プレイヤーが信頼許可KIを持っている場合、プレイヤーの信頼リストに自動的に追加されます。
 
     ENABLE_TRUST_ALTER_EGO_EXTRAVAGANZA          = 0, -- 0 = 無効, 1 = 夏/新年, 2 = 春/秋, 3 = 両方
     ENABLE_TRUST_ALTER_EGO_EXTRAVAGANZA_ANNOUNCE = 0, -- 0 = 無効, 1 = プレイヤーログイン時にアナウンスを追加
@@ -293,6 +296,9 @@ xi.settings.main =
     -- ログインキャンペーン (ログインキャンペーンを実行したくない場合は0に設定)
     -- 正しいキャンペーン日付を割り当てるには、scripts/globals/events/login_campaign.luaを参照してください.
     ENABLE_LOGIN_CAMPAIGN = 0,
+
+    -- ヴァナ・ディールで起こる奇妙な出来事
+    ENABLE_STRANGE_HAPPENINGS = 0,
 
     -- 釣りランキングコンテスト
     -- falseに設定すると、コンテストの手動進行が必要になります。

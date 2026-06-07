@@ -28,9 +28,6 @@ xi.settings.map =
     -- ゲーム設定
     -- --------------------------------
 
-    -- PacketGuard は、プレイヤーの現在の状態の許可リストにないパケットをブロックして報告します。
-    PACKETGUARD_ENABLED = true,
-
     -- lightluggage を検出するために使用する 0x3A パケットの最小数 (無効にする場合は 0 を設定)
     LIGHTLUGGAGE_BLOCK = 4,
 
@@ -39,6 +36,10 @@ xi.settings.map =
 
     -- アイテムのごみ箱を有効または無効にする (false に設定すると、アイテムはすぐにドロップされます)
     ENABLE_ITEM_RECYCLE_BIN = true,
+
+    -- 自動復旧機能（ヘルプデスクコマンドによりプレイヤーをホームポイントへ移動させる）
+    SELF_UNSTUCK_ENABLED  = false,
+    SELF_UNSTUCK_COOLDOWN = 86400, -- クールダウン時間（秒）（デフォルト：24時間）
 
     -- 競売手数料構造、デフォルトは公式と同じです。
     AH_BASE_FEE_SINGLE = 1,     -- 単品出品の基本手数料
@@ -211,7 +212,6 @@ xi.settings.map =
     -- NM、通常のモンスター、プレイヤー、フェイス/フェローの基本ステータス (STR/VIT など) を調整します。倍率として機能するため、デフォルトは 1 です。
     NM_STAT_MULTIPLIER        = 1.0, -- NMのステータス倍率
     MOB_STAT_MULTIPLIER       = 1.0, -- 通常モンスターのステータス倍率
-    PLAYER_STAT_MULTIPLIER    = 1.0, -- プレイヤーのステータス倍率
     ALTER_EGO_STAT_MULTIPLIER = 1.0, -- フェイス/フェローのステータス倍率
 
     -- フェイス/フェローのスキルキャップを調整します。倍率として機能するため、デフォルトは 1 です。
@@ -219,6 +219,9 @@ xi.settings.map =
 
     -- アビリティの再詠唱時間を調整します。倍率として機能するため、デフォルトは 1 です。
     ABILITY_RECAST_MULTIPLIER = 1.0, -- アビリティ再詠唱時間倍率
+
+    -- 呪文再発動回数の最大減少率。現在の小売価格は80%。以前の時代は50%だった。
+    SPELL_RECAST_REDUCTION_CAP = 80,
 
     -- 共有血盟タイマーを有効/無効にする
     BLOOD_PACT_SHARED_TIMER = false,
@@ -295,6 +298,9 @@ xi.settings.map =
     AUDIT_PLAYER_BAZAAR = false,
     AUDIT_PLAYER_DBOX   = false,
     AUDIT_PLAYER_VENDOR = false,
+
+    -- PC間転送において、プレイヤーの配送ボックスに保管できる転送アイテム（スロット）の最大数。
+    DELIVERY_BOX_MAX_INFLIGHT = 128,
 
     -- 回復ティック間の秒数。デフォルトは 10 です。
     HEALING_TICK_DELAY = 10,

@@ -162,6 +162,7 @@ src/common/stamp-h1
 *.sw?
 
 navmeshes/*.nav
+ximeshes/*.ximesh
 tags
 log/**
 !log/.gitkeep
@@ -264,3 +265,4 @@ venv.bak/
 # tools
 item_definitions.lua
 magic_definitions.lua
+/.antigravitycli/214a994e-8fee-420b-b816-270e3aca18cc.json

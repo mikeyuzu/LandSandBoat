@@ -21,7 +21,7 @@ end
 
 itemObject.onItemUse = function(target, player)
     target:delStatusEffectSilent(xi.effect.HYSTERIA)
-    target:addStatusEffectEx(xi.effect.HYSTERIA, xi.effect.HYSTERIA, 1, 0, xi.settings.map.BOTTLE_OF_HYSTEROANIMA_DURATION, 0, 0, 0, xi.effectFlag.NO_LOSS_MESSAGE)
+    target:addStatusEffect(xi.effect.HYSTERIA, { power = 1, duration = xi.settings.map.BOTTLE_OF_HYSTEROANIMA_DURATION, origin = player, flag = xi.effectFlag.NO_LOSS_MESSAGE })
 end
 
 return itemObject

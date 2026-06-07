@@ -11,7 +11,6 @@ local content = Battlefield:new({
     battlefieldId    = xi.battlefield.id.HAPPY_CASTER,
     allowTrusts      = true,
     maxPlayers       = 6,
-    levelCap         = 75,
     timeLimit        = utils.minutes(30),
     index            = 1,
     entryNpc         = '_1s0',

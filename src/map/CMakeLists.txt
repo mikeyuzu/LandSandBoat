@@ -3,7 +3,6 @@ add_subdirectory(ai)
 add_subdirectory(entities)
 add_subdirectory(enums)
 add_subdirectory(items)
-add_subdirectory(los)
 add_subdirectory(lua)
 add_subdirectory(packets)
 add_subdirectory(utils)
@@ -19,7 +18,6 @@ set(SOURCES
     ${ENTITY_SOURCES}
     ${ENUMS_SOURCES}
     ${ITEM_SOURCES}
-    ${LOS_SOURCES}
     ${LUA_SOURCES}
     ${PACKET_SOURCES}
     ${UTIL_SOURCES}
@@ -64,6 +62,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/event_info.h
     ${CMAKE_CURRENT_SOURCE_DIR}/fishingcontest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/fishingcontest.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/gmcall_container.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gmcall_container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/grades.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/grades.h
     ${CMAKE_CURRENT_SOURCE_DIR}/guild.cpp
@@ -74,6 +74,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/instance.h
     ${CMAKE_CURRENT_SOURCE_DIR}/ipc_client.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ipc_client.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_sync_state.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_sync_state.h
     ${CMAKE_CURRENT_SOURCE_DIR}/item_container.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/item_container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/items.h
@@ -99,6 +101,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/map_socket.h
     ${CMAKE_CURRENT_SOURCE_DIR}/map_statistics.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map_statistics.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/maze.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/maze.h
     ${CMAKE_CURRENT_SOURCE_DIR}/merit.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/merit.h
     ${CMAKE_CURRENT_SOURCE_DIR}/mob_modifier.h
@@ -112,12 +116,16 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/modifier.h
     ${CMAKE_CURRENT_SOURCE_DIR}/monstrosity.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/monstrosity.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/navmesh.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/navmesh.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/navmesh/inavmesh.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/navmesh/navmesh.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/navmesh/navmesh.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/navmesh/navmesh_builder.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/navmesh/navmesh_builder.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/navmesh/navmesh_config.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/nominate_manager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nominate_manager.h
     ${CMAKE_CURRENT_SOURCE_DIR}/notoriety_container.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/notoriety_container.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/packet_guard.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/packet_guard.h
     ${CMAKE_CURRENT_SOURCE_DIR}/packet_system.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/packet_system.h
     ${CMAKE_CURRENT_SOURCE_DIR}/party.cpp
@@ -134,8 +142,10 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effect_container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effect.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effect.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_group.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_group.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_handler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_handler.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_slot.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_slot.h
     ${CMAKE_CURRENT_SOURCE_DIR}/time_server.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/time_server.h
     ${CMAKE_CURRENT_SOURCE_DIR}/timetriggers.cpp
@@ -156,6 +166,11 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/universal_container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/weapon_skill.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/weapon_skill.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/ximesh/transformation_matrix.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/ximesh/vector3.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/ximesh/ximesh_structs.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/ximesh/ximesh.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ximesh/ximesh.h
     ${CMAKE_CURRENT_SOURCE_DIR}/zone_entities.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/zone_entities.h
     ${CMAKE_CURRENT_SOURCE_DIR}/zone_instance.cpp

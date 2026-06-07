@@ -10,7 +10,7 @@
 -- Effect with enhancing equipment (Note: these are latents on gear with the effect)
 -- Atk +40
 -- Def +40
--- Arcana Killer (guesstimated 5%)
+-- Aquan Killer +4
 -----------------------------------
 ---@type TItemFood
 local itemObject = {}
@@ -20,7 +20,7 @@ itemObject.onItemCheck = function(target, item, param, caster)
 end
 
 itemObject.onItemUse = function(target, user, item, action)
-    target:addStatusEffect(xi.effect.FOOD, 0, 0, 1800, 0, 0, 0, xi.effectSourceType.FOOD, item:getID(), user:getID())
+    target:addStatusEffect(xi.effect.FOOD, { duration = 1800, origin = user, sourceType = xi.effectSourceType.FOOD, sourceTypeParam = item:getID() })
 end
 
 itemObject.onEffectGain = function(target, effect)

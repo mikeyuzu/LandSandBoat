@@ -53,11 +53,19 @@ void CCharRecastContainer::Add(RECASTTYPE type, const Recast id, timer::duration
 
     if (type == RECAST_ABILITY)
     {
-        db::preparedStmt("REPLACE INTO char_recast VALUES (?, ?, ?, ?)",
-                         m_PChar->id,
-                         recast->ID,
-                         earth_time::timestamp(timer::to_utc(recast->TimeStamp)),
-                         static_cast<uint32>(timer::count_seconds(recast->RecastTime)));
+        db::preparedStmt(
+            "INSERT INTO char_recast SET "
+            "charid = ?, "
+            "id = ?, "
+            "time = ?, "
+            "recast = ? "
+            "ON DUPLICATE KEY UPDATE "
+            "time = VALUES(time), "
+            "recast = VALUES(recast)",
+            m_PChar->id,
+            recast->ID,
+            earth_time::timestamp(timer::to_utc(recast->TimeStamp)),
+            static_cast<uint32>(timer::count_seconds(recast->RecastTime)));
     }
 }
 
@@ -179,7 +187,7 @@ void CCharRecastContainer::Check()
                     CItem* PItem       = m_PChar->getStorage(containerID)->GetItem(slotID);
 
                     m_PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(containerID), slotID);
-                    m_PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
+                    m_PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(m_PChar);
                 }
                 if (type == RECAST_ITEM || type == RECAST_MAGIC || type == RECAST_LOOT)
                 {
